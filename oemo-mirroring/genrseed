@@ -1,0 +1,29 @@
+#!/bin/bash
+# generates a set of N random seed
+
+n=$1
+outfile=input_data/$2
+
+_usage()
+{
+	printf "Usage: ./genrseed [n] [output file]\n";
+	exit 0;
+}
+
+if [[ -z $n ]] || [[ -z $outfile ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+if [[ -f "$outfile" ]]; then
+	rm "$outfile" ;
+fi
+
+for (( i=0; i<$n; i++ ))
+do
+	if [[ i == 0 ]]; then
+		printf "%0.4f\n" $(bc <<< scale=9\;$RANDOM/32767) > $outfile ;
+	else
+		printf "%0.4f\n" $(bc <<< scale=9\;$RANDOM/32767) >> $outfile ;
+	fi
+done

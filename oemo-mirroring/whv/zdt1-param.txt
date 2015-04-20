@@ -1,0 +1,8 @@
+dim 2
+obj - -
+method 0
+nadir 200.0 200.0
+ideal 0.0 0.0
+wdf 0
+hyp_ind_type 0
+reference_point 0.0 0.0

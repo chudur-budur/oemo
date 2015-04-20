@@ -1,0 +1,67 @@
+#!/bin/bash
+# runs multiple tests
+
+startrun=$1
+endrun=$2
+executable=$3
+paramfile=$4
+seedfile=$5
+outdir=$6
+
+_usage()
+{
+
+	# example: ./run-n 1 10 onsga2r input_data/zdt1.in input_data/rseeds.in experiments
+	printf '%s\n\t%s\n' "Usage: ./run-n [startrun] [endrun] [executable]" "[param file] [seedfile] [out directory]";
+	exit 0;
+}
+
+if [[ -z $startrun ]] || [[ -z $endrun ]] || 
+	[[ -z $executable ]] || [[ -z $paramfile ]] || 
+	[[ -z $seedfile ]] || [[ -z $outdir ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+problemname=`echo "$paramfile" | awk -F"." '{print $1}' | awk -F"/" '{print $2}'` ;
+if [ ! -d "$outdir" ]; then
+	mkdir $outdir ;
+else
+	rm -rf "$outdir/*" ;
+fi
+
+execdir=`echo $executable | awk -F"-" '{print $1}'`;
+if [ ! -d "$outdir/$execdir" ]; then
+	mkdir "$outdir/$execdir" ;
+fi
+if [ ! -d "$outdir/$execdir/$problemname" ]; then
+	mkdir "$outdir/$execdir/$problemname" ;
+fi
+targetdir="$outdir/$execdir/$problemname" ;
+
+seedlst=`cat $seedfile` ;
+readarray -t rseed <<<"$seedlst" ;
+
+for (( i=$startrun; i<=$endrun; i++ ))
+do
+	rm -rf *.out ;
+	j=$(( i - 1 ));
+	echo "performing run $i with seed ${rseed[j]}" ;
+	./$executable ${rseed[j]} < $paramfile ;
+	if [ -f all_pop.out ]; then
+		cp all_pop.out "$targetdir/all_pop-$i.out" ;
+	fi
+	if [ -f all_source.out ]; then
+		cp all_source.out "$targetdir/all_source-$i.out" ;
+	fi
+	if [ -f all_opposite.out ]; then
+		cp all_opposite.out "$targetdir/all_opposite-$i.out" ;
+	fi
+	if [ -f all_survived.out ]; then
+		cp all_survived.out "$targetdir/all_survived-$i.out" ;
+	fi
+	if [ -f all_survival_stat.out ]; then
+		cp all_survival_stat.out "$targetdir/all_survival_stat-$i.out" ;
+	fi
+done
+rm -rf *.out ;

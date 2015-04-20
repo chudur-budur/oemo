@@ -1,0 +1,30 @@
+#!/bin/bash
+
+minrun=$1 ;
+maxrun=$2 ;
+mingen=$3 ;
+maxgen=$4 ;
+probname=$5 ;
+
+_usage()
+{
+	# ./genplotsn 1 10 1 200 zdt1
+	printf '%s\n' "Usage: ./genplotsn [minrun] [maxrun] [mingen] [maxgen] [problem name]";
+	exit 0;
+}
+
+if [[ -z $minrun ]] || [[ -z $maxrun ]] || [[ -z $mingen ]] || [[ -z $maxgen ]] || [[ -z $probname ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+for ((i=$minrun; i<=$maxrun; i++ ))
+do
+	nohup ./genplots $mingen $maxgen \
+			experiments/onsga2r/$probname/pfplots-run-$i \
+			experiments/nsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \
+			experiments/onsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \
+			experiments/onsga2r/$probname/pfsnaps-run-$i/all_source-$i-gen- \
+			experiments/onsga2r/$probname/pfsnaps-run-$i/all_opposite-$i-gen- \
+			experiments/onsga2r/$probname/pfsnaps-run-$i/all_survived-$i-gen- >& /dev/null &
+done

@@ -1,0 +1,54 @@
+#!/bin/bash
+# this script generates a pdf report
+
+mingen=$1
+maxgen=$2
+snapdir=$3
+skip=$4
+group=$5
+zoom=$6
+prefix=$7
+uid=$8
+
+_usage()
+{
+	#example 1: ./genreport 1 100 snapdir 5 8 0.4 onsga2r-pf $RANDOM
+	printf "Usage: ./genreport [mingen] [maxgen] [snapdir] [skip] [group] [zoom] [fileprefix] [uid]\n";
+	exit 0;
+}
+
+if [[ -z $maxgen ]] || [[ -z $mingen ]] || [[ -z $snapdir ]] || 
+	[[ -z $skip ]] || [[ -z $group ]] || [[ -z $zoom ]] || 
+	[[ -z $prefix ]] || [[ -z $uid ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+bs="\x5C"
+tex=plot-"$uid".tex
+
+cat header.tex > $tex ;
+row=1;
+for (( i=$mingen; i<=$maxgen; i=i+$skip ))
+do
+	if [[ $row = 1 ]]; then
+		printf "\t${bs}begin{figure}[H]\n" >> $tex;
+		printf "\t\t${bs}centering\n" >> $tex;
+	fi
+	printf "\t\t${bs}subfigure[generation = ${i}]{\n" >> $tex ;
+	printf "\t\t\t${bs}includegraphics[width=$zoom${bs}textwidth]" >> $tex ;
+	printf "{${snapdir}/${prefix}-${i}.pdf}}\n" >> $tex ;
+	row=$(( $row+1 ));
+	g=$(( $group+1 ));
+	if [[ $(( $row%$g )) = 0 ]]; then
+		printf "\t${bs}end{figure}\n" >> $tex;
+		printf "\t${bs}vfill${bs}eject\n" >> $tex ;
+		row=1;
+	elif [[ $(( i+$skip )) -gt $maxgen ]]; then
+		printf "\t${bs}end{figure}\n" >> $tex;
+	fi
+done
+printf "${bs}end{document}\n" >> $tex;
+
+pubtex $tex --pdl;
+rm -f $tex ;

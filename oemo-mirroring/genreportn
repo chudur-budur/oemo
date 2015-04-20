@@ -1,0 +1,31 @@
+#!/bin/bash
+
+minrun=$1 ; 
+maxrun=$2 ;
+mingen=$3 ;
+maxgen=$4 ;
+skip=$5 ;
+nplots=$6 ;
+size=$7 ;
+probname=$8 ;
+
+_usage()
+{
+	# ./genreportn 1 10 1 200 5 8 0.4 zdt1
+	printf '%s\n\t\t    %s\n' "Usage: ./genreportn [minrun] [maxrun] [mingen] [maxgen] [skip]" "[number of plots/page] [plot size] [problem name]";
+	exit 0;
+}
+
+if [[ -z $minrun ]] || [[ -z $maxrun ]] || [[ -z $probname ]] ||
+       	[[ -z $skip ]] || [[ -z $nplots ]] || [[ -z $size ]] || [[ -z $probname ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+for(( i=$minrun; i<=$maxrun; i++ ))
+do
+	uid=$RANDOM ;
+	./genreport $mingen $maxgen experiments/onsga2r/$probname/pfplots-run-$i/ $skip $nplots $size pf-gen $uid;
+	mv plot-"$uid".pdf experiments/onsga2r/$probname/snapshot-run-$i.pdf ;
+done
+rm -rf *.bbl ;

@@ -1,0 +1,32 @@
+#!/bin/bash
+# compute hypervolume for multiple runs -- uses calhv for n times.
+# only works with files with name all_pop* .
+
+len=$# ;
+minrun=$1 ;
+maxrun=$2 ;
+mingen=$3 ;
+maxgen=$4 ;
+indirprefix=$5 ;
+outdir=$6 ;
+hvparamfile=$7 ;
+
+_usage()
+{
+	# ./calchvn 1 10 1 100 experiments/nsga2r/zdt1/pfsnaps-run- 
+	#		       experiments/nsga2r/zdt1/ whv/zdt1-param.txt
+	printf '%s\n' "Usage: ./calchvn [minrun] [maxrun] [mingen] [maxgen] [in-dir-prefix] [outdir] [hv-param-file]";
+	exit 0;
+}
+
+if [[ $len -lt 7 ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+for (( r=$minrun; r<=$maxrun; r++ ))
+do
+	echo computing hv value for run $r ;
+	infileprefix=$indirprefix$r/all_pop-$r-gen- ;
+	./calchv $mingen $maxgen $infileprefix $outdir $hvparamfile ;
+done

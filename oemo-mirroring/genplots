@@ -1,0 +1,59 @@
+#!/bin/bash
+# this scripts generates pdf plot from the files generated
+# by gensnaps script
+
+args=("$@");
+len=${#args[@]};
+mingen=${args[0]};
+maxgen=${args[1]};
+outdir=${args[2]};
+prefixargs=("${args[@]:3:$len}");
+
+_usage()
+{
+	# ./genplots 1 100 outdir /some/where/file1 /some/where/file2 some/where/file3 ...
+	printf '%s\n\t\t  %s\n' "Usage: ./genplots [mingen] [maxgen] [outputdir]" "[N input-file prefix argumets]";
+	exit 0;
+}
+
+if [[ $len -lt 4 ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+if [ ! -d "$outdir" ]; then
+	mkdir "$outdir" ;
+fi
+
+filelist=();
+for (( j=$mingen; j<=$maxgen; j++ ))
+do
+	for (( i=0; i<"${#prefixargs[@]}"; i++ ))
+	do
+		# echo "file: ${prefixargs[i]}"
+		prefix="${prefixargs[i]}";
+		if [[ $prefix == *"/"* ]]; then
+			title=`echo $prefix | awk -F"/" '{print $NF}' | awk -F"." '{print $1}'`
+		else
+			title=`echo $prefix | awk -F"." '{print $1}'`
+		fi
+		# echo prefix: $prefix ;
+		if [[ -f "$prefix$j.out" ]]; then
+			if [[ $i -eq 0 ]]; then
+				filelist+=("\"$prefix$j.out\" title \"$title$j\"");
+			else
+				filelist+=(", \"$prefix$j.out\" title \"$title$j\"");
+			fi
+		fi
+	done
+	echo "making plots with ${filelist[@]}";
+	# note: for tex, use: set term pdf enhanced color
+	gnuplot <<- EOF
+		set term push
+		set term pdf color
+		set output "${outdir}/pf-gen-${j}.pdf"
+		plot ${filelist[@]}
+		set term pop
+	EOF
+	filelist=();
+done

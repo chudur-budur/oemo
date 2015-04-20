@@ -1,0 +1,54 @@
+\documentclass[10pt]{article}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{amsmath, amsfonts}
+\usepackage{fullpage}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{automata,positioning}
+
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+%-- Commands for header
+\renewcommand{\title}[1]{\textbf{#1}\\}
+%--  note. -0.4cm for 10pt font and -0.5 for 11pt fonts
+\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.4cm]}
+\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
+& #2\\\end{tabularx}\\[-0.5cm]}
+
+%----- my mod
+\makeatletter
+%-- change section and subsection title format
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\large\bf}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\normalsize\bf}}
+
+\renewcommand{\thesubfigure}{\thefigure.\arabic{subfigure}}
+%-- put "." (dot) after each section number
+%\g@addto@macro\thesection.
+%\makeatother
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+
+\title{Experiment Report}
+\line
+\leftright{\today}{AKM Khaled Ahsan Talukder} %-- left and right positions in the header
