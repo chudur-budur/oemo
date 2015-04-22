@@ -41,11 +41,12 @@ int angle1;
 int angle2;
 
 
-#define do_opposition 0 /*0 no opposition, 1 with opposition*/
+#define do_opposition 1 /*0 no opposition, 1 with opposition*/
 #define pUqUo 1
 #define qUo 0
-#define interval 1
-#define archive 1
+#define interval 0
+#define archive 0
+#define attractor 1
 
 #define invoke_gnuplot 0 /* 0 no gnuplot, 1 invoke gnuplot */
 #define debug 0 /* debug switch */
@@ -458,15 +459,19 @@ int main (int argc, char **argv)
 		printf("\n *** Will apply opposition based variation.");
 		if(interval)
 		{
-			if(!archive)
-				corrupted_genes = generate_opposite_population_interval(
-						parent_pop, popsize, opposite_source_pop, 
-						opposite_pop, opposite_popsize, 4);
-			else
+			if(archive)
 				corrupted_genes = generate_opposite_population_interval_from_archive(
 						parent_pop, popsize, opposite_source_pop, 
 						opposite_pop, opposite_popsize, 4, 1); 
+			else
+				corrupted_genes = generate_opposite_population_interval(
+						parent_pop, popsize, opposite_source_pop, 
+						opposite_pop, opposite_popsize, 4);
 		}
+		else if(attractor)
+			corrupted_genes = generate_opposite_population_using_attractor(
+						parent_pop, popsize, opposite_source_pop, 
+						opposite_pop, opposite_popsize); 
 		else
 			corrupted_genes = generate_opposite_population(parent_pop, popsize, 
 					opposite_source_pop, opposite_pop, opposite_popsize); 
@@ -597,15 +602,19 @@ int main (int argc, char **argv)
 			
 			if(interval)
 			{
-				if(!archive)
-					corrupted_genes = generate_opposite_population_interval(
-							parent_pop, popsize, opposite_source_pop, 
-							opposite_pop, opposite_popsize, 4); 
-				else
+				if(archive)
 					corrupted_genes = generate_opposite_population_interval_from_archive(
 							parent_pop, popsize, opposite_source_pop, 
 							opposite_pop, opposite_popsize, 4, i); 
+				else
+					corrupted_genes = generate_opposite_population_interval(
+							parent_pop, popsize, opposite_source_pop, 
+							opposite_pop, opposite_popsize, 4);
 			}
+			else if(attractor)
+				corrupted_genes = generate_opposite_population_using_attractor(
+							parent_pop, popsize, opposite_source_pop, 
+							opposite_pop, opposite_popsize); 
 			else	
 				corrupted_genes = generate_opposite_population(parent_pop, popsize, 
 						opposite_source_pop, opposite_pop, opposite_popsize); 

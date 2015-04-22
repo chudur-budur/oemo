@@ -26,6 +26,159 @@ individual *extreme_indivs ;
 int nreal ;
 int nobj ;
 
+double generate_opposite_population_using_attractor(population *pop, int popsize, 
+					population *opposite_source_pop, 
+					population *opposite_pop, int opposite_popsize)
+{
+	int i, j, corrupted_genes = 0  ;
+	double *x ;
+	double **attractors ;
+
+	attractors = (double**)malloc(sizeof(double*) * nobj);
+	for(i = 0 ; i < nobj ; i++)
+		attractors[i] = (double*)malloc(sizeof(double) * nreal);
+	initialize_attractors(attractors);
+
+	/* gather the opposite_source_pop */
+	gather_opposite_source_pop(pop, popsize, opposite_source_pop, opposite_popsize);
+	x = (double*)malloc(sizeof(double) * nreal);
+	for(i = 0 ; i < opposite_popsize; i++)
+	{
+		corrupted_genes += generate_attracted_vector(opposite_source_pop->ind[i].xreal, 
+								attractors, x);
+		memcpy(opposite_pop->ind[i].xreal, x, sizeof(double) * nreal);
+	}	
+	free(x);
+	for(i = 0 ; i < nobj ; i++)
+		free(attractors[i]);
+	free(attractors);
+	return corrupted_genes/((double)(opposite_popsize * nreal)) * 100.0 ;
+}
+
+void initialize_attractors(double **t)
+{
+	/*#ifdef zdt1*/
+	int i, j ;
+	double zdt1x[2][30] = {{
+				0.9993, 0.0000, 0.0000, 0.0002, 0.0000, 
+				0.0001, 0.0004, 0.0003, 0.0001, 0.0002, 
+				0.0002, 0.0004, 0.0003, 0.0003, 0.0012, 
+				0.0004, 0.0007, 0.0003, 0.0001, 0.0010, 
+				0.0002, 0.0000, 0.0001, 0.0001, 0.0001, 
+				0.0003, 0.0001, 0.0002, 0.0000, 0.0003},
+				{
+				0.0000, 0.0001, 0.0001, 0.0003, 0.0001, 
+				0.0005, 0.0006, 0.0001, 0.0003, 0.0003, 
+				0.0001, 0.0007, 0.0016, 0.0003, 0.0009, 
+				0.0002, 0.0017, 0.0006, 0.0002, 0.0002, 
+				0.0007, 0.0003, 0.0004, 0.0000, 0.0001, 
+				0.0001, 0.0003, 0.0000, 0.0001, 0.0003,
+				}};
+
+	/*double zdt1x[2][2] = {{0.9993, 0.5000}, {0.0000, 0.5001}};*/
+
+		for(i = 0 ; i < nobj ; i++)
+			for(j = 0 ; j < nreal ; j++)
+				t[i][j] = zdt1x[i][j] ;
+	/*#endif*/
+}
+
+int generate_attracted_vector(double *s, double **t, double *d)
+{
+	double d0, d1 ;
+	double *stu, *s_t ;
+	individual *ind ;
+	int i, j, ccount = 0 ;
+	
+	ind = (individual*)malloc(sizeof(individual));
+	allocate_memory_ind(ind);
+	s_t = (double*)malloc(sizeof(double) * nreal);
+	stu = (double*)malloc(sizeof(double) * nreal);
+
+	d0 = get_vector_distance(s, t[0], nreal);	
+	d1 = get_vector_distance(s, t[1], nreal);
+
+	/*fprintf(stdout, "\nt: ");
+	for(i = 0 ; i < nobj ; i++)
+		for(j = 0 ; j < nreal ; j++)
+			fprintf(stdout, "%f ", t[i][j]);
+	fprintf(stdout,"\n");*/
+	if(d0 > d1)
+	{
+		vector_subtract(t[0], s, nreal, s_t);
+		get_unit_vector(s_t, nreal, stu);
+		multiply_scalar(stu, nreal, rndreal(d0 * 0.75, d0));
+		vector_add(s, stu, nreal, d);
+
+		/*fprintf(stdout, "\nd0 > d1 (%f, %f):\n", d0, d1);
+		memcpy(ind->xreal, s, sizeof(double) * nreal);
+		evaluate_ind(ind);
+		fprintf(stdout, "%f,%f: ", ind->obj[0], ind->obj[1]);
+		for(i = 0 ; i < nreal ; i++)
+			fprintf(stdout, "%f ", ind->xreal[i]);*/
+
+		/*memcpy(ind->xreal, d, sizeof(double) * nreal);
+		evaluate_ind(ind);
+		fprintf(stdout, "\n%f,%f: ", ind->obj[0], ind->obj[1]);
+		for(i = 0 ; i < nreal ; i++)
+			fprintf(stdout, "%f ", ind->xreal[i]);*/
+		/*vector_subtract(s, stu, nreal, d);*/
+	}
+	else
+	{
+		vector_subtract(t[1], s, nreal, s_t);
+		get_unit_vector(s_t, nreal, stu);
+		multiply_scalar(stu, nreal, rndreal(d1 * 0.75, d1));
+		vector_add(s, stu, nreal, d);
+		
+		/*fprintf(stdout, "\nd0 < d1 (%f, %f):\n", d0, d1);
+		memcpy(ind->xreal, s, sizeof(double) * nreal);
+		evaluate_ind(ind);
+		fprintf(stdout, "%f,%f: ", ind->obj[0], ind->obj[1]);
+		for(i = 0 ; i < nreal ; i++)
+			fprintf(stdout, "%f ", ind->xreal[i]);
+		
+		memcpy(ind->xreal, d, sizeof(double) * nreal);
+		evaluate_ind(ind);
+		fprintf(stdout, "\n%f,%f: ", ind->obj[0], ind->obj[1]);
+		for(i = 0 ; i < nreal ; i++)
+			fprintf(stdout, "%f ", ind->xreal[i]);*/
+		/*vector_subtract(s, stu, nreal, d);*/
+	}	
+	free(stu);
+	free(s_t);
+	deallocate_memory_ind(ind);
+	free(ind);
+	for(i = 0 ; i < nreal ; i++)
+	{
+		if(isnan(d[i]))
+		{
+			d[i] = rndreal(min_realvar[i], max_realvar[i]);
+			ccount++ ;
+		}
+		else if(d[i] < min_realvar[i])
+		{
+			d[i] = min_realvar[i] ;
+			ccount++ ; 
+		}
+		else if(d[i] > max_realvar[i])
+		{
+			d[i] = max_realvar[i] ;
+			ccount++ ;
+		}
+	}
+	return ccount ;
+}
+
+void gather_opposite_source_pop(population *pop, int popsize, population 
+				*opposite_source_pop, int opposite_popsize)
+{
+	int i ;
+	quicksort_by_rank(pop, popsize);
+	for(i = 0 ; i < opposite_popsize; i++)
+		indcpy(&pop->ind[rnd(0, opposite_popsize-1)], &opposite_source_pop->ind[i]);
+}
+
 double generate_opposite_population_interval_from_archive(population *pop, int popsize, 
 					population *opposite_source_pop, 
 					population *opposite_pop, int opposite_popsize, 
@@ -581,13 +734,13 @@ void quicksort_obj(population *pop, int p, int r, int obj_index)
 	int q ;
 	if (p < r)
 	{
-		q = partition(pop->ind, p, r, obj_index);
+		q = partition_obj(pop->ind, p, r, obj_index);
 		quicksort_obj(pop, p, q-1, obj_index);
 		quicksort_obj(pop, q+1, r, obj_index);
 	}
 }
 
-int partition(individual *ind, int p, int r, int obj_index)
+int partition_obj(individual *ind, int p, int r, int obj_index)
 {
 	int i, j;
 	individual *x = 0, *temp = 0;
@@ -599,6 +752,50 @@ int partition(individual *ind, int p, int r, int obj_index)
 	for(j = p ; j < r ; j++)
 	{
 		if(ind[j].obj[obj_index] <= x->obj[obj_index])
+		{
+			i++ ;
+			*temp = ind[i];
+			ind[i] = ind[j];
+			ind[j] = *temp ;
+		}
+	}
+	*temp = ind[i+1] ;
+	ind[i+1] = ind[r] ;
+	ind[r] = *temp;
+	free(temp);
+	free(x);
+	return i+1 ;
+}
+
+/* next 3 functions are for sorting by rank */
+void quicksort_by_rank(population *pop, int popsize)
+{
+	quicksort_rank(pop, 0, popsize-1);
+}
+
+void quicksort_rank(population *pop, int p, int r)
+{
+	int q ;
+	if (p < r)
+	{
+		q = partition_rank(pop->ind, p, r);
+		quicksort_rank(pop, p, q-1);
+		quicksort_rank(pop, q+1, r);
+	}
+}
+
+int partition_rank(individual *ind, int p, int r)
+{
+	int i, j;
+	individual *x = 0, *temp = 0;
+	x = (individual*)malloc(sizeof(individual));
+	temp = (individual*)malloc(sizeof(individual));
+
+	*x = ind[r];
+	i = p - 1 ;
+	for(j = p ; j < r ; j++)
+	{
+		if(ind[j].rank <= x->rank)
 		{
 			i++ ;
 			*temp = ind[i];
@@ -1011,43 +1208,3 @@ void inject_spread(population *child_pop, int popsize)
 	}
 }
 
-/* this crap just don't work */
-double generate_opposite_population_canonical(population *pop, int popsize, 
-						population *opposite_source_pop, 
-						population *opposite_pop, int opposite_popsize)
-{
-	int i, j;
-	double *maxval, *minval ;
-	maxval = (double*)malloc(sizeof(double) * nreal);
-	minval = (double*)malloc(sizeof(double) * nreal);
-	quicksort_by_objective(pop, popsize, 0);
-	for(i = 0 ; i < opposite_popsize ; i++)
-		indcpy(&(pop->ind[i]), &(opposite_source_pop->ind[i]));
-	memcpy(maxval, pop->ind[0].xreal, sizeof(double) * nreal);
-	memcpy(minval, pop->ind[0].xreal, sizeof(double) * nreal);
-	for(i = 1 ; i < popsize ; i++)
-	{
-		for(j = 0 ; j < nreal ; j++)
-		{
-			if(pop->ind[i].xreal[j] >= maxval[j])
-			       maxval[j] = pop->ind[i].xreal[j];	
-			if(pop->ind[i].xreal[j] <= minval[j])
-			       minval[j] = pop->ind[i].xreal[j];	
-		}
-	}
-	/* printf("\nmaxval: "); for(i = 0 ; i < nreal ; i++) printf("%f ", maxval[i]);
-	printf("\nminval: "); for(i = 0 ; i < nreal ; i++) printf("%f ", minval[i]); printf("\n"); */
-	for(i = 0 ; i < opposite_popsize ; i++)
-		for(j = 0 ; j < nreal ; j++)
-			/**
-			 * min = 1.0, max = 2.0 
-			 * x = 1.2 
-			 * x' = min + (max - x) = 1.0 + (2.0 - 1.2) = 1.8
-			 * x = 1.8 
-			 * x' = min + (max - x) = 1.0 + (2.0 - 1.8) = 1.2
-			 */ 
-			opposite_pop->ind[i].xreal[j] = 
-				minval[j] + (maxval[j] - opposite_source_pop->ind[i].xreal[j]) ;
-	free(maxval); free(minval);
-	return 0.0 ;
-}

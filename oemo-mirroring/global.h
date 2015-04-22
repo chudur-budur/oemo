@@ -165,7 +165,11 @@ void get_best_individual(population *pop, int popsize,
 
 void quicksort_by_objective(population *pop, int popsize, int obj_index);
 void quicksort_obj(population *pop, int p, int r, int obj_index);
-int partition(individual *ind, int p, int r, int obj_index);
+int partition_obj(individual *ind, int p, int r, int obj_index);
+
+void quicksort_by_rank(population *pop, int popsize);
+void quicksort_rank(population *pop, int p, int r);
+int partition_rank(individual *ind, int p, int r);
 
 void get_bi_extreme_points_all(double *x1, double *x2, population *pop, int popsize);
 void get_bi_extreme_indivs_all(individual *i1, individual *i2, population *pop, int popsize);
@@ -174,15 +178,22 @@ void get_bi_extreme_points_pareto(double *x1, double *x2, population *pop, int p
 void generate_opposite_vector(double *x1, double *x2, double *y1, double *y2);
 double generate_opposite_population(population *pop, int popsize, 
 		population *opposite_source_pop, population *opposite_pop, int opposite_popsize);
+
 double generate_opposite_population_interval(population *pop, int popsize, 
 		population *opposite_source_pop, population *opposite_pop, int opposite_popsize, 
 		int div);
-double generate_opposite_population_canonical(population *pop, int popsize, 
-		population *opposite_source_pop, population *opposite_pop, int opposite_popsize);
+
 void get_bi_extreme_points_archive(double *x1, double *x2, population *pop, int popsize, int gen);
 double generate_opposite_population_interval_from_archive(population *pop, int popsize, 
 		population *opposite_source_pop, population *opposite_pop, int opposite_popsize, 
 		int div, int gen);
+
+void initialize_attractors(double **t);
+void gather_opposite_source_pop(population *pop, int popsize, population 
+				*opposite_source_pop, int opposite_popsize);
+int generate_attracted_vector(double *x, double **t, double *y);
+double generate_opposite_population_using_attractor(population *pop, int popsize, 
+		population *opposite_source_pop, population *opposite_pop, int opposite_popsize);
 
 void evaluate_and_print_vector(double *x, int nreal, FILE *fpt);
 int count_opposite(population *pop, int popsize);

@@ -182,11 +182,11 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0] + xreal[1];
+	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<30; i++)
-		g += 10.0 * (xreal[i] - 0.5) * (xreal[i] - 0.5);
-	g = 9.0*g/29.0;
+	for (i=1; i<nreal; i++)
+		g += xreal[i] ;
+	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - sqrt(f1/g);
 	f2 = g*h;
@@ -201,7 +201,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0];
+	f1 = xreal[0] + xreal[1];
 	g = 0.0;
 	for (i=1; i<nreal; i++)
 		g += xreal[i];
@@ -228,13 +228,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	double f1, f2, g, h;
 	int i;
 	/*f1 = pow(xreal[0], 10.0);*/
-	f1 = xreal[0] ;
+	f1 = xreal[0] + xreal[1];
 	g = 0.0;
 	for (i=1; i<30; i++)
 	{
 		g += xreal[i];
 	}
-	g = 9.0*g/29.0;
+	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - pow((f1/g),2.0);
 	f2 = g*h;
@@ -256,13 +256,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0];
+	f1 = xreal[0] + xreal[1];
 	g = 0.0;
 	for (i=1; i<30; i++)
 	{
 		g += xreal[i];
 	}
-	g = 9.0*g/29.0;
+	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - sqrt(f1/g) - (f1/g)*sin(10.0*PI*f1);
 	f2 = g*h;
@@ -284,13 +284,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0];
+	f1 = xreal[0] + xreal[1];
 	g = 0.0;
 	for (i=1; i<nreal; i++)
 	{
 		g += xreal[i]*xreal[i] - 10.0*cos(2.0*PI*xreal[i]);
 	}
-	g += 1.0 + 10.0 * (nreal - 1);
+	g += 1.0 + 10.0 * ((double)nreal - 1.0);
 	h = 1.0 - sqrt(f1/g);
 	f2 = g*h;
 	obj[0] = f1;
