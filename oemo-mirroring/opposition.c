@@ -22,22 +22,35 @@
 /*#define NBEST 10*/
 #define debug 0
 
+#define zdt1
+/* #define zdt3 */
+/* #define zdt4 */
+
 individual *extreme_indivs ;
 int nreal ;
 int nobj ;
 
 double generate_opposite_population_using_attractor(population *pop, int popsize, 
 					population *opposite_source_pop, 
-					population *opposite_pop, int opposite_popsize)
+					population *opposite_pop, int opposite_popsize,
+					int gen)
 {
-	int i, j, corrupted_genes = 0  ;
+	int i, corrupted_genes = 0  ;
 	double *x ;
 	double **attractors ;
 
 	attractors = (double**)malloc(sizeof(double*) * nobj);
 	for(i = 0 ; i < nobj ; i++)
 		attractors[i] = (double*)malloc(sizeof(double) * nreal);
-	initialize_attractors(attractors);
+	update_attractors(attractors, pop, popsize, gen);
+
+	fprintf(stdout, "attractors, gen = %d\n", gen);
+	for(i = 0 ; i < nobj; i++)
+	{
+		print_vector(attractors[i], nreal, stdout);
+		fprintf(stdout, "\n");
+	}
+	
 
 	/* gather the opposite_source_pop */
 	gather_opposite_source_pop(pop, popsize, opposite_source_pop, opposite_popsize);
@@ -55,11 +68,15 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 	return corrupted_genes/((double)(opposite_popsize * nreal)) * 100.0 ;
 }
 
-void initialize_attractors(double **t)
+void update_attractors(double **t, population *pop, int popsize, int gen)
 {
-	/*#ifdef zdt1*/
-	int i, j ;
-	double zdt1x[2][30] = {{
+	int i;
+	double **vec = (double**)malloc(sizeof(double*) * nobj);
+	for(i = 0 ; i < nobj ; i++)
+		vec[i] = (double*)malloc(sizeof(double) * nreal);
+	
+	#ifdef zdt1
+		/*double vals[2][30] = {{
 				0.9993, 0.0000, 0.0000, 0.0002, 0.0000, 
 				0.0001, 0.0004, 0.0003, 0.0001, 0.0002, 
 				0.0002, 0.0004, 0.0003, 0.0003, 0.0012, 
@@ -72,15 +89,96 @@ void initialize_attractors(double **t)
 				0.0001, 0.0007, 0.0016, 0.0003, 0.0009, 
 				0.0002, 0.0017, 0.0006, 0.0002, 0.0002, 
 				0.0007, 0.0003, 0.0004, 0.0000, 0.0001, 
-				0.0001, 0.0003, 0.0000, 0.0001, 0.0003,
+				0.0001, 0.0003, 0.0000, 0.0001, 0.0003
+				}};*/
+		
+		double vals[2][30] = {{
+				0.9993, 0.0000, 0.0000, 0.0002, 0.0000, 
+				0.0001, 0.0004, 0.0003, 0.0001, 0.0002, 
+				0.0002, 0.0004, 0.0003, 0.0003, 0.0012, 
+				0.0004, 0.0007, 0.0003, 0.0001, 0.0010, 
+				0.0002, 0.0000, 0.0001, 0.0001, 0.0001, 
+				0.0003, 0.0001, 0.0002, 0.0000, 0.0003},
+				{
+				0.0000, 0.5001, 0.5001, 0.5003, 0.5001, 
+				0.5005, 0.5006, 0.5001, 0.5003, 0.5003, 
+				0.5001, 0.5007, 0.5016, 0.5003, 0.5009, 
+				0.5002, 0.5017, 0.5006, 0.5002, 0.5002, 
+				0.5007, 0.5003, 0.5004, 0.5000, 0.5001, 
+				0.5001, 0.5003, 0.5000, 0.5001, 0.5003
 				}};
-
-	/*double zdt1x[2][2] = {{0.9993, 0.5000}, {0.0000, 0.5001}};*/
-
+	#endif
+	#ifdef zdt4
+		double vals[2][10] = {{
+				0.9948, -0.0004, -0.0032,  0.0010, 0.0004, 
+				0.0014, -0.0008, -0.0001, -0.0012, 0.0044},
+		       		{
+				0.0000, -0.0005, -0.0040,  0.0010, 0.0004, 
+				0.0014, -0.0006, -0.0000, -0.0012, 0.0044	
+				}};
+	#endif
+	#ifdef zdt3
+		double vals[2][30] = {{
+				0.8509, 0.0004, 0.0003, 0.0004, 0.0005, 0.0007, 
+				0.0001, 0.0014, 0.0003, 0.0010, 0.0001, 0.0000, 
+				0.0001, 0.0000, 0.0002, 0.0014, 0.0021, 0.0008, 
+				0.0001, 0.0000, 0.0001, 0.0008, 0.0004, 0.0004, 
+				0.0002, 0.0012, 0.0001, 0.0000, 0.0011, 0.0023},
+		       		{
+				0.0000, 0.0011, 0.0008, 0.0001, 0.0018, 0.0011, 
+				0.0006, 0.0003, 0.0002, 0.0001, 0.0001, 0.0001, 
+				0.0013, 0.0010, 0.0003, 0.0004, 0.0004, 0.0001, 
+				0.0001, 0.0000, 0.0005, 0.0004, 0.0001, 0.0001, 
+				0.0005, 0.0017, 0.0001, 0.0003, 0.0006, 0.0008
+				}};
+	#endif
+	/*if(gen > 0)*/
+	if(gen < 6)
+	{
 		for(i = 0 ; i < nobj ; i++)
-			for(j = 0 ; j < nreal ; j++)
-				t[i][j] = zdt1x[i][j] ;
-	/*#endif*/
+			memcpy(t[i], vals[i], sizeof(double) * nreal);
+	}
+	else
+	{
+		get_least_crowded_vectors(pop, popsize, vec);
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(t[i], vec[i], sizeof(double) * nreal);
+	}
+	for(i = 0 ; i < nobj ; i++)
+		free(vec[i]);
+	free(vec);
+}
+
+void get_least_crowded_vectors(population *pop, int popsize, double **vec)
+{
+	int i ;
+	pop_list *lst = new_list();
+	for( i = 0 ; i < popsize ; i++)
+		push_back(lst, &(pop->ind[i]));
+	for(i = 0 ; i < nobj ; i++)
+	{
+		node* ptr = get_least_crowded_node(lst);
+		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
+		erase(lst, ptr);
+	}
+	free_list(lst);
+}
+
+node* get_least_crowded_node(pop_list *lst)
+{
+	double max_dist = -1.0 ;
+	node *curr = lst->head;
+        node *ptr = lst->head ;	
+	while(curr != END)
+	{
+		if(curr->ind->crowd_dist >= max_dist && curr->ind->crowd_dist < INF)
+		{
+			max_dist = curr->ind->crowd_dist ;
+			ptr = curr ;
+		}
+		curr = curr->next ;
+	}
+	return ptr ;
 }
 
 int generate_attracted_vector(double *s, double **t, double *d)
@@ -88,7 +186,7 @@ int generate_attracted_vector(double *s, double **t, double *d)
 	double d0, d1 ;
 	double *stu, *s_t ;
 	individual *ind ;
-	int i, j, ccount = 0 ;
+	int i, ccount = 0 ;
 	
 	ind = (individual*)malloc(sizeof(individual));
 	allocate_memory_ind(ind);
@@ -98,31 +196,12 @@ int generate_attracted_vector(double *s, double **t, double *d)
 	d0 = get_vector_distance(s, t[0], nreal);	
 	d1 = get_vector_distance(s, t[1], nreal);
 
-	/*fprintf(stdout, "\nt: ");
-	for(i = 0 ; i < nobj ; i++)
-		for(j = 0 ; j < nreal ; j++)
-			fprintf(stdout, "%f ", t[i][j]);
-	fprintf(stdout,"\n");*/
 	if(d0 > d1)
 	{
 		vector_subtract(t[0], s, nreal, s_t);
 		get_unit_vector(s_t, nreal, stu);
 		multiply_scalar(stu, nreal, rndreal(d0 * 0.75, d0));
 		vector_add(s, stu, nreal, d);
-
-		/*fprintf(stdout, "\nd0 > d1 (%f, %f):\n", d0, d1);
-		memcpy(ind->xreal, s, sizeof(double) * nreal);
-		evaluate_ind(ind);
-		fprintf(stdout, "%f,%f: ", ind->obj[0], ind->obj[1]);
-		for(i = 0 ; i < nreal ; i++)
-			fprintf(stdout, "%f ", ind->xreal[i]);*/
-
-		/*memcpy(ind->xreal, d, sizeof(double) * nreal);
-		evaluate_ind(ind);
-		fprintf(stdout, "\n%f,%f: ", ind->obj[0], ind->obj[1]);
-		for(i = 0 ; i < nreal ; i++)
-			fprintf(stdout, "%f ", ind->xreal[i]);*/
-		/*vector_subtract(s, stu, nreal, d);*/
 	}
 	else
 	{
@@ -130,20 +209,6 @@ int generate_attracted_vector(double *s, double **t, double *d)
 		get_unit_vector(s_t, nreal, stu);
 		multiply_scalar(stu, nreal, rndreal(d1 * 0.75, d1));
 		vector_add(s, stu, nreal, d);
-		
-		/*fprintf(stdout, "\nd0 < d1 (%f, %f):\n", d0, d1);
-		memcpy(ind->xreal, s, sizeof(double) * nreal);
-		evaluate_ind(ind);
-		fprintf(stdout, "%f,%f: ", ind->obj[0], ind->obj[1]);
-		for(i = 0 ; i < nreal ; i++)
-			fprintf(stdout, "%f ", ind->xreal[i]);
-		
-		memcpy(ind->xreal, d, sizeof(double) * nreal);
-		evaluate_ind(ind);
-		fprintf(stdout, "\n%f,%f: ", ind->obj[0], ind->obj[1]);
-		for(i = 0 ; i < nreal ; i++)
-			fprintf(stdout, "%f ", ind->xreal[i]);*/
-		/*vector_subtract(s, stu, nreal, d);*/
 	}	
 	free(stu);
 	free(s_t);
@@ -610,12 +675,7 @@ void get_bi_extreme_points_pareto(double *x1, double *x2, population *pop, int p
 	pop_list *pareto = new_list();
 	for(i = 0 ; i < popsize ; i++)
 		if(pop->ind[i].rank == 1)
-		{
-			individual *ind = (individual*)malloc(sizeof(individual));
-			allocate_memory_ind(ind);
-			indcpy(&(pop->ind[i]), ind);
-			push_front(pareto, ind);
-		}
+			push_back(pareto, &(pop->ind[i]));
 
 	best_f1_indp = pareto->head->ind ;
 	node *current = pareto->head->next ;
@@ -979,20 +1039,15 @@ void gather_survived_individuals(population *parent_pop, int popsize, pop_list *
 	for( i = 0 ; i < popsize ; i++)
 	{
 		if(parent_pop->ind[i].is_opposite)
-		{
-			individual *ind = (individual*)malloc(sizeof(individual));
-			allocate_memory_ind(ind);
-			indcpy(&(parent_pop->ind[i]), ind);
-			push_front(survived_pop, ind);
-		}
+			push_back(survived_pop, &(parent_pop->ind[i]));
 	}
 	return ;
 }
 
 void dump_population_list(pop_list *survived_pop, FILE *fpt_all_survived)
 {
-	node *curr ;
-	curr = survived_pop->head ;
+	int i = 0 ;
+	node *curr = survived_pop->head ;
 	while(curr != END)
 	{
 		if(fpt_all_survived == stdout)
@@ -1000,6 +1055,7 @@ void dump_population_list(pop_list *survived_pop, FILE *fpt_all_survived)
 		else
 			dump_individual(curr->ind, fpt_all_survived);
 		curr = curr->next ;
+		i++ ;
 	}
 	return ;
 }
@@ -1192,17 +1248,17 @@ void crowding_fill_with_size (population *mixed_pop, int mixed_popsize,
 
 void inject_spread(population *child_pop, int popsize)
 {
-	int len ;
+	int len, i, j  ;
 	int *index = malloc(sizeof(int) * popsize);
-	for(int i = 0 ; i < popsize ; i++)
+	for(i = 0 ; i < popsize ; i++)
 		index[i] = i ;
-	for(int i = 0 ; i < popsize ; i++)
+	for(i = 0 ; i < popsize ; i++)
 		index[i] = index[rnd(0,popsize-1)];
 
 	len = (int)(popsize * 0.1) ;
-	for(int i = 0 ; i <  len ; i++)
+	for(i = 0 ; i <  len ; i++)
 	{
-		for(int j = 1 ; j < nreal ; j++)
+		for(j = 1 ; j < nreal ; j++)
 			child_pop->ind[index[i]].xreal[j] = 
 				rndreal (min_realvar[j], max_realvar[j]);
 	}

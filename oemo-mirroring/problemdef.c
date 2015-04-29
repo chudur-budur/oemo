@@ -201,7 +201,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0] + xreal[1];
+	f1 = xreal[0] ;
 	g = 0.0;
 	for (i=1; i<nreal; i++)
 		g += xreal[i];
@@ -227,10 +227,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	/*f1 = pow(xreal[0], 10.0);*/
-	f1 = xreal[0] + xreal[1];
+	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<30; i++)
+	for (i=1; i<nreal; i++)
 	{
 		g += xreal[i];
 	}
@@ -256,9 +255,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0] + xreal[1];
+	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<30; i++)
+	for (i=1; i<nreal; i++)
 	{
 		g += xreal[i];
 	}
@@ -284,11 +283,11 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = xreal[0] + xreal[1];
+	f1 = xreal[0] ;
 	g = 0.0;
 	for (i=1; i<nreal; i++)
 	{
-		g += xreal[i]*xreal[i] - 10.0*cos(2.0*PI*xreal[i]);
+		g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]);
 	}
 	g += 1.0 + 10.0 * ((double)nreal - 1.0);
 	h = 1.0 - sqrt(f1/g);
@@ -375,7 +374,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	int i;
 	f1 = 1.0 - ( exp(-4.0*xreal[0]) ) * pow( (sin(6.0*PI*xreal[0])),6.0 );
 	g = 0.0;
-	for (i=1; i<10; i++)
+	for (i=1; i<nreal; i++)
 	{
 		g += xreal[i];
 	}

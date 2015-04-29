@@ -137,17 +137,20 @@ typedef struct node node ;
 struct node {
 	individual *ind ;
 	node *next ;
+	node *prev ;
 };
 
 typedef struct { 
 	node *head ;
+	node *tail ;
 	int size ;
 } pop_list ;
 
 pop_list* new_list();
 void free_list(pop_list* lst);
 int is_empty(pop_list *lst);
-void push_front(pop_list* lst, individual *ind);
+void push_back(pop_list *lst, individual *ind);
+void erase(pop_list *lst, node *ptr);
 
 /**
  * For the opposition based variation.
@@ -188,12 +191,16 @@ double generate_opposite_population_interval_from_archive(population *pop, int p
 		population *opposite_source_pop, population *opposite_pop, int opposite_popsize, 
 		int div, int gen);
 
-void initialize_attractors(double **t);
+void update_attractors(double **t, population *pop, int popsize, int gen);
 void gather_opposite_source_pop(population *pop, int popsize, population 
 				*opposite_source_pop, int opposite_popsize);
 int generate_attracted_vector(double *x, double **t, double *y);
 double generate_opposite_population_using_attractor(population *pop, int popsize, 
-		population *opposite_source_pop, population *opposite_pop, int opposite_popsize);
+						population *opposite_source_pop, 
+						population *opposite_pop, 
+						int opposite_popsize, int gen);
+void get_least_crowded_vectors(population *pop, int popsize, double **vec);
+node* get_least_crowded_node(pop_list *lst);
 
 void evaluate_and_print_vector(double *x, int nreal, FILE *fpt);
 int count_opposite(population *pop, int popsize);

@@ -42,8 +42,8 @@ int angle2;
 
 
 #define do_opposition 1 /*0 no opposition, 1 with opposition*/
-#define pUqUo 1
-#define qUo 0
+#define pUqUo 0
+#define qUo 1
 #define interval 0
 #define archive 0
 #define attractor 1
@@ -51,7 +51,10 @@ int angle2;
 #define invoke_gnuplot 0 /* 0 no gnuplot, 1 invoke gnuplot */
 #define debug 0 /* debug switch */
 
+/*int main_ (int,char**);*/
+
 int main (int argc, char **argv)
+/*int main_ (int argc, char **argv)*/
 {
 	int i;
 	double corrupted_genes = 0.0;
@@ -471,7 +474,7 @@ int main (int argc, char **argv)
 		else if(attractor)
 			corrupted_genes = generate_opposite_population_using_attractor(
 						parent_pop, popsize, opposite_source_pop, 
-						opposite_pop, opposite_popsize); 
+						opposite_pop, opposite_popsize,1); 
 		else
 			corrupted_genes = generate_opposite_population(parent_pop, popsize, 
 					opposite_source_pop, opposite_pop, opposite_popsize); 
@@ -614,7 +617,7 @@ int main (int argc, char **argv)
 			else if(attractor)
 				corrupted_genes = generate_opposite_population_using_attractor(
 							parent_pop, popsize, opposite_source_pop, 
-							opposite_pop, opposite_popsize); 
+							opposite_pop, opposite_popsize, i); 
 			else	
 				corrupted_genes = generate_opposite_population(parent_pop, popsize, 
 						opposite_source_pop, opposite_pop, opposite_popsize); 
