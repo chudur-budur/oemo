@@ -22,9 +22,11 @@
 /*#define NBEST 10*/
 #define debug 0
 
-#define zdt1
+/* #define zdt1 */
 /* #define zdt3 */
 /* #define zdt4 */
+/* #define pol */
+#define osy
 
 individual *extreme_indivs ;
 int nreal ;
@@ -132,6 +134,22 @@ void update_attractors(double **t, population *pop, int popsize, int gen)
 				0.0005, 0.0017, 0.0001, 0.0003, 0.0006, 0.0008
 				}};
 	#endif
+	#ifdef pol
+		double vals[2][2] = {{-3.001868e+00,	-9.991395e-01},
+	       				{1.000358e+00,	1.990154e+00}};	
+	#endif
+	#ifdef osy
+		double vals[2][12] = {{
+			1.999642e+00, 1.193523e-04, 2.999553e+00, 5.349871e-04,	
+			2.026485e-04, 3.705805e-02, 4.999195e+00, 1.000088e+00,	
+			4.999796e+00, 6.093375e-06, 4.999761e+00, 1.491880e-01},
+		        {
+			1.710494e-03, 6.660965e-01, 9.818987e-01, 2.037913e+00, 	
+			1.397197e-04, 5.956091e-03, 9.836092e-01, 1.019812e+00, 	
+			1.000158e+00, 7.195912e-05, 1.000010e+00, 2.386555e-02 
+			}};
+	#endif
+
 	/*if(gen > 0)*/
 	if(gen < 6)
 	{
