@@ -72,28 +72,8 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 
 void update_attractors(double **t, population *pop, int popsize, int gen)
 {
-	int i;
-	double **vec = (double**)malloc(sizeof(double*) * nobj);
-	for(i = 0 ; i < nobj ; i++)
-		vec[i] = (double*)malloc(sizeof(double) * nreal);
-	
+	int i;	
 	#ifdef zdt1
-		/*double vals[2][30] = {{
-				0.9993, 0.0000, 0.0000, 0.0002, 0.0000, 
-				0.0001, 0.0004, 0.0003, 0.0001, 0.0002, 
-				0.0002, 0.0004, 0.0003, 0.0003, 0.0012, 
-				0.0004, 0.0007, 0.0003, 0.0001, 0.0010, 
-				0.0002, 0.0000, 0.0001, 0.0001, 0.0001, 
-				0.0003, 0.0001, 0.0002, 0.0000, 0.0003},
-				{
-				0.0000, 0.0001, 0.0001, 0.0003, 0.0001, 
-				0.0005, 0.0006, 0.0001, 0.0003, 0.0003, 
-				0.0001, 0.0007, 0.0016, 0.0003, 0.0009, 
-				0.0002, 0.0017, 0.0006, 0.0002, 0.0002, 
-				0.0007, 0.0003, 0.0004, 0.0000, 0.0001, 
-				0.0001, 0.0003, 0.0000, 0.0001, 0.0003
-				}};*/
-		
 		double vals[2][30] = {{
 				0.9993, 0.0000, 0.0000, 0.0002, 0.0000, 
 				0.0001, 0.0004, 0.0003, 0.0001, 0.0002, 
@@ -150,6 +130,11 @@ void update_attractors(double **t, population *pop, int popsize, int gen)
 			}};
 	#endif
 
+		
+	double **vec = (double**)malloc(sizeof(double*) * nobj);
+	for(i = 0 ; i < nobj ; i++)
+		vec[i] = (double*)malloc(sizeof(double) * nreal);
+	
 	/*if(gen > 0)*/
 	if(gen < 6)
 	{
