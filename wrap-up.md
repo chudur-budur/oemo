@@ -1,10 +1,10 @@
 Wrap up for the summer
 ----------------------
 
-##What we have so far:
+###What we have so far:
 1. zdt1, zdt2, zdt3, zdt4, osy, pol results 
 
-##What we need to have:
+###What we need to have:
 1. Test with the probabilistic ranking of the extreme points for 2-obj constrained problems
 2. Test with dtlz problems 3,4 obj
 3. Test with WFG problems
@@ -24,7 +24,7 @@ Wrap up for the summer
 10. Apply ASF local search to avoid infeasible/non-existing gaps
 11. Do performance measurement pointed in bullet 7 above for many objective NSGA-III
 
-##Conference paper: 
+###Conference paper: 
 	bullet 1 - 7
-##Journal paper: 
+###Journal paper: 
 	bullet 1 - 11
