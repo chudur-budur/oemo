@@ -13,7 +13,9 @@ Wrap up for the summer
 6. Show that if the extreme points are weak, still we can fill the gaps and converge faster
 7. Performance measure:
   * Function evaluation vs. Hypervolume
+      - zdt1, zdt2, zdt3, zdt4, zdt6, dtlz, rotated, wfg
   * Function evaluation vs. Spread
+      - zdt1, zdt2, zdt3, zdt4, zdt6, dtlz, rotated, wfg
   * Come up with a measure for counting gaps --
       - sort the points in one obj direction
       - find all the extreme points (points with highest crowding dist)
