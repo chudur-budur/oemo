@@ -33,7 +33,7 @@ The current algorithm works as follows --
 
 1. setting the number of target points to exactly K (number of obj.) over whole generation is not right
 2. the number of target points should be = the number of gaps x 2, since each gap has two edge points
-3. gaps are not evident until the points come close to the pf, so counting the number of gaps is not practical idea
+3. gaps are not evident until the points come close to the pf, so counting the number of gaps is not a practical idea
 4. so what we need to do is to take instead of K target points, we will chose 2K target points, along with the extremes
 5. and for each source point, we will randomly pick 2 from the 2K points and apply the opposition
 6. I am currently working on this now
