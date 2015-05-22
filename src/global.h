@@ -174,6 +174,10 @@ void quicksort_by_rank(population *pop, int popsize);
 void quicksort_rank(population *pop, int p, int r);
 int partition_rank(individual *ind, int p, int r);
 
+void quicksort_by_crowd_dist(population *pop, int popsize);
+void quicksort_crowd_dist(population *pop, int p, int r);
+int partition_crowd_dist(individual *ind, int p, int r);
+
 void get_bi_extreme_points_all(double *x1, double *x2, population *pop, int popsize);
 void get_bi_extreme_indivs_all(individual *i1, individual *i2, population *pop, int popsize);
 void get_bi_extreme_points_pareto(double *x1, double *x2, population *pop, int popsize);
@@ -201,6 +205,7 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 						int opposite_popsize, int gen);
 void get_least_crowded_vectors(population *pop, int popsize, double **vec);
 node* get_least_crowded_node(pop_list *lst);
+void get_least_crowded_vectors_prob(population *pop, int popsize, double **vec);
 
 void evaluate_and_print_vector(double *x, int nreal, FILE *fpt);
 int count_opposite(population *pop, int popsize);

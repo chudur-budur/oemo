@@ -22,11 +22,11 @@
 /*#define NBEST 10*/
 #define debug 0
 
-/* #define zdt1 */
+ #define zdt1 
 /* #define zdt3 */
 /* #define zdt4 */
 /* #define pol */
-#define osy
+/* #define osy */
 
 individual *extreme_indivs ;
 int nreal ;
@@ -46,7 +46,7 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 		attractors[i] = (double*)malloc(sizeof(double) * nreal);
 	update_attractors(attractors, pop, popsize, gen);
 
-	fprintf(stdout, "attractors, gen = %d\n", gen);
+	fprintf(stdout, "\nattractors, gen = %d\n", gen);
 	for(i = 0 ; i < nobj; i++)
 	{
 		print_vector(attractors[i], nreal, stdout);
@@ -138,18 +138,78 @@ void update_attractors(double **t, population *pop, int popsize, int gen)
 	/*if(gen > 0)*/
 	if(gen < 6)
 	{
+		/* if gen < 6 use the hard coded attractors */
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(t[i], vals[i], sizeof(double) * nreal);
 	}
 	else
 	{
-		get_least_crowded_vectors(pop, popsize, vec);
+		/* else get the nobj numbers of least crowded vectors*/
+		/*get_least_crowded_vectors(pop, popsize, vec);*/
+		get_least_crowded_vectors_prob(pop, popsize, vec);
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(t[i], vec[i], sizeof(double) * nreal);
+			memcpy(t[i], vals[i], sizeof(double) * nreal);
 	}
 	for(i = 0 ; i < nobj ; i++)
 		free(vec[i]);
 	free(vec);
+}
+
+void get_least_crowded_vectors_prob(population *pop, int popsize, double **vec)
+{
+	int i, pool_size, j, k;
+	double max_cd_val, sum_cd, prior ;
+
+
+	pool_size = popsize / 2 ;
+	double **pool = (double**) malloc(sizeof(double*) * pool_size) ;
+	for(i = 0 ; i < pool_size ; i++)
+		pool[i] = (double*) malloc(sizeof(double) * (nreal + 2));
+	
+	quicksort_by_crowd_dist(pop, popsize);
+
+	max_cd_val = -1.0 ;
+	for(i = 0 ; i < pool_size ; i++)
+	{
+		// memmove(pool[i], pop->ind[i].xreal, sizeof(double) * nreal);
+		for(j = 0 ; j < nreal ; j++)
+			pool[i][j] = pop->ind[i].xreal[j];
+		pool[i][nreal] = pop->ind[i].crowd_dist ;
+		pool[i][nreal+1] = 0.0 ;
+		if(pop->ind[i].crowd_dist > max_cd_val && pop->ind[i].crowd_dist < INF)
+			max_cd_val = pop->ind[i].crowd_dist ;
+	}
+	
+	/*max_cd_val += 1.0 ;*/
+	sum_cd = 0.0 ;
+	for(i = 0 ; i < pool_size ; i++)
+	{
+		if(pool[i][nreal] == INF)
+			pool[i][nreal] = max_cd_val ;
+		sum_cd += pool[i][nreal] ;
+	}
+	
+	prior = 0.0 ;
+	for(i = pool_size-1 ; i >= 0; i--)
+	{
+		pool[i][nreal+1] = prior + pool[i][nreal]/sum_cd ;
+		prior = pool[i][nreal+1];
+	}
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0; j < pool_size ; j++)
+			if(pool[j][nreal+1] < randomperc())
+			{
+				for(k = 0 ; k < nreal ; k++)
+					vec[i][k] = pool[j][k] ;
+				break;
+			}
+	}
+
+	for(i = 0 ; i < pool_size ; i++)
+		free(pool[i]);
+	free(pool);
 }
 
 void get_least_crowded_vectors(population *pop, int popsize, double **vec)
@@ -859,6 +919,50 @@ int partition_rank(individual *ind, int p, int r)
 	for(j = p ; j < r ; j++)
 	{
 		if(ind[j].rank <= x->rank)
+		{
+			i++ ;
+			*temp = ind[i];
+			ind[i] = ind[j];
+			ind[j] = *temp ;
+		}
+	}
+	*temp = ind[i+1] ;
+	ind[i+1] = ind[r] ;
+	ind[r] = *temp;
+	free(temp);
+	free(x);
+	return i+1 ;
+}
+
+/* next 3 functions are for sorting by crowd_dist */
+void quicksort_by_crowd_dist(population *pop, int popsize)
+{
+	quicksort_crowd_dist(pop, 0, popsize-1);
+}
+
+void quicksort_crowd_dist(population *pop, int p, int r)
+{
+	int q ;
+	if (p < r)
+	{
+		q = partition_crowd_dist(pop->ind, p, r);
+		quicksort_crowd_dist(pop, p, q-1);
+		quicksort_crowd_dist(pop, q+1, r);
+	}
+}
+
+int partition_crowd_dist(individual *ind, int p, int r)
+{
+	int i, j;
+	individual *x = 0, *temp = 0;
+	x = (individual*)malloc(sizeof(individual));
+	temp = (individual*)malloc(sizeof(individual));
+
+	*x = ind[r];
+	i = p - 1 ;
+	for(j = p ; j < r ; j++)
+	{
+		if(ind[j].crowd_dist >= x->crowd_dist)
 		{
 			i++ ;
 			*temp = ind[i];

@@ -13,14 +13,14 @@
 /* # define kur  */
 /* # define pol  */
 /* # define vnt  */
-/* # define zdt1 */
+ # define zdt1 
 /* # define zdt2 */
 /* # define zdt3 */
 /* # define zdt4 */
 /* # define zdt5 */
 /* # define zdt6 */
 /* # define bnh  */
- # define osy  
+/* # define osy  */
 /* # define srn  */
 /* # define tnk  */
 /* # define ctp1 */
