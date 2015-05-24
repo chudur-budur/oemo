@@ -41,7 +41,7 @@ int angle1;
 int angle2;
 
 
-#define do_opposition 1 /*0 no opposition, 1 with opposition*/
+#define do_opposition 1/*0 no opposition, 1 with opposition*/
 #define pUqUo 0
 #define qUo 1
 #define interval 0

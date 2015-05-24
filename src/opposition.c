@@ -41,13 +41,14 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 	double *x ;
 	double **attractors ;
 
-	attractors = (double**)malloc(sizeof(double*) * nobj);
-	for(i = 0 ; i < nobj ; i++)
+	/* number of attractors should be 2 * nobj + nobj : 2 * k extremes + k copies of 1 intermediary */
+	attractors = (double**)malloc(sizeof(double*) * ((2 * nobj) + 1));
+	for(i = 0 ; i < ((2 * nobj) + 1) ; i++)
 		attractors[i] = (double*)malloc(sizeof(double) * nreal);
 	update_attractors(attractors, pop, popsize, gen);
 
 	fprintf(stdout, "\nattractors, gen = %d\n", gen);
-	for(i = 0 ; i < nobj; i++)
+	for(i = 0 ; i < ((2 * nobj) + 1); i++)
 	{
 		print_vector(attractors[i], nreal, stdout);
 		fprintf(stdout, "\n");
@@ -64,13 +65,13 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 		memcpy(opposite_pop->ind[i].xreal, x, sizeof(double) * nreal);
 	}	
 	free(x);
-	for(i = 0 ; i < nobj ; i++)
+	for(i = 0 ; i < (2 * nobj) + 1; i++)
 		free(attractors[i]);
 	free(attractors);
 	return corrupted_genes/((double)(opposite_popsize * nreal)) * 100.0 ;
 }
 
-void update_attractors(double **t, population *pop, int popsize, int gen)
+void update_attractors(double **targets, population *pop, int popsize, int gen)
 {
 	int i;	
 	#ifdef zdt1
@@ -82,12 +83,12 @@ void update_attractors(double **t, population *pop, int popsize, int gen)
 				0.0002, 0.0000, 0.0001, 0.0001, 0.0001, 
 				0.0003, 0.0001, 0.0002, 0.0000, 0.0003},
 				{
-				0.0000, 0.5001, 0.5001, 0.5003, 0.5001, 
-				0.5005, 0.5006, 0.5001, 0.5003, 0.5003, 
-				0.5001, 0.5007, 0.5016, 0.5003, 0.5009, 
-				0.5002, 0.5017, 0.5006, 0.5002, 0.5002, 
-				0.5007, 0.5003, 0.5004, 0.5000, 0.5001, 
-				0.5001, 0.5003, 0.5000, 0.5001, 0.5003
+				0.0000, 0.0001, 0.0001, 0.0003, 0.0001, 
+				0.0005, 0.0006, 0.0001, 0.0003, 0.0003, 
+				0.0001, 0.0007, 0.0016, 0.0003, 0.0009, 
+				0.0002, 0.0017, 0.0006, 0.0002, 0.0002, 
+				0.0007, 0.0003, 0.0004, 0.0000, 0.0001, 
+				0.0001, 0.0003, 0.0000, 0.0001, 0.0003
 				}};
 	#endif
 	#ifdef zdt4
@@ -131,28 +132,65 @@ void update_attractors(double **t, population *pop, int popsize, int gen)
 	#endif
 
 		
-	double **vec = (double**)malloc(sizeof(double*) * nobj);
-	for(i = 0 ; i < nobj ; i++)
-		vec[i] = (double*)malloc(sizeof(double) * nreal);
+	/* number of attractors should be nobj + 1: k extremes + 1 intermediary*/
+	double **attractors = (double**)malloc(sizeof(double*) * (nobj + 1));
+	for(i = 0 ; i < (nobj + 1); i++)
+		attractors[i] = (double*)malloc(sizeof(double) * nreal);
 	
-	/*if(gen > 0)*/
-	if(gen < 6)
-	{
-		/* if gen < 6 use the hard coded attractors */
+	
+	get_least_crowded_vectors(pop, popsize, attractors);
+	/*get_least_crowded_vectors_prob(pop, popsize, vec);*/
+	/* if(gen < 5) */
+	{	
+		/* if gen < 5 use the hard coded attractors */
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(t[i], vals[i], sizeof(double) * nreal);
+			memcpy(targets[i], vals[i], sizeof(double) * nreal);
+		/* the last one is the intermediary attractor */
+		/* memcpy(targets[nobj], attractors[nobj], sizeof(double) * nreal); */
 	}
-	else
+	/*else*/
 	{
 		/* else get the nobj numbers of least crowded vectors*/
-		/*get_least_crowded_vectors(pop, popsize, vec);*/
-		get_least_crowded_vectors_prob(pop, popsize, vec);
-		for(i = 0 ; i < nobj ; i++)
-			memcpy(t[i], vals[i], sizeof(double) * nreal);
+		for(i = 0 ; i < nobj + 1 ; i++)
+			memcpy(targets[i], attractors[i], sizeof(double) * nreal);
 	}
-	for(i = 0 ; i < nobj ; i++)
-		free(vec[i]);
-	free(vec);
+
+	for(i = 0 ; i < nobj + 1 ; i++)
+		free(attractors[i]);
+	free(attractors);
+}
+
+void get_least_crowded_vectors(population *pop, int popsize, double **vec)
+{
+	int i ;
+	pop_list *lst = new_list();
+	for( i = 0 ; i < popsize ; i++)
+		push_back(lst, &(pop->ind[i]));
+	for(i = 0 ; i < nobj + 1; i++)
+	{
+		node* ptr = get_least_crowded_node(lst);
+		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
+		erase(lst, ptr);
+	}
+	free_list(lst);
+}
+
+node* get_least_crowded_node(pop_list *lst)
+{
+	double max_dist = -1.0 ;
+	node *curr = lst->head;
+        node *ptr = lst->head ;	
+	while(curr != END)
+	{
+		/*if(curr->ind->crowd_dist >= max_dist && curr->ind->crowd_dist < INF)*/
+		if(curr->ind->crowd_dist >= max_dist)
+		{
+			max_dist = curr->ind->crowd_dist ;
+			ptr = curr ;
+		}
+		curr = curr->next ;
+	}
+	return ptr ;
 }
 
 void get_least_crowded_vectors_prob(population *pop, int popsize, double **vec)
@@ -180,7 +218,6 @@ void get_least_crowded_vectors_prob(population *pop, int popsize, double **vec)
 			max_cd_val = pop->ind[i].crowd_dist ;
 	}
 	
-	/*max_cd_val += 1.0 ;*/
 	sum_cd = 0.0 ;
 	for(i = 0 ; i < pool_size ; i++)
 	{
@@ -212,52 +249,33 @@ void get_least_crowded_vectors_prob(population *pop, int popsize, double **vec)
 	free(pool);
 }
 
-void get_least_crowded_vectors(population *pop, int popsize, double **vec)
-{
-	int i ;
-	pop_list *lst = new_list();
-	for( i = 0 ; i < popsize ; i++)
-		push_back(lst, &(pop->ind[i]));
-	for(i = 0 ; i < nobj ; i++)
-	{
-		node* ptr = get_least_crowded_node(lst);
-		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
-		erase(lst, ptr);
-	}
-	free_list(lst);
-}
-
-node* get_least_crowded_node(pop_list *lst)
-{
-	double max_dist = -1.0 ;
-	node *curr = lst->head;
-        node *ptr = lst->head ;	
-	while(curr != END)
-	{
-		if(curr->ind->crowd_dist >= max_dist && curr->ind->crowd_dist < INF)
-		{
-			max_dist = curr->ind->crowd_dist ;
-			ptr = curr ;
-		}
-		curr = curr->next ;
-	}
-	return ptr ;
-}
-
 int generate_attracted_vector(double *s, double **t, double *d)
 {
 	double d0, d1 ;
 	double *stu, *s_t ;
 	individual *ind ;
 	int i, ccount = 0 ;
+	int *index, temp, r ;
 	
 	ind = (individual*)malloc(sizeof(individual));
 	allocate_memory_ind(ind);
 	s_t = (double*)malloc(sizeof(double) * nreal);
 	stu = (double*)malloc(sizeof(double) * nreal);
 
-	d0 = get_vector_distance(s, t[0], nreal);	
-	d1 = get_vector_distance(s, t[1], nreal);
+	index = (int*)malloc(sizeof(int) * (2 * nobj + 1));
+	for(i = 0 ; i < 2 * nobj + 1 ; i++)
+		index[i] = i ;
+	for(i = 0 ; i < 2 * nobj + 1 ; i++)
+	{
+		r = rnd(0, 2 * nobj);
+		temp = index[i] ;
+		index[i] = index[r] ;
+		index[r] = temp ;
+	}
+
+	d0 = get_vector_distance(s, t[index[0]], nreal);	
+	d1 = get_vector_distance(s, t[index[1]], nreal);
+	free(index);
 
 	if(d0 > d1)
 	{
