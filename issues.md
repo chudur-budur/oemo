@@ -1,7 +1,15 @@
 issues
 ======
 
-#### Current Algorithm:
+#### Some stuffs to node:
+
+1. The opposite points using the 3rd-quartile rule does not reflect the opposite in obj-space, look at the osyzcka problem result -- both points are closer on the obj-space but they are a way apart in the variable-space; interesting to note.
+
+2. Therefore, "first converge to extreme then spread/fill gap" approach will not work
+
+3. New scheme:
+
+#### Old Algorithm:
 
 The current algorithm works as follows --
 

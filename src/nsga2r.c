@@ -41,7 +41,7 @@ int angle1;
 int angle2;
 
 
-#define do_opposition 1/*0 no opposition, 1 with opposition*/
+#define do_opposition 0  /*0 no opposition, 1 with opposition*/
 #define pUqUo 0
 #define qUo 1
 #define interval 0
@@ -460,24 +460,9 @@ int main (int argc, char **argv)
 	if(do_opposition)
 	{
 		printf("\n *** Will apply opposition based variation.");
-		if(interval)
-		{
-			if(archive)
-				corrupted_genes = generate_opposite_population_interval_from_archive(
-						parent_pop, popsize, opposite_source_pop, 
-						opposite_pop, opposite_popsize, 4, 1); 
-			else
-				corrupted_genes = generate_opposite_population_interval(
-						parent_pop, popsize, opposite_source_pop, 
-						opposite_pop, opposite_popsize, 4);
-		}
-		else if(attractor)
-			corrupted_genes = generate_opposite_population_using_attractor(
-						parent_pop, popsize, opposite_source_pop, 
-						opposite_pop, opposite_popsize,1); 
-		else
-			corrupted_genes = generate_opposite_population(parent_pop, popsize, 
-					opposite_source_pop, opposite_pop, opposite_popsize); 
+		corrupted_genes = generate_opposite_population_using_attractor(
+					parent_pop, popsize, opposite_source_pop, 
+					opposite_pop, opposite_popsize,1); 
 		fprintf(stdout, "\n gen = 1\tcorrupted_genes = %.2f\n", corrupted_genes);
 		/* this evaluation below is not necessary for the original algorithm */
 		evaluate_pop_with_size(opposite_pop, opposite_popsize);
@@ -540,18 +525,11 @@ int main (int argc, char **argv)
 		if(do_opposition)
 		{
 			if(qUo)
-			{
-				/* the i > 2 condition is for pareto-based extreme points */ 
-				/*if (i > 2)*/
-				{
-					/* inject_opposite(opposite_pop, opposite_popsize, child_pop);*/
-					inject_opposite_shuffle(opposite_pop, opposite_popsize, 
+				/* inject_opposite(opposite_pop, opposite_popsize, child_pop);*/
+				inject_opposite_shuffle(opposite_pop, opposite_popsize, 
 							child_pop, popsize);
-				}
-			}
 		}
 		
-		/* inject_spread(child_pop, popsize); */
 		evaluate_pop(child_pop);
 		
 		if(!do_opposition)
@@ -603,24 +581,9 @@ int main (int argc, char **argv)
 					i-1, (opposite_count/((float)opposite_popsize)) * 100.0);
 			clear_opposite_flag(parent_pop, popsize); 
 			
-			if(interval)
-			{
-				if(archive)
-					corrupted_genes = generate_opposite_population_interval_from_archive(
-							parent_pop, popsize, opposite_source_pop, 
-							opposite_pop, opposite_popsize, 4, i); 
-				else
-					corrupted_genes = generate_opposite_population_interval(
-							parent_pop, popsize, opposite_source_pop, 
-							opposite_pop, opposite_popsize, 4);
-			}
-			else if(attractor)
-				corrupted_genes = generate_opposite_population_using_attractor(
-							parent_pop, popsize, opposite_source_pop, 
-							opposite_pop, opposite_popsize, i); 
-			else	
-				corrupted_genes = generate_opposite_population(parent_pop, popsize, 
-						opposite_source_pop, opposite_pop, opposite_popsize); 
+			corrupted_genes = generate_opposite_population_using_attractor(
+						parent_pop, popsize, opposite_source_pop, 
+						opposite_pop, opposite_popsize, i); 
 			fprintf(stdout, "\n gen = %d\tcorrupted_genes = %.2f\n", i, corrupted_genes);
 			/**
 			 * now dump the opposite stuffs for analysis, the evaluation

@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "rand.h"
 
 /* clears a vector in-situ */
 void clear_vector(double *x, int length)
@@ -12,6 +13,37 @@ void clear_vector(double *x, int length)
 	for(i = 0 ; i < length ; i++)
 		x[i] = 0.0 ;
 	return ;
+}
+
+/* populate the vector x with random indices 0 to length-1 */
+void get_random_indices(int *x, int length)
+{
+	int i, r, temp ;
+	for(i = 0 ; i < length; i++)
+		x[i] = i ;
+	for(i = 0 ; i < length ; i++)
+	{
+		r = rnd(0, length-1);
+		temp = x[i] ;
+		x[i] = x[r] ;
+		x[r] = temp ;
+	}
+}
+
+/* get a random int vector */
+void get_random_int_vector(int *x, int length, int min, int max)
+{
+	int i ;
+	for(i = 0 ; i < length ; i++)
+		x[i] = rnd(min, max);
+}
+
+/* get a random double vector */
+void get_radom_double_vector(double *x, int length, double min, double max)
+{
+	int i ;
+	for(i = 0 ; i < length ; i++)
+		x[i] = rndreal(min, max);
 }
 
 /* returns a unit vector from a given vector */
