@@ -18,22 +18,22 @@ if [[ -z $probname ]] || [[ -z $minrun ]] || [[ -z $maxrun ]] || [[ -z $mingen ]
 	_usage ;
 fi
 
-nohup ./burstpfn $minrun $maxrun $mingen $maxgen \
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
 	experiments/nsga2r/$probname/all_pop- \
 	experiments/nsga2r/$probname/ >& /dev/null &
 
-nohup ./burstpfn $minrun $maxrun $mingen $maxgen \
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
 	experiments/onsga2r/$probname/all_pop- \
 	experiments/onsga2r/$probname/ >& /dev/null & 
 	
-nohup ./burstpfn $minrun $maxrun $mingen $maxgen \
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
     	experiments/onsga2r/$probname/all_source- \
     	experiments/onsga2r/$probname/ >& /dev/null &
 
-nohup ./burstpfn $minrun $maxrun $mingen $maxgen \
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
     	experiments/onsga2r/$probname/all_opposite- \
     	experiments/onsga2r/$probname/ >& /dev/null &
 
-nohup ./burstpfn $minrun $maxrun $mingen $maxgen \
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
 	experiments/onsga2r/$probname/all_survived- \
 	experiments/onsga2r/$probname/ >& /dev/null &

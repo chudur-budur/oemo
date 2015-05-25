@@ -1,0 +1,27 @@
+#!/bin/bash
+
+probname=$1;
+minrun=$2 ;
+maxrun=$3 ;
+mingen=$4 ;
+maxgen=$5 ;
+
+_usage()
+{
+	# ./hvstatall zdt1 1 10 1 200	
+	printf "%s\n" "Usage: ./hvstat [problem name] [minrun] [maxrun] [mingen] [maxgen]";
+	exit 0;
+}
+
+if [[ -z $probname ]] || [[ -z $minrun ]] || [[ -z $maxrun ]] || [[ -z $mingen ]] || [[ -z $maxgen ]]; then
+	echo "error: some of the parameters are missing," ;
+	echo "or you have unknown parameters, hence exiting ...";
+	_usage ;
+fi
+
+./calchvn $minrun $maxrun $mingen $maxgen experiments/nsga2r/$probname/pfsnaps-run- \
+	experiments/nsga2r/$probname/ whv/$probname-param.txt ;
+./calchvn $minrun $maxrun $mingen $maxgen experiments/onsga2r/$probname/pfsnaps-run- \
+	experiments/onsga2r/$probname/ whv/$probname-param.txt ;
+./hvstat $minrun $maxrun experiments/nsga2r/$probname/hv/hv-run- \
+	experiments/onsga2r/$probname/hv/hv-run- 5 ;

@@ -25,7 +25,7 @@ fi
 for(( i=$minrun; i<=$maxrun; i++ ))
 do
 	uid=$RANDOM ;
-	./genreport $mingen $maxgen experiments/onsga2r/$probname/pfplots-run-$i/ $skip $nplots $size pf-gen $uid;
+	./sh/genreport $mingen $maxgen experiments/onsga2r/$probname/pfplots-run-$i/ $skip $nplots $size pf-gen $uid;
 	mv plot-"$uid".pdf experiments/onsga2r/$probname/snapshot-run-$i.pdf ;
 done
 rm -rf *.bbl ;

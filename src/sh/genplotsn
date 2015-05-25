@@ -20,7 +20,7 @@ fi
 
 for ((i=$minrun; i<=$maxrun; i++ ))
 do
-	nohup ./genplots $mingen $maxgen \
+	nohup ./sh/genplots $mingen $maxgen \
 			experiments/onsga2r/$probname/pfplots-run-$i \
 			experiments/nsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \
 			experiments/onsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \

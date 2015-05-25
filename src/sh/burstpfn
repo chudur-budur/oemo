@@ -29,5 +29,5 @@ do
 	if [ ! -d "$destdir" ]; then
 		mkdir $destdir ;
 	fi
-	./burstpf "$mingen" "$maxgen" "$srcfile" "$destdir" ;
+	./sh/burstpf "$mingen" "$maxgen" "$srcfile" "$destdir" ;
 done

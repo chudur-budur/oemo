@@ -81,25 +81,25 @@ How to run these craps.
 	
 ===================================================================================================
 ** 3. run n multiple experiments:
-	nsga2r: ./run-n 1 10 nsga2r-zdt1 input_data/zdt1.in input_data/rseeds.in experiments
+	nsga2r: ./sh/run-n 1 10 nsga2r-zdt1 input_data/zdt1.in input_data/rseeds.in experiments
 		-- will generate experiments/nsga2r/zdt1/all_pop-*.out
 
-	onsga2r: ./run-n 1 10 onsga2r-zdt1 input_data/zdt1.in input_data/rseeds.in experiments
+	onsga2r: ./sh/run-n 1 10 onsga2r-zdt1 input_data/zdt1.in input_data/rseeds.in experiments
 		-- will generate experiments/onsga2r/zdt1/all_pop-*.out
 		-- will generate experiments/onsga2r/zdt1/all_source-*.out
 		-- will generate experiments/onsga2r/zdt1/all_opposite-*.out
 		-- will generate experiments/onsga2r/zdt1/all_survival-*.out
 
 ** 4. do the above for in single snap:
-	./burstpfall zdt1 1 10 1 200
+	./sh/burstpfall zdt1 1 10 1 200
 		-- do the above in single snap.
 
 ** 6. make plots from all the runs:
-	./genplotsn 1 10 1 200 zdt1
+	./sh/genplotsn 1 10 1 200 zdt1
 		-- do the same as above from run 1 to run 10.
 
 ** 8. generate pdf summary for all individual runs:
-	./genreportn 1 10 1 200 5 8 0.4 zdt1
+	./sh/genreportn 1 10 1 200 5 8 0.4 zdt1
 		-- do the same as above from run 1 to run 10
 	
 ** 9. generate statistical results for survival:
