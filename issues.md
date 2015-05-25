@@ -1,13 +1,20 @@
 issues
 ======
 
-#### Some stuffs to node:
+#### Some stuffs to note:
 
-1. The opposite points using the 3rd-quartile rule does not reflect the opposite in obj-space, look at the osyzcka problem result -- both points are closer on the obj-space but they are a way apart in the variable-space; interesting to note.
+1. The opposite points using the 3rd-quartile rule does not reflect the opposite in obj-space, please look at the osyzcka problem result -- most of the opposite points do not survive, may they are infeasible.
 
 2. Therefore, "first converge to extreme then spread/fill gap" approach will not work
 
 3. New scheme:
+    - make a pool of target points, with e, e* and g, assume no. of obj = k.
+    - assume |e| = k, |e*| = k and |g| = k, so the size of the pool = 3k.
+    - from 3k pool, randomly pick k+1 points.
+    - from k+1 points, find the point t that is the furthest from s, where s is one randomly picked point from the current population from which we are interested in finding "opposite".
+    - now apply 3-quartile opposite rule from s to t direction in the variable space.
+
+4. The above approach still does not work with osyczka's problem, on the otherhad, for zdt1 the gap is not addressed well, because at the later generations e and e* becomes same and they have the higher probability to be picked up. 
 
 #### Old Algorithm:
 
