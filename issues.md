@@ -1,7 +1,7 @@
 issues
 ======
 
-### Note: osy problem is set aside for later
+**Note: osy problem is set aside for later**
 
 ### Schemes:
 Let's denote the points as --
@@ -14,9 +14,11 @@ Currently total of 3 schemes have been tried:
 
 1. **Scheme1:** Converge to the e* points for some K generations and then address g's.
 
-2. **Scheme2:** Make a pool of 3M points (M = number of obj.), pool = {e* U e U g}, and find the furthest point, and then generate opposite point near it. However, at the later generation, e* and e becomes very close/same. So a modified approach (Scheme3) is implemented.
+2. **Scheme2:** Make a pool of 3M points (M = number of obj.), pool = {e* U e U g}. Randomly select M points, find the furthest point in M, and then generate opposite point near it. However, at the later generation, e* and e becomes very close/same. So a modified approach (Scheme3) is implemented.
 
-3. **Scheme3:** Make a pool of 2M points (M = number of obj.), pool = {e* U g}, and find the furthest point, and then generate opposite point near it. This scheme is showing better results in most of the problems.
+3. **Scheme3:** Make a pool of 2M points (M = number of obj.), pool = {e* U g}. Randomly select M points, find the furthest point in M, and then generate opposite point near it. This scheme is showing better results in most of the problems.
+
+**Note:** What if the points e* are not on the true PF? In that case, Scheme2 should be better. But this is not tested yet.
 
 ### Results (snapshots, eyeballing):
 
