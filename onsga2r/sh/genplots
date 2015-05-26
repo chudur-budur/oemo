@@ -4,19 +4,20 @@
 
 args=("$@");
 len=${#args[@]};
-mingen=${args[0]};
-maxgen=${args[1]};
-outdir=${args[2]};
-prefixargs=("${args[@]:3:$len}");
+nobj=${args[0]};
+mingen=${args[1]};
+maxgen=${args[2]};
+outdir=${args[3]};
+prefixargs=("${args[@]:4:$len}");
 
 _usage()
 {
 	# ./genplots 1 100 outdir /some/where/file1 /some/where/file2 some/where/file3 ...
-	printf '%s\n\t\t  %s\n' "Usage: ./genplots [mingen] [maxgen] [outputdir]" "[N input-file prefix argumets]";
+	printf '%s\n\t\t  %s\n' "Usage: ./genplots [nobj] [mingen] [maxgen] [outputdir]" "[N input-file prefix argumets]";
 	exit 0;
 }
 
-if [[ $len -lt 4 ]]; then
+if [[ $len -lt 5 ]]; then
 	echo "error: some of the parameters are missing, hence exiting ...";
 	_usage ;
 fi
@@ -48,12 +49,22 @@ do
 	done
 	echo "making plots with ${filelist[@]}";
 	# note: for tex, use: set term pdf enhanced color
-	gnuplot <<- EOF
-		set term push
-		set term pdf color
-		set output "${outdir}/pf-gen-${j}.pdf"
-		plot ${filelist[@]}
-		set term pop
-	EOF
+	if [[ $nobj -eq 2 ]]; then
+		gnuplot <<- EOF
+			set term push
+			set term pdf color
+			set output "${outdir}/pf-gen-${j}.pdf"
+			plot ${filelist[@]}
+			set term pop
+		EOF
+	elif [[ $nobj -gt 2 ]]; then
+		gnuplot <<- EOF
+			set term push
+			set term pdf color
+			set output "${outdir}/pf-gen-${j}.pdf"
+			splot ${filelist[@]}
+			set term pop
+		EOF
+	fi
 	filelist=();
 done
