@@ -33,7 +33,11 @@
 /* # define ctp8 */
 
 /* some mop's with nobj > 2 */
-# define dtlz1 
+/* # define dtlz1 */
+/* # define dtlz2 */
+/* # define dtlz3 */
+/* # define dtlz4 */
+ # define dtlz5
 
 /*  Test problem SCH1
     # of real variables = 1
@@ -710,6 +714,12 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
+/*  Test problem DTLZ1
+    # of real variables = n
+    # of bin variables = 0
+    # of objectives = k
+    # of constraints = 0
+    */
 #ifdef dtlz1
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -728,15 +738,168 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		obj[i] = (1.0 + g) * 0.5 ;
 	
 	for(i = 0 ; i < nobj ; i++)
+	{
 		for(j = 0 ; j < nobj - (i+1); j++)
-		{
 			obj[i] *= xreal[j];
-			if(i != 0)
-			{
-				aux = nobj - (i+1) ;
-				obj[i] *= 1 - xreal[aux];
-			}		
-		}
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= 1 - xreal[aux];
+		}		
+	}
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ2
+    # of real variables = n
+    # of bin variables = 0
+    # of objectives = k
+    # of constraints = 0
+    */
+#ifdef dtlz2
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k, aux ;
+	double g ;
+	
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5));
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = 1.0 + g ;
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos(xreal[j] * 0.5 * PI) ;
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= sin(xreal[aux] * 0.5 * PI);
+		}		
+	}
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ3
+    # of real variables = n
+    # of bin variables = 0
+    # of objectives = k
+    # of constraints = 0
+    */
+#ifdef dtlz3
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k, aux ;
+	double g ;
+	
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) 
+			- cos(20.0 * PI *  (xreal[i] - 0.5)) ;
+	g = 100.0 * (k + g);
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) ;
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos(xreal[j] * 0.5 * PI);
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= sin(xreal[aux] * 0.5 * PI);
+		}		
+	}
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ4
+    # of real variables = n
+    # of bin variables = 0
+    # of objectives = k
+    # of constraints = 0
+    */
+#ifdef dtlz4
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k, aux ;
+	double g ;
+	double alpha = 100.0 ;
+	
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) ;
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos((PI / 2.0) * pow(xreal[j], alpha));
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= sin((PI / 2.0) * pow(xreal[aux], alpha));
+		}		
+	}
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ5
+    # of real variables = n
+    # of bin variables = 0
+    # of objectives = k
+    # of constraints = 0
+    */
+#ifdef dtlz5
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k, aux ;
+	double g, t;
+	double *theta;
+
+	theta = (double*)malloc(sizeof(double) * nobj);
+	
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
+
+	t = PI / (4.0 * (1.0 + g)) ;
+
+	theta[0] = xreal[0] * (PI / 2.0);
+	for(i = 1 ; i < nobj - 1 ; i++)
+		theta[i] = t * (1.0 + 2.0 * g * xreal[i]);
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) ;
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos(theta[j]);
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= sin(theta[aux]);
+		}		
+	}
+	free(theta);
 	return ;
 }
 #endif

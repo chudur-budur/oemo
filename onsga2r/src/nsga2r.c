@@ -41,12 +41,9 @@ int angle1;
 int angle2;
 
 
-#define do_opposition 0  /*0 no opposition, 1 with opposition*/
+#define do_opposition 1 /*0 no opposition, 1 with opposition*/
 #define pUqUo 0
 #define qUo 1
-#define interval 0
-#define archive 0
-#define attractor 1
 
 #define debug 0 /* debug switch */
 
@@ -267,7 +264,6 @@ int main (int argc, char **argv)
 	}
 	if (choice==1)
 	{
-		printf("\n---------- gnuplot will be used.");
 		gp = popen(GNUPLOT_COMMAND,"w");
 		if (gp==NULL)
 		{
@@ -409,7 +405,7 @@ int main (int argc, char **argv)
 		fprintf(fpt_all_opposite,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 		fprintf(fpt_all_survived,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	}
-	exit(1);
+	
 	nbinmut = 0;
 	nrealmut = 0;
 	nbincross = 0;
