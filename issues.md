@@ -5,6 +5,7 @@ issues
 
 ### Schemes:
 Let's denote the points as --
+
     - e*: hard-coded extreme found from GA
     - e: current population extreme
     - g: least crowded non-extreme points in the current population (i.e. intermediary gaps). 
