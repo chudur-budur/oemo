@@ -28,11 +28,11 @@ Currently total of 3 schemes have been tried:
 
 2. **DTLZ set (M = 3):**
 
-   | dtlz1| (planar)			 | opposition is faster				    | 
-   | dtlz2| (spherical)			 | opposition is not strictly faster, but comparable| 
-   | dtlz3| (local optima)		 | opposition is faster				    | 
-   | dtlz4| (different density)		 | opposition is not strictly faster, but comparable|
-   | dtlz5| (3d curved pf, easy)	 | opposition is faster				    | 
-   | dtlz6| (3d curved pf, local optima) | opposition is faster				    | 
-   | dtlz7| (disconnected surface) 	 | opposition is not strictly faster, but comparable|  
+   - dtlz1| (planar)			  opposition is faster				     
+   - dtlz2| (spherical)			  opposition is not strictly faster, but comparable
+   - dtlz3| (local optima)		  opposition is faster				     
+   - dtlz4| (different density)		  opposition is not strictly faster, but comparable
+   - dtlz5| (3d curved pf, easy)	  opposition is faster				     
+   - dtlz6| (3d curved pf, local optima)  opposition is faster				     
+   - dtlz7| (disconnected surface) 	  opposition is not strictly faster, but comparable 
 
