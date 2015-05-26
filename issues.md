@@ -18,7 +18,9 @@ Currently total of 3 schemes have been tried:
 
 3. **Scheme3:** Make a pool of 2M points (M = number of obj.), pool = {e* U g}. Randomly select M points, find the furthest point in M, and then generate opposite point near it. This scheme is showing better results in most of the problems.
 
-**Note:** What if the points e* are not on the true PF? In that case, Scheme2 should be better. But this is not tested yet.
+**Note:** What if the points e* are not on the true PF? In that case, Scheme2 should be better. But this is not tested yet. Therefore, a better way could be like Scheme4 --
+
+**Scheme4:** Compute hypervolume from M points in e*, which is hve* and compute hypervolume from M points in e, which is hve. If hve* > hve then include e* in the pool, pool = {e* U g}, otherwise include e in the pool, pool = {e U g}. Now select M points from them randomly and find the furthest one in M. Now generate opposite point near it. 
 
 ### Results (snapshots, eyeballing):
 
