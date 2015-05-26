@@ -1,55 +1,34 @@
 issues
 ======
 
-#### Some stuffs to note:
+### Note: osy problem is set aside for later
 
-1. The opposite points using the 3rd-quartile rule does not reflect the opposite in obj-space, please look at the osyzcka problem result -- most of the opposite points do not survive, may they are infeasible.
+### Schemes:
+Let's denote the points as, e*: hard-coded extreme found from GA, e: current population extreme, g: least crowded non-extreme points in the current population (i.e. intermediary gaps). 
 
-2. Therefore, "first converge to extreme then spread/fill gap" approach will not work
+Currently total of 3 schemes have been tried:
 
-3. New scheme:
-    - make a pool of target points, with e, e* and g, assume no. of obj = k.
-    - assume |e| = k, |e*| = k and |g| = k, so the size of the pool = 3k.
-    - from 3k pool, randomly pick k+1 points.
-    - from k+1 points, find the point t that is the furthest from s, where s is one randomly picked point from the current population from which we are interested in finding "opposite".
-    - now apply 3-quartile opposite rule from s to t direction in the variable space.
+1. Scheme1: Converge to the e* points for some K generations and then address g's.
 
-4. The above approach still does not work with osyczka's problem, on the otherhad, for zdt1 the gap is not addressed well, because at the later generations e and e* becomes same and they have the higher probability to be picked up. 
+2. Scheme2: Make a pool of 3M points (M = number of obj.), pool = {e* U e U g}, and find the furthest point, and then generate opposite point near it. However, at the later generation, e* and e becomes very close/same. So a modified approach (Scheme3) is implemented.
 
-#### Old Algorithm:
+3. Scheme3: Make a pool of 2M points (M = number of obj.), pool = {e* U g}, and find the furthest point, and then generate opposite point near it. This scheme is showing better results in most of the problems.
 
-The current algorithm works as follows --
+### Results (snapshots, eyeballing):
 
-1. use the extreme points as "target" for the first 5/6 generations
-2. when generation > 5
-    - sort the current population w.r.t crowding distance
-    - get the 50% points with highest crowding distance, including those with infinity value
-    - replace the infinity crowding distance values by the highest crowding distance values that are not infinity, so that the extreme points and the highest gapped points will have same priority.
-    - apply roullette wheel selection to find K "target" points, where K = number of objectives
-    - now use the opposition to find new points near those K selected points
+1. ZDT set (M = 2):
+    - zdt1 opposition is faster/better
+    - zdt2 opposition is faster/better
+    - zdt3 opposition is faster/better
+    - zdt4 opposition is faster/better
+    - zdt6 opposition is faster/better
 
-#### Result:
+2. DTLZ set (M = 3):
+    - dtlz1 (planar)				opposition is faster
+    - dtlz2 (spherical)				opposition is not strictly faster, but comparable
+    - dtlz3 (local optima)			opposition is faster
+    - dtlz4 (different density)			opposition is not strictly faster, but comparable
+    - dtlz5 (3d curved pf, easy)		opposition is faster
+    - dtlz6 (3d curved pf, local optima)	opposition is faster
+    - dtlz7 (disconnected surface) 		opposition is not strictly faster, but comparable
 
-1. for the osyzcka's problem, now I can address the extreme points and also can fill up the gaps
-2. for zdt problems, the opposition tries to fill up the extreme points most of the time, even if they are weakly dominated, so showing a bit worse performance than the previous method that we have tested
-3. it turns out that for some problems, forgetting the extreme points are good (like in zdt problems), but in some case it is not (in osyzcka's problem)
-
-#### Solution Summary:
-
-1. We are fixing the number of "target" points to be equal to the number of objectives, K
-2. This is ok for initial generations, since initially we are concerned with the convergence, and by fixing it, we are getting better convergence.
-3. but in the later generations, those extreme points are less important since gaps starting to emerge
-4. to fill the gap, we ignored the extreme points and we have seen that the algorithms can selectively fill the gaps for zdt problems
-5. but for osyzcka's problem, concentrating on the gaps was not enough, because we also need to address the extreme points
-6. the new algorithm is trying to make balance between the priorities for the extreme and the largest gap
-7. but if the extremes are weakly pareto dominant, the opposition computation getting wasted
-
-#### What we need to do:
-
-1. setting the number of target points to exactly K (number of obj.) over whole generation is not right
-2. the number of target points should be = the number of gaps x 2, since each gap has two edge points
-3. gaps are not evident until the points come close to the pf, so counting the number of gaps is not a practical idea
-4. so what we need to do is to take instead of K target points, we will chose 2K target points, along with the extremes
-5. and for each source point, we will randomly pick 2 from the 2K points and apply the opposition
-6. I am currently working on this now
-7. An extra line.

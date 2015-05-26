@@ -18,7 +18,7 @@
 /* # define zdt3 */
 /* # define zdt4 */
 /* # define zdt5 */
-/* # define zdt6 */
+ # define zdt6 
 /* # define bnh  */
 /* # define osy  */
 /* # define srn  */
@@ -37,7 +37,9 @@
 /* # define dtlz2 */
 /* # define dtlz3 */
 /* # define dtlz4 */
- # define dtlz5
+/* # define dtlz5 */
+/* # define dtlz6 */
+/* # define dtlz7 */
 
 /*  Test problem SCH1
     # of real variables = 1
@@ -715,9 +717,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /*  Test problem DTLZ1
-    # of real variables = n
+    # of real variables = n = M + k - 1, k = 5
     # of bin variables = 0
-    # of objectives = k
+    # of objectives = M = 3
     # of constraints = 0
     */
 #ifdef dtlz1
@@ -752,9 +754,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /*  Test problem DTLZ2
-    # of real variables = n
+    # of real variables = n = M + k - 1, k = 10
     # of bin variables = 0
-    # of objectives = k
+    # of objectives = M = 3
     # of constraints = 0
     */
 #ifdef dtlz2
@@ -787,9 +789,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /*  Test problem DTLZ3
-    # of real variables = n
+    # of real variables = n = M + k - 1, k = 10
     # of bin variables = 0
-    # of objectives = k
+    # of objectives = M = 3
     # of constraints = 0
     */
 #ifdef dtlz3
@@ -824,9 +826,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /*  Test problem DTLZ4
-    # of real variables = n
+    # of real variables = n = M + k - 1, k = 10
     # of bin variables = 0
-    # of objectives = k
+    # of objectives = M = 3
     # of constraints = 0
     */
 #ifdef dtlz4
@@ -860,9 +862,9 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /*  Test problem DTLZ5
-    # of real variables = n
+    # of real variables = n = M + k - 1, k = 10
     # of bin variables = 0
-    # of objectives = k
+    # of objectives = M = 3
     # of constraints = 0
     */
 #ifdef dtlz5
@@ -872,7 +874,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	double g, t;
 	double *theta;
 
-	theta = (double*)malloc(sizeof(double) * nobj);
+	theta = (double*)malloc(sizeof(double) * (nobj-1));
 	
 	k = nreal - nobj + 1;
 
@@ -900,6 +902,81 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		}		
 	}
 	free(theta);
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ6
+    # of real variables = n = M + k - 1, k = 10
+    # of bin variables = 0
+    # of objectives = M = 3
+    # of constraints = 0
+    */
+#ifdef dtlz6
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k, aux ;
+	double g, t;
+	double *theta;
+
+	theta = (double*)malloc(sizeof(double) * (nobj-1));
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += pow(xreal[i], 0.1);
+
+	t = PI / (4.0 * (1.0 + g)) ;
+	theta[0] = xreal[0] * (PI / 2.0);
+	for(i = 1 ; i < nobj - 1 ; i++)
+		theta[i] = t * (1.0 + 2.0 * g * xreal[i]);
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) ;
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos(theta[j]);
+		if(i != 0)
+		{
+			aux = nobj - (i+1) ;
+			obj[i] *= sin(theta[aux]);
+		}		
+	}
+	free(theta);
+	return ;
+}
+#endif
+
+/*  Test problem DTLZ7
+    # of real variables = n = M + k - 1, k = 20
+    # of bin variables = 0
+    # of objectives = M = 3
+    # of constraints = 0
+    */
+#ifdef dtlz7
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, k ;
+	double g, h;
+
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += xreal[i] ;
+	g = 1.0 + ((9.0 * k) / g) ;
+	
+	for(i = 0 ; i < nobj - 1 ; i++)
+		obj[i] = xreal[i] ;
+
+	h = 0.0 ;
+	for(i = 0 ; i < nobj - 1 ; i++)
+		h += (obj[i]/(1.0 + g)) * (1.0 + sin(3.0 * PI * obj[i])) ;
+	h = ((double)nobj) - h ;
+	obj[nobj-1] = (1.0 + g) * h;
+
 	return ;
 }
 #endif
