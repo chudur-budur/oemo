@@ -20,7 +20,7 @@ Currently total of 3 schemes have been tried:
 
 **Note:** What if the points e* are not on the true PF? In that case, Scheme2 should be better. But this is not tested yet. Therefore, a better way could be like Scheme4 --
 
-**Scheme4:** Compute hypervolume from M points in e*, which is hve* and compute hypervolume from M points in e, which is hve. If hve* > hve then include e* in the pool, pool = {e* U g}, otherwise include e in the pool, pool = {e U g}. Now select M points from them randomly and find the furthest one in M. Now generate opposite point near it. 
+**Scheme4:** Compute hypervolume hv_e* from M points in e* and compute hypervolume hv_e from M points in e. If (hv_e* > hv_e) then include e* in the pool (i.e. pool = {e* U g}), otherwise include e in the pool (i.e. pool = {e U g}). Now randomly select M points from the pool and find the furthest one. Now generate opposite point near it. 
 
 ### Results (snapshots, eyeballing):
 
