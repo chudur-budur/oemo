@@ -20,7 +20,7 @@
 /* # define zdt5 */
 /* # define zdt6 */
 /* # define bnh  */
- # define osy  
+/* # define osy  */
 /* # define srn  */
 /* # define tnk  */
 /* # define ctp1 */
@@ -31,8 +31,9 @@
 /* # define ctp6 */
 /* # define ctp7 */
 /* # define ctp8 */
-/* # define debnew */
-/* # define zdt1_debug */
+
+/* some mop's with nobj > 2 */
+# define dtlz1 
 
 /*  Test problem SCH1
     # of real variables = 1
@@ -187,25 +188,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	for (i=1; i<nreal; i++)
 		g += xreal[i] ;
 	g = 9.0*g/((double)nreal - 1.0);
-	g += 1.0;
-	h = 1.0 - sqrt(f1/g);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
-	return;
-}
-#endif
-
-#ifdef zdt1_debug
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
-{
-	double f1, f2, g, h;
-	int i;
-	f1 = xreal[0] ;
-	g = 0.0;
-	for (i=1; i<nreal; i++)
-		g += xreal[i];
-	g = 9.0*g/(nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - sqrt(f1/g);
 	f2 = g*h;
@@ -728,20 +710,33 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-#ifdef debnew
+#ifdef dtlz1
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i ;
-	double sumx ;
-
-	obj[0] = xreal[0] + xreal[0] ;
+	int i, j, k, aux ;
+	double g ;
 	
-	sumx = 0.0 ;
-	for(i = 1 ; i < nreal ; i++)
-		sumx += (xreal[i] - nreal) * (xreal[i] - nreal) ;
+	k = nreal - nobj + 1;
 
-	obj[1] = (xreal[0] * xreal[0]) + ((sumx - 1.0) * (sumx - 1.0)) 
-			+ 10.0 * (1.0 - cos(4.0 * PI * (sumx - 1.0))) ;
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) 
+			- cos(20.0 * PI *  (xreal[i] - 0.5)) ;
+	g = 100.0 * (k + g);
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) * 0.5 ;
+	
+	for(i = 0 ; i < nobj ; i++)
+		for(j = 0 ; j < nobj - (i+1); j++)
+		{
+			obj[i] *= xreal[j];
+			if(i != 0)
+			{
+				aux = nobj - (i+1) ;
+				obj[i] *= 1 - xreal[aux];
+			}		
+		}
 	return ;
 }
 #endif

@@ -48,7 +48,6 @@ int angle2;
 #define archive 0
 #define attractor 1
 
-#define invoke_gnuplot 0 /* 0 no gnuplot, 1 invoke gnuplot */
 #define debug 0 /* debug switch */
 
 /*int main_ (int,char**);*/
@@ -259,13 +258,8 @@ int main (int argc, char **argv)
 		printf("\n Number of real as well as binary variables, both are zero, hence exiting \n");
 		exit(1);
 	}
-	choice=0;
 	printf("\n Do you want to use gnuplot to display the results realtime (0 for NO) (1 for yes) : ");
 	scanf("%d",&choice);
-	if(invoke_gnuplot)
-		choice = 1 ;
-	else
-		choice = 0 ;
 	if (choice!=0 && choice!=1)
 	{
 		printf("\n Entered the wrong choice, hence exiting, choice entered was %d\n",choice);
@@ -273,6 +267,7 @@ int main (int argc, char **argv)
 	}
 	if (choice==1)
 	{
+		printf("\n---------- gnuplot will be used.");
 		gp = popen(GNUPLOT_COMMAND,"w");
 		if (gp==NULL)
 		{
@@ -414,6 +409,7 @@ int main (int argc, char **argv)
 		fprintf(fpt_all_opposite,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 		fprintf(fpt_all_survived,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	}
+	exit(1);
 	nbinmut = 0;
 	nrealmut = 0;
 	nbincross = 0;

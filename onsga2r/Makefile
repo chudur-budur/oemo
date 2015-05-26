@@ -18,6 +18,7 @@ $(MAIN): $(OBJS)
 
 clean:
 	$(RM) $(OBJS)
+	rm -rf *.out
 
 clean-all:
 	$(RM) $(OBJS)
