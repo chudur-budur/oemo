@@ -5,7 +5,7 @@ RM = rm -f
 # CFLAGS=-Wall -ansi -pedantic -g
 CFLAGS = -Wall -ansi -pedantic -g -std=gnu99
 LDFLAGS = -lm
-OBJS := $(patsubst %.c, %.o, $(wildcard src/*.c))
+OBJS := $(patsubst %.c, %.o, $(wildcard src/*.c src/wfg/*.c))
 MAIN = nsga2r
 
 all: $(MAIN)
@@ -13,7 +13,7 @@ all: $(MAIN)
 $(MAIN): $(OBJS)
 	 $(LD) $(CFLAGS) $(OBJS) -o $(MAIN) -lm
 
-%.o: src/%.c src/global.h src/rand.h
+%.o: src/%.c src/%.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:
