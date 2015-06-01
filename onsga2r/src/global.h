@@ -166,13 +166,17 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 
 int generate_opposite_vector_q3(double *s, double *t, double *d);
 
-void get_target_scheme1(population *pop, int popsize, double *s, double *t);
-void get_target_scheme2(population *pop, int popsize, double *s, double *t, int gen);
-void get_target_scheme3(population *pop, int popsize, double *s, double *t);
+void get_furthest_point_from_entire_pool(population *pop, int popsize, 
+		double **pool, int pool_size, double *s, double *t);
+void get_furthest_point_from_m_random_select(population *pop, int popsize, 
+		double **pool, int pool_size, int m, double *s, double *t);
 
-void get_extreme_vectors(population *pop, int popsize, double **vec, int v_size, 
-					int (*chooser)(individual *ind));
-node* get_extreme_node(pop_list *lst, int (*chooser)(individual *ind));
+void make_pool_scheme1(population *pop, int popsize, double **pool, int pool_size, int gen);
+void make_pool_scheme2(population *pop, int popsize, double **pool, int pool_size);
+void make_pool_scheme3(population *pop, int popsize, double **pool, int pool_size);
+void make_pool_scheme4(population *pop, int popsize, double **pool, int pool_size);
+void get_nadir_point(population *pop, int popsize, double *w);
+double get_hypersimplex_volume(individual **e, int size, double *w);
 
 int count_opposite(population *pop, int popsize);
 void clear_opposite_flag(population *pop, int popsize);
@@ -186,16 +190,22 @@ void gather_survived_individuals(population *parent_pop, int popsize, pop_list *
  * Some random utility functions, implemented on different occassions.
  * defined in misc.c
  */
+int factorial(int n);
 void dump_population(population *pop, int popsize, FILE *fpt);
 void dump_individual(individual *ind, FILE *fpt);
 void dumpf_individual(individual *ind, FILE *fpt);
 void dump_population_list(pop_list *survived_pop, FILE *fpt_all_survived);
 void evaluate_and_print_vector(double *x, int nreal, FILE *fpt);
 
-void get_best_individual_vector(population *pop, int popsize, 
-				int obj_index, double *best_vec) ; 
-void get_best_individual(population *pop, int popsize, 
-				int obj_index, individual *best_vec) ; 
+void get_extreme_individuals(population *pop, int popsize, individual **ind, int size,
+					int (*comparator)(individual *i1, individual *i2));
+void get_extreme_individual_vectors(population *pop, int popsize, double **vec, int size, 
+					int (*comparator)(individual *i1, individual *i2));
+node* get_extreme_node(pop_list *lst, int (*comparator)(individual *i1, individual *i2));
+void get_extreme_individual_vector(population *pop, int popsize, double *best_vec,
+					int (*comparator)(individual *i1, individual *i2)) ; 
+void get_extreme_individual(population *pop, int popsize, individual *best_ind,
+					int (*comparator)(individual *i1, individual *i2)) ; 
 
 void quicksort_(population *pop, int popsize, int (*comparator)(individual *i1, individual *i2));
 void quicksort_inner(population *pop, int p, int r, int (*comparator)(individual *i1, individual *i2));
@@ -231,6 +241,7 @@ double get_dot_product(double *x, double *y, int length);
 double get_vector_distance(double *x, double *y, int length);
 void vector_subtract(double *x, double *y, int length, double *z);
 void vector_add(double *x, double *y, int length, double *z);
+double get_determinant(double **m, int n);
 void print_vector(double *x, int length, FILE *fpt);
 
 # endif

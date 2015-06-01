@@ -15,12 +15,12 @@
 /* #define zdt2 */
 /* #define zdt3 */
 /* #define zdt4 */
- #define zdt6
+/* #define zdt6 */
 /* #define pol */
 /* #define osy */
 
 /* #define dtlz1 */
-/* #define dtlz2 */
+ #define dtlz2 
 /* #define dtlz3 */
 /* #define dtlz4 */
 /* #define dtlz5 */
@@ -227,7 +227,10 @@
 			};
 #endif
 
-
+ # define scheme4
+/* # define scheme3 */
+/* # define scheme2 */
+/* # define scheme1 */
 
 double generate_opposite_population_using_attractor(population *pop, int popsize, 
 					population *opposite_source_pop, 
@@ -236,51 +239,292 @@ double generate_opposite_population_using_attractor(population *pop, int popsize
 {
 	int i, corrupted_genes = 0  ;
 	double *x, *t ;
-
+	double **pool ;
+	
 	t = (double*)malloc(sizeof(double) * nreal);
+	x = (double*)malloc(sizeof(double) * nreal);
+
+	#ifdef scheme1
+		/* scheme1: pool size M*/
+		pool = (double**)malloc(sizeof(double*) * nobj);
+		for(i = 0 ; i < nobj ; i++)
+			pool[i] = (double*)malloc(sizeof(double) * nreal);
+		fprintf(stdout, "\napplying scheme 1");
+		make_pool_scheme1(pop, popsize, pool, nobj, gen);
+	#elif defined scheme2
+		/* scheme2: pool size 3M*/
+		pool = (double**)malloc(sizeof(double*) * 3 * nobj);
+		for(i = 0 ; i < 3 * nobj ; i++)
+			pool[i] = (double*)malloc(sizeof(double) * nreal);
+		fprintf(stdout, "\napplying scheme 2");
+		make_pool_scheme2(pop, popsize, pool, 3 * nobj);
+	#elif defined scheme3
+		/* scheme3: pool size 2M*/
+		pool = (double**)malloc(sizeof(double*) * 2 * nobj);
+		for(i = 0 ; i < 2 * nobj ; i++)
+			pool[i] = (double*)malloc(sizeof(double) * nreal);
+		fprintf(stdout, "\napplying scheme 3");
+		make_pool_scheme3(pop, popsize, pool, 2 * nobj);
+	#elif defined scheme4
+		/* scheme4: pool size 2M*/
+		pool = (double**)malloc(sizeof(double*) * 2 * nobj);
+		for(i = 0 ; i < 2 * nobj ; i++)
+			pool[i] = (double*)malloc(sizeof(double) * nreal);
+		fprintf(stdout, "\napplying scheme 4");
+		make_pool_scheme4(pop, popsize, pool, 2 * nobj);
+	#endif
 
 	gather_opposite_source_pop(pop, popsize, opposite_source_pop, opposite_popsize);
-	x = (double*)malloc(sizeof(double) * nreal);
 	for(i = 0 ; i < opposite_popsize; i++)
 	{
-		// get_target_scheme1(pop, popsize, opposite_source_pop->ind[i].xreal, t);
-		// get_target_scheme2(pop, popsize, opposite_source_pop->ind[i].xreal, t, gen);
-		get_target_scheme3(pop, popsize, opposite_source_pop->ind[i].xreal, t);
+		#ifdef scheme1
+			get_furthest_point_from_entire_pool(pop, popsize, pool, nobj, 
+					opposite_source_pop->ind[i].xreal, t);
+		#elif defined scheme2
+			get_furthest_point_from_entire_pool(pop, popsize, pool, 3 * nobj, 
+					opposite_source_pop->ind[i].xreal, t);
+		#elif defined scheme3
+			get_furthest_point_from_m_random_select(pop, popsize, pool, 2 * nobj, nobj, 
+					opposite_source_pop->ind[i].xreal, t);
+		#elif defined scheme4
+			get_furthest_point_from_m_random_select(pop, popsize, pool, 2 * nobj, nobj, 
+					opposite_source_pop->ind[i].xreal, t);
+		#endif
 		corrupted_genes += generate_opposite_vector_q3(opposite_source_pop->ind[i].xreal, t, x);
 		memcpy(opposite_pop->ind[i].xreal, x, sizeof(double) * nreal);
 		opposite_pop->ind[i].is_opposite = 1 ;
 	}	
 	free(x);
 	free(t);
+
+	#ifdef scheme1
+		for(i = 0 ; i < nobj ; i++) free(pool[i]);
+		free(pool);
+	#elif defined scheme2
+		for(i = 0 ; i < 3 * nobj ; i++) free(pool[i]);
+		free(pool);
+	#elif defined scheme3
+		for(i = 0 ; i < 2 * nobj ; i++) free(pool[i]);
+		free(pool);
+	#elif defined scheme4
+		for(i = 0 ; i < 2 * nobj ; i++) free(pool[i]);
+		free(pool);
+	#endif
 	return corrupted_genes/((double)(opposite_popsize * nreal)) * 100.0 ;
 }
 
-void get_target_scheme3(population *pop, int popsize, double *s, double *t)
+/**
+ * Scheme 4:
+ * if hv(e*, w) > hv(e, w) pool = {e* U g}
+ * else			   pool = {e U g}
+ */
+void make_pool_scheme4(population *pop, int popsize, double **pool, int pool_size)
 {
 	int i ;
-	double **e ;
+	double *w ;
+	double hve, hve_str ;
+	individual **ie, **ie_str ;
+
+	int with_infinity(individual *i1, individual *i2);
+	int no_infinity(individual *i1, individual *i2);
+
+	w = (double*)malloc(sizeof(double) * nobj);
+	ie = (individual**)malloc(sizeof(individual*) * nobj);
+	ie_str = (individual**)malloc(sizeof(individual*) * nobj);
+	for(i = 0 ; i < nobj ; i++)
+	{
+		ie[i] = (individual*)malloc(sizeof(individual));
+		ie_str[i] = (individual*)malloc(sizeof(individual));
+		allocate_memory_ind(ie[i]);
+		allocate_memory_ind(ie_str[i]);
+	}
+	
+	get_extreme_individuals(pop, popsize, ie, nobj, with_infinity);
+	for(i = 0 ; i < nobj ; i++)
+	{
+		memcpy(ie_str[i]->xreal, e_star[i], sizeof(double) * nreal);
+		evaluate_ind(ie_str[i]);
+	}
+
+	// ie: individuals in e
+	// ig: individuals in g
+	// is_str: individuals in e*
+
+	get_nadir_point(pop, popsize, w);
+	hve = get_hypersimplex_volume(ie, nobj, w);
+	hve_str = get_hypersimplex_volume(ie_str, nobj, w);
+	
+	get_extreme_individual_vectors(pop, popsize, pool, nobj, no_infinity);
+	if(hve_str >= hve)
+	{
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(pool[nobj + i], ie_str[i]->xreal, sizeof(double) * nreal);
+	}
+	else
+	{
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(pool[nobj + i], ie[i]->xreal, sizeof(double) * nreal);
+	}
+	
+	for(i = 0 ; i < nobj ; i++)
+	{
+		deallocate_memory_ind(ie[i]);
+		deallocate_memory_ind(ie_str[i]);
+		free(ie[i]);
+		free(ie_str[i]);
+	}
+	free(ie); free(ie_str);
+	free(w);
+}
+
+int obj_index = -1 ;
+void get_nadir_point(population *pop, int popsize, double *w)
+{
+	int i ;
+	individual **nadir ;
+	int worst_obj(individual *i1, individual *i2);
+
+	nadir = (individual**)malloc(sizeof(individual*));
+	for(i = 0 ; i < nobj ; i++)
+	{
+		nadir[i] = (individual*)malloc(sizeof(individual));
+		allocate_memory_ind(nadir[i]);
+	}
+
+	for(i = 0 ; i < nobj ; i++)
+	{
+		obj_index = i ;
+		get_extreme_individual(pop, popsize, nadir[i], worst_obj);
+		w[i] = nadir[i]->obj[obj_index];
+	}
+
+	for(i = 0 ; i < nobj ; i++)
+	{
+		deallocate_memory_ind(nadir[i]);
+		free(nadir[i]);
+	}
+	free(nadir);	
+}
+/* inner function */
+int worst_obj(individual *i1, individual *i2)
+{
+	if(i1->obj[obj_index] >= i2->obj[obj_index])
+		return 1 ;
+	else
+		return 0 ;
+}
+
+/**
+ * e = {
+ * 	{x1, y1, z1}, 
+ * 	{x2, y2, z2}, 
+ * 	{x3, y3, z3}
+ * 	}
+ * w = {w1, w2, w3}
+ *
+ * x1 - w1 y1 - w2 z1 - w3
+ * x2 - w1 y2 - w2 z2 - w3
+ * x3 - w1 y3 - w2 z3 - w3
+ */
+double get_hypersimplex_volume(individual **e, int size, double *w)
+{
+	int i, j ;
+	double vol ;
+	double **m ;
+	m = (double**)malloc(sizeof(double*) * size);
+	for(i = 0 ; i < size ; i++)
+		m[i] = (double*)malloc(sizeof(double) * size);
+
+	for(i = 0 ; i < size ; i++)
+		for(j = 0 ; j < size ; j++)
+			m[i][j] = e[i]->obj[j] - w[j];
+
+	vol = fabs((1.0/(double)factorial(size + 1)) * get_determinant(m, size));
+	
+	for(i = 0 ; i < size ; i++) free(m[i]);
+	free(m);
+
+	return vol ;
+}
+
+/**
+ * Scheme 3:
+ * pool = {e* U g}
+ */
+void make_pool_scheme3(population *pop, int popsize, double **pool, int pool_size)
+{
+	int i ;
+	int no_infinity(individual *i1, individual *i2);
+	get_extreme_individual_vectors(pop, popsize, pool, nobj, no_infinity);
+	for(i = 0 ; i < nobj ; i++)
+		memcpy(pool[i + nobj], e_star[i], sizeof(double) * nreal);
+}
+
+/**
+ * Scheme 2:
+ *  pool = {e* U e U g}
+ */ 
+void make_pool_scheme2(population *pop, int popsize, double **pool, int pool_size)
+{
+	int i ;
+	int with_infinity(individual *i1, individual *i2);
+	get_extreme_individual_vectors(pop, popsize, pool, 2 * nobj, with_infinity);
+	for(i = 0 ; i < nobj ; i++)
+		memcpy(pool[i + (2 * nobj)], e_star[i], sizeof(double) * nreal);
+}
+
+/* Inner functions */
+int with_infinity(individual *curr, individual *best)
+{
+	if(curr->crowd_dist >= best->crowd_dist)
+		return 1 ;
+	else
+		return 0 ;
+}
+
+/**
+ * Scheme 1:
+ * if gen <= 10 then pool = {e*}
+ * else pool = {g}
+ */
+void make_pool_scheme1(population *pop, int popsize, double **pool, int pool_size, int gen)
+{
+	int i ;
+	int no_infinity(individual *i1, individual *i2);
+	if(gen <= 10)
+		for(i = 0 ; i < pool_size ; i++)
+			memcpy(pool[i], e_star[i], sizeof(double) * nreal);
+	else
+		get_extreme_individual_vectors(pop, popsize, pool, pool_size, no_infinity);	
+}
+
+/* Inner functions */
+int no_infinity(individual *curr, individual *best)
+{
+	if(best->crowd_dist == INF) 
+		return 1 ;
+	else if(curr->crowd_dist < INF && curr->crowd_dist >= best->crowd_dist)
+		return 1 ;
+	else 
+		return 0 ;
+}
+
+void get_furthest_point_from_m_random_select(population *pop, int popsize, 
+		double **pool, int pool_size, int m, double *s, double *t)
+{
+	int i ;
 	int *idx ;
 	int max_index ;
 	double dist, max_dist ;
 	
-	e = (double**)malloc(sizeof(double*) * 2 * nobj);
-	for(i = 0 ; i < 2 * nobj ; i++)
-		e[i] = (double*)malloc(sizeof(double) * nreal);
-
-
-	int no_extreme(individual *ind);
-	get_extreme_vectors(pop, popsize, e, nobj, no_extreme);
-	for(i = 0 ; i < nobj ; i++)
-		memcpy(e[i + nobj], e_star[i], sizeof(double) * nreal);
+	idx = (int*)malloc(sizeof(int) * pool_size);
+	get_random_indices(idx, pool_size);
 	
-	idx = (int*)malloc(sizeof(int) * 2 * nobj);
-	get_random_indices(idx, 2 * nobj);
-	
-	max_dist = get_vector_distance(s, e[idx[0]], nreal);
+	max_dist = get_vector_distance(s, pool[idx[0]], nreal);
 	max_index = idx[0] ;
-	for(i = 1 ; i < nobj ; i++)
+	for(i = 1 ; i < m ; i++)
 	{
-		dist = get_vector_distance(s, e[idx[i]], nreal);
+		dist = get_vector_distance(s, pool[idx[i]], nreal);
 		if(dist >= max_dist)
 		{
 			max_dist = dist ;
@@ -288,41 +532,22 @@ void get_target_scheme3(population *pop, int popsize, double *s, double *t)
 		}
 	}
 	
-	memcpy(t, e[max_index], sizeof(double) * nreal);
+	memcpy(t, pool[max_index], sizeof(double) * nreal);
 	free(idx);
-
-	for(i = 0 ; i < 2 * nobj ; i++)
-		free(e[i]);
-	free(e);
 }
 
-void get_target_scheme2(population *pop, int popsize, double *s, double *t, int gen)
+void get_furthest_point_from_entire_pool(population *pop, int popsize, 
+		double **pool, int pool_size, double *s, double *t)
 {
 	int i;
-	double **e ;
 	double dist, max_dist ;
 	int max_index ;
 
-	e = (double**)malloc(sizeof(double*) * nobj);
-	for(i = 0 ; i < nobj ; i++)
-		e[i] = (double*)malloc(sizeof(double) * nreal);
-
-	if(gen <= 10)
-	{
-		for(i = 0 ; i < nobj ; i++)
-			memcpy(e[i], e_star[i], sizeof(double) * nreal);
-	}
-	else
-	{
-		int no_extreme(individual *ind);
-		get_extreme_vectors(pop, popsize, e, nobj, no_extreme);
-	}
-	
-	max_dist = get_vector_distance(s, e[0], nreal);
+	max_dist = get_vector_distance(s, pool[0], nreal);
 	max_index = 0 ;
-	for(i = 1 ; i < nobj ; i++)
+	for(i = 1 ; i < pool_size ; i++)
 	{
-		dist = get_vector_distance(s, e[i], nreal);
+		dist = get_vector_distance(s, pool[i], nreal);
 		if(dist >= max_dist)
 		{
 			max_dist = dist ;
@@ -330,52 +555,7 @@ void get_target_scheme2(population *pop, int popsize, double *s, double *t, int 
 		}
 	}
 	
-	memcpy(t, e[max_index], sizeof(double) * nreal);
-	
-	for(i = 0 ; i < nobj ; i++)
-		free(e[i]);
-	free(e);
-}
-
-void get_target_scheme1(population *pop, int popsize, double *s, double *t)
-{
-	int i ;
-	double **e ;
-	double dist, max_dist ;
-	int max_index ;
-
-	e = (double**)malloc(sizeof(double*) * 2 * nobj);
-	for(i = 0 ; i < 2 * nobj ; i++)
-		e[i] = (double*)malloc(sizeof(double) * nreal);
-
-	int no_extreme(individual *ind);
-	get_extreme_vectors(pop, popsize, e, nobj, no_extreme);
-	for(i = 0 ; i < nobj ; i++)
-		memcpy(e[i + nobj], e_star[i], sizeof(double) * nreal);
-
-	max_dist = get_vector_distance(s, e[0], nreal);
-	max_index = 0 ;
-	for(i = 1 ; i < 2 * nobj ; i++)
-	{
-		dist = get_vector_distance(s, e[i], nreal);
-		if(dist >= max_dist)
-		{
-			max_dist = dist ;
-			max_index = i ;
-		}
-	}
-	
-	memcpy(t, e[max_index], sizeof(double) * nreal);
-	
-	for(i = 0 ; i < 2 * nobj ; i++)
-		free(e[i]);
-	free(e);
-}
-
-int no_extreme(individual *ind)
-{
-	if(ind->crowd_dist < INF) return 1 ;
-	else return 0 ;
+	memcpy(t, pool[max_index], sizeof(double) * nreal);
 }
 
 int generate_opposite_vector_q3(double *s, double *t, double *d)
@@ -413,39 +593,6 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 		}
 	}
 	return ccount ;
-}
-
-void get_extreme_vectors(population *pop, int popsize, double **vec, int v_size, 
-						int (*chooser)(individual *ind))
-{
-	int i ;
-	pop_list *lst = new_list();
-	for( i = 0 ; i < popsize ; i++)
-		push_back(lst, &(pop->ind[i]));
-	for(i = 0 ; i < v_size ; i++)
-	{
-		node* ptr = get_extreme_node(lst, chooser);
-		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
-		erase(lst, ptr);
-	}
-	free_list(lst);
-}
-
-node* get_extreme_node(pop_list *lst, int (*chooser)(individual *ind))
-{
-	double max_dist = -1.0 ;
-	node *curr = lst->head;
-        node *ptr = lst->head ;	
-	while(curr != END)
-	{
-		if(curr->ind->crowd_dist >= max_dist && (*chooser)(curr->ind))
-		{
-			max_dist = curr->ind->crowd_dist ;
-			ptr = curr ;
-		}
-		curr = curr->next ;
-	}
-	return ptr ;
 }
 
 void gather_opposite_source_pop(population *pop, int popsize, population 

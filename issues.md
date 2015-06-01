@@ -20,7 +20,7 @@ Currently total of 3 schemes have been tried:
 
 **Note:** What if the points e* are not on the true PF? In that case, Scheme2 should be better. But this is not tested yet. Therefore, a better way could be like Scheme4 --
 
-**Scheme4:** Compute hypervolume hv_e* from M points in e* and compute hypervolume hv_e from M points in e. If (hv_e* > hv_e) then include e* in the pool (i.e. pool = {e* U g}), otherwise include e in the pool (i.e. pool = {e U g}). Now randomly select M points from the pool and find the furthest one. Now generate opposite point near it. 
+**Scheme4:** Compute hypervolume hv_e* from M points in e* and compute hypervolume hv_e from M points in e. If (hv_e* > hv_e) then include e* in the pool (i.e. pool = {e* U g}), otherwise include e in the pool (i.e. pool = {e U g}). Now randomly select M points from the pool and find the furthest one. Now generate opposite point near it. Computing hypervolume will be expensive for many objectives, so what we have done is, instead of computing hypervolume, we computed the volume of the n-simplex built from n+1 points to compare the points in e and e*. This approach makes the algorithm more streamlined, and paramterless. The results are similar as before. But the algorithm will work even if the initial ga-run can't find the true extreme points. 
 
 ### Results (snapshots, eyeballing):
 

@@ -18,7 +18,7 @@
 /* # define zdt3 */
 /* # define zdt4 */
 /* # define zdt5 */
- # define zdt6 
+/* # define zdt6 */
 /* # define bnh  */
 /* # define osy  */
 /* # define srn  */
@@ -34,7 +34,7 @@
 
 /* some mop's with nobj > 2 */
 /* # define dtlz1 */
-/* # define dtlz2 */
+ # define dtlz2 
 /* # define dtlz3 */
 /* # define dtlz4 */
 /* # define dtlz5 */

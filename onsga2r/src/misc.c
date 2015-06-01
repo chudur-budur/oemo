@@ -9,6 +9,20 @@
 #include "global.h"
 #include "rand.h"
 
+int factorial(int n)
+{
+	int i ; 
+	int fact = 1 ;
+	if(n <= 0)
+		return fact ;
+	else
+	{
+		for(i = 1 ; i <= n ; i++) 
+			fact = fact * i ;
+		return fact ;	
+	}
+}
+
 /* dumps the population to a file/stdout */
 void dump_population (population *pop, int popsize, FILE *fpt)
 {
@@ -32,39 +46,39 @@ void dumpf_individual(individual *ind, FILE *fpt)
 	for (j = 0 ; j < nobj ; j++)
 	{
 		if(j == 0)		
-			fprintf(fpt,"[%e, ", ind->obj[j]);
+			fprintf(fpt,"[%.4f, ", ind->obj[j]);
 		else if (j == nobj-1)
-			fprintf(fpt,"%e] ",  ind->obj[j]);
+			fprintf(fpt,"%.4f] ",  ind->obj[j]);
 		else
-			fprintf(fpt,"%e, ",  ind->obj[j]);
+			fprintf(fpt,"%.4f, ",  ind->obj[j]);
 	}
 	if (ncon != 0)
 		for (j = 0 ; j < ncon ; j++)
 		{
 			if(j == 0)		
-				fprintf(fpt,"[[%e, ",ind->constr[j]);
+				fprintf(fpt,"[[%.4f, ",ind->constr[j]);
 			else if (j == ncon-1)
-				fprintf(fpt,"%e]] ", ind->constr[j]);
+				fprintf(fpt,"%.4f]] ", ind->constr[j]);
 			else
-				fprintf(fpt,"%e, ",  ind->constr[j]);
+				fprintf(fpt,"%.4f, ",  ind->constr[j]);
 		}
 	if (nreal != 0)
 		for (j = 0 ; j < nreal ; j++)
 		{
 			if(j == 0)		
-				fprintf(fpt,"{%e, ",ind->xreal[j]);
+				fprintf(fpt,"{%.4f, ",ind->xreal[j]);
 			else if (j == nreal-1)
-				fprintf(fpt,"%e} ", ind->xreal[j]);
+				fprintf(fpt,"%.4f} ", ind->xreal[j]);
 			else
-				fprintf(fpt,"%e, ", ind->xreal[j]);
+				fprintf(fpt,"%.4f, ", ind->xreal[j]);
 		}
 	if (nbin != 0)
 		for (j = 0 ; j < nbin ; j++)
 			for (k = 0 ; k < nbits[j] ; k++)
 				fprintf(fpt,"%d", ind->gene[j][k]);
-	fprintf(fpt,"[[%e]] ",	ind->constr_violation);
+	fprintf(fpt,"[[%.4f]] ",	ind->constr_violation);
 	fprintf(fpt,"<%d> ",	ind->rank);
-	fprintf(fpt,"(%e) ",	ind->crowd_dist);
+	fprintf(fpt,"(%.4f) ",	ind->crowd_dist);
 	fprintf(fpt,"|%d|\n",	ind->is_opposite);
 }
 
@@ -72,13 +86,13 @@ void dump_individual(individual *ind, FILE *fpt)
 {
 	int j, k ;
 	for (j = 0 ; j < nobj ; j++)		
-		fprintf(fpt,"%e\t", ind->obj[j]);
+		fprintf(fpt,"%.4f\t", ind->obj[j]);
 	if (ncon != 0)
 		for (j = 0 ; j < ncon ; j++)
-			fprintf(fpt,"%e\t",ind->constr[j]);
+			fprintf(fpt,"%.4f\t",ind->constr[j]);
 	if (nreal != 0)
 		for (j = 0 ; j < nreal ; j++)
-			fprintf(fpt,"%e\t",ind->xreal[j]);
+			fprintf(fpt,"%.4f\t",ind->xreal[j]);
 	if (nbin != 0)
 		for (j = 0 ; j < nbin ; j++)
 		{
@@ -86,9 +100,9 @@ void dump_individual(individual *ind, FILE *fpt)
 				fprintf(fpt,"%d", ind->gene[j][k]);
 			fprintf(fpt, "\t");
 		}
-	fprintf(fpt,"%e\t",	ind->constr_violation);
+	fprintf(fpt,"%.4f\t",	ind->constr_violation);
 	fprintf(fpt,"%d\t",	ind->rank);
-	fprintf(fpt,"%e\t",	ind->crowd_dist);
+	fprintf(fpt,"%.4f\t",	ind->crowd_dist);
 	fprintf(fpt,"%d\n",	ind->is_opposite);
 }
 
@@ -122,25 +136,72 @@ void evaluate_and_print_vector(double *x, int nreal, FILE *fpt)
 	free(ind);
 }
 
-/* get the best individual vector in O(n) */
-void get_best_individual_vector(population *pop, int popsize, int obj_index, double *best_vec)
+void get_extreme_individuals(population *pop, int popsize, individual **ind, int size,
+					int (*comparator)(individual *i1, individual *i2))
+{
+	int i ;
+	pop_list *lst = new_list();
+	for( i = 0 ; i < popsize ; i++)
+		push_back(lst, &(pop->ind[i]));
+	for(i = 0 ; i < size ; i++)
+	{
+		node* ptr = get_extreme_node(lst, comparator);
+		indcpy(ptr->ind, ind[i]);
+		erase(lst, ptr);
+	}
+	free_list(lst);
+}
+
+void get_extreme_individual_vectors(population *pop, int popsize, double **vec, int size, 
+					int (*comparator)(individual *i1, individual *i2))
+{
+	int i ;
+	pop_list *lst = new_list();
+	for( i = 0 ; i < popsize ; i++)
+		push_back(lst, &(pop->ind[i]));
+	for(i = 0 ; i < size ; i++)
+	{
+		node* ptr = get_extreme_node(lst, comparator);
+		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
+		erase(lst, ptr);
+	}
+	free_list(lst);
+}
+
+node* get_extreme_node(pop_list *lst, int (*comparator)(individual *i1, individual *i2))
+{
+	node *best = lst->head ;
+	node *curr = lst->head->next;
+	while(curr != END)
+	{
+		if((*comparator)(curr->ind, best->ind))
+			best = curr ; 
+		curr = curr->next ;
+	}
+	return best ;
+}
+
+/* get the individual vector in O(n) w.r.t. some comparison op. */
+void get_extreme_individual_vector(population *pop, int popsize, double *best_vec,
+				int (*comparator)(individual *i1, individual *i2))
 {
 	int i ;
 	individual *best_ind = &(pop->ind[0]) ;
 	for (i = 1 ; i < popsize ; i++)
-		if(pop->ind[i].obj[obj_index] <= best_ind->obj[obj_index])
+		if((*comparator)(&pop->ind[i], best_ind))
 			best_ind = &(pop->ind[i]) ;
 	memcpy(best_vec, best_ind->xreal, sizeof(double) * nreal);
 	best_ind = NULL ;
 }
 
-/* get the best individual vector in O(n) */
-void get_best_individual(population *pop, int popsize, int obj_index, individual *best_ind)
+/* get the individual in O(n) w.r.t some comparison op. */
+void get_extreme_individual(population *pop, int popsize, individual *best_ind, 
+				int (*comparator) (individual *i1, individual *i2))
 {
 	int i ;
 	individual *temp_best = &(pop->ind[0]) ;
 	for (i = 1 ; i < popsize ; i++)
-		if(pop->ind[i].obj[obj_index] <= temp_best->obj[obj_index])
+		if((*comparator)(&pop->ind[i], temp_best))
 			temp_best = &(pop->ind[i]) ;
 	indcpy(temp_best, best_ind);
 	temp_best = NULL ;
@@ -174,7 +235,6 @@ int partition_(individual *ind, int p, int r, int (*comparator)(individual *i1, 
 	i = p - 1 ;
 	for(j = p ; j < r ; j++)
 	{
-		/*if(ind[j].obj[obj_index] <= x->obj[obj_index])*/
 		if((*comparator)(&ind[j], x))
 		{
 			i++ ;
