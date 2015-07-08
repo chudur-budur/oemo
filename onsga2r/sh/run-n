@@ -60,6 +60,9 @@ do
 	if [ -f all_survived.out ]; then
 		cp all_survived.out "$targetdir/all_survived-$i.out" ;
 	fi
+	if [ -f all_extreme.out ]; then
+		cp all_extreme.out "$targetdir/all_extreme-$i.out" ;
+	fi
 	if [ -f all_survival_stat.out ]; then
 		cp all_survival_stat.out "$targetdir/all_survival_stat-$i.out" ;
 	fi

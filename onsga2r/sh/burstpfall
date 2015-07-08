@@ -25,6 +25,10 @@ nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
 nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
 	experiments/onsga2r/$probname/all_pop- \
 	experiments/onsga2r/$probname/ >& /dev/null & 
+
+nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
+    	experiments/onsga2r/$probname/all_extreme- \
+    	experiments/onsga2r/$probname/ >& /dev/null &
 	
 nohup ./sh/burstpfn $minrun $maxrun $mingen $maxgen \
     	experiments/onsga2r/$probname/all_source- \

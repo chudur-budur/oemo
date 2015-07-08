@@ -2,7 +2,7 @@
 # generates a set of N random seed
 
 n=$1
-outfile=input_data/$2
+outfile=$2
 
 _usage()
 {
@@ -22,8 +22,8 @@ fi
 for (( i=0; i<$n; i++ ))
 do
 	if [[ i == 0 ]]; then
-		printf "%0.4f\n" $(bc <<< scale=9\;$RANDOM/32767) > $outfile ;
+		printf "%0.5f\n" $(bc <<< scale=9\;$RANDOM/32767) > $outfile ;
 	else
-		printf "%0.4f\n" $(bc <<< scale=9\;$RANDOM/32767) >> $outfile ;
+		printf "%0.5f\n" $(bc <<< scale=9\;$RANDOM/32767) >> $outfile ;
 	fi
 done

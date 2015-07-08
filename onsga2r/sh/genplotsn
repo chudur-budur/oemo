@@ -25,6 +25,7 @@ do
 			experiments/onsga2r/$probname/pfplots-run-$i \
 			experiments/nsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \
 			experiments/onsga2r/$probname/pfsnaps-run-$i/all_pop-$i-gen- \
+			experiments/onsga2r/$probname/pfsnaps-run-$i/all_extreme-$i-gen- \
 			experiments/onsga2r/$probname/pfsnaps-run-$i/all_source-$i-gen- \
 			experiments/onsga2r/$probname/pfsnaps-run-$i/all_opposite-$i-gen- \
 			experiments/onsga2r/$probname/pfsnaps-run-$i/all_survived-$i-gen- >& /dev/null &

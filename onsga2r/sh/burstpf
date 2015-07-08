@@ -39,9 +39,12 @@ for (( i=$mingen; i<=$maxgen; i++ ))
 do
 	echo "making snaps for gen = $i" ;
 	j=$(( i+1 ));
-	regex="/# gen = $i$/,/# gen = $j$/" ;
+	regex="/# gen = $i\tfe = /,/# gen = $j\tfe = /" ;
 	awkreturn=`awk "$regex" "$srcfile" | head -n-1`
 	if [ -n "$awkreturn" ]; then
+		if [ -f "${destdir}/${prefix}-gen-${i}.out" ]; then
+			rm -f "${destdir}/${prefix}-gen-${i}.out" ;
+		fi
 		awk "$regex" "$srcfile" | head -n-1 > "${destdir}/${prefix}-gen-${i}.out" ;
 	fi
 done

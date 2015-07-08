@@ -26,8 +26,5 @@ for (( i=$startrun; i<=$endrun; i++ ))
 do
 	srcfile="$srcfileprefix$i.out" ;
 	destdir="$destdirprefix-$i" ;
-	if [ ! -d "$destdir" ]; then
-		mkdir $destdir ;
-	fi
 	./sh/burstpf "$mingen" "$maxgen" "$srcfile" "$destdir" ;
 done
