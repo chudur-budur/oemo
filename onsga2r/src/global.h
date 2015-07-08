@@ -31,10 +31,10 @@
 /* zdt sets */
 /* # define zdt1 */
 /* # define zdt2 */
- # define zdt3 
+/* # define zdt3 */
 /* # define zdt4 */
 /* # define zdt5 */
-/* # define zdt6 */
+ # define zdt6 
 
 /* some mop's with nobj > 2 */
 /* # define dtlz1 */
