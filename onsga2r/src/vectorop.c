@@ -129,16 +129,16 @@ double get_determinant(double **matrix, int n)
 	}
 	else if (n == 1)
 		det = matrix[0][0] ;
-	else if (n == 2)               
-		det = matrix[0][0] * matrix[1][1] 
-			- matrix[1][0] * matrix[0][1] ;
+	else if (n == 2)
+		det = matrix[0][0] * matrix[1][1]
+		      - matrix[1][0] * matrix[0][1] ;
 	// recursion continues, solve next sub-matrix
 	// solve the next minor by building a
-	else                               
+	else
 	{
 		// sub matrix
 		// initialize determinant of sub-matrix
-		det = 0 ;                      
+		det = 0 ;
 		// for each column in sub-matrix
 		for (j1 = 0 ; j1 < n ; j1++)
 		{
@@ -159,18 +159,18 @@ double get_determinant(double **matrix, int n)
 			for (i = 1 ; i < n ; i++)
 			{
 				// start at first sum-matrix column position
-				j2 = 0 ;               
+				j2 = 0 ;
 				// loop to copy source matrix less one column
 				for (j = 0 ; j < n ; j++)
 				{
 					// don't copy the minor column element
 					if (j == j1) continue ;
 					// copy source element into new sub-matrix
-					m[i-1][j2] = matrix[i][j] ;  
+					m[i-1][j2] = matrix[i][j] ;
 					// i-1 because new sub-matrix is one row
 					// (and column) smaller with excluded minors
 					// move to next sub-matrix column position
-					j2++ ;                  
+					j2++ ;
 				}
 			}
 			det += pow(-1.0,1.0 + j1 + 1.0) * matrix[0][j1] * get_determinant(m,n-1) ;
@@ -185,6 +185,21 @@ double get_determinant(double **matrix, int n)
 	return det ;
 }
 
+/**
+ * comparison functions for two floating point number
+ * w.r.t a given tolerance delta
+ */
+/* a == b */
+int fltcmp(double a, double b, double delta)
+{
+	double diff = (a - b) ;
+	int ret = 0 ;
+	if(fabs(diff) < delta) ret = 0 ; /* a == b */
+	else if(diff > 0 && fabs(diff) > delta) ret = 1 ; /* a < b */
+	else if(diff < 0 && fabs(diff) > delta) ret = -1 ; /* a > b */
+	return ret ;
+}
+
 /* prints a vector */
 void print_vector(double *x, int length, FILE *fpt)
 {
@@ -192,6 +207,58 @@ void print_vector(double *x, int length, FILE *fpt)
 	for(i = 0 ; i < length ; i++)
 		fprintf(fpt, "%0.4f ", x[i]);
 	return ;
+}
+
+double bracket(double x)
+{
+	if(x < 0)
+		return fabs(x);
+	else
+		return 0.0 ;
+}
+
+int factorial(int n)
+{
+	int i ;
+	int fact = 1 ;
+	if(n <= 0)
+		return fact ;
+	else
+	{
+		for(i = 1 ; i <= n ; i++)
+			fact = fact * i ;
+		return fact ;
+	}
+}
+
+double max(double a, double b)
+{
+	if(a > b) return a ;
+	else return b ;
+}
+
+double max_n(double *x, int length)
+{
+	int i ;
+	double max_val = x[0] ;
+	for(i = 1 ; i < length ; i++)
+		if(x[i] > max_val)
+			max_val = x[i] ;
+	return max_val ;
+}
+
+double sum(double a, double b)
+{
+	return (a + b) ;
+}
+
+double sum_n(double *x, int length)
+{
+	int i ;
+	double sum_val = 0.0 ;
+	for(i = 0 ; i < length ; i++)
+		sum_val += x[i] ;
+	return sum_val ;
 }
 
 /* a main to test */

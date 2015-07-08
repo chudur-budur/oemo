@@ -51,14 +51,6 @@ individual* tournament (individual *ind1, individual *ind2)
 {
 	int flag;
 	flag = check_dominance (ind1, ind2);
-	/*if (ind1->crowd_dist > ind2->crowd_dist)
-	{
-		return(ind1);
-	}
-	if (ind2->crowd_dist > ind1->crowd_dist)
-	{
-		return(ind2);
-	}*/
 	if (flag==1)
 	{
 		return (ind1);

@@ -7,7 +7,12 @@
 # include "global.h"
 # include "rand.h"
 
-/* Insert an element X into the list at location specified by NODE */
+/**
+ * Insert an element X into the list at location specified by NODE
+ * NULL<--[node]-->NULL
+ * [temp]-->NULL
+ * <--[temp]-->NULL
+ */
 void insert (list *node, int x)
 {
 	list *temp;
@@ -39,6 +44,8 @@ list* del (list *node)
 	}
 	temp = node->parent;
 	temp->child = node->child;
+	/*temp = node ;
+	node->parent->child = node->child ;*/
 	if (temp->child!=NULL)
 	{
 		temp->child->parent = temp;

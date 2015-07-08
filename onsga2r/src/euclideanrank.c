@@ -8,7 +8,7 @@
 # include "rand.h"
 
 /* Function to assign rank and crowding distance to a population of size pop_size*/
-void assign_rank_and_crowding_distance (population *new_pop)
+void assign_rank_and_euclidean_crowding_distance (population *new_pop)
 {
 	int flag;
 	int i;
@@ -87,7 +87,7 @@ void assign_rank_and_crowding_distance (population *new_pop)
 			temp2 = temp2->child;
 		}
 		while (temp2 != NULL);
-		assign_crowding_distance_list (new_pop, cur->child, front_size);
+		assign_euclidean_crowding_distance_list (new_pop, cur->child, front_size);
 		temp2 = cur->child;
 		do
 		{
@@ -108,7 +108,7 @@ void assign_rank_and_crowding_distance (population *new_pop)
 	return;
 }
 
-void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize)
+void assign_rank_and_euclidean_crowding_distance_with_size (population *new_pop, int psize)
 {
 	int flag;
 	int i;
@@ -128,7 +128,7 @@ void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize
 	cur->parent = NULL;
 	cur->child = NULL;
 	temp1 = orig;
-	for (i = 0; i < psize; i++)
+	for (i=0; i<psize; i++)
 	{
 		insert (temp1,i);
 		temp1 = temp1->child;
@@ -187,7 +187,7 @@ void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize
 			temp2 = temp2->child;
 		}
 		while (temp2 != NULL);
-		assign_crowding_distance_list (new_pop, cur->child, front_size);
+		assign_euclidean_crowding_distance_list (new_pop, cur->child, front_size);
 		temp2 = cur->child;
 		do
 		{
