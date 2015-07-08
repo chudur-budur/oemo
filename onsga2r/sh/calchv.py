@@ -53,9 +53,9 @@ def dump_hv_stats(path, prob_name, algo_name, max_gen, max_run):
         a = np.array(hv_lst)
         iqr = [header[0], \
                 '{:.3f}'.format(np.min(a)), \
-                '{:.3f}'.format(np.percentile(a,25)), \
+                '{:.3f}'.format(np.percentile(a, 25)), \
                 '{:.3f}'.format(np.percentile(a, 50)), \
-                '{:.3f}'.format(np.percentile(a,75)), \
+                '{:.3f}'.format(np.percentile(a, 75)), \
                 '{:.3f}'.format(np.max(a)), \
                 '{:.3f}'.format(np.mean(a))]
         fd.write('\t'.join(iqr))
