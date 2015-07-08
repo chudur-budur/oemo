@@ -43,5 +43,4 @@ clean:
 	rm -f \#*\#
 	rm -f input_data/*~
 	rm -f input_data/\#*\#
-	rm -f wfg-1.10/*.o wfg-1.10/wfg
-	rm -f wfg-1.10/wfg wfg
+	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
