@@ -112,20 +112,10 @@ How to run these craps.
 		-- do number 11 and 12 serially.
 
 ======================================= TODO ======================================================
-1. fix min-max
-	-- canonical opposition does not work
-2. 50 - 50 inject shuffle
-	-- not much improvement, parent + child + opposite was better
-3. tweak extreme points
-	-- not much difference, why ?
-6. plot the variable space
-7. bin approach, do asf wise convergence and extrapolate within bins, bin based opposition
-4. do opposite on both ways for generalization
-5. 50% prob generic, 50% prob opposition, pairwise difference in objecctives to choose 2 extreme points
-6. do similar staffs like 3 but with centroid
-7. center of gravity in the objective space vs cog in the x space
-8. pca -> 2 sig eigen vector -> completely different approach with wholes in pca space
-
+1. fix makefile (changing header does not recompile the source)
+1. implement rga
+2. do euclidean dist in crowd_dist (done, slightly better in 3 obj)
+3. fix the extreme point update with weak domination (just apply non-dominated sort on E)
 
 
 
