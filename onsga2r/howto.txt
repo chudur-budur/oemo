@@ -116,7 +116,12 @@ How to run these craps.
 1. implement rga
 2. do euclidean dist in crowd_dist (done, slightly better in 3 obj)
 3. fix the extreme point update with weak domination (just apply non-dominated sort on E)
-
+======================================= TODO ======================================================
+4. change rng call to make identical initial pop
+5. replace rga with fmincon
+6. implement modified dtlz problems wihtout weak points
+7. merge 3 way plots -- nsga2+extreme, onsga2, nsga2+no-extreme + FE eval to fins extremes
+8. rewrite scripts in python, numpy and matplotlib
 
 
 

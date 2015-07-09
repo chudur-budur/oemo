@@ -40,11 +40,11 @@ int angle2;
 int main (int argc, char **argv)
 {
 	int i, feval = 0 ;
-	FILE *fpt1;
-	FILE *fpt2;
-	FILE *fpt3;
-	FILE *fpt4;
-	FILE *fpt5;
+	FILE *fpt_init_pop;
+	FILE *fpt_final_pop;
+	FILE *fpt_best_pop;
+	FILE *fpt_all_pop;
+	FILE *fpt_params;
 	FILE *gp;
 	population *parent_pop;
 	population *child_pop;
@@ -60,16 +60,16 @@ int main (int argc, char **argv)
 		printf("\n Entered seed value is wrong, seed value must be in (0,1) \n");
 		exit(1);
 	}
-	fpt1 = fopen("initial_pop.out","w");
-	fpt2 = fopen("final_pop.out","w");
-	fpt3 = fopen("best_pop.out","w");
-	fpt4 = fopen("all_pop.out","w");
-	fpt5 = fopen("params.out","w");
-	fprintf(fpt1,"# This file contains the data of initial population\n");
-	fprintf(fpt2,"# This file contains the data of final population\n");
-	fprintf(fpt3,"# This file contains the data of final feasible population (if found)\n");
-	fprintf(fpt4,"# This file contains the data of all generations\n");
-	fprintf(fpt5,"# This file contains information about inputs as read by the program\n");
+	fpt_init_pop = fopen("initial_pop.out","w");
+	fpt_final_pop = fopen("final_pop.out","w");
+	fpt_best_pop = fopen("best_pop.out","w");
+	fpt_all_pop = fopen("all_pop.out","w");
+	fpt_params = fopen("params.out","w");
+	fprintf(fpt_init_pop,"# This file contains the data of initial population\n");
+	fprintf(fpt_final_pop,"# This file contains the data of final population\n");
+	fprintf(fpt_best_pop,"# This file contains the data of final feasible population (if found)\n");
+	fprintf(fpt_all_pop,"# This file contains the data of all generations\n");
+	fprintf(fpt_params,"# This file contains information about inputs as read by the program\n");
 	printf("\n Enter the problem relevant and algorithm relevant parameters ... ");
 	printf("\n Enter the population size (a multiple of 4) : ");
 	scanf("%d",&popsize);
@@ -318,36 +318,36 @@ int main (int argc, char **argv)
 		}
 	}
 	printf("\n Input data successfully entered, now performing initialization \n");
-	fprintf(fpt5,"\n Population size = %d",popsize);
-	fprintf(fpt5,"\n Number of generations = %d",ngen);
-	fprintf(fpt5,"\n Number of objective functions = %d",nobj);
-	fprintf(fpt5,"\n Number of constraints = %d",ncon);
-	fprintf(fpt5,"\n Number of real variables = %d",nreal);
+	fprintf(fpt_params,"\n Population size = %d",popsize);
+	fprintf(fpt_params,"\n Number of generations = %d",ngen);
+	fprintf(fpt_params,"\n Number of objective functions = %d",nobj);
+	fprintf(fpt_params,"\n Number of constraints = %d",ncon);
+	fprintf(fpt_params,"\n Number of real variables = %d",nreal);
 	if (nreal!=0)
 	{
 		for (i=0; i<nreal; i++)
 		{
-			fprintf(fpt5,"\n Lower limit of real variable %d = %e",i+1,min_realvar[i]);
-			fprintf(fpt5,"\n Upper limit of real variable %d = %e",i+1,max_realvar[i]);
+			fprintf(fpt_params,"\n Lower limit of real variable %d = %e",i+1,min_realvar[i]);
+			fprintf(fpt_params,"\n Upper limit of real variable %d = %e",i+1,max_realvar[i]);
 		}
-		fprintf(fpt5,"\n Probability of crossover of real variable = %e",pcross_real);
-		fprintf(fpt5,"\n Probability of mutation of real variable = %e",pmut_real);
-		fprintf(fpt5,"\n Distribution index for crossover = %e",eta_c);
-		fprintf(fpt5,"\n Distribution index for mutation = %e",eta_m);
+		fprintf(fpt_params,"\n Probability of crossover of real variable = %e",pcross_real);
+		fprintf(fpt_params,"\n Probability of mutation of real variable = %e",pmut_real);
+		fprintf(fpt_params,"\n Distribution index for crossover = %e",eta_c);
+		fprintf(fpt_params,"\n Distribution index for mutation = %e",eta_m);
 	}
-	fprintf(fpt5,"\n Number of binary variables = %d",nbin);
+	fprintf(fpt_params,"\n Number of binary variables = %d",nbin);
 	if (nbin!=0)
 	{
 		for (i=0; i<nbin; i++)
 		{
-			fprintf(fpt5,"\n Number of bits for binary variable %d = %d",i+1,nbits[i]);
-			fprintf(fpt5,"\n Lower limit of binary variable %d = %e",i+1,min_binvar[i]);
-			fprintf(fpt5,"\n Upper limit of binary variable %d = %e",i+1,max_binvar[i]);
+			fprintf(fpt_params,"\n Number of bits for binary variable %d = %d",i+1,nbits[i]);
+			fprintf(fpt_params,"\n Lower limit of binary variable %d = %e",i+1,min_binvar[i]);
+			fprintf(fpt_params,"\n Upper limit of binary variable %d = %e",i+1,max_binvar[i]);
 		}
-		fprintf(fpt5,"\n Probability of crossover of binary variable = %e",pcross_bin);
-		fprintf(fpt5,"\n Probability of mutation of binary variable = %e",pmut_bin);
+		fprintf(fpt_params,"\n Probability of crossover of binary variable = %e",pcross_bin);
+		fprintf(fpt_params,"\n Probability of mutation of binary variable = %e",pmut_bin);
 	}
-	fprintf(fpt5,"\n Seed for random number generator = %e",seed);
+	fprintf(fpt_params,"\n Seed for random number generator = %e",seed);
 	bitlength = 0;
 	if (nbin!=0)
 	{
@@ -356,10 +356,10 @@ int main (int argc, char **argv)
 			bitlength += nbits[i];
 		}
 	}
-	fprintf(fpt1,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-	fprintf(fpt2,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-	fprintf(fpt3,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-	fprintf(fpt4,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_init_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_final_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_best_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_all_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	nbinmut = 0;
 	nrealmut = 0;
 	nbincross = 0;
@@ -370,28 +370,42 @@ int main (int argc, char **argv)
 	allocate_memory_pop (parent_pop, popsize);
 	allocate_memory_pop (child_pop, popsize);
 	allocate_memory_pop (mixed_pop, 2*popsize);
+	
 	randomize();
-	initialize_pop (parent_pop);
 	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
+	fprintf(stdout, "****** rga total function eval: %d\n", feval); 	
+	
+	initialize_pop (parent_pop);
 	inject_extreme_points(parent_pop, popsize);
+
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
 	feval += popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
 	/*assign_rank_and_euclidean_crowding_distance (parent_pop);*/
-	report_pop (parent_pop, fpt1);
-	fprintf(fpt4,"# gen = 1\tfe = %d\n", feval);
-	report_pop(parent_pop,fpt4);
+
+	/*report_pop (parent_pop, fpt_init_pop);*/
+	dump_population(parent_pop, popsize, fpt_init_pop);
+	fprintf(fpt_all_pop,"# gen = 1\tfe = %d\n", feval);
+	/*report_pop(parent_pop,fpt_all_pop);*/
+	dump_population(parent_pop, popsize, fpt_all_pop);
+
 	printf("\n gen = 1\tfe = %d", feval);
+	
 	fflush(stdout);
 	if (choice!=0)    onthefly_display (parent_pop,gp,1);
-	fflush(fpt1);
-	fflush(fpt2);
-	fflush(fpt3);
-	fflush(fpt4);
-	fflush(fpt5);
+	
+	fflush(fpt_init_pop);
+	fflush(fpt_final_pop);
+	fflush(fpt_best_pop);
+	fflush(fpt_all_pop);
+	fflush(fpt_params);
+	
 	sleep(1);
+	printf("\n");
+
+	randomize();	
 	for (i=2; i<=ngen; i++)
 	{
 		selection (parent_pop, child_pop);
@@ -405,36 +419,37 @@ int main (int argc, char **argv)
 		/*fill_nondominated_sort_euclidean (mixed_pop, parent_pop);*/
 		/* Comment following four lines if information for all
 		generations is not desired, it will speed up the execution */
-		fprintf(fpt4,"# gen = %d\tfe = %d\n",i, feval);
-		report_pop(parent_pop,fpt4);
-		fflush(fpt4);
+		fprintf(fpt_all_pop,"# gen = %d\tfe = %d\n",i, feval);
+		/*report_pop(parent_pop,fpt_all_pop);*/
+		dump_population(parent_pop, popsize, fpt_all_pop);
+		fflush(fpt_all_pop);
 		if (choice!=0)    onthefly_display (parent_pop,gp,i);
 		printf("\n gen = %d\tfe = %d",i, feval);
 	}
 	printf("\n Generations finished, now reporting solutions");
-	report_pop(parent_pop,fpt2);
-	report_feasible(parent_pop,fpt3);
+	report_pop(parent_pop,fpt_final_pop);
+	report_feasible(parent_pop,fpt_best_pop);
 	if (nreal!=0)
 	{
-		fprintf(fpt5,"\n Number of crossover of real variable = %d",nrealcross);
-		fprintf(fpt5,"\n Number of mutation of real variable = %d",nrealmut);
+		fprintf(fpt_params,"\n Number of crossover of real variable = %d",nrealcross);
+		fprintf(fpt_params,"\n Number of mutation of real variable = %d",nrealmut);
 	}
 	if (nbin!=0)
 	{
-		fprintf(fpt5,"\n Number of crossover of binary variable = %d",nbincross);
-		fprintf(fpt5,"\n Number of mutation of binary variable = %d",nbinmut);
+		fprintf(fpt_params,"\n Number of crossover of binary variable = %d",nbincross);
+		fprintf(fpt_params,"\n Number of mutation of binary variable = %d",nbinmut);
 	}
 	fflush(stdout);
-	fflush(fpt1);
-	fflush(fpt2);
-	fflush(fpt3);
-	fflush(fpt4);
-	fflush(fpt5);
-	fclose(fpt1);
-	fclose(fpt2);
-	fclose(fpt3);
-	fclose(fpt4);
-	fclose(fpt5);
+	fflush(fpt_init_pop);
+	fflush(fpt_final_pop);
+	fflush(fpt_best_pop);
+	fflush(fpt_all_pop);
+	fflush(fpt_params);
+	fclose(fpt_init_pop);
+	fclose(fpt_final_pop);
+	fclose(fpt_best_pop);
+	fclose(fpt_all_pop);
+	fclose(fpt_params);
 	if (choice!=0)
 	{
 		pclose(gp);

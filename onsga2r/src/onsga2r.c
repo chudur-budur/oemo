@@ -412,21 +412,20 @@ int main (int argc, char **argv)
 
 	allocate_memory_pop (parent_pop, popsize);
 	allocate_memory_pop (child_pop, popsize);
-
 	allocate_memory_pop (mixed_pop, 2 * popsize);
-
 	/* opposition stuff */
 	allocate_memory_pop (opposite_pop, opposite_popsize);
 	allocate_memory_pop (opposite_source_pop, opposite_popsize);
 
 	randomize();
+	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
+	fprintf(stdout, "****** rga total function eval: %d\n", feval); 
+
 	initialize_pop (parent_pop);
+	inject_extreme_points(parent_pop, popsize);
 	/* opposition stuff */
 	initialize_pop_with_size (opposite_pop, opposite_popsize);
 	initialize_pop_with_size (opposite_source_pop, opposite_popsize);
-	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
-	fprintf(stdout, "****** rga total function eval: %d\n", feval); 
-	inject_extreme_points(parent_pop, popsize);
 
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
@@ -434,7 +433,13 @@ int main (int argc, char **argv)
 	feval += popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
 	/* assign_rank_and_euclidean_crowding_distance (parent_pop);*/
-
+	
+	/*report_pop(parent_pop, fpt_init_pop);*/
+	dump_population(parent_pop, popsize, fpt_init_pop);
+	fprintf(fpt_all_pop, "# gen = 1\tfe = %d\n", feval);
+	/*report_pop(parent_pop, fpt_all_pop);*/
+	dump_population(parent_pop, popsize, fpt_all_pop);
+	
 	/* opposition stuff */
 	printf("\n *** Will apply opposition based variation.");
 	corrupted_genes = generate_opposite_population_using_attractor(
@@ -443,12 +448,6 @@ int main (int argc, char **argv)
 	fprintf(stdout, "\n gen = 1\tfe = %d\tcorrupted_genes = %.2f\n", feval, corrupted_genes);
 	/* this evaluation below is not necessary for the original algorithm */
 	evaluate_pop_with_size(opposite_pop, opposite_popsize);
-
-	/*report_pop(parent_pop, fpt_init_pop);*/
-	dump_population(parent_pop, popsize, fpt_init_pop);
-	fprintf(fpt_all_pop,"# gen = 1\tfe = %d\n", feval);
-	/*report_pop(parent_pop, fpt_all_pop);*/
-	dump_population(parent_pop, popsize, fpt_all_pop);
 	/* opposition stuff */
 	fprintf(fpt_all_source,"# gen = 1\tfe = %d\n", feval);
 	dump_population(opposite_source_pop, opposite_popsize, fpt_all_source);
@@ -474,6 +473,7 @@ int main (int argc, char **argv)
 	sleep(1);
 	printf("\n");
 
+	randomize();
 	for (i=2; i<=ngen; i++)
 		/* for (i=2; i<=2; i++) */
 	{
