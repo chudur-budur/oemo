@@ -9,7 +9,9 @@ SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
 CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
 LDFLAGS 	:= -lm 
-OBJ 		:= $(SRC:.c=.o)
+# OBJ 		:= $(SRC:.c=.o)
+OBJ 		:= $(patsubst %c,%o,$(SRC))
+DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg whv
 
@@ -24,13 +26,13 @@ nsga2r: $(OBJ) src/nsga2r.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 src/nsga2r.o: src/nsga2r.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/onsga2r.o: src/onsga2r.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
@@ -40,7 +42,10 @@ whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/whv-pisa/premo_wdfs.h $^ -o $@ $(LDFLAGS)
 	mv whv-pisa/hyp_ind .
 
+-include $(DEPS)
+
 clean:
+	rm -f *.d
 	rm -f $(OBJ) src/nsga2r.o src/onsga2r.o
 	rm -f nsga2r onsga2r
 	rm -f *.out
