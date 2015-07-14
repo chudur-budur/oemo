@@ -122,6 +122,8 @@ How to run these craps.
 6. implement modified dtlz problems wihtout weak points
 7. merge 3 way plots -- nsga2+extreme, onsga2, nsga2+no-extreme + FE eval to fins extremes
 8. rewrite scripts in python, numpy and matplotlib
+9. change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
+10. clean up code
 
 
 
