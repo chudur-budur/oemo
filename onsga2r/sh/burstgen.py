@@ -8,7 +8,7 @@ file_prefixes = ['all_pop-', 'all_source-',
 algorithms = ['onsga2r', 'nsga2r']
 
 
-def burstpf(root_folder, algo_name, file_prefix, problem_name, run):
+def burst_file(root_folder, algo_name, file_prefix, problem_name, run):
     root_path = ""
     if root_folder != "":
         root_path = os.path.join(root_path, root_folder)
@@ -20,7 +20,7 @@ def burstpf(root_folder, algo_name, file_prefix, problem_name, run):
     in_file = os.path.join(root_path, file_name)
     if os.path.exists(in_file):
         try:
-            out_dir = os.path.join(root_path, "pfsnaps-run-" + run)
+            out_dir = os.path.join(root_path, "snaps-run-" + run)
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
             in_fd = open(in_file, 'r')
@@ -50,7 +50,7 @@ def burstpf(root_folder, algo_name, file_prefix, problem_name, run):
 
 def usage():
     print("error: some of the parameters are missing, hence exiting ...")
-    print("Usage: ./burstpf.py [root_folder] [prob_name] [run]\n")
+    print("Usage: ./burstgen.py [root_folder] [prob_name] [run]\n")
     sys.exit()
 
 if __name__ == '__main__':
@@ -61,7 +61,7 @@ if __name__ == '__main__':
             run = sys.argv[3]
         for fp in file_prefixes:
             for algo in algorithms:
-                # burstpf(root_folder, algo_name, fp, prob_name, run)
-                burstpf(sys.argv[1], algo, fp, sys.argv[2], run)
+                # burst_file(root_folder, algo_name, fp, prob_name, run)
+                burst_file(sys.argv[1], algo, fp, sys.argv[2], run)
     else:
         usage()
