@@ -74,6 +74,7 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
             os.makedirs(hv_dir)
         file_name = os.path.join(hv_dir, prob_name + '-' + algo_name + '.stat')
         fd = open(file_name, 'w')
+        gen_fe = {}
         for gen in range(1, max_gen + 1):
             hv_lst = []
             for run in range(1, max_run + 1):
@@ -85,7 +86,7 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
                 [header, fronts] = load_data(path, nobj)
                 hv_lst.append(calc_hv(fronts))
             a = np.array(hv_lst)
-            iqr = [header[0],
+            iqr = [header[1], # header 0 is generation, 1 is fe
                    '{:.3f}'.format(np.min(a)),
                    '{:.3f}'.format(np.percentile(a, 25)),
                    '{:.3f}'.format(np.percentile(a, 50)),
@@ -136,10 +137,13 @@ boxcmd = """
     set term pdf enhanced color
     # set term pdf monochrome
     set style fill noborder
-    set boxwidth 0.6 relative
+    set boxwidth 0.5 relative
     set output \"{0:s}\"
     load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt\'
-    set xrange[0:]
+    # set xrange[0:]
+    set xlabel \'function evaluations\'
+    set ylabel \'hypervolume\'
+    set format x \'%.1s%c\'
     plot \\
         \"{1:s}\"   using 1:3:2:6:5 with candlesticks \\
                     # fs transparent solid 0.3 lt 3 lw 3 title 'nsga2' whiskerbars 0.5, \\
@@ -160,7 +164,7 @@ boxcmd = """
 # ./plothv.py experiments/ zdt1 [13] [blah] [blah]
 if __name__ == '__main__':
     # prob_set = {'zdt1': 13, 'zdt2': 35, 'zdt3': 20, 'zdt4': 20, 'zdt6': 35}
-    prob_set = {'zdt1': 10}
+    prob_set = {'zdt1': 15}
     argv = sys.argv[1:]
     if len(argv) >= 2:
         root_path = argv[0]
