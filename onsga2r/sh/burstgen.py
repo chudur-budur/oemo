@@ -3,19 +3,10 @@
 import os
 import sys
 
-file_prefixes = ['all_pop-', 'all_source-',
-                 'all_opposite-', 'all_extreme-', 'all_survived-']
-algorithms = ['onsga2r', 'nsga2r']
 
-
-def burst_file(root_folder, algo_name, file_prefix, problem_name, run):
+def burst_file(path_lst, file_prefix, run):
     root_path = ""
-    if root_folder != "":
-        root_path = os.path.join(root_path, root_folder)
-    if algo_name != "":
-        root_path = os.path.join(root_path, algo_name)
-    if problem_name != "":
-        root_path = os.path.join(root_path, problem_name)
+    root_path = os.path.join(root_path, *path_lst)
     file_name = file_prefix + run + '.out'
     in_file = os.path.join(root_path, file_name)
     if os.path.exists(in_file):
@@ -53,15 +44,19 @@ def usage():
     print("Usage: ./burstgen.py [root_folder] [prob_name] [run]\n")
     sys.exit()
 
+# Usage:    ./burstgen [root_folder] [prob_name] [run]
+#           ./burstgen experiments/ zdt1 [1]
 if __name__ == '__main__':
-    if len(sys.argv[1:]) > 2:
+    file_prefixes = ['all_pop-', 'all_source-',
+                     'all_opposite-', 'all_extreme-', 'all_survived-']
+    if len(sys.argv[1:]) >= 2:
         if len(sys.argv[1:]) == 2:
-            run = 1
+            run = '1'
         else:
             run = sys.argv[3]
-        for fp in file_prefixes:
-            for algo in algorithms:
-                # burst_file(root_folder, algo_name, fp, prob_name, run)
-                burst_file(sys.argv[1], algo, fp, sys.argv[2], run)
+        for file_prefix in file_prefixes:
+            # burst_file([root_folder, algo_name, prob_name], file_prefix, run)
+            burst_file([sys.argv[1], 'nsga2r', sys.argv[2]], file_prefix, run)
+            burst_file([sys.argv[1], 'onsga2r', sys.argv[2]], file_prefix, run)
     else:
         usage()
