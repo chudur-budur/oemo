@@ -47,16 +47,15 @@ def usage():
 # Usage:    ./burstgen [root_folder] [prob_name] [run]
 #           ./burstgen experiments/ zdt1 [1]
 if __name__ == '__main__':
+    argv = sys.argv[1:]
     file_prefixes = ['all_pop-', 'all_source-',
                      'all_opposite-', 'all_extreme-', 'all_survived-']
-    if len(sys.argv[1:]) >= 2:
-        if len(sys.argv[1:]) == 2:
-            run = '1'
-        else:
-            run = sys.argv[3]
+    if len(argv) >= 2:
+        run = '1' if len(argv) == 2 else (
+            argv[2] if argv[2].isdigit() else '1')
         for file_prefix in file_prefixes:
             # burst_file([root_folder, algo_name, prob_name], file_prefix, run)
-            burst_file([sys.argv[1], 'nsga2r', sys.argv[2]], file_prefix, run)
-            burst_file([sys.argv[1], 'onsga2r', sys.argv[2]], file_prefix, run)
+            burst_file([argv[0], 'nsga2r', argv[1]], file_prefix, run)
+            burst_file([argv[0], 'onsga2r', argv[1]], file_prefix, run)
     else:
         usage()
