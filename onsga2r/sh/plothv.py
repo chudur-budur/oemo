@@ -78,9 +78,11 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
             hv_lst = []
             for run in range(1, max_run + 1):
                 # path = "../experiments/onsga2r/{0:s}/snaps-run-{1:d}/all_pop-gen-{2:d}.out"
-                [header, fronts] = load_data(
-                    os.path.join(root_path, *[algo_name, "{}".format(prob_name),
-                                              "snaps-run-{}".format(run), "all_pop-gen-{}.out".format(gen)]), nobj)
+                path = os.path.join(root_path,
+                                    *[algo_name, "{}".format(prob_name),
+                                      "snaps-run-{}".format(run),
+                                      "all_pop-gen-{}.out".format(gen)])
+                [header, fronts] = load_data(path, nobj)
                 hv_lst.append(calc_hv(fronts))
             a = np.array(hv_lst)
             iqr = [header[0],
@@ -99,37 +101,20 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
     return file_name
 
 
-def plot_box(file_onsga2, file_nsga2):
+def plot_gp(cmd, file_onsga2, file_nsga2):
     print("saving plot")
     pdf_file = replace_file_ext(file_onsga2, 'pdf')
+    command = cmd.format(pdf_file, file_nsga2, file_onsga2)
+    lines = [line + '\n' for line in
+             list(filter((lambda line: len(line) != 0 or line != ''),
+                         [line.strip() for line in command.splitlines()]))]
     try:
         proc = subprocess.Popen(
             ['gnuplot', '-p'], shell=True, stdin=subprocess.PIPE)
-        proc.stdin.write(bytes("set term pdf enhanced color\n", "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes("set boxwidth 0.5 relative\n", "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(
-            bytes("set output \"{:s}\"\n".format(pdf_file), "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "plot \"{:s}\" using 1:3:2:6:5 with candlesticks lt 3 lw 2 title 'Quartiles-nsga2' whiskerbars 0.5, \\\n".format(file_nsga2), "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "\'\'                 using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-nsga2', \\\n", "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "\'\'                 using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-nsga2', \\\n", "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "\"{:s}\" using 1:3:2:6:5 with candlesticks lt 2 lw 2 title 'Quartiles-onsga2' whiskerbars 0.5, \\\n".format(file_onsga2), "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "\'\'                 using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-onsga2', \\\n", "ascii"))
-        proc.stdin.flush()
-        proc.stdin.write(bytes(
-            "\'\'                 using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-onsga2', \\\n", "ascii"))
-        proc.stdin.flush()
+        for line in lines:
+            proc.stdin.write(bytes(line, "ascii"))
+            proc.stdin.flush()
+        proc.stdin.close()
     except Exception as e:
         print(e.message, e.args)
         sys.exit()
@@ -140,6 +125,19 @@ def usage():
     print("Usage: ./plothv.py [root_folder] [prob_name] [max_gen]\n")
     sys.exit()
 
+
+boxcmd = """
+    set term pdf enhanced color
+    set boxwidth 0.5 relative
+    set output \"{0:s}\"
+    plot \\
+        \"{1:s}\"   using 1:3:2:6:5 with candlesticks lt 3 lw 2 title 'Quartiles-nsga2' whiskerbars 0.5, \\
+        \'\'        using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-nsga2', \\
+        \'\'        using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-nsga2', \\
+        \"{2:s}\"   using 1:3:2:6:5 with candlesticks lt 2 lw 2 title 'Quartiles-onsga2' whiskerbars 0.5, \\
+        \'\'        using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-onsga2', \\
+        \'\'        using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-onsga2'
+"""
 
 # ./plothv.py experiments/ zdt1 [13] [blah] [blah]
 if __name__ == '__main__':
@@ -154,6 +152,6 @@ if __name__ == '__main__':
                 len(argv) >= 3 and argv[2].isdigit()) else prob_set[key]
             file1 = dump_hv_stats(root_path, 'onsga2r', key, max_gen, 2)
             file2 = dump_hv_stats(root_path, 'nsga2r', key, max_gen, 2)
-            plot_box(file1, file2)
+            plot_gp(boxcmd, file1, file2)
     else:
         usage()
