@@ -45,7 +45,7 @@ whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
 -include $(DEPS)
 
 clean:
-	rm -f *.d
+	rm -f $(DEPS)
 	rm -f $(OBJ) src/nsga2r.o src/onsga2r.o
 	rm -f nsga2r onsga2r
 	rm -f *.out
