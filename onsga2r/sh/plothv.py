@@ -101,13 +101,19 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
     return file_name
 
 
-def plot_gp(cmd, file_onsga2, file_nsga2):
-    print("saving plot")
-    pdf_file = replace_file_ext(file_onsga2, 'pdf')
-    command = cmd.format(pdf_file, file_nsga2, file_onsga2)
+def parse_gpcmd(gpcmd):
     lines = [line + '\n' for line in
              list(filter((lambda line: len(line) != 0 or line != ''),
-                         [line.strip() for line in command.splitlines()]))]
+                         [line.strip() for line in gpcmd.splitlines()])) if line.split()[0] != '#']
+    return lines
+
+
+def plot_gp(cmd, file_onsga2, file_nsga2):
+    # pdf_file = replace_file_ext(file_onsga2, 'pdf')
+    pdf_file = file_onsga2.split('-')[0] + '-hvstat' + '.pdf'
+    print("saving {}".format(pdf_file))
+    command = cmd.format(pdf_file, file_nsga2, file_onsga2)
+    lines = parse_gpcmd(command)
     try:
         proc = subprocess.Popen(
             ['gnuplot', '-p'], shell=True, stdin=subprocess.PIPE)
@@ -128,21 +134,33 @@ def usage():
 
 boxcmd = """
     set term pdf enhanced color
-    set boxwidth 0.5 relative
+    # set term pdf monochrome
+    set style fill noborder
+    set boxwidth 0.6 relative
     set output \"{0:s}\"
+    load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt\'
+    set xrange[0:]
     plot \\
-        \"{1:s}\"   using 1:3:2:6:5 with candlesticks lt 3 lw 2 title 'Quartiles-nsga2' whiskerbars 0.5, \\
-        \'\'        using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-nsga2', \\
-        \'\'        using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-nsga2', \\
-        \"{2:s}\"   using 1:3:2:6:5 with candlesticks lt 2 lw 2 title 'Quartiles-onsga2' whiskerbars 0.5, \\
-        \'\'        using 1:4:4:4:4 with candlesticks lt -1 lw 2 title 'Median-onsga2', \\
-        \'\'        using 1:7:7:7:7 with candlesticks lt 4 lw 2 title 'Mean-onsga2'
+        \"{1:s}\"   using 1:3:2:6:5 with candlesticks \\
+                    # fs transparent solid 0.3 lt 3 lw 3 title 'nsga2' whiskerbars 0.5, \\
+                    fs transparent solid 0.3 ls 1 lw 3 title 'nsga2' whiskerbars 0.5, \\
+        \"{2:s}\"   using 1:3:2:6:5 with candlesticks fs \\
+                    # transparent solid 0.5 lt 2 lw 3 title 'onsga2' whiskerbars 0.5, \\
+                    transparent solid 0.5 ls 2 lw 3 title 'onsga2' whiskerbars 0.5, \\
+        # \"{1:s}\"   using 1:7:7:7:7 with candlesticks lt 4 lw 3 title 'mean', \\
+        \"{1:s}\"   using 1:7:7:7:7 with candlesticks ls 3 lw 3 title 'mean', \\
+        # \"{1:s}\"   using 1:4:4:4:4 with candlesticks lt -1 lw 3 title 'median', \\
+        \"{1:s}\"   using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \\
+        # \"{2:s}\"   using 1:7:7:7:7 with candlesticks lt 4 lw 3 noti, \\
+        \"{2:s}\"   using 1:7:7:7:7 with candlesticks ls 3 lw 3 noti, \\
+        # \"{2:s}\"   using 1:4:4:4:4 with candlesticks lt -1 lw 3 noti
+        \"{2:s}\"   using 1:4:4:4:4 with candlesticks ls 4 lw 3 noti
 """
 
 # ./plothv.py experiments/ zdt1 [13] [blah] [blah]
 if __name__ == '__main__':
     # prob_set = {'zdt1': 13, 'zdt2': 35, 'zdt3': 20, 'zdt4': 20, 'zdt6': 35}
-    prob_set = {'zdt1': 14}
+    prob_set = {'zdt1': 10}
     argv = sys.argv[1:]
     if len(argv) >= 2:
         root_path = argv[0]
