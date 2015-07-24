@@ -86,7 +86,7 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
                 [header, fronts] = load_data(path, nobj)
                 hv_lst.append(calc_hv(fronts))
             a = np.array(hv_lst)
-            iqr = [header[1], # header 0 is generation, 1 is fe
+            iqr = [header[1],  # header 0 is generation, 1 is fe
                    '{:.3f}'.format(np.min(a)),
                    '{:.3f}'.format(np.percentile(a, 25)),
                    '{:.3f}'.format(np.percentile(a, 50)),
