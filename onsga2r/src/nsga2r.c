@@ -40,6 +40,7 @@ int angle2;
 int main (int argc, char **argv)
 {
 	int i, feval = 0 ;
+	char uid_filename[80] ;
 	FILE *fpt_init_pop;
 	FILE *fpt_final_pop;
 	FILE *fpt_best_pop;
@@ -51,7 +52,7 @@ int main (int argc, char **argv)
 	population *mixed_pop;
 	if (argc<2)
 	{
-		printf("\n Usage ./nsga2r random_seed \n");
+		printf("\n Usage ./nsga2r random_seed outfile-uid gnuplot\n");
 		exit(1);
 	}
 	seed = (double)atof(argv[1]);
@@ -63,7 +64,13 @@ int main (int argc, char **argv)
 	fpt_init_pop = fopen("initial_pop.out","w");
 	fpt_final_pop = fopen("final_pop.out","w");
 	fpt_best_pop = fopen("best_pop.out","w");
-	fpt_all_pop = fopen("all_pop.out","w");
+	if(argc < 3)
+		fpt_all_pop = fopen("all_pop.out","w");
+	else
+	{
+		sprintf(uid_filename, "all_pop-%s.out", argv[2]);
+		fpt_all_pop = fopen(uid_filename,"w");
+	}
 	fpt_params = fopen("params.out","w");
 	fprintf(fpt_init_pop,"# This file contains the data of initial population\n");
 	fprintf(fpt_final_pop,"# This file contains the data of final population\n");
@@ -217,6 +224,8 @@ int main (int argc, char **argv)
 	choice=0;
 	printf("\n Do you want to use gnuplot to display the results realtime (0 for NO) (1 for yes) : ");
 	scanf("%d",&choice);
+	if(argc == 4)
+		choice = atoi(argv[3]);
 	if (choice!=0 && choice!=1)
 	{
 		printf("\n Entered the wrong choice, hence exiting, choice entered was %d\n",choice);

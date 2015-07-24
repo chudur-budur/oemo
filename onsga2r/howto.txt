@@ -124,6 +124,7 @@ How to run these craps.
 8. rewrite scripts in python, numpy and matplotlib
 9. change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
 10. clean up code
+11. compare with reference HV measure, to compute the reference HV use the ideal front from ETHZurich's site.
 
 
 
