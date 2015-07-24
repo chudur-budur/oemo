@@ -1,71 +1,73 @@
 #!/bin/bash
-# runs multiple tests
+# runs a single test
 
-startrun=$1
-endrun=$2
-executable=$3
-paramfile=$4
-seedfile=$5
-outdir=$6
+shopt -s extglob ;
+cpath=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) ;
+
+executable=$1 ;
+paramfile=$2 ;
+outdir=$3 ;
+run=$4 ;
+seed=$5 ;
 
 _usage()
 {
-
-	# example: ./run-n 1 10 onsga2r input_data/zdt1.in input_data/rseeds.in experiments
-	printf '%s\n\t%s\n' "Usage: ./run-n [startrun] [endrun] [executable]" "[param file] [seedfile] [out directory]";
-	exit 0;
+	# example: ./run onsga2r input_data/zdt1.in experiments/ [1] [0.12345]
+	printf '%s\n\t%s\n' "Usage: ./run [executable] [param-file] [out-dir] [run-id] [seed]";
+	1>&2; exit 1;
 }
 
-if [[ -z $startrun ]] || [[ -z $endrun ]] || 
-	[[ -z $executable ]] || [[ -z $paramfile ]] || 
-	[[ -z $seedfile ]] || [[ -z $outdir ]]; then
+if [[ -z $executable ]] || [[ -z $paramfile ]] || [[ -z $outdir ]]; then
 	echo "error: some of the parameters are missing, hence exiting ...";
 	_usage ;
 fi
 
-problemname=`echo "$paramfile" | awk -F"." '{print $1}' | awk -F"/" '{print $2}'` ;
-if [ ! -d "$outdir" ]; then
-	mkdir $outdir ;
-else
-	rm -rf "$outdir/*" ;
+if [[ -z $run ]]; then
+	run="1" ;
+fi
+if [[ -z $seed ]]; then
+	seed="0.12345" ;
 fi
 
-execdir=`echo $executable | awk -F"-" '{print $1}'`;
-if [ ! -d "$outdir/$execdir" ]; then
-	mkdir "$outdir/$execdir" ;
+# get the problem name
+problemname=`echo "${paramfile}" | awk -F"." '{print $1}' | awk -F"/" '{print $2}'` ;
+# get the executable name
+execdir=`echo "${executable}" | awk -F"-" '{print $1}'`;
+# the target directory is experiments/nsga2r/zdt1 etc.
+targetdir="${outdir}/${execdir}/${problemname}" ;
+
+# check outdir, i.e. experiments/
+if [ ! -d "${outdir}" ]; then
+	mkdir "${outdir}" ;
 fi
-if [ ! -d "$outdir/$execdir/$problemname" ]; then
-	mkdir "$outdir/$execdir/$problemname" ;
+# check exec dir, i.e. experiments/nsga2r
+if [ ! -d "${outdir}/${execdir}" ]; then
+	mkdir "${outdir}/${execdir}" ;
 fi
-targetdir="$outdir/$execdir/$problemname" ;
+# check problem dir, i.e. experiments/nsga2r/zdt1
+if [ ! -d "${outdir}/${execdir}/${problemname}" ]; then
+	mkdir "${outdir}/${execdir}/${problemname}" ;
+fi
 
-seedlst=`cat $seedfile` ;
-readarray -t rseed <<<"$seedlst" ;
+uid=`uuidgen` ;
+echo "performing run ${run} with seed: ${seed}, UUID: ${uid}" ;
+./"${executable}" "${seed}" "${uid}" 0 < "${paramfile}" ;
 
-for (( i=$startrun; i<=$endrun; i++ ))
-do
-	rm -rf *.out ;
-	j=$(( i - 1 ));
-	echo "performing run $i with seed ${rseed[j]}" ;
-	./$executable ${rseed[j]} < $paramfile ;
-	if [ -f all_pop.out ]; then
-		cp all_pop.out "$targetdir/all_pop-$i.out" ;
-	fi
-	if [ -f all_source.out ]; then
-		cp all_source.out "$targetdir/all_source-$i.out" ;
-	fi
-	if [ -f all_opposite.out ]; then
-		cp all_opposite.out "$targetdir/all_opposite-$i.out" ;
-	fi
-	if [ -f all_survived.out ]; then
-		cp all_survived.out "$targetdir/all_survived-$i.out" ;
-	fi
-	if [ -f all_extreme.out ]; then
-		cp all_extreme.out "$targetdir/all_extreme-$i.out" ;
-	fi
-	if [ -f all_survival_stat.out ]; then
-		cp all_survival_stat.out "$targetdir/all_survival_stat-$i.out" ;
-	fi
-done
-rm -rf *.out ;
-
+if [ -f "all_pop-${uid}.out" ]; then
+	mv "all_pop-${uid}.out" "${targetdir}/all_pop-${run}.out" ;
+fi
+if [ -f "all_source-${uid}.out" ]; then
+	mv "all_source-${uid}.out" "${targetdir}/all_source-${run}.out" ;
+fi
+if [ -f "all_opposite-${uid}.out" ]; then
+	mv "all_opposite-${uid}.out" "${targetdir}/all_opposite-${run}.out" ;
+fi
+if [ -f "all_survived-${uid}.out" ]; then
+	mv "all_survived-${uid}.out" "${targetdir}/all_survived-${run}.out" ;
+fi
+if [ -f "all_extreme-${uid}.out" ]; then
+	mv "all_extreme-${uid}.out" "${targetdir}/all_extreme-${run}.out" ;
+fi
+if [ -f "all_survival_stat-${uid}.out" ]; then
+	mv "all_survival_stat-${uid}.out" "${targetdir}/all_survival_stat-${run}.out" ;
+fi
