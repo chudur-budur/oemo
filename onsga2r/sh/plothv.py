@@ -164,16 +164,16 @@ boxcmd = """
 # ./plothv.py experiments/ zdt1 [13] [blah] [blah]
 if __name__ == '__main__':
     # prob_set = {'zdt1': 13, 'zdt2': 35, 'zdt3': 20, 'zdt4': 20, 'zdt6': 35}
-    prob_set = {'zdt1': 15}
+    prob_set = {'zdt1': [15, 2]}
     argv = sys.argv[1:]
     if len(argv) >= 2:
         root_path = argv[0]
         prob_name = argv[1]
         for key in prob_set:
             max_gen = int(argv[2]) if (
-                len(argv) >= 3 and argv[2].isdigit()) else prob_set[key]
-            file1 = dump_hv_stats(root_path, 'onsga2r', key, max_gen, 2)
-            file2 = dump_hv_stats(root_path, 'nsga2r', key, max_gen, 2)
+                len(argv) >= 3 and argv[2].isdigit()) else prob_set[key][0]
+            file1 = dump_hv_stats(root_path, 'onsga2r', key, max_gen, prob_set[key][1])
+            file2 = dump_hv_stats(root_path, 'nsga2r', key, max_gen, prob_set[key][1])
             plot_gp(boxcmd, file1, file2)
     else:
         usage()
