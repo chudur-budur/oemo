@@ -5,20 +5,21 @@ Experiments with opposition based emo with mirroring.
 
 #### How to compile:
 
-To build the main code:
+##### 1. building the main code (nsga2 and opposition based nsga2):
 ```
 	make
 ```
 
-To clean:
+##### 2. building the wfg Hypervolume computation code:
+```
+	make wfg
+``` 
+
+##### 3. cleaning up:
 ```
 	make clean
 ```
 
-To build he wfg HV algorithm:
-```
-	make wfg
-``` 
 
 #### How to run the experiments:
 
