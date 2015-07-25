@@ -15,17 +15,17 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg whv
 
-all: nsga2r onsga2r
+all: nsga2re onsga2r
 wfg: wfg-1.10/wfg
 whv: whv-pisa/hyp_ind
 
 onsga2r: $(OBJ) src/onsga2r.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-nsga2r: $(OBJ) src/nsga2r.o
+nsga2re: $(OBJ) src/nsga2re.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-src/nsga2r.o: src/nsga2r.c
+src/nsga2re.o: src/nsga2re.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/onsga2r.o: src/onsga2r.c

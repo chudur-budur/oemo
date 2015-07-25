@@ -52,7 +52,7 @@ int main (int argc, char **argv)
 	population *mixed_pop;
 	if (argc<2)
 	{
-		printf("\n Usage ./nsga2r random_seed outfile-uid gnuplot\n");
+		printf("\n Usage ./nsga2re random_seed outfile-uid gnuplot\n");
 		exit(1);
 	}
 	seed = (double)atof(argv[1]);
