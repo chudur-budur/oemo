@@ -2,17 +2,16 @@ TODO
 ====
 
 #### Issue 1:
-* fix makefile (changing header does not recompile the source)
-* implement rga
-* do euclidean dist in crowd_dist (done, slightly better in 3 obj)
-* fix the extreme point update with weak domination (just apply non-dominated sort on E)
+* ~~fix makefile (changing header does not recompile the source)~~
+* ~~implement rga~~
+* ~~do euclidean dist in crowd_dist (done, slightly better in 3 obj)~~
+* ~~fix the extreme point update with weak domination (just apply non-dominated sort on E)~~
 
 #### Issue 2:
-* change rng call to make identical initial pop
+* ~~change rng call to make identical initial pop~~
 * replace rga with fmincon
-* implement modified dtlz problems wihtout weak points
-* merge 3 way plots -- nsga2+extreme, onsga2, nsga2+no-extreme + FE eval to fins extremes
-* rewrite scripts in python, numpy and matplotlib
+* merge 3 way plots -- nsga2+extreme, onsga2, nsga2+no-extreme + FE eval to find extremes
+* ~~rewrite scripts in python, numpy and matplotlib~~
 * change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
 * clean up code
 * compare with reference HV measure, to compute the reference HV use the ideal front from ETHZurich's site.
