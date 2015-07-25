@@ -57,3 +57,9 @@ Assuming `wfg` has already been compiled --
 ```
 	./sh/plothv.py experiments/ zdt1
 ```
+
+##### 7. Generate stats for the survival of opposite points:
+Assuming bursting has already been done from the previous step 4 --
+```
+	./sh/survivalstat.py experiments/ zdt1
+```
