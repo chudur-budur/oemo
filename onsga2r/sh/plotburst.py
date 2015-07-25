@@ -55,7 +55,7 @@ def save_plotspf(root_path, algo_names, prob_name, run):
                     file_lst.append(os.path.join(root_path, algo, prob_name,
                                                  'snaps-run-' + run, prefix + gen + '.out'))
             file_lst = sorted(file_lst)
-            out_file = os.path.join(plot_dir, 'pf-gen-' + gen + '.pdf')
+            out_file = os.path.join(plot_dir, 'gen-' + gen + '.pdf')
             save_plot(pf2dcmd, file_lst, out_file)
     except Exception as e:
         print(e.message, e.args)

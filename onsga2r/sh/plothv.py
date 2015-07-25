@@ -45,8 +45,12 @@ def calc_hv(fronts):
         hv = float(hv_str.decode("utf-8").rstrip('\n'))
         os.remove(tmp_file)
     except Exception as e:
+        if os.path.exists(tmp_file):
+            os.remove(tmp_file)
         print(e.message, e.args)
         sys.exit()
+    if os.path.exists(tmp_file):
+        os.remove(tmp_file)
     return hv
 
 
