@@ -9,11 +9,6 @@ import uuid
 import numpy as np
 
 
-def replace_file_ext(file_path, ext):
-    path = os.path.split(file_path)
-    return os.path.join(path[0], path[1].split('.')[0] + '.' + ext)
-
-
 def load_data(file_path, nobj):
     fronts = {}
     try:
@@ -68,7 +63,7 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
     max_run = find_maxrun(os.path.join(root_path, *[algo_name, prob_name]))
     print("generating hv data for problem {0:s} over max_gen = {1:d} and max_run = {2:d} for {3:s}".
           format(prob_name, max_gen, max_run, algo_name))
-    hv_dir = os.path.join(root_path, 'results')
+    hv_dir = os.path.join(root_path, 'results', prob_name)
     try:
         if(not os.path.exists(hv_dir)):
             os.makedirs(hv_dir)
@@ -109,11 +104,9 @@ def parse_gpcmd(gpcmd):
     return lines
 
 
-def plot_gp(cmd, file_onsga2, file_nsga2):
-    # pdf_file = replace_file_ext(file_onsga2, 'pdf')
-    pdf_file = file_onsga2.split('-')[0] + '-hvstat' + '.pdf'
-    print("saving {}".format(pdf_file))
-    command = cmd.format(pdf_file, file_nsga2, file_onsga2)
+def save_plot(cmd, file_lst, out_file):
+    print("saving {}".format(out_file))
+    command = cmd.format(out_file, *file_lst)
     lines = parse_gpcmd(command)
     try:
         proc = subprocess.Popen(
@@ -172,8 +165,11 @@ if __name__ == '__main__':
         for key in prob_set:
             max_gen = int(argv[2]) if (
                 len(argv) >= 3 and argv[2].isdigit()) else prob_set[key][0]
-            file1 = dump_hv_stats(root_path, 'onsga2r', key, max_gen, prob_set[key][1])
-            file2 = dump_hv_stats(root_path, 'nsga2r', key, max_gen, prob_set[key][1])
-            plot_gp(boxcmd, file1, file2)
+            file1 = dump_hv_stats(
+                root_path, 'onsga2r', key, max_gen, prob_set[key][1])
+            file2 = dump_hv_stats(
+                root_path, 'nsga2r', key, max_gen, prob_set[key][1])
+            out_file = file1.split('-')[0] + '-hvstat' + '.pdf'
+            save_plot(boxcmd, sorted([file1, file2]), out_file)
     else:
         usage()

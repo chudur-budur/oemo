@@ -12,16 +12,16 @@ def burst_file(path_lst, file_prefix, run):
     if os.path.exists(in_file):
         try:
             out_dir = os.path.join(root_path, "snaps-run-" + run)
+            print(
+                "bursting \'{0:s}\' into \'{1:s}\'.".format(in_file, out_dir))
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
             in_fd = open(in_file, 'r')
-            line = in_fd.readline()  # header
-            line = in_fd.readline()  # header
             cur_gen = 0
             out_fd = None
             for line in in_fd:
                 tokens = line.split()
-                if tokens[1] == 'gen':
+                if tokens[0] == '#' and tokens[1] == 'gen':
                     # print(line)
                     if int(tokens[3]) > cur_gen:
                         if out_fd is not None:
