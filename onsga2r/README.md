@@ -3,6 +3,23 @@ oemo-mirroring
 
 Experiments with opposition based emo with mirroring.
 
+#### How to compile:
+
+To build the main code:
+```
+	make
+```
+
+To clean:
+```
+	make clean
+```
+
+To build he wfg HV algorithm:
+```
+	make wfg
+``` 
+
 #### How to run the experiments:
 
 ##### 1. Run a single experiment:
@@ -33,6 +50,7 @@ Experiments with opposition based emo with mirroring.
 ```
 
 ##### 6. Generate hypervolume comparison stat for one problem:
+Assuming wfg has been already compiled --
 ```
 	./sh/plothv.py experiments/ zdt1
 ```
