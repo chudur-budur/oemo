@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-import os
 import sys
+import os
 import re
 import shutil
 import subprocess
@@ -41,7 +41,8 @@ def calc_hv(fronts):
                 fd.write("{:s}\n".format(' '.join(lst)))
             fd.write('#\n')
         fd.close()
-        wfg = os.path.join(os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
+        wfg = os.path.join(
+            os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
         hv_str = subprocess.check_output([wfg, tmp_file])
         hv = float(hv_str.decode("utf-8").rstrip('\n'))
         os.remove(tmp_file)
@@ -72,7 +73,8 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
     try:
         if(not os.path.exists(hv_dir)):
             os.makedirs(hv_dir)
-        file_name = os.path.join(hv_dir, prob_name + '-' + algo_name + '.stat')
+        file_name = os.path.join(
+            hv_dir, prob_name + '-' + algo_name + '-hv.stat')
         fd = open(file_name, 'w')
         gen_fe = {}
         for gen in range(1, max_gen + 1):
