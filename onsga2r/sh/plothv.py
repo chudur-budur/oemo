@@ -111,7 +111,8 @@ def parse_gpcmd(gpcmd):
     return lines
 
 
-def save_plot(cmd, file_lst, out_file):
+def save_plot(cmd, file_lst):
+    out_file = file_lst[0].split('-')[0] + '-hvstat' + '.pdf'
     print("saving {}".format(out_file))
     command = cmd.format(out_file, *file_lst)
     lines = parse_gpcmd(command)
@@ -176,7 +177,6 @@ if __name__ == '__main__':
                 root_path, 'onsga2r', key, max_gen, prob_set[key][1])
             file2 = dump_hv_stats(
                 root_path, 'nsga2r', key, max_gen, prob_set[key][1])
-            out_file = file1.split('-')[0] + '-hvstat' + '.pdf'
-            save_plot(boxcmd, sorted([file1, file2]), out_file)
+            save_plot(boxcmd, sorted([file1, file2]))
     else:
         usage()
