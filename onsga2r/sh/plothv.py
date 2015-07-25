@@ -41,7 +41,8 @@ def calc_hv(fronts):
                 fd.write("{:s}\n".format(' '.join(lst)))
             fd.write('#\n')
         fd.close()
-        hv_str = subprocess.check_output(['../wfg', tmp_file])
+        wfg = os.path.join(os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
+        hv_str = subprocess.check_output([wfg, tmp_file])
         hv = float(hv_str.decode("utf-8").rstrip('\n'))
         os.remove(tmp_file)
     except Exception as e:

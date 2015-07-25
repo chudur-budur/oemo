@@ -16,8 +16,8 @@ uid=`uuidgen`
 
 _usage()
 {
-	#example 1: ./makesnap ../experiments 1 100 5 8 0.4 zdt1 [run] 
-	printf '%s\n\t\t   %s\n\n' "Usage: ./makesnap [root path] [mingen] [maxgen]" \
+	#example 1: ./reportsnap ../experiments 1 100 5 8 0.4 zdt1 [run] 
+	printf '%s\n\t\t   %s\n\n' "Usage: ./reportsnap [root path] [mingen] [maxgen]" \
 		"[skip] [plot/page] [zoom] [problem] [run]";
 	1>&2; exit 1;
 }
@@ -42,7 +42,7 @@ if [ ! -d "$plotdir" ]; then
 	1>&2; exit 1;
 fi
 
-cat header.tex > "$tex" ;
+cat "$cpath"/header.tex > "$tex" ;
 row=1;
 for (( i=mingen; i<=maxgen; i=i+skip ))
 do
@@ -65,6 +65,12 @@ do
 done
 printf "%cend{document}\n" "$bs" >> "$tex";
 
-pubtex "$tex" --pdl;
-rm -f "$tex" ;
-mv plot-"$uid".pdf "$rootpath"results/"$problem"/plot-run-"$run".pdf
+if [ -f "$tex" ]; then
+	pubtex "$tex" --pdl;
+	rm -f "$tex" ;
+	mv plot-"$uid".pdf "$rootpath"results/"$problem"/plot-run-"$run".pdf
+else
+	echo "error: '$tex' not found, could not compile to pdf." ;
+	1>&2; exit 1;
+fi
+

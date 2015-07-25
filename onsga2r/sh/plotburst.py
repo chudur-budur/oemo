@@ -93,6 +93,6 @@ if __name__ == '__main__':
     prob_set = {'zdt1': 2}
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]
-        save_plotspf('../experiments', algo_names, argv[1], run)
+        save_plotspf(argv[0], algo_names, argv[1], run)
     else:
         usage()
