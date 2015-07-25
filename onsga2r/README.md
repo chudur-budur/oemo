@@ -46,12 +46,14 @@ Experiments with opposition based emo with mirroring.
 ```
 
 ##### 5. Generate one snapshot report:
+Assuming bursting has already been done from the previous step 4 --
 ```
 	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
 ```
+can also be done for multiple runs with `mapl`.
 
 ##### 6. Generate hypervolume comparison stat for one problem:
-Assuming wfg has been already compiled --
+Assuming `wfg` has already been compiled --
 ```
 	./sh/plothv.py experiments/ zdt1
 ```
