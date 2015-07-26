@@ -1,4 +1,4 @@
 oemo
 ====
 
-Some experiments with opposition based craps, don't ask me what it's all about.
+Some experiments with opposition based multiobjective optimization algorithms.
