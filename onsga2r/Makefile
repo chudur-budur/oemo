@@ -1,5 +1,6 @@
 # onsga2r stuffs
 CC 		:= gcc
+# CC 		:= callcatcher gcc
 INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
 			dominance.c euclideancd.c euclideanfillnds.c euclideanrank.c eval.c fillnds.c\
@@ -7,8 +8,9 @@ COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display
 			problemdef.c rand.c rank.c report.c rga.c sort.c tourselect.c vecutils.c
 SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
-CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
-LDFLAGS 	:= -lm 
+CFLAGS 		:= -g -Wall --coverage -pedantic -std=gnu99 $(IFLAGS)
+# CFLAGS 		:= -g -Wall -Wextra -Wunused -pedantic -std=gnu99 $(IFLAGS)
+LDFLAGS 	:= -lm
 # OBJ 		:= $(SRC:.c=.o)
 OBJ 		:= $(patsubst %c,%o,$(SRC))
 DEPS		:= $(OBJ:.o=.d)
@@ -46,6 +48,7 @@ whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
 
 clean:
 	rm -f src/*.d
+	rm -f src/*.gc*
 	rm -f $(OBJ) src/onsga2r src/nsga2re.o src/nsga2r.o
 	rm -f onsga2r nsga2re nsga2r
 	rm -f *.out
