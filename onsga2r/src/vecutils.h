@@ -1,5 +1,5 @@
-# ifndef _VECUTIL_H_
-# define _VECUTIL_H_
+# ifndef _VECUTILS_H_
+# define _VECUTILS_H_
 
 /**
  * Some functions for vector operations.
