@@ -42,7 +42,7 @@ Experiments with opposition based emo with mirroring.
 	
 ##### 4. Burst all 31 runs at once:
 ```
-	./sh/mapl -is -n 31 -c "./sh/burstgen.py experiments/ zdt1"
+	./sh/mapl -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
 ##### 5. Generate one snapshot report:
