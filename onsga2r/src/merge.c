@@ -6,6 +6,7 @@
 
 # include "global.h"
 # include "rand.h"
+# include "misc.h"
 
 /* Routine to merge two populations into one */
 void merge(population *pop1, population *pop2, population *pop3)

@@ -6,8 +6,14 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "global.h"
+
 #include "rand.h"
+#include "global.h"
+#include "opposition.h"
+#include "poplist.h"
+#include "rga.h"
+#include "misc.h"
+#include "vecutils.h"
 
 #define debug 0
 

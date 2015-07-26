@@ -7,6 +7,8 @@
 
 # include "global.h"
 # include "rand.h"
+# include "opposition.h"
+# include "misc.h"
 
 int nreal;
 int nbin;

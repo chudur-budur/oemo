@@ -8,6 +8,7 @@
 #include <string.h>
 #include "global.h"
 #include "rand.h"
+#include "misc.h"
 
 /* dumps the population to a file/stdout */
 void dump_population (population *pop, int popsize, FILE *fpt)

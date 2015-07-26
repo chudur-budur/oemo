@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "global.h"
 #include "rand.h"
+#include "poplist.h"
+#include "misc.h"
 
 int nreal;
 int nbin;

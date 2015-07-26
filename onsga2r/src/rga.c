@@ -2,8 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
 #include "rand.h"
 #include "global.h"
+#include "rga.h"
+#include "poplist.h"
+#include "vecutils.h"
+#include "misc.h"
 
 /**
  * runs a real valued ga with specified population size,
