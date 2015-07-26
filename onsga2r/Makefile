@@ -4,7 +4,7 @@ INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
 			dominance.c euclideancd.c euclideanfillnds.c euclideanrank.c eval.c fillnds.c\
 			initialize.c list.c merge.c misc.c mutation.c opposition.c poplist.c\
-			problemdef.c rand.c rank.c report.c rga.c sort.c tourselect.c vectorop.c
+			problemdef.c rand.c rank.c report.c rga.c sort.c tourselect.c vecutils.c
 SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
 CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
@@ -45,9 +45,9 @@ whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
 -include $(DEPS)
 
 clean:
-	rm -f $(DEPS)
-	rm -f $(OBJ) src/nsga2r.o src/onsga2r.o
-	rm -f nsga2r onsga2r
+	rm -f src/*.d
+	rm -f $(OBJ) src/onsga2r src/nsga2re.o src/nsga2r.o
+	rm -f onsga2r nsga2re nsga2r
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#
