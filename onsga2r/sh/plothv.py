@@ -176,7 +176,7 @@ if __name__ == '__main__':
             file1 = dump_hv_stats(
                 root_path, 'onsga2r', key, max_gen, prob_set[key][1])
             file2 = dump_hv_stats(
-                root_path, 'nsga2r', key, max_gen, prob_set[key][1])
+                root_path, 'nsga2re', key, max_gen, prob_set[key][1])
             save_plot(boxcmd, sorted([file1, file2]))
     else:
         usage()

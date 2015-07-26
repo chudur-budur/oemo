@@ -89,7 +89,7 @@ def usage():
 # ./plotburst experiments/ zdt1 [1]
 if __name__ == '__main__':
     argv = sys.argv[1:]
-    algo_names = ['nsga2r', 'onsga2r']
+    algo_names = ['onsga2r', 'nsga2re', 'nsga2r']
     prob_set = {'zdt1': 2}
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]
