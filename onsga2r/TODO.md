@@ -62,8 +62,8 @@ TODO's
 * merge 3 way plots -- onsga2, nsga2-with-extreme, nsga2-std + FE eval to find extremes
 * ~~rewrite scripts in python, numpy and matplotlib~~
 * change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
-* compare with reference HV measure, to compute the reference HV use the ideal front from ETHZurich's site.
-* clean up code, lots of unused functions and also needs some code optimization.
+* compare with reference HV measure, to compute the reference HV use the ideal front from [ETH-Zurich](http://people.ee.ethz.ch/~sop/download/supplementary/testproblems/zdt1/index.php) site.
+* **clean up code, lots of unused functions and also needs some code optimization.**
 * write a report.
 
 Wrap up for the summer
@@ -82,7 +82,8 @@ Wrap up for the summer
 	* Function evaluation to reach %n of ideal HV:
 		- zdt-set, dtlz-set, rotated.   
 
-#### **NSGA-III related:**
+NSGA-III related
+=============
 
 1. Plug this approach to NSGA-III
 2. Test with many objective problems with NSGA-III 
