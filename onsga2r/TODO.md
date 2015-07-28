@@ -2,15 +2,15 @@ TODO
 ====
 
 #### Issue 1:
-* ~~fix makefile (changing header does not recompile the source)~~
-* ~~implement rga~~
-* ~~do euclidean dist in crowd_dist (done, slightly better in 3 obj)~~
-* ~~fix the extreme point update with weak domination (just apply non-dominated sort on E)~~
+* ~~fix makefile (changing header does not recompile the source)~~ (done)
+* ~~implement rga~~ (done, but taking huge FE to find extremes, hence not considered any more)
+* ~~do euclidean dist in crowd_dist (done, slightly better in 3 obj)~~ (not much improvement)
+* ~~fix the extreme point update with weak domination (just apply non-dominated sort on E)~~ (done, see scheme 5)
 
 #### Issue 2:
 * ~~change rng call to make identical initial pop~~
 * replace rga with fmincon
-* merge 3 way plots -- nsga2+extreme, onsga2, nsga2+no-extreme + FE eval to find extremes
+* merge 3 way plots -- onsga2, nsga2-with-extreme, nsga2-std + FE eval to find extremes
 * ~~rewrite scripts in python, numpy and matplotlib~~
 * change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
 * clean up code, lots of unused functions and also needs some code optimization.
@@ -56,3 +56,34 @@ Currently total of 3 schemes have been tried:
    - dtlz5 (3d curved pf, easy)		opposition is faster				     
    - dtlz6 (3d curved pf, local optima)	opposition is faster				     
    - dtlz7 (disconnected surface)	opposition is not strictly faster, but comparable 
+
+Wrap up for the summer
+======================
+
+#### What we have so far:
+1. zdt1, zdt2, zdt3, zdt4, zdt6, osy, pol results 
+
+#### What we need to have:
+1. Test with the probabilistic ranking of the extreme points for 2-obj constrained problems
+2. Test with dtlz problems 3,4 obj
+4. Test with rotated problems from NSGA-II paper
+5. Use GA to find the extreme points, plug-in the GA into the current implementation
+6. Show that if the extreme points are weak, still we can fill the gaps and converge faster
+7. Performance measure:
+  * Function evaluation vs. Hypervolume
+      - zdt1, zdt2, zdt3, zdt4, zdt6, dtlz, rotated, wfg
+  * Function evaluation vs. Spread
+      - zdt1, zdt2, zdt3, zdt4, zdt6, dtlz, rotated, wfg
+
+#### NSGA-III related:
+
+8. Plug this approach to NSGA-III
+9. Test with many objective problems with NSGA-III 
+10. Apply ASF local search to avoid infeasible/non-existing gaps
+11. Do performance measurement pointed in bullet 7 above for many objective NSGA-III
+
+#### Conference paper: 
+    bullet 1 - 7
+#### Journal paper: 
+    bullet 1 - 11
+
