@@ -690,7 +690,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
-	double g, f ;
+	double g ;
 
 	k = nreal - nobj + 1;
 
@@ -723,7 +723,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz2
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
+	int i, j, k ;
 	double g ;
 
 	k = nreal - nobj + 1;
@@ -740,10 +740,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		for(j = 0 ; j < nobj - (i+1); j++)
 			obj[i] *= cos(xreal[j] * 0.5 * PI) ;
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= sin(xreal[aux] * 0.5 * PI);
-		}
+			obj[i] *= sin(xreal[nobj - (i+1)] * 0.5 * PI);
 	}
 	return ;
 }
@@ -758,7 +755,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz3
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
+	int i, j, k;
 	double g ;
 
 	k = nreal - nobj + 1;
@@ -777,10 +774,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		for(j = 0 ; j < nobj - (i+1); j++)
 			obj[i] *= cos(xreal[j] * 0.5 * PI);
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= sin(xreal[aux] * 0.5 * PI);
-		}
+			obj[i] *= sin(xreal[nobj - (i+1)] * 0.5 * PI);
 	}
 	return ;
 }
@@ -795,7 +789,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz4
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
+	int i, j, k ;
 	double g ;
 	double alpha = 100.0 ;
 
@@ -813,10 +807,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		for(j = 0 ; j < nobj - (i+1); j++)
 			obj[i] *= cos((PI / 2.0) * pow(xreal[j], alpha));
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= sin((PI / 2.0) * pow(xreal[aux], alpha));
-		}
+			obj[i] *= sin((PI / 2.0) * pow(xreal[nobj - (i+1)], alpha));
 	}
 	return ;
 }
@@ -831,7 +822,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz5
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
+	int i, j, k ;
 	double g, t;
 	double *theta;
 
@@ -857,10 +848,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		for(j = 0 ; j < nobj - (i+1); j++)
 			obj[i] *= cos(theta[j]);
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= sin(theta[aux]);
-		}
+			obj[i] *= sin(theta[nobj - (i+1)]);
 	}
 	free(theta);
 	return ;
@@ -876,7 +864,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz6
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
+	int i, j, k ;
 	double g, t;
 	double *theta;
 
@@ -900,10 +888,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		for(j = 0 ; j < nobj - (i+1); j++)
 			obj[i] *= cos(theta[j]);
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= sin(theta[aux]);
-		}
+			obj[i] *= sin(theta[nobj - (i+1)]);
 	}
 	free(theta);
 	return ;
