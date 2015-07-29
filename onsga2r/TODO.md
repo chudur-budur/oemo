@@ -63,8 +63,9 @@ TODO's
 * ~~rewrite scripts in python, numpy and matplotlib~~
 * change the nsga2r/onsga2r and scripts in such a way that they can be run in parallel
 * compare with reference HV measure, to compute the reference HV use the ideal front from [ETH-Zurich](http://people.ee.ethz.ch/~sop/download/supplementary/testproblems/zdt1/index.php) site.
-* **clean up code, lots of unused functions and also needs some code optimization.**
+* implement another algorithm that does mutation near the extreme and internal gap points, see which one is better.
 * write a report.
+* **clean up code, lots of unused functions and also needs some code optimization.**
 
 Wrap up for the summer
 ====================
