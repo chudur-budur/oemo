@@ -689,13 +689,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #ifdef dtlz1
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	int i, j, k, aux ;
-	double g ;
+	int i, j, k ;
+	double g, f ;
 
 	k = nreal - nobj + 1;
 
 	g = 0.0 ;
-	for(i = nreal - k ; i < nreal ; i++)
+	for(i = nreal - k; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
 		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
 	g = 100.0 * (k + g);
@@ -705,13 +705,10 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 
 	for(i = 0 ; i < nobj ; i++)
 	{
-		for(j = 0 ; j < nobj - (i+1); j++)
+		for(j = 0; j < nobj - (i+1); j++)
 			obj[i] *= xreal[j];
 		if(i != 0)
-		{
-			aux = nobj - (i+1) ;
-			obj[i] *= 1 - xreal[aux];
-		}
+			obj[i] *= 1.0 - xreal[nobj - (i + 1)];
 	}
 	return ;
 }

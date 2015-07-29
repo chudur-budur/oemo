@@ -385,7 +385,7 @@ void make_pool_scheme5(population *pop, int popsize, pop_list *pool)
 		memcpy(E_.ind[nobj + i].xreal, ptr->ind->xreal, sizeof(double) * nreal);
 		evaluate_ind(&(E_.ind[nobj + i]));
 	}
-	/* pareto extreme points from current population extreme and provided extremes */
+	/* pareto extreme points from current population extremes and provided extremes */
 	/* |e| could be < nobj */
 	e = select_best_extremes(&E_, E_size);
 	make_empty(e_star);
