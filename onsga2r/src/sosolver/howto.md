@@ -1,13 +1,6 @@
 howto
 =====
 
-mcc -B csharedlib:libsosolver *.m -v
-
-mbuild test.c libsosolver.so -v
-
-howto
-=====
-
 This file shows how to compile the matlab implementation of finding extreme solutions on the true pareto-front.
 
 1. To make the `libsosolver.so`, `libsosolver.c` and `libsosolver.h`:
