@@ -381,11 +381,11 @@ int main (int argc, char **argv)
 	allocate_memory_pop (parent_pop, popsize);
 	allocate_memory_pop (child_pop, popsize);
 	allocate_memory_pop (mixed_pop, 2*popsize);
-	
+
 	randomize();
 	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
-	fprintf(stdout, "****** rga total function eval: %d\n", feval); 	
-	
+	fprintf(stdout, "****** rga total function eval: %d\n", feval);
+
 	initialize_pop (parent_pop);
 	inject_extreme_points(parent_pop, popsize);
 
@@ -403,26 +403,27 @@ int main (int argc, char **argv)
 	dump_population(parent_pop, popsize, fpt_all_pop);
 
 	printf("\n gen = 1\tfe = %d", feval);
-	
+
 	fflush(stdout);
 	if (choice!=0)    onthefly_display (parent_pop,gp,1);
-	
+
 	fflush(fpt_init_pop);
 	fflush(fpt_final_pop);
 	fflush(fpt_best_pop);
 	fflush(fpt_all_pop);
 	fflush(fpt_params);
-	
+
 	sleep(1);
 	printf("\n");
 
-	randomize();	
+	randomize();
 	for (i=2; i<=ngen; i++)
 	{
 		selection (parent_pop, child_pop);
 		mutation_pop (child_pop);
 		decode_pop(child_pop);
-		evaluate_pop(child_pop); feval += popsize ;
+		evaluate_pop(child_pop);
+		feval += popsize ;
 		merge (parent_pop, child_pop, mixed_pop);
 		/* manhattan */
 		fill_nondominated_sort (mixed_pop, parent_pop);

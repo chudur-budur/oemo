@@ -12,6 +12,7 @@
 #include "opposition.h"
 #include "poplist.h"
 #include "rga.h"
+#include "sosolver.h"
 #include "misc.h"
 #include "vecutils.h"
 
@@ -281,34 +282,48 @@ double extremes[3][22] = {{
 
 /* #define hard_coded */
 /* #define rga_coded */
- #define rga_bilevel_coded 
+/* #define rga_bilevel_coded */
+#define sosolver_coded
 
-int initialize_extreme_points(int pop_size, int max_gen, 
-				double pc, double pm, double etac, double etam)
+int initialize_extreme_points(int pop_size, int max_gen,
+                              double pc, double pm, double etac, double etam)
 {
-	int i, feval = 0 ;
+	int feval = 0 ;
 	e_star = new_list();
-	for(i = 0 ; i < nobj ; i++)
+#ifdef hard_coded
+	for(int i = 0 ; i < nobj; i++)
 	{
-		#ifdef hard_coded
-			fprintf(stdout, "\n********** using hardcoded extremes:\n");
-			individual *ind = (individual*)malloc(sizeof(individual));
-			allocate_memory_ind(ind);
-			memcpy(ind->xreal, extremes[i], sizeof(double) * nreal);
-			push_back(e_star, ind);
-			feval += 1 ;
-		#endif
-		#ifdef rga_coded
-			fprintf(stdout, "\n********** rga:\n");
-			feval += rga(pop_size, max_gen, pc, pm, etac, etam, i, e_star);
-		#endif
-		#ifdef rga_bilevel_coded
-			fprintf(stdout, "\n********** rga-bilevel:\n");
-			feval += rga_bilevel(pop_size, max_gen, pc, pm, etac, etam, i, e_star);
-			fprintf(stdout, "e_star:\n");
-			dump_pop_list(e_star, stdout);
-		#endif
+		fprintf(stdout, "\n********** using hardcoded extremes:\n");
+		individual *ind = (individual*)malloc(sizeof(individual));
+		allocate_memory_ind(ind);
+		memcpy(ind->xreal, extremes[i], sizeof(double) * nreal);
+		push_back(e_star, ind);
+		feval += 1 ;
 	}
+#endif
+#ifdef rga_coded
+	for(int i = 0 ; i < nobj ; i++)
+	{
+		fprintf(stdout, "\n********** rga:\n");
+		feval += rga(pop_size, max_gen, pc, pm, etac, etam, i, e_star);
+	}
+#endif
+#ifdef rga_bilevel_coded
+	for(int i = 0 ; i < nobj ; i++)
+	{
+		fprintf(stdout, "\n********** rga-bilevel:\n");
+		feval += rga_bilevel(pop_size, max_gen, pc, pm, etac, etam, i, e_star);
+		sosolver(i, e_star);
+		fprintf(stdout, "e_star:\n");
+		dump_pop_list(e_star, stdout);
+	}
+#endif
+#ifdef sosolver_coded
+	fprintf(stdout, "\n********** sosolver:\n");
+	feval += sosolver(e_star);
+	fprintf(stdout, "e_star:\n");
+	dump_pop_list(e_star, stdout);
+#endif
 	return (feval);
 }
 
@@ -425,7 +440,7 @@ pop_list* select_best_extremes(population *pop, int size)
 	to_list_ptr(pop, size, rest);
 
 	ptr = rest->head ;
-	while(ptr != END) 
+	while(ptr != END)
 	{
 		if(ptr->ind->rank == 1 && ptr->ind->crowd_dist == INF)
 		{
@@ -435,7 +450,7 @@ pop_list* select_best_extremes(population *pop, int size)
 		else
 			ptr = ptr->next ;
 	}
-	
+
 
 	fprintf(stdout, "\nE: \n");
 	dump_population(pop, size, stdout);
@@ -449,8 +464,8 @@ pop_list* select_best_extremes(population *pop, int size)
 		{
 			if(weakly_dominates(ptr->ind, bptr->ind))
 			{
-				/*fprintf(stdout, "\n[%0.3f, %0.3f] --> [%0.3f, %0.3f]\n", 
-						ptr->ind->obj[0], ptr->ind->obj[1], 
+				/*fprintf(stdout, "\n[%0.3f, %0.3f] --> [%0.3f, %0.3f]\n",
+						ptr->ind->obj[0], ptr->ind->obj[1],
 						bptr->ind->obj[0], bptr->ind->obj[1]);*/
 				bptr = erase_ptr(best, bptr);
 				push_back_ptr(best, ptr->ind);
@@ -460,7 +475,7 @@ pop_list* select_best_extremes(population *pop, int size)
 				bptr = bptr->next ;
 		}
 	}
-	
+
 	if(mod)
 	{
 		fprintf(stdout, "----> modified rest %d: \n", rest->size);
@@ -503,11 +518,11 @@ int weakly_dominates(individual *i1, individual *i2)
 
 	for(i = 0 ; i < nobj ; i++)
 	{
-		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == 0) 
+		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == 0)
 			equal++ ;
-		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == -1) 
+		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == -1)
 			less_than++ ;
-		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == 1) 
+		if(fltcmp(i1->obj[i], i2->obj[i], 0.001) == 1)
 			greater_than++;
 	}
 	if(less_than == 1 && equal == nobj - 1)
@@ -651,7 +666,7 @@ void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, d
 	double dist, max_dist ;
 	individual *inds ;
 	node *ptr;
-	
+
 	inds = (individual*)malloc(sizeof(individual*) * pool->size);
 	for(ptr = pool->head, i = 0 ; ptr != END ; ptr = ptr->next, i++)
 		inds[i] = ptr->ind ;
@@ -719,7 +734,7 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 
 	free(stu);
 	free(s_t);
-	
+
 	/** shoot out correction */
 	for(i = 0 ; i < nreal ; i++)
 	{

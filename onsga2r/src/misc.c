@@ -10,6 +10,14 @@
 #include "rand.h"
 #include "misc.h"
 
+void initialize_pop_with_size (population *pop, int poplength)
+{
+	int i;
+	for (i = 0 ; i < poplength ; i++)
+		initialize_ind (&(pop->ind[i]));
+	return;
+}
+
 /* dumps the population to a file/stdout */
 void dump_population (population *pop, int popsize, FILE *fpt)
 {

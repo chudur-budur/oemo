@@ -447,7 +447,7 @@ int main (int argc, char **argv)
 
 	randomize();
 	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
-	fprintf(stdout, "****** rga total function eval: %d\n", feval); 
+	fprintf(stdout, "****** rga total function eval: %d\n", feval);
 
 	initialize_pop (parent_pop);
 	inject_extreme_points(parent_pop, popsize);
@@ -461,13 +461,13 @@ int main (int argc, char **argv)
 	feval += popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
 	/* assign_rank_and_euclidean_crowding_distance (parent_pop);*/
-	
+
 	/*report_pop(parent_pop, fpt_init_pop);*/
 	dump_population(parent_pop, popsize, fpt_init_pop);
 	fprintf(fpt_all_pop, "# gen = 1\tfe = %d\n", feval);
 	/*report_pop(parent_pop, fpt_all_pop);*/
 	dump_population(parent_pop, popsize, fpt_all_pop);
-	
+
 	/* opposition stuff */
 	printf("\n *** Will apply opposition based variation.");
 	corrupted_genes = generate_opposite_population_using_attractor(
@@ -519,7 +519,8 @@ int main (int argc, char **argv)
 		/* also we need to inject newly found extreme points */
 		inject_extreme_points(child_pop, popsize);
 
-		evaluate_pop(child_pop); feval += popsize ;
+		evaluate_pop(child_pop);
+		feval += popsize ;
 		merge(parent_pop, child_pop, mixed_pop);
 
 		fill_nondominated_sort (mixed_pop, parent_pop);
@@ -548,8 +549,8 @@ int main (int argc, char **argv)
 		fprintf(fpt_all_opposite,"# gen = %d\tfe = %d\n", i, feval);
 		dump_population(opposite_pop, opposite_popsize, fpt_all_opposite);
 		fflush(fpt_all_opposite);
-		fprintf(fpt_all_survival_stat, "\n gen = %d\tfe = %d\tratio = %f\n", (i - 1), 
-				(feval - popsize), (opposite_count/((float)opposite_popsize)) * 100.0);
+		fprintf(fpt_all_survival_stat, "\n gen = %d\tfe = %d\tratio = %f\n", (i - 1),
+		        (feval - popsize), (opposite_count/((float)opposite_popsize)) * 100.0);
 		fprintf(fpt_all_survived,"# gen = %d\tfe = %d\n", (i - 1), (feval - popsize));
 		dump_pop_list(survived_pop, fpt_all_survived);
 		free_list_ptr(survived_pop);

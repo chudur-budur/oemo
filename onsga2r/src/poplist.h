@@ -1,23 +1,28 @@
 # ifndef _POPLIST_H_
 # define _POPLIST_H_
 
+# include <stdio.h>
+# include "global.h"
+
 /**
  * Some functions for list operations.
  * defined in poplist.c
  */
-#define END NULL 
-#define TRUE 1 
+#define END NULL
+#define TRUE 1
 #define FALSE 0
 
 typedef struct node node ;
 
-struct node {
+struct node
+{
 	individual *ind ;
 	node *next ;
 	node *prev ;
 };
 
-typedef struct { 
+typedef struct
+{
 	node *head ;
 	node *tail ;
 	int size ;
@@ -36,8 +41,8 @@ void dump_pop_list(pop_list *lst, FILE *fpt);
 void deep_copy(pop_list *src, pop_list *dest);
 void to_list(population *pop, int size, pop_list *lst);
 void to_array(pop_list *lst, population *pop, int size);
-int is_member(individual *ind, pop_list *lst, 
-		int (*comparator)(individual *i1, individual *i2));
+int is_member(individual *ind, pop_list *lst,
+              int (*comparator)(individual *i1, individual *i2));
 
 void push_back_ptr(pop_list *lst, individual *ind);
 node* erase_ptr(pop_list *lst, node *ptr);

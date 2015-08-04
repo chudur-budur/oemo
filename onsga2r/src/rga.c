@@ -39,8 +39,8 @@ int obj_greater_than(individual *i1, individual *i2)
 
 int obj_greater_than_feasible(individual *i1, individual *i2)
 {
-	if(i1->obj[obj_idx] > i2->obj[obj_idx] 
-		&& i1->constr_violation == 0.0)
+	if(i1->obj[obj_idx] > i2->obj[obj_idx]
+	        && i1->constr_violation == 0.0)
 		return 1 ;
 	else
 		return 0 ;
@@ -51,8 +51,8 @@ void debs_constrained_fitness_weighted(individual *ind, int obj_index);
 void debs_constrained_fitness_bilevel(individual *ind, int obj_index);
 void debs_constrained_fitness_aasf(individual *ind, int obj_index);
 
-int rga(int pop_size, int max_gen, double pc, double pm, double etac, double etam, 
-			int obj_index, pop_list *lst)
+int rga(int pop_size, int max_gen, double pc, double pm, double etac, double etam,
+        int obj_index, pop_list *lst)
 {
 	int gen, feval = 0 ;
 	double pm_orig, pc_orig, etac_orig, etam_orig ;
@@ -97,7 +97,7 @@ int rga(int pop_size, int max_gen, double pc, double pm, double etac, double eta
 
 	get_extreme_individual(&parent_pop, pop_size, &best_ind, obj_less_than);
 	push_back(lst, &best_ind);
-	
+
 	fprintf(stdout, "best_ind:\n");
 	dumpf_individual(&best_ind, stdout);
 	fprintf(stdout, "\n");
@@ -115,8 +115,8 @@ int rga(int pop_size, int max_gen, double pc, double pm, double etac, double eta
 	return feval ;
 }
 
-int rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, double etam, 
-			int obj_index, pop_list *lst)
+int rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, double etam,
+                int obj_index, pop_list *lst)
 {
 	int gen, feval = 0 ;
 	double pm_orig, pc_orig, etac_orig, etam_orig ;
@@ -148,30 +148,30 @@ int rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, do
 
 	for(gen = 1 ; gen <= (int)(1 * (max_gen/3)); gen++)
 	{
-		apply_tournament_selection(&parent_pop, pop_size, 
-				&child_pop, pop_size, obj_index);
+		apply_tournament_selection(&parent_pop, pop_size,
+		                           &child_pop, pop_size, obj_index);
 		mutation_pop_with_size(&child_pop, pop_size);
 		popcpy(&child_pop, pop_size, &parent_pop);
-		get_extreme_individual(&parent_pop, pop_size, &worst_ind, 
-				obj_greater_than_feasible);
-		evaluate_population(&parent_pop, pop_size, obj_index, 
-				debs_constrained_fitness);
+		get_extreme_individual(&parent_pop, pop_size, &worst_ind,
+		                       obj_greater_than_feasible);
+		evaluate_population(&parent_pop, pop_size, obj_index,
+		                    debs_constrained_fitness);
 		feval += pop_size ;
 	}
 	get_extreme_individual(&parent_pop, pop_size, &best_ind, obj_less_than);
 	for(gen = 1 ; gen <= (int)(2 * max_gen/3) ; gen++)
 	{
-		apply_tournament_selection(&parent_pop, pop_size, 
-				&child_pop, pop_size, obj_index);
+		apply_tournament_selection(&parent_pop, pop_size,
+		                           &child_pop, pop_size, obj_index);
 		mutation_pop_with_size(&child_pop, pop_size);
 		popcpy(&child_pop, pop_size, &parent_pop);
-		get_extreme_individual(&parent_pop, pop_size, &worst_ind, 
-				obj_greater_than_feasible);
-		evaluate_population(&parent_pop, pop_size, obj_index, 
-				debs_constrained_fitness_aasf);
+		get_extreme_individual(&parent_pop, pop_size, &worst_ind,
+		                       obj_greater_than_feasible);
+		evaluate_population(&parent_pop, pop_size, obj_index,
+		                    debs_constrained_fitness_aasf);
 		feval += pop_size ;
 	}
-	
+
 	/*fprintf(stdout, "\nfinal pop:\n");
 	dump_population(&parent_pop, pop_size, stdout);*/
 
@@ -195,16 +195,8 @@ int rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, do
 	return feval ;
 }
 
-void initialize_pop_with_size (population *pop, int poplength)
-{
-	int i;
-	for (i = 0 ; i < poplength ; i++)
-		initialize_ind (&(pop->ind[i]));
-	return;
-}
-
-void evaluate_population(population *pop, int size, int obj_index, 
-		void (*eval_scheme)(individual *ind, int obj_index))
+void evaluate_population(population *pop, int size, int obj_index,
+                         void (*eval_scheme)(individual *ind, int obj_index))
 {
 	int i ;
 	for(i = 0 ; i < size ; i++)
@@ -270,13 +262,13 @@ void debs_constrained_fitness_bilevel(individual *ind, int obj_index)
 		for (j = 0; j < ncon; j++)
 			ind->constr_violation += bracket(ind->constr[j]);
 	}
-	
+
 	cv = 0.0 ;
 	for(j = 0 ; j < nobj ; j++)
 		if(j != obj_index && ind->obj[j] > best_ind.obj[j])
 			cv += ind->obj[j] - best_ind.obj[j];
 	ind->constr_violation += cv ;
-	
+
 	if(ind->constr_violation > 0.0)
 		ind->obj[obj_index] = worst_ind.obj[obj_index] + ind->constr_violation ;
 	return ;
@@ -287,10 +279,10 @@ void debs_constrained_fitness_aasf(individual *ind, int obj_index)
 	int j;
 	/* double w1, w2, w3, maxval ; */
 	double *w, *f ;
-	
+
 	w = (double*)malloc(sizeof(double) * nobj);
 	f = (double*)malloc(sizeof(double) * nobj);
-	
+
 	test_problem (ind->xreal, ind->xbin, ind->gene, ind->obj, ind->constr);
 	if (ncon == 0)
 		ind->constr_violation = 0.0;
@@ -311,7 +303,7 @@ void debs_constrained_fitness_aasf(individual *ind, int obj_index)
 	}
 	ind->obj[obj_index] = max_n(f, nobj) + (0.001 * sum_n(f, nobj));
 
-	
+
 	/*if(obj_index == 0)
 	{
 		w1 = 0.95 ; w2 = 0.05 ;
@@ -321,7 +313,7 @@ void debs_constrained_fitness_aasf(individual *ind, int obj_index)
 				(ind->obj[1] - best_ind.obj[1])/w2);
 		ind->obj[obj_index] = maxval ;
 	}
-	
+
 	if(obj_index == 1)
 	{
 		w1 = 0.95 ; w2 = 0.05 ;
@@ -331,10 +323,11 @@ void debs_constrained_fitness_aasf(individual *ind, int obj_index)
 				(ind->obj[0] - best_ind.obj[0])/w2);
 		ind->obj[obj_index] = maxval ;
 	}*/
-	
+
 	if(ind->constr_violation > 0.0)
 		ind->obj[obj_index] = worst_ind.obj[obj_index] + ind->constr_violation ;
-	free(w); free(f); 
+	free(w);
+	free(f);
 	return ;
 }
 

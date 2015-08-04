@@ -29,7 +29,7 @@
 /* # define ctp8 */
 
 /* zdt sets */
- # define zdt1 
+# define zdt1
 /* # define zdt2 */
 /* # define zdt3 */
 /* # define zdt4 */
@@ -136,14 +136,14 @@ void evaluate_ind (individual *ind);
 void fill_nondominated_sort (population *mixed_pop, population *new_pop);
 void crowding_fill (population *mixed_pop, population *new_pop, int count, int front_size, list *cur);
 /* sized version */
-void fill_nondominated_sort_with_size (population *mixed_pop, int mixed_popsize, 
-					population *new_pop, int new_popsize);
-void crowding_fill_with_size (population *mixed_pop, int mixed_popsize, population *new_pop, 
-				int new_popsize, int count, int front_size, list *cur);
+void fill_nondominated_sort_with_size (population *mixed_pop, int mixed_popsize,
+                                       population *new_pop, int new_popsize);
+void crowding_fill_with_size (population *mixed_pop, int mixed_popsize, population *new_pop,
+                              int new_popsize, int count, int front_size, list *cur);
 /* non-dominated sorting with euclidean dist. */
 void fill_nondominated_sort_euclidean (population *mixed_pop, population *new_pop);
-void euclidean_crowding_fill (population *mixed_pop, population *new_pop, 
-				int count, int front_size, list *elite);
+void euclidean_crowding_fill (population *mixed_pop, population *new_pop,
+                              int count, int front_size, list *elite);
 
 void initialize_pop (population *pop);
 void initialize_ind (individual *ind);
@@ -152,10 +152,10 @@ void insert (list *node, int x);
 list* del (list *node);
 
 void merge(population *pop1, population *pop2, population *pop3);
-void merge_with_size(population *pop1, int pop1size, 
-			population *pop2, int pop2size, 
-			population *pop3, int pop3size, 
-			population *pop4, int pop4size);
+void merge_with_size(population *pop1, int pop1size,
+                     population *pop2, int pop2size,
+                     population *pop3, int pop3size,
+                     population *pop4, int pop4size);
 void copy_ind (individual *ind1, individual *ind2);
 
 void mutation_pop (population *pop);
