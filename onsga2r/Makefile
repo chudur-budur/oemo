@@ -23,7 +23,7 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg whv sosolv
 
-all: nsga2re onsga2r
+all: nsga2re onsga2r nsga2r
 wfg: wfg-1.10/wfg
 whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
@@ -34,10 +34,16 @@ onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
 nsga2re: $(OBJ) src/nsga2re.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 
+nsga2r: $(OBJ) src/nsga2r.o src/sosolver.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+
+src/onsga2r.o: src/onsga2r.c
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+
 src/nsga2re.o: src/nsga2re.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
-src/onsga2r.o: src/onsga2r.c
+src/nsga2r.o: src/nsga2r.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/sosolver.o: src/sosolver.c
