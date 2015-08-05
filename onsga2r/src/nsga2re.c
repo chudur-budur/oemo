@@ -383,10 +383,10 @@ int main (int argc, char **argv)
 	allocate_memory_pop (mixed_pop, 2*popsize);
 
 	randomize();
+	initialize_pop (parent_pop);
+	
 	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
 	fprintf(stdout, "****** rga total function eval: %d\n", feval);
-
-	initialize_pop (parent_pop);
 	inject_extreme_points(parent_pop, popsize);
 
 	printf("\n Initialization done, now performing first generation");

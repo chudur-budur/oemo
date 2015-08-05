@@ -474,7 +474,10 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 	{
 		vector_subtract(t, s, nreal, s_t);
 		get_unit_vector(s_t, nreal, stu);
-		multiply_scalar(stu, nreal, rndreal(dist * 0.75, dist));
+		if(rndreal(0.0, 1.0) < 0.5)
+			multiply_scalar(stu, nreal, rndreal(dist * 0.75, dist));
+		else
+			multiply_scalar(stu, nreal, rndreal(dist * 1.25, dist));
 		vector_add(s, stu, nreal, d);
 	}
 	else
