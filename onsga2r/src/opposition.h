@@ -7,7 +7,9 @@
  * For the opposition based variation, scheme-1
  * defined in opposition.c
  */
+
 extern pop_list *e_star ;
+
 int initialize_extreme_points(int pop_size, int max_gen, double pc, double pm, double etac, double etam);
 void free_extreme_points();
 void gather_opposite_source_pop(population *pop, int popsize, population

@@ -25,14 +25,14 @@ Experiments with opposition based emo with mirroring.
 
 ##### 1. Run a single experiment:
 ```
-	./sh/run nsga2r input_data/zdt1.in experiments/ 1 0.12345
+	./sh/run nsga2re input_data/zdt1.in experiments/ 1 0.12345
 	./sh/run onsga2r input_data/zdt1.in experiments/ 1 0.12345
 ```
 
 ##### 2. Run multiple experiments at once:
 ```
-	./sh/mapl -si -n 31 -c "./sh/run onsga2r input_data/zdt1.in experiments/"	
-	./sh/mapl -si -n 31 -c "./sh/run nsga2r input_data/zdt1.in experiments/"
+	./sh/maprun -si -n 31 -c "./sh/run onsga2r input_data/zdt1.in experiments/"	
+	./sh/maprun -si -n 31 -c "./sh/run nsga2re input_data/zdt1.in experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
@@ -42,7 +42,7 @@ Experiments with opposition based emo with mirroring.
 	
 ##### 4. Burst all 31 runs at once:
 ```
-	./sh/mapl -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
+	./sh/maprun -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
 ##### 5. Generate one snapshot report:

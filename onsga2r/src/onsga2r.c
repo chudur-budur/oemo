@@ -484,8 +484,6 @@ int main (int argc, char **argv)
 	fprintf(fpt_all_extreme,"# gen = 1\tfe = %d\n", feval);
 	dump_pop_list(e_star, fpt_all_extreme);
 
-	printf("\n gen = 1\tfe = %d", feval);
-
 	fflush(stdout);
 	if (choice!=0)    onthefly_display (parent_pop,gp,1);
 
@@ -499,7 +497,6 @@ int main (int argc, char **argv)
 	fflush(fpt_all_opposite);
 
 	sleep(1);
-	printf("\n");
 
 	randomize();
 	for (i=2; i<=ngen; i++)
@@ -539,7 +536,7 @@ int main (int argc, char **argv)
 		corrupted_genes = generate_opposite_population_using_attractor(
 		                      parent_pop, popsize, opposite_source_pop,
 		                      opposite_pop, opposite_popsize, i);
-		fprintf(stdout, "\n gen = %d\tfe = %d\tcorrupted_genes = %.2f\n", i, feval, corrupted_genes);
+		fprintf(stdout, " gen = %d\tfe = %d\tcorrupted_genes = %.2f\n", i, feval, corrupted_genes);
 		/* this evaluation is only for analysis, not for the algorithm */
 		evaluate_pop_with_size(opposite_pop, opposite_popsize);
 
@@ -567,7 +564,6 @@ int main (int argc, char **argv)
 		fflush(fpt_all_pop);
 
 		if (choice!=0)    onthefly_display (parent_pop,gp,i);
-		fprintf(stdout, "\n gen = %d\tfe = %d", i, feval);
 		fflush(stdout);
 	}
 

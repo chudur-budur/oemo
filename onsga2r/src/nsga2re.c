@@ -402,7 +402,7 @@ int main (int argc, char **argv)
 	/*report_pop(parent_pop,fpt_all_pop);*/
 	dump_population(parent_pop, popsize, fpt_all_pop);
 
-	printf("\n gen = 1\tfe = %d", feval);
+	printf("\n gen = 1\tfe = %d\n", feval);
 
 	fflush(stdout);
 	if (choice!=0)    onthefly_display (parent_pop,gp,1);
@@ -414,7 +414,6 @@ int main (int argc, char **argv)
 	fflush(fpt_params);
 
 	sleep(1);
-	printf("\n");
 
 	randomize();
 	for (i=2; i<=ngen; i++)
@@ -436,7 +435,7 @@ int main (int argc, char **argv)
 		dump_population(parent_pop, popsize, fpt_all_pop);
 		fflush(fpt_all_pop);
 		if (choice!=0)    onthefly_display (parent_pop,gp,i);
-		printf("\n gen = %d\tfe = %d",i, feval);
+		printf(" gen = %d\tfe = %d\n",i, feval);
 	}
 	printf("\n Generations finished, now reporting solutions");
 	report_pop(parent_pop,fpt_final_pop);

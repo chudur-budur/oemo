@@ -45,7 +45,6 @@ int sosolver(pop_list *lst)
 			evaluate_ind(&ind);
 			dumpf_individual(&ind, stdout);
 			push_back(lst, &ind);
-			deallocate_memory_ind(&ind);
 			feval += fe ;
 			mxDestroyArray(result); result = NULL ;
 			mxDestroyArray(findex); findex = NULL ;
