@@ -10,8 +10,8 @@ cmd="" ;
 
 _usage()
 {
-	# example: ./mapl -s -i -n 30 -c "ls -al"
-	printf '%s\n\n' "Usage: ./mapl [-s] [-i] -n [n-instances] -c [any bash/unix command]" ;
+	# example: ./maprun -s -i -n 30 -c "ls -al"
+	printf '%s\n\n' "Usage: ./maprun [-s] [-i] -n [n-instances] -c [any bash/unix command]" ;
 	1>&2; exit 1 ;
 }
 
