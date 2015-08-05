@@ -9,7 +9,7 @@ import uuid
 import numpy as np
 
 
-def load_data(file_path, nobj):
+def load_data(file_path, nobj, algo_name):
     fronts = {}
     try:
         fd = open(file_path, 'r')
@@ -17,10 +17,10 @@ def load_data(file_path, nobj):
         for line in fd:
             vals = line.split()
             if vals[-3] in fronts:
-                if not (vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
+                if not (algo_name != 'nsga2r' and vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
                     fronts[vals[-3]] += [vals[0:nobj]]
             else:
-                if not (vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
+                if not (algo_name != 'nsga2r' and vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
                     fronts[vals[-3]] = [vals[0:nobj]]
         fd.close()
     except Exception as e:
@@ -85,7 +85,7 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
                                     *[algo_name, "{}".format(prob_name),
                                       "snaps-run-{}".format(run),
                                       "all_pop-gen-{}.out".format(gen)])
-                [header, fronts] = load_data(path, nobj)
+                [header, fronts] = load_data(path, nobj, algo_name)
                 hv_lst.append(calc_hv(fronts))
             a = np.array(hv_lst)
             iqr = [header[1],  # header 0 is generation, 1 is fe
@@ -176,7 +176,7 @@ if __name__ == '__main__':
             file1 = dump_hv_stats(
                 root_path, 'onsga2r', key, max_gen, prob_set[key][1])
             file2 = dump_hv_stats(
-                root_path, 'nsga2re', key, max_gen, prob_set[key][1])
+                root_path, 'nsga2r', key, max_gen, prob_set[key][1])
             save_plot(boxcmd, sorted([file1, file2]))
     else:
         usage()

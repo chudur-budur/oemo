@@ -41,8 +41,9 @@ def get_gpstr(algo_files):
     return gpstr[:-3]
 
 
-def save_plot(cmd, out_file):
+def save_plot(algo_files, out_file):
     print("saving {}".format(out_file))
+    cmd = pf2dcmd.format(out_file) + get_gpstr(algo_files)
     lines = parse_gpcmd(cmd)
     try:
         proc = subprocess.Popen(
@@ -92,7 +93,7 @@ def save_plotspf(root_path, algo_names, prob_name, run):
                         else:
                             algo_files[algo] = [pth]
                 out_file = os.path.join(plot_dir, 'gen-' + gen + '.pdf')
-                save_plot(pf2dcmd + get_gpstr(algo_files), out_file)
+                save_plot(algo_files, out_file)
         else:
             print(
                 "gen_lst is empty, hence \'{0:s}\' is not generated.".format(out_file))
