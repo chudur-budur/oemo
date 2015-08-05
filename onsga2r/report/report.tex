@@ -1,0 +1,404 @@
+\documentclass[11pt]{article}
+\usepackage{etex}
+\reserveinserts{28}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{caption}
+% \usepackage{subfigure} % deprecated
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{tabu}
+\usepackage{amsmath, amsfonts}
+\usepackage{centernot}
+\usepackage{fullpage}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{enumitem}
+%\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{lipsum}
+\usepackage{soul}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{tkz-tab}
+\usepackage{tkz-graph}
+\usepackage{tkz-berge}
+
+%\usetikzlibrary{graphs}
+%\usetikzlibrary{shapes,snakes}
+%\usetikzlibrary{arrows,automata,positioning}
+
+%-- for compact list
+\setlist{noitemsep, leftmargin=*}
+
+%-- for compact paragraphs
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+
+%-- Commands for header
+\renewcommand{\title}[1]{\textbf{#1}\\}
+%--  note. -0.4cm for 10pt font and -0.5 for 11pt fonts
+\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.4cm]}
+\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
+& #2\\\end{tabularx}\\[-0.5cm]}
+
+%----- my mod
+\makeatletter
+%-- change section and subsection title format
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\large\bf}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\normalsize\bf}}
+
+%-- custom commands for this homework
+\newcommand{\adj}[1]{\texttt{adj}.#1}
+\newcommand{\adjp}[1]{\texttt{adj.(}#1\texttt{)}}
+\newcommand{\col}[1]{\texttt{col}.#1}
+\newcommand{\colp}[1]{\texttt{col.(}#1\texttt{)}}
+\newcommand{\pr}[1]{\texttt{p}.#1}
+\newcommand{\prp}[1]{\texttt{p.(}#1\texttt{)}}
+\newcommand{\rut}[1]{\texttt{root}.#1}
+\newcommand{\rutp}[1]{\texttt{root(}#1\texttt{)}}
+\newcommand{\red}{\texttt{red}}
+\newcommand{\green}{\texttt{green}}
+\newcommand{\andl}{\wedge}
+\newcommand{\orl}{\vee}
+\newcommand{\req}[1]{\texttt{request}.#1}
+\newcommand{\reqp}[1]{\texttt{request.(}#1\texttt{)}}
+\newcommand{\hol}[1]{\texttt{h}.#1}
+\newcommand{\holp}[1]{\texttt{h.(}#1\texttt{)}}
+\newcommand{\requ}[1]{\texttt{<upon-request>(}#1\texttt{)}}
+\newcommand{\chl}[1]{\texttt{ch}.#1}
+\newcommand{\chlp}[1]{\texttt{ch.(}#1\texttt{)}}
+\newcommand{\ph}[1]{\texttt{ph}.#1}
+\newcommand{\cl}[1]{\texttt{cl}.#1}
+\newcommand{\vc}[1]{\texttt{vc}.#1}
+
+
+%-- change algorithm font size
+%\makeatletter
+%\renewcommand{\ALG@beginalgorithmic}{\small}
+%\makeatother
+%
+%-- put "." (dot) after each section number
+%\g@addto@macro\thesection.
+%\makeatother
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+
+\title{Opposition based Solution Generation in Multiobjective Evolutionary Algorithms}
+\line
+\leftright{\today}{Author1\footnote{Responsible for the GP module}\\Author2\footnote{Responsible for the Simulator module}} %-- left and right positions in the header
+
+\section{Introduction}
+Talk about some introductory stuffs and do some literature reviews to set the scenario, also discuss basic issues like ``what is MOP'' etc. 
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+
+\section{An Alternative Interpretation for Opposition}
+As we have seen in the previous section, mostly the idea of \textit{opposition} is employed as the incorporation of new solutions with a certain kind of \textit{opposite traits} into the existing population. Such \textit{traits} could be interpreted according to different perspectives, an \textit{opposite} solution could be -- i) the one with an opposite representation (w.r.t the current best solution), ii) solutions with the opposite valuese from the other end of the variable bounds (i.e. real valued optimization). However,  
+
+\section{Limitations with Canonical MOP Algorithms: NSGA-II}
+
+\section{The Basic Algorithm: Opposite Point Generation Scheme}
+
+\section{Finding the Extreme Points}
+
+\section{Experiments with the Multi-objective Problem Sets}
+
+\subsection{ZDT Problem Set}
+
+\subsection{DTLZ Problem Set}
+
+\subsection{Constrained Problems}
+
+\subsection{Rotated Problems}
+
+\section{Comparative Analysis}
+
+\subsection{NSGA-II Equipped with Extreme Points}
+
+\subsection{NSGA-II Compensated for the Extra Function Evaluations}
+
+\subsection{Same Algorithm without the Deterministic Opposite Point Generation}
+
+\begin{comment}
+
+% \vspace{-0.5cm}
+\section{Abstract} This report summarizes the experimentations done as a requirement for the CSE 812 course at Michigan State University. We have developed a framework to test how a canonical tree based GP can be used to evolve a computer program that behaves like Raymond's distributed mutex algorithm. We have also tested a novel way of fitness evaluation inspired from the $k$-fold validation scheme, and we also showed that such scheme can generate a program tree which is generalized over a wide range of unseen test cases.
+
+\section{Introduction \& Related Work}
+In this experiment, our goal was to see if a canonical tree based GP will be able to evolve a program that is near performant to the Raymond's distributed mutual exclusion algorithm. Automated synthesis of computer code is one of the very interesting topic in computer science, specially in AI domain. In this experiment we have developed a framework to conduct such type of experiments. Although in many previous works \cite{Zhu2013} \cite{Forrest2009}, it has been suggested that simpler representations like stack based GP, rule based GP etc. are good enough to evolve computer programs. However, tree based GP has a better representation power. Our experiments show that tree based GP can evolve competitive program code that behaves like Raymond's algorithm.
+
+In the same vein as our work, Weise and Tang~\cite{Weise2012} applied genetic programming (GP) to the problem of synthesizing distributed algorithms. They tried several different algorithm representations and designed a model for simulating asynchronous distributed system for the purpose of evaluating the performance of evolved algorithms. In their experiments they successfully evolved programs for three well known problems: the distributed greatest common divisor, the critical section problem (mutual exclusion), and leader election. This work presents the first application of GP to the critical section problem and is the most similar to our work.
+
+First this report discusses a high level view of experimental framework, then we discuss in details how the experiments are setup. Then we show our results along with it's analysis. Then we conclude the report suggesting some pointers to the interesting future extensions.
+
+\section{Experimental Framework}
+The overall experimental framework is composed of two parts, i) Genetic Programming (GP) System and a ii) Code executor. The GP system is only responsible for conducting the evolutionary mechanism, namely a tree based GP. On the other hand, the executor was responsible for executing a generated GP tree over a set of simulated distributed processing nodes. The GP module generates initial population of random trees (i.e. programs) and during the fitness evaluation, it invokes the simulator to fed the trees. A high level view of the whole framework is presented in Figure \ref{framework}. We discuss each of the parts in the following subsections.
+%
+	\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width=0.6\textwidth]{framework.pdf}
+	\end{center}
+	\caption{The experimental framework}
+	\label{framework}
+	\end{figure}
+%
+	\subsection{The Genetic Programming (GP) Module}
+	The Genetic Programming (GP) that we have implemented is a canonical tree based GP, this module was developed on top of a evolutionary computation research system called ECJ \footnote{\url{http://cs.gmu.edu/~eclab/projects/ecj/}}. In GP, each of the evolving programs are represented as ``Koza-style'' \cite{koza:book} tree structures; and in the ECJ framework, these trees are represented LISP S-expressions. The GP program starts with a set of randomly generated LISP S-expressions, and evaluates performance of each tree by running it on the simulator (the simulator module is discussed in the next sub-section). Upon assessing the performance, the GP program applies selection, crossover and mutation to breed trees for the next generation; and the same process is continued for some $N$ generations until we converge to a tree which will give us the best performing distributed mutual exclusion behaviour. As we think discussion on the basic GP algorithm is out of the scope of this report, interested readers are referred to \cite{poli08:fieldguide} for more details on GP and how do they work. For example, in our case a typical GP tree should look like the one presented in the Figure \ref{ourtree}.
+	%
+	\begin{figure}[t]
+	\begin{center}
+	\begin{tikzpicture}[grow'=down]
+		\Tree [ .tree 
+			[ .\texttt{progn2}
+				[ \texttt{enter-cs} 
+				[ .\texttt{if-else} 
+					[ .\texttt{send-req-to} \texttt{q-top} ] 
+					[ \texttt{register-req-q} ] 
+					[ .\texttt{and} 
+						[ .\texttt{not} \texttt{in-cs} ] 
+						[ \texttt{want-cs} ] ] ] ] ] ]
+	\end{tikzpicture}
+	\end{center}
+	\caption{The S-expression tree for the given S-expression}
+	\label{ourtree}
+	\end{figure}
+%
+	As readers can identify, in the tree in the Figure \ref{ourtree}, the internal nodes and the leaves represent different programming constructs i.e. functions, function parameters, conditionals and branching etc. The leaves are generally known as \emph{terminals} and the internal nodes are termed as \emph{non-terminals/non-term} in the GP parlance. For example, in our case, the \emph{non-terminals} could be functions like \texttt{(send-request-to <arg>)}, \texttt{(send-token-to <arg>)}, or \texttt{(if <cond> <stmt>)} etc, and the terminals could be the program state information as \texttt{is-incs} or may refer to destination nodes like \texttt{q-top} (i.e. a node on the top of a queue or \texttt{holder}, holder node in the Raymond's algorithm). \vfill \eject
+	
+	As an example, a tree that represents the language of a program in our case is illustrated in Figure \ref{ourtree} and the corresponding S-expression for this tree looks like this --	
+%
+\begin{verbatim}
+(progn2
+    (if-else (and want-cs (not in-cs))
+        (register-req-q)
+        (send-req-tp q-top))
+    (enter-cs))
+\end{verbatim}
+%
+	For example, a typical execution trace of the tree presented in Figure \ref{ourtree} should be interpreted as follows --
+	\begin{itemize}
+	\item The execution starts at the root of the tree \texttt{progn2}, which is a branching operation where it will execute each of the children nodes in turn.
+	\item The internal node \texttt{(if-else <cond> <stmt> <stmt>)} first evaluates the conditional branch at the left most subtree starting with \texttt{(and <cond> <cond>)}.
+	\item If the result is \texttt{true}, then it executes the next branch rooted at \texttt{(register-req-q)}.
+	\item Otherwise it will execute the right most branch rooted at \texttt{(send-req-to)}.
+	\item After that, \texttt{enter-cs} will be executed.
+	\end{itemize}	
+%
+	As it follows from the preceding discussion, we should have a set of \emph{actions} and \emph{sensors} along with the conditionals and the branching construct to build a functional tree that will emulate a distributed mutual exclusion algorithm. Here we present a subset of such \emph{terminals} and the \emph{non-terminals} that have been used in our tree language in the Table \ref{langtable}, a full list along with their exact implementations can be found in the source code accompanying with this report, please refer to the \texttt{executor.py} file for these details.
+%
+\begin{table}[h]
+\begin{tabular}{lll}
+% \cline{3-3}
+Type         & Example                            & Operations                                                                                                                                  \\ \hline
+conditionals & \texttt{(and <cond> <cond>)}       & \begin{tabular}[c]{@{}l@{}}returns true if the left \texttt{<cond>} \\ and the right \texttt{<cond>} are true\end{tabular}                  \\ \hline
+branching    & \texttt{(if <cond> <stmt> <stmt>)} & \begin{tabular}[c]{@{}l@{}}if the \texttt{<cond>} is true then execute\\ left \texttt{<stmt>} or execute right \texttt{<stmt>}\end{tabular} \\ \hline
+actions      & \texttt{(send-req-to <arg>)}       & \begin{tabular}[c]{@{}l@{}}do all relevant operations to send a token \\ request to the node pointed by \texttt{<arg>}\end{tabular}   \\ \hline
+sensors      & \texttt{is-incs}                   & \begin{tabular}[c]{@{}l@{}}returns true if the calling node is in\\ \emph{Critical Section} (CS), otherwise\\ returns false\end{tabular}                                \\ \hline
+node types   & \texttt{q-top}                     & the pointed by the top of the request queue                                                                                                 \\ \hline
+\end{tabular}
+\caption{One example terminal/non-terminal from each of the categories used in the S-expression}
+\label{langtable}
+\end{table}
+%
+The whole GP part is implemented in java and the executor part was designed in python, such a difference in the implementation language was mainly decided by the implementers' own language preference. However, the whole system could be designed with a single language for a more streamlined implementation. The interface between the java module and that of python was employed with a tool called Jython 2.7 \footnote{\url{http://www.jython.org/}}. The description of the code executor module is presented in the next section.
+	\subsection{Executor}
+	The simulator works as follows. It takes a program tree representation from the GP module as input, parses this into executable code, runs the program on a simulated network of processes for evaluation, and finally returns a fitness score to the GP module. 
+
+\subsubsection{Network structure}
+The simulated distributed network is a fully connected graph of $N$ processes and one token that can be passed between the processes. The simulator framework supports the passing of messages between each process, where a message may contain either the process ID of the sender or the token.
+
+\subsubsection{Program representation}
+The program is represented as a tree of instructions and a set of variables and a data structure. The variables and data structure are inspired by Raymond's algorithm. These are all that were necessary to write a program that can effectively access the \emph{Critical Section} (CS) without violated mutual exclusion. 
+
+The variables/data structures include a FIFO queue, \texttt{bool holder}, \texttt{bool hasToken}, \texttt{bool waiting\-ForToken}, \texttt{bool registeredRequest}, \texttt{bool inCs}, \texttt{bool wantCs}, and the ID of the process running the program. Execution of a program starts at the root of the tree and moves down in a depth first manner. Furthermore, the instruction set contains conditional operators (\texttt{if} and \texttt{if-else}), logic gates (\texttt{not}, \texttt{and}, \texttt{or}, \texttt{nand}, and \texttt{nor}), branching actions (that run a sequence of instructions), operators that return a boolean (\texttt{is-incs}, \texttt{has-token}, \texttt{is-registered-request}, \texttt{is-waiting-for-token}, \texttt{is-queue-empty}, \texttt{is-holder}, \texttt{want-cs}, and \texttt{true}/\texttt{false}), action operators (\texttt{enter-cs}, \texttt{send-request-to}, \texttt{register-req-q}, and \texttt{send-token-to}), and lastly two operators that return a process ID (\texttt{q-top} and \texttt{holder}). Some of the instructions take arguments. In particular, the conditionals and logic gates can take the instructions that return booleans as arguments, and the instructions that send messages can take the instructions that return process IDs (of the recipient) as arguments. In this way, complex programs can be represented.
+
+\subsubsection{Running the simulator}
+Initially, each the abstract string representation of the program input from the GP module is parsed into a program that can be run, and a program is leaded onto each simulated process. Also, the holder variables of the process are initially set in a binary tree structure, with the holder of the token at the root of the tree.
+
+The simulator is run for $T$ steps. During a step each process is run in a fixed order by executing the instruction in the program tree until termination (e.g. the end of the depth first traversal at a leaf node). While a program is running it may access the CS, place messages for other processes into a buffer, or carry out any other action the instructions allow. After all the processes have run the simulator sends each message in the message buffer to the specified recipient process. Since the only code running on the processes is the evolved code, which has no reason to want to ever enter the CS, to encourage the programs to enter the CS the simulator may set a process's \texttt{wantCs bool} to \texttt{true} with a $W$ percent probability. After a processes enters the CS, the simulator will automatically remove the process from the CS after one time step. This series of events iterates until $T$ time steps pass and the simulation ends.
+
+\subsubsection{Fitness evaluation}
+The fitness score is used by the GP module to determine which programs do well at mutual exclusion and which do poorly. Protocols for mutual exclusion are generally designed to satisfy three conditions~\cite{ghosh2006}:
+
+\begin{itemize}
+	\item \emph{ME1.} Mutual exclusion - At most one process can remain in its CS at any time.
+	\item \emph{ME2.} Freedom from deadlock - In every configuration, at least one process must be eligible to take an action and enter its critical section. This is also a safety property.	
+	\item \emph{ME3.} Progress - Every process trying to enter its CS must eventually succeed. 
+\end{itemize}
+
+In this project we focused on \emph{ME1} and \emph{ME3} by designing a fitness function that penalizes programs with more than a single process in the CS at a time, and rewarding programs that allow processes that want to enter the CS access more quickly. During the simulation, two variables are used to measure the fitness, \textit{mutexPenalty} and \textit{progressPenaly}. Initially, these variables are set to 0. Then, each step, if there is more than one process in the CS \textit{mutexPenalty} is incremented by the number of processes in the CS. Furthermore, \textit{progressPenaly} is incremented by the number of processes that want to enter the CS. Note that the upper bound for \textit{mutexPenalty} and \textit{progressPenaly} is $T \times N$. Next, to convert the penalty scores into fitness values the following formulas are used:
+
+\begin{gather*}
+mutexFitness = 1 - \frac{mutexPenalty}{T \times N} \\
+progressFitness = 1 - \frac{progressPenalty}{T \times N} 
+\end{gather*}
+
+After the fitness scores are calculated they can be aggregated together via linear combination. Notice that if only \textit{mutexFitnesses} were used to evaluate the fitness then a program that never tries to enter the CS would receive maximum fitness. This is an undesirable result so it was necessary to also implement \textit{progressFiness}. The last step for the simulator module is to return the aggregated fitness score to the GP module.
+
+\section{Experiment Setup}
+This section we are going to describe the experimentation setup. Like many other population based stochastic search algorithms, GP also comes with its own set of parameters and settings -- which is also a challenging task to tune to get a desired result. The fitness function evaluation phase was carried out like an $N$-fold generalization scheme commonly used in the machine learning community.
+
+	\subsection{Settings for the GP module} 
+	For the GP part, the tree representation was \emph{strongly typed}, which means some functions can take certain type of arguments (i.e. in \texttt{(if <cond> <stmt>)}, the \texttt{<cond>} can take only another function/terminals that only returns \texttt{<cond>} type etc.). Crossover and mutation probabilities were $0.9$ and $0.1$ respectively. The tree building algorithm that has been used is so called Koza's \emph{Half-builder} \cite{koza:book}, the node selection probabilities for subtree mutation and node selection depth parameters were identical to the experiments suggested in \cite{koza:book}. The selection mechanism that has been used is the \emph{Tournament Selection} with size $7$. The population size was kept at $200$, hence the selection pressure was moderate -- since we did not want to be a greedy algorithm that is prone to stuck at the local optima. All the functions/terminals were strongly typed and the node type (i.e. \texttt{q-top}, \texttt{holder}) was implemented as an \emph{Ephemeral Random Constant (ERC)} \cite{koza:book}. There was no \emph{Automatically Defined Function (ADF)} \cite{koza:gp2} used.
+
+	\subsection{Settings for the executor/simulator module} 
+	The simulator code does not implement real parallel threads, instead it was implemented on static process node object. On each \texttt{step} call (in the \texttt{executor.py} file), all the processes execute their individual tree for one single instruction. The fitness evaluation was quite different than the existing canonical GP approach. We maintain a global set of $M$ number of tree configurations (i.e. with different nodes, and topology), at each generation, we test the tree on a single type of tree configuration. More specifically, assume each test configuration is a tuple of i) number of nodes $n$, ii) tree topology $\tau$ iii) the number of steps that a program will execute on $t$ and iv) the probability nodes that are requesting the CS $r$, i.e. $s_i = \langle n, \tau, t , r\rangle$, and assume we have such $k$ tuples $S = \{s_1, s_2, \ldots, s_k\}$. At a particular generation $j$, all the individual programs will be assessed with the test set $s_{(j \mod k)}$. We have applied such scheme because we wanted to come up with a tree that is generalized over a set of configurations and setups. For exact values for these configurations, readers are encouraged to refer to the \texttt{DistributedSystemProblem.java} file, as this file implements the fitness evaluation call. In the next section, we will discuss the results found from our experiments.
+
+\section{Results: Evolved Raymond's Algorithm}
+Using the parameters described in the previous sections, we have conducted multiple experiments. After the experiments, we have collated the results and the analyzed the evolved code with the handcrafted Raymond's algorithm code using the same S-expression language. As also described in the previous sections, the fitness values were decided on the \emph{mutexFitness} and \emph{progressFitness} performances. The handcrafted Raymond's algorithm looked like the code given below --
+%
+\begin{verbatim}
+(progn2
+    (exit-cs)
+    (progn2
+        (if-else want-cs 
+            (if has-token (enter-cs))
+            (if (not is-regreq) (register-req-q)))
+        (progn2
+            (if (and (and (not has-token) (not is-q-empty)) is-waiting-for-token)
+                (send-req-to holder)
+                (progn2
+                    (if (and (and is-holder (not is-incs)) (not is-q-empty))
+                            (send-token-to q-top))
+                    (if (and (and has-token (not is-incs) (not is-q-empty)))
+                        (progn2
+                            (send-token-to q-top)
+                            (if (not is-q-empty)
+                                    (send-req-to holder)))))))))
+\end{verbatim}
+%
+The respective fitness values for this code was $mutexFitness = 1.0$ and $progressFitness = 0.193$ for a randomly generated tree of $10$ nodes, and CS request rate of $0.1$ over $100$ steps.
+%
+	\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width=0.6\textwidth]{plot.pdf}
+	\end{center}
+	\caption{The gp convergence plot}
+	\label{plot}
+	\end{figure}
+%
+	\subsection{Convergence analysis}
+	The plot in Figure \ref{plot} shows the convergence plot from one of the experiments that we have done. We can see that after certain generation the GP program converges to a steady state fitness level. After running the experiments, we collected most fit tree and ran through the simulator again to see how it works, we have also compared it with the hand crafted Raymond's algorithm code. The result is given in the Table \ref{comptable}. Here we can see that the evolved code well maintains the \emph{safety property} (i.e. $mutexFitness = 1.0$ always) over all the test cases. Moreover, the \emph{liveness property} is also well maintained -- $progressFitness$ is better than those of the handcrafted code, in all test cases. The first $5$ rows in the table are the test cases that we have used to assess the program fitness during the evolutionary runs, and the last $5$ are the \emph{unseen} test cases. We also notice that the evolved code maintains the \emph{liveness property} well better than the handcrafted code, which in turn ensures that the evolved code with GP can also generalize. In the next section, we will present the evolved code and try to analyze it with the actual handcrafted Raymond's code side-by-side.
+	%
+\begin{table}[h]
+\footnotesize
+\centering
+\begin{tabular}{|c|cc|cc|}
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Test\\ Cases\end{tabular}} & \multicolumn{2}{c}{mutexFitness}                                                                                              & \multicolumn{2}{c}{progressFitness}                                                                                              \\ 
+                                                                      & \begin{tabular}[c]{@{}c@{}}Raymond's \\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Evolved \\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Raymond's\\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Evolved \\ Algorithm\end{tabular} \\ \hline
+test 1                                                                & 1.000                                                          & 1.000                                                        & 0.193                                                         & 0.896                                                        \\
+test 2                                                                & 1.000                                                          & 1.000                                                        & 0.091                                                         & 0.858                                                        \\
+test 3                                                                & 1.000                                                          & 1.000                                                        & 0.048                                                         & 0.800                                                        \\
+test 4                                                                & 1.000                                                          & 1.000                                                        & 0.028                                                         & 0.756                                                        \\
+test 5                                                                & 1.000                                                          & 1.000                                                        & 0.023                                                         & 0.701                                                        \\ \hline
+test 6                                                                & 1.000                                                          & 1.000                                                        & 0.016                                                         & 0.648                                                        \\
+test 7                                                                & 1.000                                                          & 1.000                                                        & 0.012                                                         & 0.600                                                        \\
+test 8                                                                & 1.000                                                          & 1.000                                                        & 0.010                                                         & 0.553                                                        \\
+test 9                                                                & 1.000                                                          & 1.000                                                        & 0.008                                                         & 0.502                                                        \\ 
+test 10                                                               & 1.000                                                          & 1.000                                                        & 0.006                                                         & 0.454                                                       \\ \hline
+\end{tabular}
+\caption{Performance comparison, all the cases from test 5$\sim$10 are unseen to the evolved code.}
+\label{comptable}
+\end{table}
+%
+	\subsection{Evolved code analysis}
+	One of the code that we have found is presented below:
+\begin{verbatim}
+(progn2 
+ (if (and (and is-waiting-for-token is-regreq) (not is-regreq)) 
+     (send-token-to holder)) 
+ (progn2 
+  (if-else (and want-cs is-regreq)
+	   (progn2 
+	    (if (and (and is-waiting-for-token is-regreq) (not is-regreq)) 
+		(send-token-to holder)) 
+	    (if-else (not (or (not is-regreq) has-token)) (send-req-to q-top) 
+		     (if-else (and want-cs is-regreq) 
+			      (if is-q-empty exit-cs) 
+			      (if has-token enter-cs))))
+	   enter-cs)
+  (if-else (not (or is-regreq has-token)) 
+	   (if is-q-empty exit-cs) 
+	   (if-else (and want-cs is-regreq)
+		    (if is-q-empty exit-cs) 
+		    (if has-token enter-cs)))))
+\end{verbatim}
+One interesting feature that the above code displays is that it creates a detectable partition which is very close to a generic pattern for a typical mutual exclusion algorithm, i.e. --
+\begin{verbatim}
+    mutex()
+    {
+        enter-cs-protocol()
+        enter-cs()
+        exit-cs-protocol()
+    }
+\end{verbatim}
+If we look closely, we can see that the first \texttt{(if-else <cond> <stmt> <stmt>)} implements the \texttt{enter-cs-protocol()}, and after the \texttt{(enter-cs)} construct, the evolved code implements the \texttt{exit-cs-protocol()}. This kind of emergent signature from a GP algorithm is really interesting to notice.
+
+\section{Conclusions and Future Work}
+This experiment shows that canonical tree based GP can be used for automated synthesis of distributed protocols. Moreover, the $k$-fold validation like fitness assessment scheme can generate program that is generalized. The main contribution of this experiment is to design a testbed for future experiments and we believe there are multiple avenues for further investigations --
+
+\textbf{Grammatical evolution:} Grammatical Evolution (GE) comes with a powerful representation model. In GE, the tree generation is done based on a context free grammar and the trees are encoded in a string of integer numbers identifying the grammar rule sequences. We can also apply GE for evolving Raymond's protocol.
+
+\textbf{Co-operative co-evolution:} If we look at the generic pattern for every mutex algorithm, we can see a structure like --
+\begin{verbatim}
+    mutex()
+    {
+        enter-cs-protocol()
+        enter-cs()
+        exit-cs-protocol()
+    }
+\end{verbatim}
+If we look closely, we can see that the \texttt{enter-cs-protocol()} and \texttt{exit-cs-protocol()} have totally different behaviours (i.e. most of the time, the operations are opposite). This property makes it a very interesting problem for co-operative co-evolution, where two different sub-populations will evolve two programs with different behaviors, and the fitness will be assessed on how they perform when they are paired.
+
+\textbf{Implement a real distributed process simulator:} We also need to implement a real distributed process simulator, there are lots of thread libraries that could be utilized for this purpose.
+
+\section{Appendix: How to Run The Experiments}
+We are assuming that the users have latest jdk and python on their system, and all the java classpath environments are setup properly. The codes are structured as follows --
+\begin{itemize}
+	\item \texttt{raymond/lib}: contains all necessary libraries
+	\item \texttt{raymond/src}: contains all codes
+	\item \texttt{raymond/src/evomutex}: contains all codes related to GP module
+	\item \texttt{raymond/src/sim}: contains all codes related to simulator module
+	\item \texttt{raymond/src/pyglue}: contains all codes related to java-python interface
+	\item \texttt{raymond/src/make}: the bash script to compile and run the experiments
+\end{itemize}
+
+\textbf{To compile:} open a terminal, go to the \texttt{raymond/src} folder and type --
+\begin{verbatim}
+	user@machine:/home/raymond/src$ ./make
+\end{verbatim}
+
+\textbf{To run:} type --
+\begin{verbatim}
+	user@machine:/home/raymond/src$ ./make run
+\end{verbatim}
+
+After the execution, the results will be saved in \texttt{raymond/src/out.stat} file, this file will contain the best evolved tree at each successive generations, along with their fitness. To run a particular tree, please refer to the \texttt{raymond/src/sim/tester.py} script. 
+
+Users can also use the same script for cleaning up the compiled executables.
+
+\textbf{To clean:} type --
+\begin{verbatim}
+	user@machine:/home/raymond/src$ ./make clean
+\end{verbatim}
+
+\end{comment}
+
+\bibliographystyle{plain}
+\bibliography{report}
+
+\end{document}
