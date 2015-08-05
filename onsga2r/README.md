@@ -5,28 +5,38 @@ Experiments with opposition based emo with mirroring.
 
 #### How to compile:
 
-##### 1. building the main code (nsga2 and opposition based nsga2):
+##### 1. First you need to build the matlab's single obj. optimization solver
+```
+	make sosolv
+```
+
+##### 2. cleaning up the so-solver
+```
+	make clean-sosolv
+```
+
+##### 3. building the main code (nsga2 and opposition based nsga2):
 ```
 	make
 ```
 
-##### 2. building the wfg Hypervolume computation code:
-```
-	make wfg
-``` 
-
-##### 3. cleaning up:
+##### 4. cleaning up:
 ```
 	make clean
 ```
+
+##### 5. building the wfg Hypervolume computation code:
+```
+	make wfg
+``` 
 
 
 #### How to run the experiments:
 
 ##### 1. Run a single experiment:
 ```
-	./sh/run nsga2re input_data/zdt1.in experiments/ 1 0.12345
 	./sh/run onsga2r input_data/zdt1.in experiments/ 1 0.12345
+	./sh/run nsga2re input_data/zdt1.in experiments/ 1 0.12345
 ```
 
 ##### 2. Run multiple experiments at once:
