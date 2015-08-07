@@ -14,30 +14,31 @@ def parse_gpcmd(gpcmd):
 
 
 def get_gpstr(algo_files):
-    pt_type = 1
+    lstyle = 1
     gpstr = ''
     for algo in sorted(algo_files):
         if algo == 'onsga2r':
-            ptlst = [str(i) for i in range(pt_type, pt_type + 5)]
+            lslst = [str(i) for i in range(lstyle, lstyle + 5)]
+            args = sorted(algo_files[algo]) + lslst \
+                    + ['extreme-pts', 'opp-child', 'opp-parent', 'onsga2r', 'survived-pts']
             gpstr += """
-        \"{0:s}\" using 1:2 ls {5:s} ti '{10:s}', \\
-        \"{1:s}\" using 1:2 ls {6:s} ti '{11:s}', \\
-        \"{2:s}\" using 1:2 ls {7:s} ti '{12:s}', \\
-        \"{3:s}\" using 1:2 ls {8:s} ti '{13:s}', \\
-        \"{4:s}\" using 1:2 ls {9:s} ti '{14:s}', \\"""\
-                        .format(*(sorted(algo_files[algo]) + ptlst
-                                  + ['extreme pts', 'opp. child', 'onsga2r', 'opp. parent', 'survived pts']))
-            pt_type += 5
+            \"{0:s}\" using 1:2 w circles ls {5:s} ti '{10:s}', \\
+            \"{1:s}\" using 1:2 w circles ls {6:s} ti '{11:s}', \\
+            \"{2:s}\" using 1:2 w circles ls {7:s} ti '{12:s}', \\
+            \"{3:s}\" using 1:2 w circles ls {8:s} ti '{13:s}', \\
+            \"{4:s}\" using 1:2 w circles ls {9:s} ti '{14:s}', \\""".format(*args)
+            lstyle += 5
         else:
             try:
                 regex = re.compile('.*all_pop.*')
-                gpstr += """        \"{0:s}\" using 1:2 ls {1:d} ti '{2:s}', \\"""\
-                    .format([fname for fname in algo_files[algo] if regex.match(fname)][0],
-                            pt_type, algo)
-                pt_type += 1
+                gpstr += """            \"{0:s}\" using 1:2 w circles ls {1:s} ti '{2:s}', \\\n"""\
+                        .format([fname for fname in algo_files[algo] if regex.match(fname)][0],\
+                            str(lstyle), algo)
+                lstyle += 1
             except Exception as e:
                 print(e.message, e.args)
                 sys.exit()
+    gpstr = os.linesep.join([s for s in gpstr.splitlines() if s])
     return gpstr[:-3]
 
 
@@ -102,16 +103,24 @@ def save_plotspf(root_path, algo_names, prob_name, run):
         sys.exit()
 
 pf2dcmd = """
-    set term pdf enhanced color
-    set output \"{0:s}\"
-    # load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set3.plt\'
-    # load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set2.plt\'
-    # load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Pastel1.plt\'
-    # load \'~/gnuplot-utils/gnuplot-colorbrewer/sequential/Oranges.plt\'
-    # load \'~/gnuplot-utils/gnuplot-colorbrewer/diverging/Spectral.plt\'
-    set xlabel \'f1\'
-    set ylabel \'f2\'
-    plot \\
+	set term pdf enhanced color
+	set style fill transparent solid 0.75 noborder
+	# set term pdf monochrome
+	# set style fill pattern
+        set output \"{0:s}\"
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set3.plt\'
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set2.plt\'
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Pastel1.plt\'
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/sequential/Oranges.plt\'
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/diverging/Spectral.plt\'
+	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Accent.plt\'
+	load \'~/gnuplot-utils/gnuplot-palettes/dark2.pal\'
+	# load \'~/gnuplot-utils/gnuplot-palettes/paired.pal\'
+	set style circle radius screen 0.0075
+	set xlabel \'f1\'
+	set ylabel \'f2\'
+	set key out horiz bot cent
+	plot \\
 """
 
 

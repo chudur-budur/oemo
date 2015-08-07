@@ -17,7 +17,7 @@
 #include "misc.h"
 #include "vecutils.h"
 
-#define debug 1
+#define debug 0
 
 pop_list *e_star ;
 int popsize ;
@@ -289,7 +289,9 @@ double extremes[3][22] = {{
 	for(int i = 0 ; i < nobj; i++)
 	{
 		fprintf(stdout, "\n********** using hardcoded extremes:\n");
-		allocate_memory_ind(&ind); initialize_ind_dummy(&ind);
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
 		memcpy(ind.xreal, extremes[i], sizeof(double) * nreal);
 		push_back(e_star, &ind);
 		deallocate_memory_ind(&ind);
@@ -377,7 +379,9 @@ double generate_opposite_population(population *pop, pop_list *op_parent, pop_li
 	{
 		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
 		corrupted_genes += generate_opposite_vector_q3(ptr->ind->xreal, t, x);
-		allocate_memory_ind(&ind); initialize_ind_dummy(&ind);
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
 		memcpy(ind.xreal, x, sizeof(double) * nreal);
 		ind.is_opposite = 1 ;
 		push_back(op_child, &ind);
@@ -673,17 +677,6 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 		}
 	}
 	return ccount ;
-}
-
-/* count the number of opposite individuals in a population */
-int count_opposite(population *pop)
-{
-	int i, count ;
-	count = 0 ;
-	for(i = 0 ; i < popsize ; i++)
-		if(pop->ind[i].is_opposite == 1)
-			count++;
-	return count ;
 }
 
 /* clears all the opposite flag of the individuals in a population */

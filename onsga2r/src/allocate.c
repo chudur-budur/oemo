@@ -20,35 +20,19 @@ void allocate_memory_pop (population *pop, int size)
 /* Function to allocate memory to an individual */
 void allocate_memory_ind (individual *ind)
 {
-	/*int i;*/
 	int j;
-	/* all the extra initialization are done to shut the valgrind complains */
 	if (nreal != 0)
-	{
 		ind->xreal = (double *)malloc(nreal*sizeof(double));
-		/*for(i = 0 ; i < nreal ; i++) ind->xreal[i] = 0.0 ;*/
-	}
 	if (nbin != 0)
 	{
 		ind->xbin = (double *)malloc(nbin*sizeof(double));
-		/*for(i = 0 ; i < nbin ; i++) ind->xbin[i] = 0 ;*/
 		ind->gene = (int **)malloc(nbin*sizeof(int *));
 		for (j = 0; j < nbin; j++)
-		{
 			ind->gene[j] = (int *)malloc(nbits[j]*sizeof(int));
-			/*for(i = 0 ; i < nbits[j] ; i++) ind->gene[j] = 0 ;*/
-		}
 	}
 	ind->obj = (double *)malloc(nobj*sizeof(double));
-	/*for(i = 0 ; i < nobj ; i++) ind->obj[i] = 0.0 ;*/
 	if (ncon != 0)
-	{
 		ind->constr = (double *)malloc(ncon*sizeof(double));
-		/*for(i = 0 ; i < ncon ; i++) ind->constr[i] =  0.0 ;*/
-	}
-	/*ind->rank = -1 ;
-	ind->crowd_dist = -1.0 ;
-	ind->is_opposite = 0 ;*/
 	return;
 }
 

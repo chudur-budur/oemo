@@ -65,9 +65,9 @@ void dumpf_individual(FILE *fpt, individual *ind)
 			for (k = 0 ; k < nbits[j] ; k++)
 				fprintf(fpt,"%d", ind->gene[j][k]);
 	fprintf(fpt,"[[%.3f]] ",	ind->constr_violation);
-	fprintf(fpt,"<%d> ",	ind->rank);
-	fprintf(fpt,"(%0.2e) ",	ind->crowd_dist);
-	fprintf(fpt,"|%d|\n",	ind->is_opposite);
+	fprintf(fpt,"<%d> ",		ind->rank);
+	fprintf(fpt,"(%0.2e) ",		ind->crowd_dist);
+	fprintf(fpt,"|%d|\n",		ind->is_opposite);
 }
 
 void dump_individual(FILE *fpt, individual *ind)
@@ -223,16 +223,16 @@ void initialize_ind_dummy (individual *ind)
 	if (nbin!=0)
 		for (j=0; j<nbin; j++)
 		{
-			for (k=0; k<nbits[j]; k++) ind->gene[j][k] = -1;
+			for (k=0; k<nbits[j]; k++) ind->gene[j][k] = 0;
 			ind->xbin[j] = 0.0 ;
 		}
 	for(j = 0 ; j < nobj ; j++) ind->obj[j] = 0.0 ;
 	if(ncon!=0)
 		for(j = 0 ; j < ncon ; j++)
 			ind->constr[j] = 0.0 ;
-	ind->rank = -1 ;
-	ind->constr_violation = -1.0 ;
-	ind->crowd_dist = -1.0 ;
+	ind->rank = 0 ;
+	ind->constr_violation = 0.0 ;
+	ind->crowd_dist = 0.0 ;
 	ind->is_opposite = 0 ;
 	return;
 }

@@ -7,7 +7,6 @@
 
 # include "global.h"
 # include "rand.h"
-/*# include "opposition.h"*/
 # include "misc.h"
 
 int nreal;
@@ -384,15 +383,13 @@ int main (int argc, char **argv)
 
 	randomize();
 	initialize_pop (parent_pop);
-	
-	/*feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
-	fprintf(stdout, "****** rga total function eval: %d\n", feval);*/
-	/*inject_extreme_points(parent_pop, popsize);*/
+	/* just to shut the valgrind complains :-( */
+	initialize_pop_dummy (child_pop);
 
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
-	feval += popsize ;
+	feval = popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
 
 	dump_population(fpt_init_pop, parent_pop, popsize);
@@ -412,7 +409,6 @@ int main (int argc, char **argv)
 
 	sleep(1);
 
-	randomize();
 	for (i=2; i<=ngen; i++)
 	{
 		selection (parent_pop, child_pop);
@@ -470,7 +466,6 @@ int main (int argc, char **argv)
 		free (max_binvar);
 		free (nbits);
 	}
-	/*free_extreme_points();*/
 	deallocate_memory_pop (parent_pop, popsize);
 	deallocate_memory_pop (child_pop, popsize);
 	deallocate_memory_pop (mixed_pop, 2*popsize);

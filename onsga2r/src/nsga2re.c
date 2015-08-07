@@ -384,20 +384,31 @@ int main (int argc, char **argv)
 
 	randomize();
 	initialize_pop (parent_pop);
+	/* just to shut the valgrind complains :-( */
+	initialize_pop_dummy (child_pop);
 	
-	feval = init_extreme_pts_hardcoded();
-	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
-	inject_extreme_points(parent_pop);
-
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
-	feval += popsize ;
+	feval = popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
-
+	
 	dump_population(fpt_init_pop, parent_pop, popsize);
 	fprintf(fpt_all_pop,"# gen = 1\tfe = %d\n", feval);
 	dump_population(fpt_all_pop, parent_pop, popsize);
+
+	/* now find the extreme points */	
+	/*feval = init_extreme_pts_sosolver();*/
+	feval += init_extreme_pts_hardcoded();
+	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
+	inject_extreme_points(parent_pop);
+	/** 
+	 * these two line below are not necessary for algorithm to work
+	 * it's been done because we have just injected the extreme points now.
+	 * this is done like this for stat purposes.
+	 */
+	evaluate_pop (parent_pop);
+	assign_rank_and_crowding_distance (parent_pop);
 
 	printf("\n gen = 1\tfe = %d\n", feval);
 
@@ -412,7 +423,6 @@ int main (int argc, char **argv)
 
 	sleep(1);
 
-	randomize();
 	for (i=2; i<=ngen; i++)
 	{
 		selection (parent_pop, child_pop);

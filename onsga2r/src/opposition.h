@@ -26,12 +26,8 @@ void gather_op_parent(population *pop, pop_list *op_parent);
 void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
 int generate_opposite_vector_q3(double *s, double *t, double *d);
 
-int count_opposite(population *pop);
 void clear_opposite_flag(population *pop);
-
 void inject_opposite_shuffle(pop_list *op_child, population *destpop);
-
 void gather_survived_individuals(population *parent_pop, pop_list *survived_pop);
-
 void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize);
 # endif

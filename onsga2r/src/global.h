@@ -11,13 +11,13 @@
 
 typedef struct
 {
-	int rank;
-	double constr_violation;
 	double *xreal;
 	int **gene;
 	double *xbin;
 	double *obj;
 	double *constr;
+	double constr_violation;
+	int rank;
 	double crowd_dist;
 	int is_opposite ;
 }

@@ -9,19 +9,19 @@ import uuid
 import numpy as np
 
 
-def load_data(file_path, nobj, algo_name):
+def load_data(file_path, nobj):
     fronts = {}
     try:
         fd = open(file_path, 'r')
         header = [item for item in fd.readline().split() if item.isnumeric()]
         for line in fd:
             vals = line.split()
-            if vals[-3] in fronts:
-                if not (algo_name != 'nsga2r' and vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
-                    fronts[vals[-3]] += [vals[0:nobj]]
-            else:
-                if not (algo_name != 'nsga2r' and vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
-                    fronts[vals[-3]] = [vals[0:nobj]]
+            if header[0] == '1':
+                fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
+                        else fronts[vals[-3]] + [vals[0:nobj]]
+            elif not (vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
+                fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
+                        else fronts[vals[-3]] + [vals[0:nobj]]
         fd.close()
     except Exception as e:
         print(e.message, e.args)
@@ -85,7 +85,8 @@ def dump_hv_stats(root_path, algo_name, prob_name, max_gen, nobj):
                                     *[algo_name, "{}".format(prob_name),
                                       "snaps-run-{}".format(run),
                                       "all_pop-gen-{}.out".format(gen)])
-                [header, fronts] = load_data(path, nobj, algo_name)
+                [header, fronts] = load_data(path, nobj)
+                # print(header, ': ', fronts)
                 hv_lst.append(calc_hv(fronts))
             a = np.array(hv_lst)
             iqr = [header[1],  # header 0 is generation, 1 is fe
@@ -174,9 +175,9 @@ if __name__ == '__main__':
             max_gen = int(argv[2]) if (
                 len(argv) >= 3 and argv[2].isdigit()) else prob_set[key][0]
             file1 = dump_hv_stats(
-                root_path, 'onsga2r', key, max_gen, prob_set[key][1])
+                root_path, 'nsga2re', key, max_gen, prob_set[key][1])
             file2 = dump_hv_stats(
-                root_path, 'nsga2r', key, max_gen, prob_set[key][1])
+                root_path, 'onsga2r', key, max_gen, prob_set[key][1])
             save_plot(boxcmd, sorted([file1, file2]))
     else:
         usage()

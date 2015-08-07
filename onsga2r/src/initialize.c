@@ -20,8 +20,6 @@ void initialize_pop (population *pop)
 void initialize_ind (individual *ind)
 {
 	int j, k;
-	ind->rank = -1 ;
-	ind->constr_violation = 0.0 ;
 	if (nreal!=0)
 		for (j=0; j<nreal; j++)
 			ind->xreal[j] = rndreal (min_realvar[j], max_realvar[j]);
@@ -40,7 +38,8 @@ void initialize_ind (individual *ind)
 	if(ncon!=0)
 		for(j = 0 ; j < ncon ; j++)
 			ind->constr[j] = 0.0 ;
-	ind->rank = -1 ;
+	ind->rank = 0 ;
+	ind->constr_violation = 0.0 ;
 	ind->crowd_dist = 0.0 ;
 	ind->is_opposite = 0 ;
 	return;

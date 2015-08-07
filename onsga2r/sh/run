@@ -56,11 +56,11 @@ echo "performing run ${run} with seed: ${seed}, UUID: ${uid}" ;
 if [ -f "all_pop-${uid}.out" ]; then
 	mv "all_pop-${uid}.out" "${targetdir}/all_pop-${run}.out" ;
 fi
-if [ -f "all_source-${uid}.out" ]; then
-	mv "all_source-${uid}.out" "${targetdir}/all_source-${run}.out" ;
+if [ -f "all_op_parent-${uid}.out" ]; then
+	mv "all_op_parent-${uid}.out" "${targetdir}/all_op_parent-${run}.out" ;
 fi
-if [ -f "all_opposite-${uid}.out" ]; then
-	mv "all_opposite-${uid}.out" "${targetdir}/all_opposite-${run}.out" ;
+if [ -f "all_op_child-${uid}.out" ]; then
+	mv "all_op_child-${uid}.out" "${targetdir}/all_op_child-${run}.out" ;
 fi
 if [ -f "all_survived-${uid}.out" ]; then
 	mv "all_survived-${uid}.out" "${targetdir}/all_survived-${run}.out" ;

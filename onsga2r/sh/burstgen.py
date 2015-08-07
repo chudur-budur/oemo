@@ -49,8 +49,8 @@ def usage():
 if __name__ == '__main__':
     argv = sys.argv[1:]
     algorithms = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
-    file_prefixes = ['all_pop-', 'all_source-',
-                     'all_opposite-', 'all_extreme-', 'all_survived-']
+    file_prefixes = ['all_pop-', 'all_op_parent-',
+                     'all_op_child-', 'all_extreme-', 'all_survived-']
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else (
             argv[2] if argv[2].isdigit() else '1')

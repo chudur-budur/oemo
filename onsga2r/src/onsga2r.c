@@ -422,53 +422,59 @@ int main (int argc, char **argv)
 	fprintf(fpt_all_oparent,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	fprintf(fpt_all_ochild,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	fprintf(fpt_all_survived,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-
 	nbinmut = 0;
 	nrealmut = 0;
 	nbincross = 0;
 	nrealcross = 0;
-
 	parent_pop = (population *)malloc(sizeof(population));
 	child_pop = (population *)malloc(sizeof(population));
 	mixed_pop = (population *)malloc(sizeof(population));
-
 	allocate_memory_pop (parent_pop, popsize);
 	allocate_memory_pop (child_pop, popsize);
 	allocate_memory_pop (mixed_pop, 2 * popsize);
-	/* opposition stuff */
-	op_parent = new_list();
-	op_child = new_list();
 
 	randomize();
 	initialize_pop (parent_pop);
-
-	/*feval = init_extreme_pts_sosolver();*/
-	feval = init_extreme_pts_hardcoded();
-	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
-	inject_extreme_points(parent_pop);
-
+	/* just to shut the valgrind complains :-( */
+	initialize_pop_dummy (child_pop);
+		
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
-	feval += popsize ;
+	feval = popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
 
-	dump_population(parent_pop, popsize, fpt_init_pop);
+	/* save the initial population before extreme point injection for stat purposes */
+	dump_population(fpt_init_pop, parent_pop, popsize);
 	fprintf(fpt_all_pop, "# gen = 1\tfe = %d\n", feval);
-	dump_population(parent_pop, popsize, fpt_all_pop);
+	dump_population(fpt_all_pop, parent_pop, popsize);
+
+	/* now find the extreme points */	
+	/*feval = init_extreme_pts_sosolver();*/
+	feval += init_extreme_pts_hardcoded();
+	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
+	inject_extreme_points(parent_pop);
+	/** 
+	 * these two line below are not necessary for algorithm to work
+	 * it's been done because we have just injected the extreme points now.
+	 * this is done like this for stat purposes.
+	 */
+	evaluate_pop (parent_pop);
+	assign_rank_and_crowding_distance (parent_pop);
 
 	/* opposition stuff */
+	op_parent = new_list();
+	op_child = new_list();
 	printf("\n *** Will apply opposition based variation.");
 	corrupted_genes = generate_opposite_population(parent_pop, op_parent, op_child, 1);
-	fprintf(stdout, "\n gen = 1\tfe = %d\tcorrupted_genes = %.2f\n", feval, corrupted_genes);
-	
-	/* opposition stuff */
+	fprintf(stdout, "\n gen = %4d\tfe = %8d\tcorrupted_genes = %2.2f\n", 1,feval,corrupted_genes);
 	fprintf(fpt_all_oparent, "# gen = 1\tfe = %d\n", feval);
-	dump_pop_list(op_parent, fpt_all_oparent);
+	dump_pop_list(fpt_all_oparent, op_parent);
+	evaluate_pop_list(op_child);
 	fprintf(fpt_all_ochild, "# gen = 1\tfe = %d\n", feval);
-	dump_pop_list(op_child, fpt_all_ochild);
+	dump_pop_list(fpt_all_ochild, op_child);
 	fprintf(fpt_all_extreme,"# gen = 1\tfe = %d\n", feval);
-	dump_pop_list(e_star, fpt_all_extreme);
+	dump_pop_list(fpt_all_extreme, e_star);
 
 	fflush(stdout);
 	if (choice!=0)    onthefly_display (parent_pop,gp,1);
@@ -484,9 +490,7 @@ int main (int argc, char **argv)
 
 	sleep(1);
 
-	randomize();
 	for (i=2; i<=ngen; i++)
-	/*for (i=2; i<=3; i++)*/
 	{
 		selection (parent_pop, child_pop);
 
@@ -494,8 +498,7 @@ int main (int argc, char **argv)
 		decode_pop(child_pop);
 
 		/* this is required for some versions of the algorithm to work */
-		clear_opposite_flag(child_pop);
-
+		if(i > 2) clear_opposite_flag(child_pop);
 		/* inject opposite after variation */
 		inject_opposite_shuffle(op_child, child_pop);
 		/* also we need to inject newly found extreme points */
@@ -504,43 +507,40 @@ int main (int argc, char **argv)
 		evaluate_pop(child_pop);
 		feval += popsize ;
 		merge(parent_pop, child_pop, mixed_pop);
-
 		fill_nondominated_sort (mixed_pop, parent_pop);
 
-		/**
-		 * now do some analysis of the opposite solutions
-		 * not required for the actual algorithm to work
-		 */
-		int opposite_count = count_opposite(parent_pop);
-
-		pop_list *survived_pop = new_list();
-		gather_survived_individuals(parent_pop, survived_pop);
-		clear_opposite_flag(parent_pop);
-
+		/* now generate opposite points */
 		make_empty(op_child);
 		make_empty_ptr(op_parent);
 		corrupted_genes = generate_opposite_population(parent_pop, op_parent, op_child, i);
-		fprintf(stdout, " gen = %d\tfe = %d\tcorrupted_genes = %.2f\n", 
-						i, feval, corrupted_genes);
+		fprintf(stdout, " gen = %4d\tfe = %8d\tcorrupted_genes = %5.2f\n", i,feval,corrupted_genes);
 
 		/**
 		 * All these stuffs below are only for analysis, not for the algorithm
 		 */ 
-		evaluate_pop_list(op_parent);
 		fprintf(fpt_all_oparent,"# gen = %d\tfe = %d\n", i, feval);
-		dump_pop_list(op_parent, fpt_all_oparent);
+		dump_pop_list(fpt_all_oparent, op_parent);
 		fflush(fpt_all_oparent);
+		evaluate_pop_list(op_child);
 		fprintf(fpt_all_ochild,"# gen = %d\tfe = %d\n", i, feval);
-		dump_pop_list(op_child, fpt_all_ochild);
+		dump_pop_list(fpt_all_ochild, op_child);
 		fflush(fpt_all_ochild);
+		/**
+		 * now do some analysis of the opposite solutions
+		 * not required for the actual algorithm to work
+		 */
+		pop_list *survived_pop = new_list();
+		gather_survived_individuals(parent_pop, survived_pop);
 		fprintf(fpt_all_survival_stat, "\n gen = %d\tfe = %d\tratio = %f\n", (i - 1),
-		        (feval - popsize), (opposite_count/((float)op_popsize)) * 100.0);
+		        (feval - popsize), (survived_pop->size/((float)op_popsize)) * 100.0);
 		fprintf(fpt_all_survived,"# gen = %d\tfe = %d\n", (i - 1), (feval - popsize));
-		dump_pop_list(survived_pop, fpt_all_survived);
-		free_list_ptr(survived_pop);
+		dump_pop_list(fpt_all_survived, survived_pop);
 		fflush(fpt_all_survived);
+		free_list_ptr(survived_pop);
+		clear_opposite_flag(parent_pop);
+		
 		fprintf(fpt_all_extreme,"# gen = %d\tfe = %d\n", i, feval);
-		dump_pop_list(e_star, fpt_all_extreme);
+		dump_pop_list(fpt_all_extreme, e_star);
 		fflush(fpt_all_extreme);
 
 		/* 
@@ -548,11 +548,11 @@ int main (int argc, char **argv)
 		 * generations is not desired, it will speed up the execution 
 		 */
 		fprintf(fpt_all_pop,"# gen = %d\tfe = %d\n", i, feval);
-		dump_population(parent_pop, popsize, fpt_all_pop);
+		dump_population(fpt_all_pop, parent_pop, popsize);
 		fflush(fpt_all_pop);
 
 		if (choice!=0)    onthefly_display (parent_pop,gp,i);
-		fflush(stdout);
+		fflush(stdout);	
 	}
 
 	printf("\n Generations finished, now reporting solutions");
