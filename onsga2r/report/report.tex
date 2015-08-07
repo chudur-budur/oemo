@@ -106,32 +106,54 @@ Talk about some introductory stuffs and do some literature reviews to set the sc
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
-\section{An Alternative Interpretation for Opposition}
-As we have seen in the previous section, mostly the idea of \textit{opposition} is employed as the incorporation of new solutions with a certain kind of \textit{opposite traits} into the existing population. Such \textit{traits} could be interpreted according to different perspectives, an \textit{opposite} solution could be -- i) the one with an opposite representation (w.r.t the current best solution), ii) solutions with the opposite valuese from the other end of the variable bounds (i.e. real valued optimization). However,  
+\section{An Alternative Interpretation of Opposition}
+As we have seen in the previous section, mostly the idea of \textit{opposition} is employed as the incorporation of new solutions with a certain kind of \textit{opposite traits} into the existing population. Such \textit{traits} could be interpreted according to different perspectives, an \textit{opposite} solution could be -- i) the one with an opposite representation (w.r.t the current best solution), ii) the solutions with the opposite values from the other end of the variable bounds (i.e. real valued optimization). However, such re-route from the continuing search trajectory could be a misleading one -- in a sense that the opposite solutions could only be useful if the search space follows a desired pattern. For example, if the problem is to solve the N-queens problem, then the opposite representation of the current best solution could result into another valid solution. One can easily verify this fact by computing the reverse assignment of queens from a existing optimal solution and eventually find another global optima. This fact also indicates another interesting property of the search space -- that it also needs to be multi-modal. As the reverse representation of the current best solution needs to be the optimum for another peak. Therefore, most of the standard opposition based algorithms inject the opposite solutions during the optimization start-up; or maintain a constant (generally low) ratio of opposite solutions into the current population. Therefore, the standard opposite solution injection scheme could only be effective given the aforementioned assumptions on the underlying search space. For this reason, such injection scheme is quite unwieldy to incorporate into a large scale numerical optimization problems, like in mutli-objective optimization problems (MOPs).
+
+Moreover, we have also found some examples of opposition based algorithm for Q/TD-learning like scenario. Similar argument can be made, as the reinforcement-learning like search algorithm is inherently greedy (as it follows the Bellman's optimality principle), and the opposite actions during the learning phase introduces a noise; so that the algorithm can branch out to alternative choices. In that sense, we can say that the injection of opposite solutions can be considered as a different form of variation operation in population based stochastic search. 
+
+However, for the case of MOPs, a generic opposition scheme may not be effective enough just because of the sheer complexity of the search space of interest, moreover, we have almost no room to make any assumption about the multi-modality and/or biasness in the solutions (i.e. as it could be done in N-queen Problem). Therefore, in this paper, we have revised the notion of opposition in terms of the search algorithm's behaviour. For example, most Evolutionary Multiobjective Optimization (EMO) algorithms aim to maximize two principal aspects -- i) the convergence and ii) the diversity, as the quality of a MOP solution depends on this two factors. This change now let us re-consider the opposite point generation/injection in a different perspective --
+\begin{itemize}
+	\item Convergence: A solution \textit{far} from the true Pareto-front is \textit{opposite} of any solution that is \textit{closer} to the true Pareto-front.
+	\item Diversity: An \textit{isolated} solution on the true Pareto-front is \textit{opposite} of a \textit{crowded} solution. 
+\end{itemize}
+
+By taking the above two notion into account, we will deterministically generate opposition solutions during the search. Obviously, the deterministic point generation scheme will only consider the \textit{opposite trait} that is \textit{good}. In the next section we will see, how the existing EMO algorithm has limitations maintaining this two \textit{opposite traits} during the variation (i.e. solution generation) operations.  
 
 \section{Limitations with Canonical MOP Algorithms: NSGA-II}
+Show that standard algorithms like NSGA-II converges as a Pareto-line/surface for many problems
 
 \section{The Basic Algorithm: Opposite Point Generation Scheme}
+Describe the point generation scheme.
 
 \section{Finding the Extreme Points}
+Describe how the extreme points are important and how to find them efficiently.
 
 \section{Experiments with the Multi-objective Problem Sets}
+Intro to this section.
 
 \subsection{ZDT Problem Set}
+Discuss ZDT problem set results.
 
 \subsection{DTLZ Problem Set}
+Discuss DTLZ problem set results.
 
 \subsection{Constrained Problems}
+Discuss constrained problem (OSY) results.
 
 \subsection{Rotated Problems}
+Discuss rotated problem (NSGA-II) results.
 
 \section{Comparative Analysis}
+Discuss the comparison.
 
-\subsection{NSGA-II Equipped with Extreme Points}
+\section{NSGA-II Equipped with Extreme Points}
+Discuss if NSGA-II is given two extreme points, how it behaves (less robust)
 
-\subsection{NSGA-II Compensated for the Extra Function Evaluations}
+\section{NSGA-II Compensated for the Extra Function Evaluations}
+Discuss what if we run the NSGA-II with the compensated function evaluations.  
 
-\subsection{Same Algorithm without the Deterministic Opposite Point Generation}
+\section{Algorithm without the Deterministic Opposite Point Generation}
+Now the reader may ponder that the what if we just mutate solutions near the extreme points? Show that such scheme actually does not work.
 
 \begin{comment}
 
