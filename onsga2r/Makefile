@@ -3,9 +3,9 @@ CC 		:= gcc
 MCC		:= mcc
 INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
-			dominance.c euclideancd.c euclideanfillnds.c euclideanrank.c eval.c fillnds.c\
-			initialize.c list.c merge.c misc.c mutation.c opposition.c poplist.c\
-			problemdef.c rand.c rank.c report.c rga.c sort.c tourselect.c vecutils.c
+			dominance.c eval.c fillnds.c initialize.c list.c merge.c misc.c\
+			mutation.c opposition.c poplist.c problemdef.c rand.c rank.c\
+			report.c rga.c sort.c tourselect.c vecutils.c
 SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
 CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)

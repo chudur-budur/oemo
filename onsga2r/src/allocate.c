@@ -22,6 +22,7 @@ void allocate_memory_ind (individual *ind)
 {
 	/*int i;*/
 	int j;
+	/* all the extra initialization are done to shut the valgrind complains */
 	if (nreal != 0)
 	{
 		ind->xreal = (double *)malloc(nreal*sizeof(double));
@@ -30,7 +31,7 @@ void allocate_memory_ind (individual *ind)
 	if (nbin != 0)
 	{
 		ind->xbin = (double *)malloc(nbin*sizeof(double));
-		/*for(i = 0 ; i < nbin ; i++) ind->xbin[i] = 0.0 ;*/
+		/*for(i = 0 ; i < nbin ; i++) ind->xbin[i] = 0 ;*/
 		ind->gene = (int **)malloc(nbin*sizeof(int *));
 		for (j = 0; j < nbin; j++)
 		{
@@ -45,9 +46,9 @@ void allocate_memory_ind (individual *ind)
 		ind->constr = (double *)malloc(ncon*sizeof(double));
 		/*for(i = 0 ; i < ncon ; i++) ind->constr[i] =  0.0 ;*/
 	}
-	ind->rank = -1 ;
+	/*ind->rank = -1 ;
 	ind->crowd_dist = -1.0 ;
-	ind->is_opposite = 0 ;
+	ind->is_opposite = 0 ;*/
 	return;
 }
 

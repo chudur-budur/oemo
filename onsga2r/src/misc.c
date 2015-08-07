@@ -10,33 +10,25 @@
 #include "rand.h"
 #include "misc.h"
 
-void initialize_pop_with_size (population *pop, int poplength)
-{
-	int i;
-	for (i = 0 ; i < poplength ; i++)
-		initialize_ind (&(pop->ind[i]));
-	return;
-}
-
 /* dumps the population to a file/stdout */
-void dump_population (population *pop, int popsize, FILE *fpt)
+void dump_population (FILE *fpt, population *pop, int popsize)
 {
 	int i ;
 	for (i = 0 ; i < popsize ; i++)
 	{
-		if(fpt == stdout)
+		if(fpt == stdout || fpt == stderr)
 		{
 			fprintf(fpt, "%d: ", i);
-			dumpf_individual(&(pop->ind[i]), fpt);
+			dumpf_individual(fpt, &(pop->ind[i]));
 		}
 		else
-			dump_individual(&(pop->ind[i]), fpt);
+			dump_individual(fpt, &(pop->ind[i]));
 	}
 	return;
 }
 
 /* dumps an individual onto file/stdout */
-void dumpf_individual(individual *ind, FILE *fpt)
+void dumpf_individual(FILE *fpt, individual *ind)
 {
 	int j, k ;
 	for (j = 0 ; j < nobj ; j++)
@@ -78,7 +70,7 @@ void dumpf_individual(individual *ind, FILE *fpt)
 	fprintf(fpt,"|%d|\n",	ind->is_opposite);
 }
 
-void dump_individual(individual *ind, FILE *fpt)
+void dump_individual(FILE *fpt, individual *ind)
 {
 	int j, k ;
 	for (j = 0 ; j < nobj ; j++)
@@ -103,19 +95,6 @@ void dump_individual(individual *ind, FILE *fpt)
 }
 
 /* create a dummy individual from a vector, evaluates and prints it */
-void evaluate_and_print_vector(double *x, int nreal, FILE *fpt)
-{
-	individual *ind ;
-	ind = (individual*)malloc(sizeof(individual));
-	allocate_memory_ind(ind);
-	initialize_ind(ind);
-	memcpy(ind->xreal, x, sizeof(double) * nreal);
-	evaluate_ind(ind);
-	dump_individual(ind, fpt);
-	deallocate_memory_ind(ind);
-	free(ind);
-}
-
 void get_extreme_individuals(population *pop, int popsize, individual *ind, int size,
                              int (*comparator)(individual *i1, individual *i2))
 {
@@ -132,22 +111,6 @@ void get_extreme_individuals(population *pop, int popsize, individual *ind, int 
 	free_list_ptr(lst);
 }
 
-void get_extreme_individual_vectors(population *pop, int popsize, double **vec, int size,
-                                    int (*comparator)(individual *i1, individual *i2))
-{
-	int i ;
-	pop_list *lst = new_list();
-	for( i = 0 ; i < popsize ; i++)
-		push_back_ptr(lst, &(pop->ind[i]));
-	for(i = 0 ; i < size ; i++)
-	{
-		node* ptr = get_extreme_node(lst, comparator);
-		memcpy(vec[i], ptr->ind->xreal, sizeof(double) * nreal);
-		erase_ptr(lst, ptr);
-	}
-	free_list_ptr(lst);
-}
-
 node* get_extreme_node(pop_list *lst, int (*comparator)(individual *i1, individual *i2))
 {
 	node *best = lst->head ;
@@ -159,19 +122,6 @@ node* get_extreme_node(pop_list *lst, int (*comparator)(individual *i1, individu
 		curr = curr->next ;
 	}
 	return best ;
-}
-
-/* get the individual vector in O(n) w.r.t. some comparison op. */
-void get_extreme_individual_vector(population *pop, int popsize, double *best_vec,
-                                   int (*comparator)(individual *i1, individual *i2))
-{
-	int i ;
-	individual *best_ind = &(pop->ind[0]) ;
-	for (i = 1 ; i < popsize ; i++)
-		if((*comparator)(&pop->ind[i], best_ind))
-			best_ind = &(pop->ind[i]) ;
-	memcpy(best_vec, best_ind->xreal, sizeof(double) * nreal);
-	best_ind = NULL ;
 }
 
 /* get the individual in O(n) w.r.t some comparison op. */
@@ -258,3 +208,56 @@ void popcpy(population *srcpop, int srcsize, population *destpop)
 	for(i = 0 ; i < srcsize ; i++)
 		indcpy(&(srcpop->ind[i]), &(destpop->ind[i]));
 }
+
+/** 
+ * Initialize the memory locations with dummy values 
+ * all the functions below are for shutting the valgrind
+ * complains, some function takes extra parameter for array sizes.
+ */
+void initialize_ind_dummy (individual *ind)
+{
+	int j, k;
+	if (nreal!=0)
+		for (j=0; j<nreal; j++)
+			ind->xreal[j] = 0.0 ;
+	if (nbin!=0)
+		for (j=0; j<nbin; j++)
+		{
+			for (k=0; k<nbits[j]; k++) ind->gene[j][k] = -1;
+			ind->xbin[j] = 0.0 ;
+		}
+	for(j = 0 ; j < nobj ; j++) ind->obj[j] = 0.0 ;
+	if(ncon!=0)
+		for(j = 0 ; j < ncon ; j++)
+			ind->constr[j] = 0.0 ;
+	ind->rank = -1 ;
+	ind->constr_violation = -1.0 ;
+	ind->crowd_dist = -1.0 ;
+	ind->is_opposite = 0 ;
+	return;
+}
+
+void initialize_pop_dummy (population *pop)
+{
+	int i;
+	for (i=0; i<popsize; i++)
+		initialize_ind_dummy (&(pop->ind[i]));
+	return;
+}
+
+void initialize_pop_with_size (population *pop, int poplength)
+{
+	int i;
+	for (i = 0 ; i < poplength ; i++)
+		initialize_ind (&(pop->ind[i]));
+	return;
+}
+
+void initialize_pop_dummy_with_size (population *pop, int poplength)
+{
+	int i;
+	for (i = 0 ; i < poplength ; i++)
+		initialize_ind_dummy (&(pop->ind[i]));
+	return;
+}
+

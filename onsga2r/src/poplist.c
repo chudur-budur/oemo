@@ -207,19 +207,6 @@ void free_list(pop_list *lst)
 	free(lst);
 }
 
-void dump_pop_list(pop_list *lst, FILE *fpt)
-{
-	node *curr ;
-	for(curr = lst->head; curr != END; curr = curr->next)
-	{
-		if(fpt == stdout)
-			dumpf_individual(curr->ind, fpt);
-		else
-			dump_individual(curr->ind, fpt);
-	}
-	return ;
-}
-
 void deep_copy(pop_list *src, pop_list *dest)
 {
 	node *ptr = NULL ;
@@ -376,6 +363,26 @@ void to_list_ptr(population *pop, int size, pop_list *lst)
 		push_back_ptr(lst, &(pop->ind[i]));
 }
 
+void dump_pop_list(FILE *fpt, pop_list *lst)
+{
+	node *curr ;
+	for(curr = lst->head; curr != END; curr = curr->next)
+	{
+		if(fpt == stdout || fpt == stderr)
+			dumpf_individual(fpt, curr->ind);
+		else
+			dump_individual(fpt, curr->ind);
+	}
+	return ;
+}
+
+void evaluate_pop_list(pop_list *pop)
+{
+	node *ptr ;
+	for(ptr = pop->head; ptr != END ; ptr = ptr->next)
+		evaluate_ind(ptr->ind);
+	return ;
+}
 
 void nl()
 {
@@ -394,62 +401,62 @@ void deep_test(population *pop, pop_list *lst)
 	lst = new_list();
 
 	fprintf(stdout, "is_empty? %d\n", is_empty(lst));
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 
 	for(i = 0 ; i < 6 ; i++) push_back(lst, &(pop->ind[i]));
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 
 	sp("popping sequence:\n");
 	ptr = pop_back(lst) ;
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 	deallocate_memory_ind(ptr->ind);
 	free(ptr->ind);
 	free(ptr);
 	ptr = pop_front(lst) ;
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 	deallocate_memory_ind(ptr->ind);
 	free(ptr->ind);
 	free(ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	fprintf(stdout, "\n");
 	fprintf(stdout, "is_empty? %d\n", is_empty(lst));
 
 	ptr = lst->head ;
 	ptr = erase(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 	ptr = lst->head->next ;
 	ptr = erase(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 	ptr = lst->tail ;
 	ptr = erase(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 
 	for(i = 0 ; i < 6 ; i++) push_back(lst, &(pop->ind[i]));
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	fprintf(stdout, "\n");
 	make_empty(lst);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	free_list(lst);
 }
@@ -462,60 +469,60 @@ void shallow_test(population *pop, pop_list *lst)
 	lst = new_list();
 
 	fprintf(stdout, "is_empty? %d\n", is_empty(lst));
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 
 	for(i = 0 ; i < 6 ; i++) push_back_ptr(lst, &(pop->ind[i]));
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 
 	sp("popping sequence:\n");
 	ptr = pop_back(lst) ;
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 	ptr->ind = NULL;
 	free(ptr);
 	ptr = pop_front(lst) ;
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 	ptr->ind = NULL;
 	free(ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	fprintf(stdout, "\n");
 	fprintf(stdout, "is_empty? %d\n", is_empty(lst));
 
 	ptr = lst->head ;
 	ptr = erase_ptr(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 	ptr = lst->head->next ;
 	ptr = erase_ptr(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 	ptr = lst->tail ;
 	ptr = erase_ptr(lst, ptr);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	sp("ptr: ");
-	dumpf_individual(ptr->ind, stdout);
+	dumpf_individual(stdout, ptr->ind);
 
 
 	for(i = 0 ; i < 6 ; i++) push_back_ptr(lst, &(pop->ind[i]));
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	fprintf(stdout, "\n");
 	make_empty_ptr(lst);
 	fprintf(stdout, "list %d:\n", lst->size);
-	dump_pop_list(lst, stdout);
+	dump_pop_list(stdout, lst);
 	nl();
 	free_list_ptr(lst);
 }

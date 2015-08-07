@@ -394,13 +394,10 @@ int main (int argc, char **argv)
 	evaluate_pop (parent_pop);
 	feval += popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
-	/*assign_rank_and_euclidean_crowding_distance (parent_pop);*/
 
-	/*report_pop (parent_pop, fpt_init_pop);*/
-	dump_population(parent_pop, popsize, fpt_init_pop);
+	dump_population(fpt_init_pop, parent_pop, popsize);
 	fprintf(fpt_all_pop,"# gen = 1\tfe = %d\n", feval);
-	/*report_pop(parent_pop,fpt_all_pop);*/
-	dump_population(parent_pop, popsize, fpt_all_pop);
+	dump_population(fpt_all_pop, parent_pop, popsize);
 
 	printf("\n gen = 1\tfe = %d\n", feval);
 
@@ -426,13 +423,10 @@ int main (int argc, char **argv)
 		merge (parent_pop, child_pop, mixed_pop);
 		/* manhattan */
 		fill_nondominated_sort (mixed_pop, parent_pop);
-		/* test with euclidean crap */
-		/*fill_nondominated_sort_euclidean (mixed_pop, parent_pop);*/
 		/* Comment following four lines if information for all
 		generations is not desired, it will speed up the execution */
 		fprintf(fpt_all_pop,"# gen = %d\tfe = %d\n",i, feval);
-		/*report_pop(parent_pop,fpt_all_pop);*/
-		dump_population(parent_pop, popsize, fpt_all_pop);
+		dump_population(fpt_all_pop, parent_pop, popsize);
 		fflush(fpt_all_pop);
 		if (choice!=0)    onthefly_display (parent_pop,gp,i);
 		printf(" gen = %d\tfe = %d\n",i, feval);

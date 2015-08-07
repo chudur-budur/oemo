@@ -40,6 +40,7 @@ void initialize_ind (individual *ind)
 	if(ncon!=0)
 		for(j = 0 ; j < ncon ; j++)
 			ind->constr[j] = 0.0 ;
+	ind->rank = -1 ;
 	ind->crowd_dist = 0.0 ;
 	ind->is_opposite = 0 ;
 	return;

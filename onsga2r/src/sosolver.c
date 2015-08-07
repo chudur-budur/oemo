@@ -43,7 +43,7 @@ int sosolver(pop_list *lst)
 			allocate_memory_ind(&ind);
 			parse_result(ind.xreal, &fe, result);
 			evaluate_ind(&ind);
-			dumpf_individual(&ind, stdout);
+			dumpf_individual(stdout, &ind);
 			push_back(lst, &ind);
 			feval += fe ;
 			mxDestroyArray(result); result = NULL ;

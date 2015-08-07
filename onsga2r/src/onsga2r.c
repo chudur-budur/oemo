@@ -16,9 +16,6 @@ int nbin;
 int nobj;
 int ncon;
 int popsize;
-float opposite_proportion = 0.25 ;
-int opposite_popsize;
-int opposite_count ;
 double pcross_real;
 double pcross_bin;
 double pmut_real;
@@ -42,13 +39,13 @@ int obj2;
 int obj3;
 int angle1;
 int angle2;
+
+/* opposition bases stuffs */
+float op_ratio = 0.25 ;
+int op_popsize;
 pop_list *e_star ;
 
-
-#define debug 0 /* debug switch */
-
 int main (int argc, char **argv)
-/*int main_ (int argc, char **argv)*/
 {
 	int i, feval = 0 ;
 	double corrupted_genes = 0.0;
@@ -57,8 +54,8 @@ int main (int argc, char **argv)
 	FILE *fpt_final_pop;
 	FILE *fpt_best_pop;
 	FILE *fpt_all_pop;
-	FILE *fpt_all_source;
-	FILE *fpt_all_opposite;
+	FILE *fpt_all_oparent;
+	FILE *fpt_all_ochild;
 	FILE *fpt_all_survived;
 	FILE *fpt_all_extreme;
 	FILE *fpt_all_survival_stat;
@@ -68,8 +65,8 @@ int main (int argc, char **argv)
 	population *parent_pop;
 	population *child_pop;
 	population *mixed_pop;
-	population *opposite_source_pop;
-	population *opposite_pop;
+	pop_list *op_parent ;
+	pop_list *op_child ;
 
 	if (argc<2)
 	{
@@ -98,18 +95,18 @@ int main (int argc, char **argv)
 	/* oppostion stuff */
 	if(argc < 3)
 	{
-		fpt_all_source = fopen("all_source.out","w");
-		fpt_all_opposite = fopen("all_opposite.out","w");
+		fpt_all_oparent = fopen("all_op_parent.out","w");
+		fpt_all_ochild = fopen("all_op_child.out","w");
 		fpt_all_survived = fopen("all_survived.out","w");
 		fpt_all_extreme = fopen("all_extreme.out","w");
 		fpt_all_survival_stat = fopen("all_survival_stat.out","w");
 	}
 	else
 	{
-		sprintf(uid_filename, "all_source-%s.out", argv[2]);
-		fpt_all_source = fopen(uid_filename,"w");
-		sprintf(uid_filename, "all_opposite-%s.out", argv[2]);
-		fpt_all_opposite = fopen(uid_filename,"w");
+		sprintf(uid_filename, "all_op_parent-%s.out", argv[2]);
+		fpt_all_oparent = fopen(uid_filename,"w");
+		sprintf(uid_filename, "all_op_child-%s.out", argv[2]);
+		fpt_all_ochild = fopen(uid_filename,"w");
 		sprintf(uid_filename, "all_survived-%s.out", argv[2]);
 		fpt_all_survived = fopen(uid_filename,"w");
 		sprintf(uid_filename, "all_extreme-%s.out", argv[2]);
@@ -123,8 +120,8 @@ int main (int argc, char **argv)
 	fprintf(fpt_best_pop,"# This file contains the data of final feasible population (if found)\n");
 	fprintf(fpt_all_pop,"# This file contains the data of all generations\n");
 	/* oppostion stuff */
-	fprintf(fpt_all_source,"# This file contains the source population\n");
-	fprintf(fpt_all_opposite,"# This file contains the opposite population\n");
+	fprintf(fpt_all_oparent,"# This file contains the opp. parent population\n");
+	fprintf(fpt_all_ochild,"# This file contains the opp. child population\n");
 	fprintf(fpt_all_survived,"# This file contains the sruvived population\n");
 
 	fprintf(fpt_params,"# This file contains information about inputs as read by the program\n");
@@ -132,7 +129,7 @@ int main (int argc, char **argv)
 	printf("\n Enter the problem relevant and algorithm relevant parameters ... ");
 	printf("\n Enter the population size (a multiple of 4) : ");
 	scanf("%d",&popsize);
-	opposite_popsize = (int)(popsize * opposite_proportion);
+	op_popsize = (int)(popsize * op_ratio);
 	if (popsize<4 || (popsize%4)!= 0)
 	{
 		printf("\n population size read is : %d",popsize);
@@ -422,8 +419,8 @@ int main (int argc, char **argv)
 	fprintf(fpt_best_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	fprintf(fpt_all_pop,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	/* opposition stuff */
-	fprintf(fpt_all_source,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-	fprintf(fpt_all_opposite,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_all_oparent,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+	fprintf(fpt_all_ochild,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 	fprintf(fpt_all_survived,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
 
 	nbinmut = 0;
@@ -434,54 +431,42 @@ int main (int argc, char **argv)
 	parent_pop = (population *)malloc(sizeof(population));
 	child_pop = (population *)malloc(sizeof(population));
 	mixed_pop = (population *)malloc(sizeof(population));
-	/* opposition stuff */
-	opposite_pop = (population *)malloc(sizeof(population));
-	opposite_source_pop = (population *)malloc(sizeof(population));
 
 	allocate_memory_pop (parent_pop, popsize);
 	allocate_memory_pop (child_pop, popsize);
 	allocate_memory_pop (mixed_pop, 2 * popsize);
 	/* opposition stuff */
-	allocate_memory_pop (opposite_pop, opposite_popsize);
-	allocate_memory_pop (opposite_source_pop, opposite_popsize);
+	op_parent = new_list();
+	op_child = new_list();
 
 	randomize();
 	initialize_pop (parent_pop);
 
-	feval = initialize_extreme_points(50, 500, 0.8, 0.03, 15, 20);
-	fprintf(stdout, "****** rga total function eval: %d\n", feval);
-	inject_extreme_points(parent_pop, popsize);
-
-	/* opposition stuff */
-	initialize_pop_with_size (opposite_pop, opposite_popsize);
-	initialize_pop_with_size (opposite_source_pop, opposite_popsize);
+	/*feval = init_extreme_pts_sosolver();*/
+	feval = init_extreme_pts_hardcoded();
+	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
+	inject_extreme_points(parent_pop);
 
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
 	feval += popsize ;
 	assign_rank_and_crowding_distance (parent_pop);
-	/* assign_rank_and_euclidean_crowding_distance (parent_pop);*/
 
-	/*report_pop(parent_pop, fpt_init_pop);*/
 	dump_population(parent_pop, popsize, fpt_init_pop);
 	fprintf(fpt_all_pop, "# gen = 1\tfe = %d\n", feval);
-	/*report_pop(parent_pop, fpt_all_pop);*/
 	dump_population(parent_pop, popsize, fpt_all_pop);
 
 	/* opposition stuff */
 	printf("\n *** Will apply opposition based variation.");
-	corrupted_genes = generate_opposite_population_using_attractor(
-	                      parent_pop, popsize, opposite_source_pop,
-	                      opposite_pop, opposite_popsize,1);
+	corrupted_genes = generate_opposite_population(parent_pop, op_parent, op_child, 1);
 	fprintf(stdout, "\n gen = 1\tfe = %d\tcorrupted_genes = %.2f\n", feval, corrupted_genes);
-	/* this evaluation below is not necessary for the original algorithm */
-	evaluate_pop_with_size(opposite_pop, opposite_popsize);
+	
 	/* opposition stuff */
-	fprintf(fpt_all_source,"# gen = 1\tfe = %d\n", feval);
-	dump_population(opposite_source_pop, opposite_popsize, fpt_all_source);
-	fprintf(fpt_all_opposite,"# gen = 1\tfe = %d\n", feval);
-	dump_population(opposite_pop, opposite_popsize, fpt_all_opposite);
+	fprintf(fpt_all_oparent, "# gen = 1\tfe = %d\n", feval);
+	dump_pop_list(op_parent, fpt_all_oparent);
+	fprintf(fpt_all_ochild, "# gen = 1\tfe = %d\n", feval);
+	dump_pop_list(op_child, fpt_all_ochild);
 	fprintf(fpt_all_extreme,"# gen = 1\tfe = %d\n", feval);
 	dump_pop_list(e_star, fpt_all_extreme);
 
@@ -494,14 +479,14 @@ int main (int argc, char **argv)
 	fflush(fpt_all_pop);
 	fflush(fpt_params);
 	/* opposition stuff */
-	fflush(fpt_all_source);
-	fflush(fpt_all_opposite);
+	fflush(fpt_all_oparent);
+	fflush(fpt_all_ochild);
 
 	sleep(1);
 
 	randomize();
 	for (i=2; i<=ngen; i++)
-		/* for (i=2; i<=2; i++) */
+	/*for (i=2; i<=3; i++)*/
 	{
 		selection (parent_pop, child_pop);
 
@@ -509,46 +494,47 @@ int main (int argc, char **argv)
 		decode_pop(child_pop);
 
 		/* this is required for some versions of the algorithm to work */
-		clear_opposite_flag(child_pop, popsize);
+		clear_opposite_flag(child_pop);
 
 		/* inject opposite after variation */
-		inject_opposite_shuffle(opposite_pop, opposite_popsize,
-		                        child_pop, popsize);
+		inject_opposite_shuffle(op_child, child_pop);
 		/* also we need to inject newly found extreme points */
-		inject_extreme_points(child_pop, popsize);
+		inject_extreme_points(child_pop);
 
 		evaluate_pop(child_pop);
 		feval += popsize ;
 		merge(parent_pop, child_pop, mixed_pop);
 
 		fill_nondominated_sort (mixed_pop, parent_pop);
-		/*fill_nondominated_sort_euclidean (mixed_pop, parent_pop);*/
 
 		/**
 		 * now do some analysis of the opposite solutions
 		 * not required for the actual algorithm to work
 		 */
-		opposite_count = count_opposite(parent_pop, popsize);
+		int opposite_count = count_opposite(parent_pop);
 
 		pop_list *survived_pop = new_list();
-		gather_survived_individuals(parent_pop, popsize, survived_pop);
-		clear_opposite_flag(parent_pop, popsize);
+		gather_survived_individuals(parent_pop, survived_pop);
+		clear_opposite_flag(parent_pop);
 
-		corrupted_genes = generate_opposite_population_using_attractor(
-		                      parent_pop, popsize, opposite_source_pop,
-		                      opposite_pop, opposite_popsize, i);
-		fprintf(stdout, " gen = %d\tfe = %d\tcorrupted_genes = %.2f\n", i, feval, corrupted_genes);
-		/* this evaluation is only for analysis, not for the algorithm */
-		evaluate_pop_with_size(opposite_pop, opposite_popsize);
+		make_empty(op_child);
+		make_empty_ptr(op_parent);
+		corrupted_genes = generate_opposite_population(parent_pop, op_parent, op_child, i);
+		fprintf(stdout, " gen = %d\tfe = %d\tcorrupted_genes = %.2f\n", 
+						i, feval, corrupted_genes);
 
-		fprintf(fpt_all_source,"# gen = %d\tfe = %d\n", i, feval);
-		dump_population(opposite_source_pop, opposite_popsize, fpt_all_source);
-		fflush(fpt_all_source);
-		fprintf(fpt_all_opposite,"# gen = %d\tfe = %d\n", i, feval);
-		dump_population(opposite_pop, opposite_popsize, fpt_all_opposite);
-		fflush(fpt_all_opposite);
+		/**
+		 * All these stuffs below are only for analysis, not for the algorithm
+		 */ 
+		evaluate_pop_list(op_parent);
+		fprintf(fpt_all_oparent,"# gen = %d\tfe = %d\n", i, feval);
+		dump_pop_list(op_parent, fpt_all_oparent);
+		fflush(fpt_all_oparent);
+		fprintf(fpt_all_ochild,"# gen = %d\tfe = %d\n", i, feval);
+		dump_pop_list(op_child, fpt_all_ochild);
+		fflush(fpt_all_ochild);
 		fprintf(fpt_all_survival_stat, "\n gen = %d\tfe = %d\tratio = %f\n", (i - 1),
-		        (feval - popsize), (opposite_count/((float)opposite_popsize)) * 100.0);
+		        (feval - popsize), (opposite_count/((float)op_popsize)) * 100.0);
 		fprintf(fpt_all_survived,"# gen = %d\tfe = %d\n", (i - 1), (feval - popsize));
 		dump_pop_list(survived_pop, fpt_all_survived);
 		free_list_ptr(survived_pop);
@@ -557,10 +543,11 @@ int main (int argc, char **argv)
 		dump_pop_list(e_star, fpt_all_extreme);
 		fflush(fpt_all_extreme);
 
-		/* Comment following four lines if information for all
-		generations is not desired, it will speed up the execution */
+		/* 
+		 * Comment following four lines if information for all 
+		 * generations is not desired, it will speed up the execution 
+		 */
 		fprintf(fpt_all_pop,"# gen = %d\tfe = %d\n", i, feval);
-		/*report_pop(parent_pop,fpt_all_pop);*/
 		dump_population(parent_pop, popsize, fpt_all_pop);
 		fflush(fpt_all_pop);
 
@@ -590,8 +577,8 @@ int main (int argc, char **argv)
 	fflush(fpt_all_pop);
 	fflush(fpt_params);
 	/* opposition stuff */
-	fflush(fpt_all_source);
-	fflush(fpt_all_opposite);
+	fflush(fpt_all_oparent);
+	fflush(fpt_all_ochild);
 	fflush(fpt_all_survived);
 	fflush(fpt_all_survival_stat);
 
@@ -601,8 +588,8 @@ int main (int argc, char **argv)
 	fclose(fpt_all_pop);
 	fclose(fpt_params);
 	/* opposition stuff */
-	fclose(fpt_all_source);
-	fclose(fpt_all_opposite);
+	fclose(fpt_all_oparent);
+	fclose(fpt_all_ochild);
 	fclose(fpt_all_survived);
 	fclose(fpt_all_extreme);
 	fclose(fpt_all_survival_stat);
@@ -624,20 +611,16 @@ int main (int argc, char **argv)
 
 	deallocate_memory_pop (parent_pop, popsize);
 	deallocate_memory_pop (child_pop, popsize);
-
-	/* opposition stuff */
 	deallocate_memory_pop (mixed_pop, 2 * popsize);
-
-	free_extreme_points();
-	deallocate_memory_pop (opposite_pop, opposite_popsize);
-	deallocate_memory_pop (opposite_source_pop, opposite_popsize);
 
 	free (parent_pop);
 	free (child_pop);
 	free (mixed_pop);
-	/* opposition stuff */
-	free (opposite_pop);
-	free (opposite_source_pop);
+
+	/* opposition based stuff */
+	free_list(e_star);
+	free_list_ptr(op_parent);
+	free_list(op_child);
 
 	printf("\n Routine successfully exited \n");
 	return (0);

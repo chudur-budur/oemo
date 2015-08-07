@@ -9,42 +9,6 @@
 # define PI 3.14159265358979
 # define GNUPLOT_COMMAND "gnuplot -persist"
 
-/* # define sch1 */
-/* # define sch2 */
-/* # define fon  */
-/* # define kur  */
-/* # define pol  */
-/* # define vnt  */
-/* # define bnh  */
-/* # define osy  */
-/* # define srn  */
-/* # define tnk  */
-/* # define ctp1 */
-/* # define ctp2 */
-/* # define ctp3 */
-/* # define ctp4 */
-/* # define ctp5 */
-/* # define ctp6 */
-/* # define ctp7 */
-/* # define ctp8 */
-
-/* zdt sets */
-# define zdt1
-/* # define zdt2 */
-/* # define zdt3 */
-/* # define zdt4 */
-/* # define zdt5 */
-/* # define zdt6 */
-
-/* some mop's with nobj > 2 */
-/* # define dtlz1 */
-/* # define dtlz2 */
-/* # define dtlz3 */
-/* # define dtlz4 */
-/* # define dtlz5 */
-/* # define dtlz6 */
-/* # define dtlz7 */
-
 typedef struct
 {
 	int rank;
@@ -117,10 +81,6 @@ void bincross (individual *parent1, individual *parent2, individual *child1, ind
 void assign_crowding_distance_list (population *pop, list *lst, int front_size);
 void assign_crowding_distance_indices (population *pop, int c1, int c2);
 void assign_crowding_distance (population *pop, int *dist, int **obj_array, int front_size);
-/* crowding distance function with euclidean distance instead of manhattan distance.*/
-void assign_euclidean_crowding_distance_list (population *pop, list *lst, int front_size);
-void assign_euclidean_crowding_distance_indices (population *pop, int c1, int c2);
-void assign_euclidean_crowding_distance (population *pop, int *dist, int **obj_array, int front_size);
 
 void decode_pop (population *pop);
 void decode_ind (individual *ind);
@@ -130,20 +90,10 @@ void onthefly_display (population *pop, FILE *gp, int ii);
 int check_dominance (individual *a, individual *b);
 
 void evaluate_pop (population *pop);
-void evaluate_pop_with_size (population *pop, int poplength);
 void evaluate_ind (individual *ind);
 
 void fill_nondominated_sort (population *mixed_pop, population *new_pop);
 void crowding_fill (population *mixed_pop, population *new_pop, int count, int front_size, list *cur);
-/* sized version */
-void fill_nondominated_sort_with_size (population *mixed_pop, int mixed_popsize,
-                                       population *new_pop, int new_popsize);
-void crowding_fill_with_size (population *mixed_pop, int mixed_popsize, population *new_pop,
-                              int new_popsize, int count, int front_size, list *cur);
-/* non-dominated sorting with euclidean dist. */
-void fill_nondominated_sort_euclidean (population *mixed_pop, population *new_pop);
-void euclidean_crowding_fill (population *mixed_pop, population *new_pop,
-                              int count, int front_size, list *elite);
 
 void initialize_pop (population *pop);
 void initialize_ind (individual *ind);
@@ -152,10 +102,6 @@ void insert (list *node, int x);
 list* del (list *node);
 
 void merge(population *pop1, population *pop2, population *pop3);
-void merge_with_size(population *pop1, int pop1size,
-                     population *pop2, int pop2size,
-                     population *pop3, int pop3size,
-                     population *pop4, int pop4size);
 void copy_ind (individual *ind1, individual *ind2);
 
 void mutation_pop (population *pop);
@@ -166,9 +112,7 @@ void real_mutate_ind (individual *ind);
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 void assign_rank_and_crowding_distance (population *new_pop);
-void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize);
 void assign_rank_and_euclidean_crowding_distance (population *new_pop);
-void assign_rank_and_euclidean_crowding_distance_with_size (population *new_pop, int psize);
 
 void report_pop (population *pop, FILE *fpt);
 void report_feasible (population *pop, FILE *fpt);

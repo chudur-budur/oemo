@@ -92,14 +92,12 @@ int rga(int pop_size, int max_gen, double pc, double pm, double etac, double eta
 		evaluate_population(&parent_pop, pop_size, obj_index, debs_constrained_fitness);
 		feval += pop_size ;
 	}
-	/*fprintf(stdout, "\nfinal pop:\n");
-	dump_population(&parent_pop, pop_size, stdout);*/
 
 	get_extreme_individual(&parent_pop, pop_size, &best_ind, obj_less_than);
 	push_back(lst, &best_ind);
 
 	fprintf(stdout, "best_ind:\n");
-	dumpf_individual(&best_ind, stdout);
+	dumpf_individual(stdout, &best_ind);
 	fprintf(stdout, "\n");
 
 	deallocate_memory_pop(&parent_pop, pop_size);
@@ -172,14 +170,11 @@ int rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, do
 		feval += pop_size ;
 	}
 
-	/*fprintf(stdout, "\nfinal pop:\n");
-	dump_population(&parent_pop, pop_size, stdout);*/
-
 	/* now save the extreme points */
 	get_extreme_individual(&parent_pop, pop_size, &best_ind, obj_less_than);
 	fprintf(stdout, "obj: %d, best_ind:\n", obj_idx);
 	evaluate_ind(&best_ind);
-	dumpf_individual(&best_ind, stdout);
+	dumpf_individual(stdout, &best_ind);
 	push_back(lst, &best_ind);
 
 	deallocate_memory_pop(&parent_pop, pop_size);

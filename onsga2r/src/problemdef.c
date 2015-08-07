@@ -5,6 +5,7 @@
 # include <math.h>
 
 # include "global.h"
+# include "problemdef.h"
 # include "rand.h"
 
 /*  Test problem SCH1

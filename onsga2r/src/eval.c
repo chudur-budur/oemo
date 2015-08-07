@@ -16,16 +16,6 @@ void evaluate_pop (population *pop)
 	return;
 }
 
-/** some functions that may not be used anymore **/
-/* same as above, but takes the popsize */
-void evaluate_pop_with_size (population *pop, int poplength)
-{
-	int i;
-	for (i=0; i<poplength; i++)
-		evaluate_ind (&(pop->ind[i]));
-	return;
-}
-
 /* Routine to evaluate objective function values and constraints for an individual */
 void evaluate_ind (individual *ind)
 {
