@@ -20,7 +20,8 @@ def get_gpstr(algo_files):
         if algo == 'onsga2r':
             lslst = [str(i) for i in range(lstyle, lstyle + 5)]
             args = sorted(algo_files[algo]) + lslst \
-                    + ['extreme-pts', 'opp-child', 'opp-parent', 'onsga2r', 'survived-pts']
+                + ['extreme-pts', 'opp-child',
+                    'opp-parent', 'onsga2r', 'survived-pts']
             gpstr += """
             \"{0:s}\" using 1:2 w circles ls {5:s} ti '{10:s}', \\
             \"{1:s}\" using 1:2 w circles ls {6:s} ti '{11:s}', \\
@@ -32,7 +33,7 @@ def get_gpstr(algo_files):
             try:
                 regex = re.compile('.*all_pop.*')
                 gpstr += """            \"{0:s}\" using 1:2 w circles ls {1:s} ti '{2:s}', \\\n"""\
-                        .format([fname for fname in algo_files[algo] if regex.match(fname)][0],\
+                    .format([fname for fname in algo_files[algo] if regex.match(fname)][0],
                             str(lstyle), algo)
                 lstyle += 1
             except Exception as e:

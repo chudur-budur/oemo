@@ -1,5 +1,6 @@
 # include "sosolver.h"
 # include "global.h"
+# include "problemdef.h"
 # include "poplist.h"
 # include "misc.h"
 # include "libsosolver.h"
@@ -40,7 +41,7 @@ int sosolver(pop_list *lst)
 			findex = mxCreateDoubleScalar(i+1);
 			mlfSosolver(1, &result, file_path, findex);
 			/*display(result);*/
-			allocate_memory_ind(&ind);
+			allocate_memory_ind(&ind); initialize_ind_dummy(&ind);
 			parse_result(ind.xreal, &fe, result);
 			evaluate_ind(&ind);
 			dumpf_individual(stdout, &ind);

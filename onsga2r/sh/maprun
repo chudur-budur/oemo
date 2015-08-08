@@ -53,21 +53,26 @@ if [[ $setseed -eq 1 ]]; then
 	fi
 fi
 
+uid=`uuidgen` ;
+# outfile="/dev/null" ;
+outfile="/tmp/log-run-$uid.out" ;
+
+echo "" > "$outfile" ;
 for (( i=1; i<=maxn; i++ ))
 do
 	j=$(( i - 1 )) ;
 	printf '%s' "run ${i}: ";
         if [[ $setindex -eq 1 ]] && [[ $setseed -eq 1 ]]; then
-		printf '%s\n' "nohup ${cmd[*]} ${i} ${rseed[j]} >& /dev/null &" ;	
-       		nohup ${cmd[@]} ${i} ${rseed[j]} >& /dev/null &
+		printf '%s\n' "nohup ${cmd[*]} ${i} ${rseed[j]} >>$outfile 2>&1 &" ;	
+       		nohup ${cmd[@]} ${i} ${rseed[j]} >>$outfile 2>&1 &
 	elif [[ $setindex -eq 1 ]] && [[ $setseed -eq 0 ]]; then
-		printf '%s\n' "nohup ${cmd[*]} $i 0.12345 >& /dev/null &" ;
-       		nohup ${cmd[@]} ${i} 0.12345 >& /dev/null &
+		printf '%s\n' "nohup ${cmd[*]} $i 0.12345 >>$outfile 2>&1 &" ;
+       		nohup ${cmd[@]} ${i} 0.12345 >>$outfile 2>&1 &
 	elif [[ $setindex -eq 0 ]] && [[ $setseed -eq 1 ]]; then
-		printf '%s\n' "nohup ${cmd[*]} 1 ${rseed[j]} >& /dev/null &" ;
-       		nohup ${cmd[@]} 1 ${rseed[j]} >& /dev/null &
+		printf '%s\n' "nohup ${cmd[*]} 1 ${rseed[j]} >>$outfile 2&1 &" ;
+       		nohup ${cmd[@]} 1 ${rseed[j]} >>$outfile 2>&1 &
 	else
-		printf '%s\n' "nohup ${cmd[*]} >& /dev/null &" ;
-       		nohup ${cmd[@]} >& /dev/null &
+		printf '%s\n' "nohup ${cmd[*]} >>$outfile 2>&1 &" ;
+       		nohup ${cmd[@]} >> $outfile 2>&1 &
 	fi
 done
