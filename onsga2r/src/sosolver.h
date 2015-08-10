@@ -4,7 +4,7 @@
 # include "poplist.h"
 # include "libsosolver.h" 
 
-int sosolver(pop_list *lst);
+int sosolver(pop_list *lst, double seed);
 void display(const mxArray* in);
 void parse_result(double *x, int *feval, const mxArray *in);
 void load_path(char *dest);

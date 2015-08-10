@@ -1,4 +1,4 @@
-function result = sosolver(file_path, findex)
+function result = sosolver(file_path, findex, seed)
 %SOSOLVERF Solve a single objective function of a multi-objective problem using aasf
 %   x:      solution to be found
 %   f_star: best function value found so far
@@ -11,6 +11,7 @@ global max_realvar ;
 global nreal ;
 global nobj ;
 global popsize ;
+global ngen ;
 
 % these are from the aasf()
 global func ;
@@ -39,12 +40,21 @@ index = findex ;
 % variable bounds
 lb = min_realvar' ;
 ub = max_realvar' ;
-% rng(12345, 'twister');
+
+rng(seed, 'twister');
 % random initial point
 x0 = min_realvar' + (rand(1,nreal) .* (max_realvar - min_realvar)');
 
+% fixed budget
+if (nobj > 2)
+    febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
+else
+    febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
+end
+
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
+fmcopt.MaxFunEvals = febound;
 % fmcopt.TolX = 1.0e-14 ;
 % fmcopt.TolFun = 1.0e-14 ;
 fmcopt.Display = 'off' ;
@@ -52,6 +62,7 @@ fmcopt.Display = 'off' ;
 
 % set options for patternsearch
 psopt = psoptimset(@patternsearch);
+psopt = psoptimset(psopt, 'MaxFunEvals', febound);
 if (nobj > 2)
     psopt = psoptimset(psopt, 'InitialMeshSize', popsize);
     % psopt = psoptimset(psopt, 'MeshAccelerator', 'off', 'ScaleMesh', 'on');
@@ -70,13 +81,13 @@ end
 feval = 0 ;
 % start the initial optimization
 if (nreal > maxvarlm)
-    fprintf(1, 'sosolver: Initial optimization, applying fmincon()\n');   
+    fprintf(1, 'sosolver: Initial optimization, applying fmincon(), with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
                 = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver: Initial optimization done (fmincon()).\n');
 else
-    fprintf(1, 'sosolver: Initial optimization, applying patternsearch()\n');
+    fprintf(1, 'sosolver: Initial optimization, applying patternsearch(), with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
                 = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
     feval = feval + output.funccount ;
@@ -94,13 +105,13 @@ f_star = func(x0) ;
 
 % next level optimization with aasf
 if (nreal > maxvarlm)
-    fprintf(1, 'sosolver: Next level AASF, applying fmincon()\n');
+    fprintf(1, 'sosolver: Next level AASF, applying fmincon() with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
                 = fmincon(@aasf,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver: Next level AASF done (fmincon()).');
 else
-    fprintf(1, 'sosolver: Next level AASF, applying patternsearch()\n');
+    fprintf(1, 'sosolver: Next level AASF, applying patternsearch() with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
                 = patternsearch(@aasf,x0,[],[],[],[],lb,ub,[],psopt) ;
     feval = feval + output.funccount ;

@@ -12,7 +12,6 @@
 #include "problemdef.h"
 #include "opposition.h"
 #include "poplist.h"
-#include "rga.h"
 #include "sosolver.h"
 #include "misc.h"
 #include "vecutils.h"
@@ -300,6 +299,7 @@ double extremes[3][22] = {{
 	return feval ;
 }
 
+/**
 int init_extreme_pts_rga(int pop_size, int max_gen,
                               double pc, double pm, double etac, double etam)
 {
@@ -312,7 +312,9 @@ int init_extreme_pts_rga(int pop_size, int max_gen,
 	}
 	return feval ;
 }
+*/
 
+/**
 int init_extreme_pts_rga_bilevel(int pop_size, int max_gen,
                               double pc, double pm, double etac, double etam)
 {
@@ -327,13 +329,14 @@ int init_extreme_pts_rga_bilevel(int pop_size, int max_gen,
 	}
 	return feval ;
 }
+*/
 
-int init_extreme_pts_sosolver(void)
+int init_extreme_pts_sosolver(double seed)
 {
 	int feval = 0 ;
 	e_star = new_list();
 	fprintf(stdout, "\n********** sosolver:\n");
-	feval += sosolver(e_star);
+	feval += sosolver(e_star, seed);
 	fprintf(stdout, "e_star:\n");
 	dump_pop_list(stdout, e_star);
 	return feval;
@@ -383,6 +386,59 @@ double generate_opposite_population(population *pop, pop_list *op_parent, pop_li
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);
 		memcpy(ind.xreal, x, sizeof(double) * nreal);
+		ind.is_opposite = 1 ;
+		push_back(op_child, &ind);
+		deallocate_memory_ind(&ind);
+	}
+	free(x);
+	free(t);
+	free_list(pool);
+	return corrupted_genes/((double)(op_popsize * nreal)) * 100.0 ;
+}
+
+double generate_opposite_population_mutate(population *pop, pop_list *op_parent, pop_list *op_child, int gen)
+{
+	int corrupted_genes = 0, i;
+	double *x, *t ;
+	pop_list *pool ;
+	node *ptr ;
+	individual ind ;
+
+	t = (double*)malloc(sizeof(double) * nreal);
+	x = (double*)malloc(sizeof(double) * nreal);
+
+	/* pool size may not be constant */
+	pool = new_list();
+	make_pool(pop, pool);
+
+	gather_op_parent(pop, op_parent);
+	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
+	{
+		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
+		memcpy(ind.xreal, t, sizeof(double) * nreal);
+		real_mutate_ind(&ind);
+		/** shoot out correction */
+		for(i = 0 ; i < nreal ; i++)
+		{
+			if(isnan(ind.xreal[i]))
+			{
+				ind.xreal[i] = rndreal(min_realvar[i], max_realvar[i]);
+				corrupted_genes++ ;
+			}
+			else if(ind.xreal[i] < min_realvar[i])
+			{
+				ind.xreal[i] = min_realvar[i] ;
+				corrupted_genes++ ;
+			}
+			else if(ind.xreal[i] > max_realvar[i])
+			{
+				ind.xreal[i] = max_realvar[i] ;
+				corrupted_genes++ ;
+			}
+		}
 		ind.is_opposite = 1 ;
 		push_back(op_child, &ind);
 		deallocate_memory_ind(&ind);

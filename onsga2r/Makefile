@@ -5,7 +5,7 @@ INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
 			dominance.c eval.c fillnds.c initialize.c list.c merge.c misc.c\
 			mutation.c opposition.c poplist.c problemdef.c rand.c rank.c\
-			report.c rga.c sort.c tourselect.c vecutils.c
+			report.c sort.c tourselect.c vecutils.c
 SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
 CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
@@ -72,7 +72,7 @@ clean:
 	rm -f src/*.d
 	rm -f src/*.gc*
 	rm -f $(OBJ) src/*.o src/sosolver/*.o
-	rm -f onsga2r nsga2re nsga2r
+	rm -f onsga2r nsga2re nsga2r onsga2rm
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#

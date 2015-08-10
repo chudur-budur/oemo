@@ -15,10 +15,11 @@ extern pop_list *e_star ;
 int init_extreme_pts_hardcoded(void);
 int init_extreme_pts_rga(int pop_size, int max_gen, double pc, double pm, double etac, double etam);
 int init_extreme_pts_rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, double etam);
-int init_extreme_pts_sosolver(void);
+int init_extreme_pts_sosolver(double seed);
 void inject_extreme_points(population *pop);
 
 double generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen);
+double generate_opposite_population_mutate(population *pop, pop_list *op_parent, pop_list *op_child, int gen);
 void make_pool(population *pop, pop_list *pool);
 pop_list* discard_weakly_dominated_points(population *pop, int size);
 int weakly_dominates(individual *i1, individual *i2);

@@ -8,7 +8,7 @@
 int nreal ;
 int nobj ;
 	
-int sosolver(pop_list *lst)
+int sosolver(pop_list *lst, double seed)
 {
 	char path_str[80] ;
 	individual ind ;
@@ -19,6 +19,7 @@ int sosolver(pop_list *lst)
 	mxArray *result = NULL ;
 	mxArray *file_path = NULL;
 	mxArray *findex = NULL ;
+	mxArray *seed_val = NULL ;
 
 	if(!mclInitializeApplication(NULL,0))
 	{
@@ -36,10 +37,11 @@ int sosolver(pop_list *lst)
 		load_path(path_str);
 		fprintf(stdout, "path_str = %s\n", path_str);
 		file_path = mxCreateString(path_str);
+		seed_val = mxCreateDoubleScalar((int)(seed * 1000.0));
 		for(i = 0 ; i < nobj ; i++)
 		{
 			findex = mxCreateDoubleScalar(i+1);
-			mlfSosolver(1, &result, file_path, findex);
+			mlfSosolver(1, &result, file_path, findex, seed_val);
 			/*display(result);*/
 			allocate_memory_ind(&ind); initialize_ind_dummy(&ind);
 			parse_result(ind.xreal, &fe, result);
@@ -53,6 +55,7 @@ int sosolver(pop_list *lst)
 		fprintf(stdout, "feval = %d\n", feval);
 		libsosolverTerminate();
 		mxDestroyArray(file_path); file_path = NULL ;
+		mxDestroyArray(seed_val); seed_val = NULL ;
 	}
 
 	mclTerminateApplication();
@@ -133,7 +136,7 @@ void load_path(char *dest)
 	sprintf(dest, "input_data/dtlz5.in");
 #endif
 #ifdef dtlz6
-	sprintf(dest, "input_d`ata/dtlz6.in");
+	sprintf(dest, "input_data/dtlz6.in");
 #endif
 #ifdef dtlz7
 	sprintf(dest, "input_data/dtlz7.in");

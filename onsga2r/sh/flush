@@ -1,0 +1,26 @@
+#!/bin/bash
+#comments: 
+
+shopt -s extglob
+cpath=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+problem=$1
+
+_usage()
+{
+	# example: ./flush zdt1
+	printf '%s\n\n' "Usage: ./flush [problem]" ;
+	1>&2; exit 1 ;
+}
+
+if [[ -z $problem ]]; then
+	echo "error: some of the parameters are missing, hence exiting ...";
+	_usage ;
+fi
+
+echo "rm -rf experiments/onsga2r/$problem/*" ;
+rm -rf experiments/onsga2r/$problem/* ;
+echo "rm -rf experiments/nsga2r/$problem/*" ;
+rm -rf experiments/nsga2r/$problem/* ;
+echo "rm -rf experiments/nsga2re/$problem/*" ;
+rm -rf experiments/nsga2re/$problem/* ;
