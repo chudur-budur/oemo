@@ -21,11 +21,10 @@ MLDFLAGS	:= -pthread -Wl,-rpath-link,/opt/MATLAB/R2014a/bin/glnxa64 -O\
 OBJ 		:= $(patsubst %c,%o,$(SRC))
 DEPS		:= $(OBJ:.o=.d)
 
-.PHONY: clean all wfg whv sosolv
+.PHONY: clean all wfg sosolv
 
 all: nsga2re onsga2r nsga2r
 wfg: wfg-1.10/wfg
-whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
 
 onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
@@ -62,10 +61,6 @@ wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
 	mv wfg-1.10/wfg .
 
-whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
-	$(CC) -g -Wall -pedantic -std=gnu99 -I/whv-pisa/premo_wdfs.h $^ -o $@ $(LDFLAGS)
-	mv whv-pisa/hyp_ind .
-
 -include $(DEPS)
 
 clean:
@@ -78,11 +73,12 @@ clean:
 	rm -f \#*\#
 	rm -f input_data/*~
 	rm -f input_data/\#*\#
-	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
-	rm -f whv-pisa/*.o whv-pisa/hyp_ind hyp_ind
 
 clean-sosolv:
 	rm -rf src/sosolver/libsosolver.*
 	rm -rf src/sosolver/mcc*
 	rm -f src/sosolver/readme.txt
 
+clean-all: clean
+	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
+	rm -f whv-pisa/*.o whv-pisa/hyp_ind hyp_ind

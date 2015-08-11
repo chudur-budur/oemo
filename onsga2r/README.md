@@ -4,7 +4,7 @@ oemo-mirroring
 Experiments with opposition based emo with mirroring.
 
 #### How to compile the classical search component:
-This part is written in MATLAB (R2014a), extensively using `fmincon()` and `patternsearch()`. All the related matlab scripts could be found in `src/sosolver` and the wrapper function is in `src/sosolver.c` and `src/sosolver.h`. To compile and run this part, you need to add `$matlabhome/runtime/glnxa64` and `$matlabhome/bin/glnxa64` to `$LD_LIBRARY_PATH`. So there it goes -- 
+This part is written in MATLAB (`R2014a`), extensively using `fmincon()` and `patternsearch()`. All the related matlab scripts could be found in `src/sosolver` and the wrapper function is in `src/sosolver.c` and `src/sosolver.h`. To compile and run this part, you need to add `$matlabhome/runtime/glnxa64` and `$matlabhome/bin/glnxa64` to `$LD_LIBRARY_PATH`. So there it goes -- 
 
 ##### 1. To build the whole application, first you need to build the matlab's single obj. optimization solver
 ```
