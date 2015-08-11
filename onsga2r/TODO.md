@@ -90,7 +90,7 @@ Wrap up for the summer
 	* Function evaluation vs. Hypervolume:
 		- ~~zdt-set~~, ~~dtlz-set~~.
 	* ~~Function evaluation to reach %n of ideal HV:~~ **(not required any more)**
-9. We have found an interesting observation, for easier problems like dtlz1, dtlz2 and dtlz3, the onsga2 does to perform well on small variable, but if it's increased, the performance boost becomes interestingly noticeable -- we need to show this result.
+9. We have found an interesting observation, for easier problems like dtlz1, dtlz2 and dtlz3, the onsga2 does not perform well on small number of variables, but if the number is increased, the performance boost becomes interestingly noticeable -- **we need to show this result.**
 
 NSGA-III related (work in progress)
 =============================
