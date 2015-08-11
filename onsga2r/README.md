@@ -3,9 +3,11 @@ oemo-mirroring
 
 Experiments with opposition based emo with mirroring.
 
-#### How to compile:
+#### How to compile the classical search component:
+This part is written in MATLAB (R2014a), extensively using `fmincon()` and `patternsearch()`. All the related
+matlab scripts could be found in `src/sosolver` and the wrapper function is in `src/sosolver.c` and `src/sosolver.h`. To compile and run this part, you need to add `$matlabhome/runtime/glnxa64` and `$matlabhome/bin/glnxa64 to `$LD_LIBRARY_PATH`. So there is goes -- 
 
-##### 1. First you need to build the matlab's single obj. optimization solver
+##### 1. To build the whole application, first you need to build the matlab's single obj. optimization solver
 ```
 	make sosolv
 ```
@@ -14,6 +16,9 @@ Experiments with opposition based emo with mirroring.
 ```
 	make clean-sosolv
 ```
+
+Now you can build the main code --
+
 
 ##### 3. building the main code (nsga2 and opposition based nsga2):
 ```
@@ -55,12 +60,17 @@ Experiments with opposition based emo with mirroring.
 	./sh/maprun -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
+##### 4. Clean up all generated results for one particular problem (e.g. zdt1):
+```
+	./sh/flush zdt1
+```
+
 ##### 5. Generate one snapshot report:
 Assuming bursting has already been done from the previous step 4 --
 ```
 	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
 ```
-can also be done for multiple runs with `mapl`.
+can also be done for multiple runs with `maprun`.
 
 ##### 6. Generate hypervolume comparison stat for one problem:
 Assuming `wfg` has already been compiled --
