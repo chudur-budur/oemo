@@ -27,7 +27,7 @@ def get_gpstr(algo_files):
             \"{1:s}\" using 1:2 w circles ls {6:s} ti '{11:s}', \\
             \"{2:s}\" using 1:2 w circles ls {7:s} ti '{12:s}', \\
             \"{3:s}\" using 1:2 w circles ls {8:s} ti '{13:s}', \\
-            \"{4:s}\" using 1:2 w circles ls {9:s} ti '{14:s}', \\""".format(*args)
+            \"{4:s}\" using 1:2 w circles ls {9:s} ti '{14:s}', \\\n""".format(*args)
             lstyle += 5
         else:
             try:
@@ -47,6 +47,10 @@ def save_plot(algo_files, out_file):
     print("saving {}".format(out_file))
     cmd = pf2dcmd.format(out_file) + get_gpstr(algo_files)
     lines = parse_gpcmd(cmd)
+    # print(cmd)
+    # for line in lines:
+    #     print(line)
+    # return
     try:
         proc = subprocess.Popen(
             ['gnuplot', '-p'], shell=True, stdin=subprocess.PIPE)
@@ -134,6 +138,7 @@ def usage():
 if __name__ == '__main__':
     argv = sys.argv[1:]
     algo_names = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
+    # algo_names = ['onsga2r', 'onsga2rm']
     prob_set = {'zdt1': 2}
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]

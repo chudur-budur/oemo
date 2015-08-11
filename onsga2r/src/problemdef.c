@@ -670,12 +670,12 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 #endif
 
 /**  
- *  Test problem DTLZ1
- *  # of real variables = n = M + k - 1, k = 5
- *  # of bin variables = 0
+ *  Test problem DTLZ1 (suggested k = 5)
  *  # of objectives = M = 3
+ *  # of real variables = n = M + k - 1 = 3 + 5 - 1 = 7
+ *  # of bin variables = 0
  *  # of constraints = 0
- *  k = 98, M = 3, n = 3 + 98 - 1 = 100
+ *  harder: 96 variables
  **/
 #ifdef dtlz1
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
@@ -691,28 +691,24 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
 	g = 100.0 * (k + g);
 
-	for(i = 0 ; i < nobj ; i++)
-		obj[i] = (1.0 + g) * 0.5 ;
+	for(i = 0 ; i < nobj ; i++) obj[i] = (1.0 + g) * 0.5 ;
 
 	for(i = 0 ; i < nobj ; i++)
 	{
-		for(j = 0; j < nobj - (i+1); j++)
-			obj[i] *= xreal[j];
-		if(i != 0)
-			obj[i] *= 1.0 - xreal[nobj - (i + 1)];
+		for(j = 0; j < nobj - (i+1); j++) obj[i] *= xreal[j];
+		if(i != 0) obj[i] *= 1.0 - xreal[nobj - (i + 1)];
 	}
 	return ;
 }
 #endif
 
 /**
- * Test problem DTLZ2
- * # of real variables = n = M + k - 1, k = 10
- * # of bin variables = 0
+ * Test problem DTLZ2 (suggested k = 10)
  * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
  * # of constraints = 0
- * n = M + k - 1 = 3 + k - 1 = 3 + 198 - 1 = 200
- * k = 198
+ * harder: 96 variables
  **/
 #ifdef dtlz2
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
@@ -726,8 +722,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5));
 
-	for(i = 0 ; i < nobj ; i++)
-		obj[i] = 1.0 + g ;
+	for(i = 0 ; i < nobj ; i++) obj[i] = 1.0 + g ;
 
 	for(i = 0 ; i < nobj ; i++)
 	{
@@ -740,12 +735,14 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-/*  Test problem DTLZ3
-    # of real variables = n = M + k - 1, k = 10
-    # of bin variables = 0
-    # of objectives = M = 3
-    # of constraints = 0
-    */
+/**
+ * Test problem DTLZ3 (suggested k = 10)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: 96 variables
+ **/
 #ifdef dtlz3
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -774,17 +771,20 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-/*  Test problem DTLZ4
-    # of real variables = n = M + k - 1, k = 10
-    # of bin variables = 0
-    # of objectives = M = 3
-    # of constraints = 0
-    */
+/**
+ * Test problem DTLZ4 (suggested k = 10, alpha = 100)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: same problem
+ **/
 #ifdef dtlz4
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g ;
+	/* suggested alpha */
 	double alpha = 100.0 ;
 
 	k = nreal - nobj + 1;
@@ -807,12 +807,14 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-/*  Test problem DTLZ5
-    # of real variables = n = M + k - 1, k = 10
-    # of bin variables = 0
-    # of objectives = M = 3
-    # of constraints = 0
-    */
+/**
+ * Test problem DTLZ5 (suggested k = 10)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: same problem
+ **/
 #ifdef dtlz5
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -849,12 +851,14 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-/*  Test problem DTLZ6
-    # of real variables = n = M + k - 1, k = 10
-    # of bin variables = 0
-    # of objectives = M = 3
-    # of constraints = 0
-    */
+/**
+ * Test problem DTLZ6 (suggested k = 10)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: same problem
+ **/
 #ifdef dtlz6
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -889,12 +893,14 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 }
 #endif
 
-/*  Test problem DTLZ7
-    # of real variables = n = M + k - 1, k = 20
-    # of bin variables = 0
-    # of objectives = M = 3
-    # of constraints = 0
-    */
+/**
+ * Test problem DTLZ7 (suggested k = 20)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 20 - 1 = 22 
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: same problem.
+ **/
 #ifdef dtlz7
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -906,7 +912,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += xreal[i] ;
-	g = 1.0 + ((9.0 * g) * k) ;
+	g = 1.0 + ((9.0 * g) / k) ;
 
 	for(i = 0 ; i < nobj - 1 ; i++)
 		obj[i] = xreal[i] ;

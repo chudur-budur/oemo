@@ -24,12 +24,12 @@
 /* # define zdt1 */
 /* # define zdt2 */
 /* # define zdt3 */
-/* # define zdt4 */ /*[not good]*/
+ # define zdt4  /*[not good]*/
 /* # define zdt5 */
 /* # define zdt6 */
 
 /* some mop's with nobj > 2 */
-# define dtlz1 
+/* # define dtlz1 */
 /* # define dtlz2 */
 /* # define dtlz3 */
 /* # define dtlz4 */

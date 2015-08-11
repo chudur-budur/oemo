@@ -43,9 +43,12 @@ def calc_hv(fronts):
         fd.close()
         wfg = os.path.join(
             os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
-        hv_str = subprocess.check_output([wfg, tmp_file])
-        hv = float(hv_str.decode("utf-8").rstrip('\n'))
-        os.remove(tmp_file)
+        if os.path.exists(wfg):
+            hv_str = subprocess.check_output([wfg, tmp_file])
+            hv = float(hv_str.decode("utf-8").rstrip('\n'))
+            os.remove(tmp_file)
+        else:
+            sys.exit("error: file {:s} does not exist, build it with 'make wfg'.".format(wfg))
     except Exception as e:
         if os.path.exists(tmp_file):
             os.remove(tmp_file)
@@ -232,19 +235,20 @@ boxcmd = """
 
 
 if __name__ == '__main__':
-    # prob_set = {'zdt1': 13, 'zdt2': 35, 'zdt3': 20, 'zdt4': 20, 'zdt6': 35}
-    prob_set = {'zdt1': [15, 2]}
+    prob_set = {'zdt1': [20, 2], 'zdt2': [20, 2], 'zdt3': [20, 2], 'zdt4': [20, 2], 'zdt6': [20, 2],\
+            'dtlz1': [20, 3], 'dtlz2': [20, 3], 'dtlz3': [20, 3], 'dtlz4': [20, 3],\
+            'dtlz5': [20, 3], 'dtlz6': [20, 3], 'dtlz7': [20, 3]}
+    # algo_set = ['onsga2r', 'nsga2re', 'nsga2r']
+    # algo_set = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
+    # algo_set = ['onsga2r', 'nsga2re']
     algo_set = ['onsga2r', 'nsga2r']
     argv = sys.argv[1:]
     if len(argv) >= 2:
         root_path = argv[0]
         prob_name = argv[1]
-        for prob_name in prob_set:
-            max_gen = int(argv[2]) if (
-                len(argv) >= 3 and argv[2].isdigit()) else prob_set[prob_name][0]
-            nobj = prob_set[prob_name][1]
-            file_lst = dump_hv_stats(
-                root_path, algo_set, prob_name, max_gen, nobj)
-            save_plot(boxcmd, file_lst)
+        max_gen = int(argv[2]) if (len(argv) >= 3 and argv[2].isdigit()) else prob_set[prob_name][0]
+        nobj = prob_set[prob_name][1]
+        file_lst = dump_hv_stats(root_path, algo_set, prob_name, max_gen, nobj)
+        save_plot(boxcmd, file_lst)
     else:
         usage()
