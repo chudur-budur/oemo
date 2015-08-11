@@ -7,14 +7,14 @@ TODO
 
 - ~~Use global search, namely GA (but it takes a huge function evaluations)~~
 
-- Instead of GA, we are now using classical methods, after a very extensive painstaking empirical experiments we propose a definitive regimen to find the extreme points using a mixture of Interior point method, and generalized pattern search (namely, Mesh Adaptive Direct Search). The pair of algorithms were run on a single objective once and and AASF version of the same objective function. Now we can find the extreme points in a reasonable amount of FE. For different problems we have found different parameters for the Interior Point Method and MADS algorithm.
+- Instead of GA, we are now using classical methods, after a very extensive painstaking empirical experiments we propose a definitive regimen to find the extreme points using a mixture of Interior Point Method (IPM), and generalized pattern search (namely, Mesh Adaptive Direct Search (MADS)). The pair of algorithms were run on a single objective once and and AASF version of the same objective function. Now we can find the extreme points in a reasonable amount of FE. For different problems we have found different parameters for the Interior Point Method and MADS algorithm.
 
 - For 3 obj dtlz problems, some times we get 2 extreme points, not the 3rd one.
 
 ##### **2. Opposite Point Generation:**
 Let's denote the points as --
 
-- e*: hard-coded extreme found from GA
+- e*: hard-coded extreme found from ~~GA~~ MADS/IPM
 - e: current population extremes
 - g: least crowded non-extreme points in the current population (i.e. intermediary gaps).
 
