@@ -65,20 +65,26 @@ Now you can build the main code --
 ```
 
 ##### 5. Generate one snapshot report:
+
 Assuming bursting has already been done from the previous step 4 --
+
 ```
 	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
 ```
 can also be done for multiple runs with `maprun`.
 
 ##### 6. Generate hypervolume comparison stat for one problem:
+
 Assuming `wfg` has already been compiled --
+
 ```
 	./sh/plothv.py experiments/ zdt1
 ```
 
 ##### 7. Generate stats for the survival of opposite points:
+
 Assuming bursting has already been done from the previous step 4 --
+
 ```
 	./sh/survivalstat.py experiments/ zdt1
 ```
