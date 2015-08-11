@@ -81,4 +81,3 @@ clean-sosolv:
 
 clean-all: clean
 	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
-	rm -f whv-pisa/*.o whv-pisa/hyp_ind hyp_ind
