@@ -43,7 +43,7 @@ def get_gpstr(algo_files):
     return gpstr[:-3]
 
 
-def save_plot(algo_files, out_file):
+def save_pdf_plot(algo_files, out_file):
     print("saving {}".format(out_file))
     cmd = pf2dcmd.format(out_file) + get_gpstr(algo_files)
     lines = parse_gpcmd(cmd)
@@ -63,7 +63,7 @@ def save_plot(algo_files, out_file):
         sys.exit()
 
 
-def save_plotspf(root_path, algo_names, prob_name, run):
+def save_pf(root_path, algo_names, prob_name, run):
     algo_prefix = {}
     gen_lst = []
     try:
@@ -84,8 +84,7 @@ def save_plotspf(root_path, algo_names, prob_name, run):
                             for f in os.listdir(snap_dir) if f.endswith('.out')]
                 gen_lst = list(set(gen_lst))
             else:
-                print(
-                    "\'{0:s}\' does not exist, hence skipping.".format(snap_dir))
+                print("warning: \'{0:s}\' does not exist, hence skipping.".format(snap_dir))
         gen_lst = sorted(gen_lst, key=lambda x: int(x))
         if gen_lst:
             for gen in gen_lst:
@@ -99,10 +98,9 @@ def save_plotspf(root_path, algo_names, prob_name, run):
                         else:
                             algo_files[algo] = [pth]
                 out_file = os.path.join(plot_dir, 'gen-' + gen + '.pdf')
-                save_plot(algo_files, out_file)
+                save_pdf_plot(algo_files, out_file)
         else:
-            print(
-                "gen_lst is empty, hence \'{0:s}\' is not generated.".format(out_file))
+            print("warning: gen_lst is empty, hence \'{0:s}\' is not generated.".format(out_file))
     except Exception as e:
         print(e.message, e.args)
         sys.exit()
@@ -142,6 +140,6 @@ if __name__ == '__main__':
     prob_set = {'zdt1': 2}
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]
-        save_plotspf(argv[0], algo_names, argv[1], run)
+        save_pf(argv[0], algo_names, argv[1], run)
     else:
         usage()

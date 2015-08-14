@@ -50,7 +50,7 @@ if [[ ! -e "${outdir}${execdir}/${problemname}" ]]; then
 fi
 
 uid=`uuidgen` ;
-echo "********** STARTING run ${run} with seed: ${seed}, UUID: ${uid}." ;
+echo "********** START: run ${run} with seed: ${seed}, UUID: ${uid}." ;
 ./"${executable}" "${seed}" "${uid}" 0 < "${paramfile}" ;
 
 if [ -f "all_pop-${uid}.out" ]; then
@@ -72,4 +72,4 @@ if [ -f "all_survival_stat-${uid}.out" ]; then
 	mv "all_survival_stat-${uid}.out" "${targetdir}/all_survival_stat-${run}.out" ;
 fi
 
-echo "********** ENDING run ${run} with seed: ${seed}, UUID: ${uid}" ;
+echo "********** END: run ${run} with seed: ${seed}, UUID: ${uid}" ;

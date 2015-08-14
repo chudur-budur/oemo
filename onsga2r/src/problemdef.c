@@ -14,7 +14,6 @@
     # of objectives = 2
     # of constraints = 0
     */
-
 #ifdef sch1
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {

@@ -25,6 +25,7 @@ DEPS		:= $(OBJ:.o=.d)
 
 all: nsga2re onsga2r nsga2r
 wfg: wfg-1.10/wfg
+whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
 
 onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
@@ -59,7 +60,11 @@ $(SOSOLVEROBJ): src/sosolver/*.m
 
 wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
-	mv wfg-1.10/wfg .
+	cp wfg-1.10/wfg .
+
+whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
+	$(CC) -g -Wall -pedantic -std=gnu99 -I/whv-pisa/premo_wdfs.h $^ -o $@ $(LDFLAGS)
+	cp whv-pisa/hyp_ind whv
 
 -include $(DEPS)
 
@@ -81,3 +86,4 @@ clean-sosolv:
 
 clean-all: clean
 	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
+	rm -f whv-pisa/*.o whv-pisa/hyp_ind whv

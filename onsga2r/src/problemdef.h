@@ -21,20 +21,56 @@
 /* # define ctp8 */
 
 /* zdt sets */
-/* # define zdt1 */
-/* # define zdt2 */
-/* # define zdt3 */
- # define zdt4  /*[not good]*/
-/* # define zdt5 */
-/* # define zdt6 */
+# define zdt1  /* good */
+/* # define zdt2 */ /* good */
+/* # define zdt3 */ /* good */
+/* # define zdt4 */ /* good */
+/* # define zdt5 */ /* good */
+/* # define zdt6 */ /* good */
 
 /* some mop's with nobj > 2 */
-/* # define dtlz1 */
-/* # define dtlz2 */
-/* # define dtlz3 */
-/* # define dtlz4 */
-/* # define dtlz5 */
-/* # define dtlz6 */
-/* # define dtlz7 */
+/* # define dtlz1 */ /* good */
+/* # define dtlz2 */ /* same */
+/* # define dtlz3 */ /* good */
+/* # define dtlz4 */ /* same */
+/* # define dtlz5 */ /* same */
+/* # define dtlz6 */ /* good */
+/* # define dtlz7 */ /* good, one patch */
+
+/* void sch1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void sch2 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void fon (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void kur (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void pol (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void vnt (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void bnh (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void osy (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void srn (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void tnk (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp2 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp3 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp4 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp5 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp7 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void ctp8 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
+void zdt1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void zdt2 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void zdt3 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void zdt5 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void zdt6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
+void dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz4 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
+void test_problem (char* problem_file, double *xreal, double *xbin, int **gene, double *obj, double *constr);*/
 
 # endif

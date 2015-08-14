@@ -51,6 +51,7 @@ int main (int argc, char **argv)
 	population *parent_pop;
 	population *child_pop;
 	population *mixed_pop;
+
 	if (argc<2)
 	{
 		printf("\n Usage ./nsga2r random_seed outfile-uid gnuplot\n");

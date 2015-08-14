@@ -77,7 +77,7 @@ survivalcmd = """
     set xlabel \'generations\'
     set ylabel \'mean survival rate\'
     set label 1 \'at generation {2:d}, rate = {3:.2f}%\' at {2:d} + 12.0, {3:.2f} + 5.0
-    set arrow from {2:d} + 10.0,{3:.2f} + 3.0 to {2:d},{3:.2f}
+    set arrow from {2:d} + 10.0,{3:.2f} + 3.0 to {2:d},{3:.2f} size screen 0.01,30 lw 4
     set arrow from 5,{4:.2f} to {5:d} - 5,{4:.2f} nohead lt 3 lw 4
     set ytics add {4:.1f}
     plot \"{1:s}\" with lines lw 3 noti

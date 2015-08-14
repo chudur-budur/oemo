@@ -36,7 +36,7 @@ def burst_file(path_lst, file_prefix, run):
             print(e.message, e.args)
             sys.exit()
     else:
-        print("\'{0:s}\' does not exist, hence skipping.".format(in_file))
+        print("warning: \'{0:s}\' does not exist, hence skipping.".format(in_file))
 
 
 def usage():

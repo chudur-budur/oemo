@@ -7,48 +7,53 @@ import shutil
 import subprocess
 import uuid
 import numpy as np
+import operator as op
 
+def within(vals, ref):
+    return all(list(map(op.le, vals, ref)))
 
-def load_data(file_path, nobj):
+def load_data(file_path, nobj, ref):
     fronts = {}
     try:
         fd = open(file_path, 'r')
         header = [item for item in fd.readline().split() if item.isnumeric()]
         for line in fd:
             vals = line.split()
-            if header[0] == '1':
-                fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
-                    else fronts[vals[-3]] + [vals[0:nobj]]
-            elif not (vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
-                fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
-                    else fronts[vals[-3]] + [vals[0:nobj]]
+            if within([float(v) for v in vals[0:nobj]], ref):
+                if header[0] == '1':
+                    fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
+                        else fronts[vals[-3]] + [vals[0:nobj]]
+                elif not (vals[-3] == '1' and float(vals[-2]) == 1.00e+14):
+                    fronts[vals[-3]] = [vals[0:nobj]] if vals[-3] not in fronts \
+                        else fronts[vals[-3]] + [vals[0:nobj]]
         fd.close()
     except Exception as e:
         print(e.message, e.args)
         sys.exit()
-    if not fronts:
-        sys.exit("error: file {:s} is empty".format(file_path))
     return [header, fronts]
 
 
-def calc_hv(fronts):
+def calc_hv(fronts, ref):
     tmp_file = "/tmp/{:s}.out".format(str(uuid.uuid4()))
     try:
-        fd = open(tmp_file, 'w')
-        fd.write('#\n')
-        for key in sorted(fronts):
-            for lst in fronts[key]:
-                fd.write("{:s}\n".format(' '.join(lst)))
-            fd.write('#\n')
-        fd.close()
-        wfg = os.path.join(
-            os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
-        if os.path.exists(wfg):
-            hv_str = subprocess.check_output([wfg, tmp_file])
-            hv = float(hv_str.decode("utf-8").rstrip('\n'))
-            os.remove(tmp_file)
+        if fronts:
+            wfg = os.path.join(os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
+            if os.path.exists(wfg):
+                fd = open(tmp_file, 'w')
+                fd.write('#\n')
+                for key in sorted(fronts):
+                    for lst in fronts[key]:
+                        fd.write("{:s}\n".format(' '.join(lst)))
+                    fd.write('#\n')
+                fd.close()
+                args = [wfg, tmp_file] + [str(v) for v in ref]
+                hv_str = subprocess.check_output(args)
+                hv = float(hv_str.decode("utf-8").rstrip('\n'))
+                os.remove(tmp_file)
+            else:
+                sys.exit("error: file {:s} does not exist, build it with 'make wfg'.".format(wfg))
         else:
-            sys.exit("error: file {:s} does not exist, build it with 'make wfg'.".format(wfg))
+            hv = 0.0
     except Exception as e:
         if os.path.exists(tmp_file):
             os.remove(tmp_file)
@@ -68,7 +73,7 @@ def find_maxrun(path):
         sys.exit()
 
 
-def dump_hv_stats_gen(root_path, algo_name, prob_name, max_gen, nobj):
+def dump_hv_stats_gen(root_path, algo_name, prob_name, max_gen, nobj, ref):
     max_run = find_maxrun(os.path.join(root_path, *[algo_name, prob_name]))
     print("generating hv data for problem {0:s} over max_gen = {1:d} and max_run = {2:d} for {3:s}".
           format(prob_name, max_gen, max_run, algo_name))
@@ -76,8 +81,7 @@ def dump_hv_stats_gen(root_path, algo_name, prob_name, max_gen, nobj):
     try:
         if(not os.path.exists(hv_dir)):
             os.makedirs(hv_dir)
-        file_name = os.path.join(
-            hv_dir, prob_name + '-' + algo_name + '-hv.stat')
+        file_name = os.path.join(hv_dir, prob_name + '-' + algo_name + '-hv.stat')
         fd = open(file_name, 'w')
         gen_fe = {}
         for gen in range(1, max_gen + 1):
@@ -88,10 +92,10 @@ def dump_hv_stats_gen(root_path, algo_name, prob_name, max_gen, nobj):
                                     *[algo_name, "{}".format(prob_name),
                                       "snaps-run-{}".format(run),
                                       "all_pop-gen-{}.out".format(gen)])
-                [header, fronts] = load_data(path, nobj)
+                [header, fronts] = load_data(path, nobj, ref)
                 gen_fe[gen] = [int(header[1])] if int(header[1]) not in gen_fe \
-                    else gen_fe[gen] + int(header[1])
-                hv_lst.append(calc_hv(fronts))
+                        else gen_fe[gen] + int(header[1])
+                hv_lst.append(calc_hv(fronts, ref))
             a = np.array(hv_lst)
             iqr = [header[1],  # header 0 is generation, 1 is fe
                    '{:.3f}'.format(np.min(a)),
@@ -109,16 +113,25 @@ def dump_hv_stats_gen(root_path, algo_name, prob_name, max_gen, nobj):
     return [file_name, gen_fe[max_gen][0]]
 
 
-def dump_hv_stats_feval(root_path, algo_name, prob_name, max_feval, nobj):
+def find_maxgen(path):
+    try:
+        regex = re.compile('all_pop-gen-*')
+        return len([d.split('-')[-1] for d in os.listdir(path) if regex.match(d)])
+    except Exception as e:
+        print(e.message, e.args)
+        sys.exit()
+
+
+def dump_hv_stats_feval(root_path, algo_name, prob_name, max_feval, nobj, ref):
     max_run = find_maxrun(os.path.join(root_path, *[algo_name, prob_name]))
+    max_gen = find_maxgen(os.path.join(root_path, *[algo_name, prob_name, "snaps-run-1"]))
     print("generating hv data for problem {0:s} over max_feval = {1:d} and max_run = {2:d} for {3:s}".
           format(prob_name, max_feval, max_run, algo_name))
     hv_dir = os.path.join(root_path, 'results', prob_name)
     try:
         if(not os.path.exists(hv_dir)):
             os.makedirs(hv_dir)
-        file_name = os.path.join(
-            hv_dir, prob_name + '-' + algo_name + '-hv.stat')
+        file_name = os.path.join(hv_dir, prob_name + '-' + algo_name + '-hv.stat')
         fd = open(file_name, 'w')
         gen_fe = {}
         # for gen in range(1, max_gen + 1):
@@ -132,10 +145,10 @@ def dump_hv_stats_feval(root_path, algo_name, prob_name, max_feval, nobj):
                                     *[algo_name, "{}".format(prob_name),
                                       "snaps-run-{}".format(run),
                                       "all_pop-gen-{}.out".format(gen)])
-                [header, fronts] = load_data(path, nobj)
+                [header, fronts] = load_data(path, nobj, ref)
+                hv_lst.append(calc_hv(fronts, ref))
                 gen_fe[gen] = [int(header[1])] if int(header[1]) not in gen_fe \
-                    else gen_fe[gen] + int(header[1])
-                hv_lst.append(calc_hv(fronts))
+                        else gen_fe[gen] + int(header[1])
             a = np.array(hv_lst)
             iqr = [header[1],  # header 0 is generation, 1 is fe
                    '{:.3f}'.format(np.min(a)),
@@ -146,8 +159,10 @@ def dump_hv_stats_feval(root_path, algo_name, prob_name, max_feval, nobj):
                    '{:.3f}'.format(np.mean(a))]
             fd.write('\t'.join(iqr))
             fd.write('\n')
-            gen += 1
             fe = int(header[1])
+            gen += 1
+            if gen > max_gen:
+                break
         fd.close()
     except Exception as e:
         print(e.message, e.args)
@@ -155,14 +170,12 @@ def dump_hv_stats_feval(root_path, algo_name, prob_name, max_feval, nobj):
     return [file_name, gen_fe[gen - 1][0]]
 
 
-def dump_hv_stats(root_path, algo_lst, prob_name, max_gen, nobj):
+def dump_hv_stats(root_path, algo_lst, prob_name, max_gen, nobj, ref):
     file_lst = []
-    [dat_file, max_fe] = dump_hv_stats_gen(
-        root_path, algo_lst[0], prob_name, max_gen, nobj)
+    [dat_file, max_fe] = dump_hv_stats_gen(root_path, algo_lst[0], prob_name, max_gen, nobj, ref)
     file_lst.append((algo_lst[0], dat_file))
     for algo in algo_lst[1:]:
-        [dat_file, dummy] = dump_hv_stats_feval(
-            root_path, algo, prob_name, max_fe, nobj)
+        [dat_file, dummy] = dump_hv_stats_feval(root_path, algo, prob_name, max_fe, nobj, ref)
         file_lst.append((algo, dat_file))
     return file_lst
 
@@ -173,15 +186,18 @@ def parse_gpcmd(gpcmd):
                          [line.strip() for line in gpcmd.splitlines()])) if line.split()[0] != '#']
     return lines
 
+def get_onsga2_minfe(file_lst):
+    fd = open(file_lst[0][1], 'r')
+    return int(fd.readline().split()[0])
 
-def save_plot(cmd, file_lst):
+def save_plot(boxcmd, linecmd, file_lst):
     out_file = file_lst[0][1].split('-')[0] + '-' \
         + '-'.join([item[0] for item in file_lst]) + '-hvstat.pdf'
     print("saving {}".format(out_file))
-    command = cmd.format(out_file)
+    # command = boxcmd.format(out_file)
     gpstr = """        \"{1:s}\"   using 1:3:2:6:5 with candlesticks \\
         fs transparent solid 0.3 ls 1 lw 3 title '{0:s}' whiskerbars 0.5, \\
-        \"{1:s}\"   using 1:7:7:7:7 with candlesticks ls 3 lw 3 title 'mean', \\
+        \"{1:s}\"   using 1:7:7:7:7 with candlesticks ls 8 lw 3 title 'mean', \\
         \"{1:s}\"   using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \\"""\
         .format(file_lst[0][0], file_lst[0][1])
     ls = 2
@@ -189,12 +205,15 @@ def save_plot(cmd, file_lst):
         gpstr += """
         \"{1:s}\"   using 1:3:2:6:5 with candlesticks \\
                 fs transparent solid 0.3 ls {2:d} lw 3 title '{0:s}' whiskerbars 0.5, \\
-        \"{1:s}\"   using 1:7:7:7:7 with candlesticks ls 3 lw 3 noti, \\
+        \"{1:s}\"   using 1:7:7:7:7 with candlesticks ls 8 lw 3 noti, \\
         \"{1:s}\"   using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti, \\"""\
             .format(item[0], item[1], ls)
         ls += 1
     # print(command + gpstr[:-3])
-    lines = parse_gpcmd(command + gpstr[:-3])
+    min_fe = get_onsga2_minfe(file_lst)
+    print(min_fe)
+    command = boxcmd + gpstr[:-3] + linecmd.format(out_file, min_fe)
+    lines = parse_gpcmd(command)
     try:
         proc = subprocess.Popen(
             ['gnuplot', '-p'], shell=True, stdin=subprocess.PIPE)
@@ -214,41 +233,54 @@ def usage():
 
 
 boxcmd = """
-    set term pdf enhanced color
-    # set term pdf monochrome
+    reset
+    set terminal unknown
+    set key bottom right
+    # set key bottom left
+    # set key out horiz bot left
     set style fill noborder
     set boxwidth 0.5 relative
-    set output \"{0:s}\"
     load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt\'
-    # set xrange[0:]
     set xlabel \'function evaluations\'
     set ylabel \'hypervolume\'
     set format x \'%.1s%c\'
+    set xrange[0:]
     plot \\
 """
-# fs transparent solid 0.3 lt 3 lw 3 title 'nsga2' whiskerbars 0.5, \\
-# \"{1:s}\"   using 1:7:7:7:7 with candlesticks lt 4 lw 3 title 'mean', \\
-# \"{1:s}\"   using 1:4:4:4:4 with candlesticks lt -1 lw 3 title 'median', \\
-# fs transparent solid 0.5 lt 2 lw 3 title 'onsga2' whiskerbars 0.5, \\
-# \"{2:s}\"   using 1:7:7:7:7 with candlesticks lt 4 lw 3 noti, \\
-# \"{2:s}\"   using 1:4:4:4:4 with candlesticks lt -1 lw 3 noti
 
+linecmd = """
+    set term pdf enhanced color
+    # set term pdf monochrome
+    set output \"{0:s}\"
+    ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
+    ymin = GPVAL_Y_MIN
+    liney = ymin + (ydiff * 0.5)
+    txtstart = liney + (ydiff * 0.1)
+    xthresh = 50
+    set arrow from 0+xthresh,liney to {1:d}-xthresh,liney heads size screen 0.005,90 lw 4 
+    set label 1 "cost to find E*" rotate left at ({1:d}+xthresh)/2,txtstart
+    set arrow from ({1:d}+xthresh)/2,txtstart-(ydiff * 0.01) to ({1:d}+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+    replot
+"""
 
 if __name__ == '__main__':
-    prob_set = {'zdt1': [20, 2], 'zdt2': [20, 2], 'zdt3': [20, 2], 'zdt4': [20, 2], 'zdt6': [20, 2],\
-            'dtlz1': [20, 3], 'dtlz2': [20, 3], 'dtlz3': [20, 3], 'dtlz4': [20, 3],\
-            'dtlz5': [20, 3], 'dtlz6': [20, 3], 'dtlz7': [20, 3]}
-    # algo_set = ['onsga2r', 'nsga2re', 'nsga2r']
-    # algo_set = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
+    prob_set = {'zdt1': [[20, 2], [2.0, 2.0]], 'zdt2': [[20, 2], [2.0, 2.0]], \
+            'zdt3': [[20, 2], [2.0, 2.0]], 'zdt4': [[20, 2], [2.0, 2.0]], \
+            'zdt6': [[20, 2], [4.0, 4.0]], \
+            'dtlz1': [[20, 3], [10.0, 10.0, 10.0]], 'dtlz2': [[20, 3], [2.0, 2.0, 2.0]], \
+            'dtlz3': [[20, 3], [15.0, 15.0, 15.0]], 'dtlz4': [[20, 3], [2.0, 2.0, 2.0]], \
+            'dtlz5': [[20, 3], [2.0, 2.0, 2.0]], 'dtlz6': [[20, 3], [4.0, 4.0, 4.0]], \
+            'dtlz7': [[20, 3], [2.0, 10.0, 10.0]]}
     # algo_set = ['onsga2r', 'nsga2re']
     algo_set = ['onsga2r', 'nsga2r']
     argv = sys.argv[1:]
     if len(argv) >= 2:
         root_path = argv[0]
         prob_name = argv[1]
-        max_gen = int(argv[2]) if (len(argv) >= 3 and argv[2].isdigit()) else prob_set[prob_name][0]
-        nobj = prob_set[prob_name][1]
-        file_lst = dump_hv_stats(root_path, algo_set, prob_name, max_gen, nobj)
-        save_plot(boxcmd, file_lst)
+        max_gen = int(argv[2]) if (len(argv) >= 3 and argv[2].isdigit()) else prob_set[prob_name][0][0]
+        nobj = prob_set[prob_name][0][1]
+        ref = prob_set[prob_name][1]
+        file_lst = dump_hv_stats(root_path, algo_set, prob_name, max_gen, nobj, ref)
+        save_plot(boxcmd, linecmd, file_lst)
     else:
         usage()
