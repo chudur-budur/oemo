@@ -20,10 +20,6 @@ global f_star ;
 
 result = zeros(1, nreal + nobj + 2) ;
 
-% if nreal > 10   then fmincon
-% if nreal <= 10, then patternsearch
-maxvarlm = 11 ;
-
 % file_path = '../../input_data/zdt1.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 
@@ -46,47 +42,43 @@ rng(seed, 'twister');
 x0 = min_realvar' + (rand(1,nreal) .* (max_realvar - min_realvar)');
 
 % fixed budget
-if (nobj > 2)
-    febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
-else
-    febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
-end
+febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
+
+% if the problem does not have local optima then use fmincon()
+easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
+                    'dtlz4'; 'dtlz5'; 'dtlz7'};
+% if the problem has local optima, then use patternsearch()
+hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'};
 
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
 fmcopt.MaxFunEvals = febound;
-% fmcopt.TolX = 1.0e-14 ;
-% fmcopt.TolFun = 1.0e-14 ;
 fmcopt.Display = 'off' ;
-% options.Algorithm = 'trust-region-reflective' ;
 
 % set options for patternsearch
 psopt = psoptimset(@patternsearch);
 psopt = psoptimset(psopt, 'MaxFunEvals', febound);
 if (nobj > 2)
-    psopt = psoptimset(psopt, 'InitialMeshSize', popsize);
-    % psopt = psoptimset(psopt, 'MeshAccelerator', 'off', 'ScaleMesh', 'on');
+    psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));    
     psopt = psoptimset(psopt, 'TolX', 1e-7, 'TolBind', 1e-6);
+    psopt = psoptimset(psopt, 'SearchMethod', @MADSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', @GPSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', @GSSPositiveBasis2N);
-    psopt = psoptimset(psopt, 'SearchMethod', @MADSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', {@searchneldermead,10});
     % psopt = psoptimset(psopt, 'SearchMethod', {@searchga,10});
     psopt = psoptimset(psopt, 'CompletePoll', 'on');
-    psopt = psoptimset(psopt, 'CompleteSearch', 'on');
-    % psopt = psoptimset(psopt,'Cache','on','CacheTol',1e-10);
+    psopt = psoptimset(psopt, 'CompleteSearch', 'on');   
 end
-% psopt = psoptimset(psopt, 'Display','off');
 
 feval = 0 ;
 % start the initial optimization
-if (nreal > maxvarlm)
+if (ismember(prob_name, easy_problems))
     fprintf(1, 'sosolver: Initial optimization, applying fmincon(), with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
                 = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver: Initial optimization done (fmincon()).\n');
-else
+elseif (ismember(prob_name, hard_problems))
     fprintf(1, 'sosolver: Initial optimization, applying patternsearch(), with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
                 = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
@@ -104,13 +96,13 @@ x0 = x ;
 f_star = func(x0) ;
 
 % next level optimization with aasf
-if (nreal > maxvarlm)
+if (ismember(prob_name, easy_problems))
     fprintf(1, 'sosolver: Next level AASF, applying fmincon() with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
                 = fmincon(@aasf,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver: Next level AASF done (fmincon()).');
-else
+elseif (ismember(prob_name, hard_problems))
     fprintf(1, 'sosolver: Next level AASF, applying patternsearch() with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
                 = patternsearch(@aasf,x0,[],[],[],[],lb,ub,[],psopt) ;
