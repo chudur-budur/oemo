@@ -1,426 +1,1124 @@
-\documentclass[11pt]{article}
-\usepackage{etex}
-\reserveinserts{28}
-\usepackage{url}
-\usepackage{graphicx}
-\usepackage{wrapfig}
-\usepackage{caption}
-% \usepackage{subfigure} % deprecated
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{longtable}
-\usepackage{tabu}
-\usepackage{amsmath, amsfonts}
-\usepackage{centernot}
-\usepackage{fullpage}
-\usepackage{multicol}
-\usepackage{multirow}
-\usepackage{makecell}
-\usepackage{verbatim}
-\usepackage{float}
-\usepackage{enumitem}
-%\usepackage{algorithmic}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{lipsum}
-\usepackage{soul}
-\usepackage{tikz}
-\usepackage{tikz-qtree}
-\usepackage{tkz-tab}
-\usepackage{tkz-graph}
-\usepackage{tkz-berge}
-
-%\usetikzlibrary{graphs}
-%\usetikzlibrary{shapes,snakes}
-%\usetikzlibrary{arrows,automata,positioning}
-
-%-- for compact list
-\setlist{noitemsep, leftmargin=*}
-
-%-- for compact paragraphs
-\setlength{\parskip}{1ex} %--skip lines between paragraphs
-\setlength{\parindent}{0pt} %--don't indent paragraphs
-
-%-- Commands for header
-\renewcommand{\title}[1]{\textbf{#1}\\}
-%--  note. -0.4cm for 10pt font and -0.5 for 11pt fonts
-\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.4cm]}
-\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
-& #2\\\end{tabularx}\\[-0.5cm]}
-
-%----- my mod
-\makeatletter
-%-- change section and subsection title format
-\renewcommand\section{\@startsection{section}{1}{\z@}%
-                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                  {.05ex \@plus.05ex}%
-                                  {\normalfont\large\bf}}
-\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
-                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                  {.05ex \@plus.05ex}%
-                                  {\normalfont\normalsize\bf}}
-
-%-- custom commands for this homework
-\newcommand{\adj}[1]{\texttt{adj}.#1}
-\newcommand{\adjp}[1]{\texttt{adj.(}#1\texttt{)}}
-\newcommand{\col}[1]{\texttt{col}.#1}
-\newcommand{\colp}[1]{\texttt{col.(}#1\texttt{)}}
-\newcommand{\pr}[1]{\texttt{p}.#1}
-\newcommand{\prp}[1]{\texttt{p.(}#1\texttt{)}}
-\newcommand{\rut}[1]{\texttt{root}.#1}
-\newcommand{\rutp}[1]{\texttt{root(}#1\texttt{)}}
-\newcommand{\red}{\texttt{red}}
-\newcommand{\green}{\texttt{green}}
-\newcommand{\andl}{\wedge}
-\newcommand{\orl}{\vee}
-\newcommand{\req}[1]{\texttt{request}.#1}
-\newcommand{\reqp}[1]{\texttt{request.(}#1\texttt{)}}
-\newcommand{\hol}[1]{\texttt{h}.#1}
-\newcommand{\holp}[1]{\texttt{h.(}#1\texttt{)}}
-\newcommand{\requ}[1]{\texttt{<upon-request>(}#1\texttt{)}}
-\newcommand{\chl}[1]{\texttt{ch}.#1}
-\newcommand{\chlp}[1]{\texttt{ch.(}#1\texttt{)}}
-\newcommand{\ph}[1]{\texttt{ph}.#1}
-\newcommand{\cl}[1]{\texttt{cl}.#1}
-\newcommand{\vc}[1]{\texttt{vc}.#1}
-
-
-%-- change algorithm font size
-%\makeatletter
-%\renewcommand{\ALG@beginalgorithmic}{\small}
-%\makeatother
+% v2-acmlarge-sample.tex, dated March 6 2012
+% This is a sample file for ACM large trim journals
 %
-%-- put "." (dot) after each section number
-%\g@addto@macro\thesection.
-%\makeatother
+% Compilation using 'acmlarge.cls' - version 1.3, Aptara Inc.
+% (c) 2011 Association for Computing Machinery (ACM)
+%
+% Questions/Suggestions/Feedback should be addressed to => "acmtexsupport@aptaracorp.com".
+% Users can also go through the FAQs available on the journal's submission webpage.
+%
+% Steps to compile: latex, bibtex, latex latex
+%
+\documentclass[prodmode,acmtap]{acmlarge}
 
-%\linespread{2} %-- Uncomment for Double Space
+% Metadata Information
+\acmVolume{V}
+\acmNumber{N}
+\acmArticle{1}
+\articleSeq{1}
+\acmYear{2015}
+\acmMonth{8}
+
+% Copyright
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+
+% DOI
+% \doi{0000001.0000001}
+
+%ISSN
+% \issn{1234-56789}
+
+
+% Package to generate and customize Algorithm as per ACM style
+\usepackage[ruled]{algorithm2e}
+\SetAlFnt{\algofont}
+\SetAlCapFnt{\algofont}
+\SetAlCapNameFnt{\algofont}
+\SetAlCapHSkip{0pt}
+\IncMargin{-\parindent}
+\renewcommand{\algorithmcfname}{ALGORITHM}
+
+% extra packages
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{subfigure}
+
+% some of my mods
+\newcommand{\papertitle}{Constructing the Pareto Front using Limited Information: A Case of the Opposition based Solution Generation Scheme}
+\graphicspath{{/media/khaled/data/research/oemo/onsga2r/experiments/results/}}
+
+% Page heads
+\markboth{A-1, A-2 and A-3}{\papertitle}
+
+% Title portion
+\title{\papertitle}
+\author{Author-1, Author-2 and Author-3 \affil{MSU}}
+
+% NOTE! Affiliations placed here should be for the institution where the
+%       BULK of the research was done. If the author has gone to a new
+%       institution, before publication, the (above) affiliation should NOT be changed.
+%       The authors 'current' address may be given in the "Author's addresses:" block (below).
+%       So for example, Mr. Fogarty, the bulk of the research was done at UIUC, and he is
+%       currently affiliated with NASA.
+
+\begin{abstract}
+	{\normalsize \textbf{Abstract}} In this paper we investigate a curious example of opposition based solution generation applied to an evolutionary multi-objective optimization (EMO) algorithm, namely on NSGA-II \(\ldots\) 
+\end{abstract}
+
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below. 
+%
+% \begin{CCSXML}
+% <ccs2012>
+%  <concept>
+%   <concept_id>10010520.10010553.10010562</concept_id>
+%   <concept_desc>Computer systems organization~Embedded systems</concept_desc>
+%   <concept_significance>500</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10010520.10010575.10010755</concept_id>
+%   <concept_desc>Computer systems organization~Redundancy</concept_desc>
+%   <concept_significance>300</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10010520.10010553.10010554</concept_id>
+%   <concept_desc>Computer systems organization~Robotics</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10003033.10003083.10003095</concept_id>
+%   <concept_desc>Networks~Network reliability</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+% </ccs2012>  
+% \end{CCSXML}
+% 
+% \ccsdesc[500]{Computer systems organization~Embedded systems}
+% \ccsdesc[300]{Computer systems organization~Redundancy}
+% \ccsdesc{Computer systems organization~Robotics}
+% \ccsdesc[100]{Networks~Network reliability}
+
+%
+% End generated code
+%
+
+% We no longer use \terms command
+%\terms{Human Factors}
+
+% \keywords{Contour perception, flow visualization, perceptual theory, visual cortex, visualization}
+
+% \acmformat{Author-1, Authro-2, and Author-3. 2015. \papertitle}
+% At a minimum you need to supply the author names, year and a title.
+% IMPORTANT:
+% Full first names whenever they are known, surname last, followed by a period.
+% In the case of two authors, 'and' is placed between them.
+% In the case of three or more authors, the serial comma is used, that is, all author names
+% except the last one but including the penultimate author's name are followed by a comma,
+% and then 'and' is placed before the final author's name.
+% If only first and middle initials are known, then each initial
+% is followed by a period and they are separated by a space.
+% The remaining information (journal title, volume, article number, date, etc.) is 'auto-generated'.
+
 \begin{document}
 
-\title{Opposition based Solution Generation in Multiobjective Evolutionary Algorithms}
-\line
-\leftright{\today}{Author1\footnote{Responsible for the GP module}\\Author2\footnote{Responsible for the Simulator module}} %-- left and right positions in the header
+% \begin{bottomstuff}
+% This work is supported by the Widget Corporation Grant \#312-001.\\
+% Author's address: D. Pineo, Kingsbury Hall, 33 Academic Way, Durham,
+% N.H. 03824; email: dspineo@comcast.net; Colin Ware, Jere A. Chase
+% Ocean Engineering Lab, 24 Colovos Road, Durham, NH 03824; email: cware@ccom.unh.edu;
+% Sean Fogarty, (Current address) NASA Ames Research Center, Moffett Field, California 94035.
+% \end{bottomstuff}
 
-\section{Introduction}
-Talk about some introductory stuffs and do some literature reviews to set the scenario, also discuss basic issues like ``what is MOP'' etc. 
+
+\maketitle
+
+% Head 1
+\section{Introduction (and Related Work)}
+Talk about some introductory stuffs and do some literature reviews to set the scenario, also discuss basic things like ``what is MOP'' etc. 
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
 \section{An Alternative Interpretation of Opposition}
-As we have seen in the previous section, mostly the idea of \textit{opposition} is employed as the incorporation of new solutions with a certain kind of \textit{opposite traits} into the existing population. Such \textit{traits} could be interpreted according to different perspectives, an \textit{opposite} solution could be -- i) the one with an opposite representation (w.r.t the current best solution), ii) the solutions with the opposite values from the other end of the variable bounds (i.e. real valued optimization). However, such re-route from the continuing search trajectory could be a misleading one -- in a sense that the opposite solutions could only be useful if the search space follows a desired pattern. For example, if the problem is to solve the N-queens problem, then the opposite representation of the current best solution could result into another valid solution. One can easily verify this fact by computing the reverse assignment of queens from a existing optimal solution and eventually find another global optima. This fact also indicates another interesting property of the search space -- that it also needs to be multi-modal. As the reverse representation of the current best solution needs to be the optimum for another peak. Therefore, most of the standard opposition based algorithms inject the opposite solutions during the optimization start-up; or maintain a constant (generally low) ratio of opposite solutions into the current population. Therefore, the standard opposite solution injection scheme could only be effective given the aforementioned assumptions on the underlying search space. For this reason, such injection scheme is quite unwieldy to incorporate into a large scale numerical optimization problems, like in mutli-objective optimization problems (MOPs).
+\label{sec:alternative-interpretation}
+As we have already seen in the previous section, mostly the idea of \textit{opposition} is employed as the incorporation of new solutions with a certain kind of \textit{opposite traits} into the existing population \cite{?}. Such \textit{traits} could be interpreted in terms different perspectives. For example, an \textit{opposite} solution could be -- i) the one with an opposite representation (with respect to the current best point) \cite{?}, ii) the ones with the opposite values from the other spectrum of the variable bounds (i.e. in the case of real valued optimization) \cite{?}. However, upon injecting the opposite solutions could cause a re-route from the continuing search trajectory and thus could be a misleading step -- in a sense that the opposite solutions could only be useful if the search space follows a desired pattern \cite{?}. 
 
-Moreover, we have also found some examples of opposition based algorithm for Q/TD-learning like scenario. Similar argument can be made, as the reinforcement-learning like search algorithm is inherently greedy (as it follows the Bellman's optimality principle), and the opposite actions during the learning phase introduces a noise; so that the algorithm can branch out to alternative choices. In that sense, we can say that the injection of opposite solutions can be considered as a different form of variation operation in population based stochastic search. 
+For example, if the task is to solve the N-queen problem \cite{?}, then the opposite representation of the current best can result into another valid global optima. One can easily verify this fact by computing the reverse assignment of queens from a existing optimal solution and it will eventually take us to another global optima. This observation also assumes that the search space also needs to be multi-modal, following from the fact that the reverse representation of the current best solution needs to be an optimum for another peak of the search space. Therefore, most of the standard opposition based algorithms inject the opposite solutions during the optimization start-up \cite{?}; or maintain a constant (generally low) ratio of opposite points \cite{?} into the current population. Therefore, the standard opposite injection scheme could only be effective given the two main assumptions on the underlying search space are valid -- multi-modality and the solution symmetry. For this reason, such scheme is quite unwieldy to incorporate into a large scale numerical optimization problems, e.g. multi-objective optimization problems (MOPs) \cite{?}.
 
-However, for the case of MOPs, a generic opposition scheme may not be effective enough just because of the sheer complexity of the search space of interest, moreover, we have almost no room to make any assumption about the multi-modality and/or biasness in the solutions (i.e. as it could be done in N-queen Problem). Therefore, in this paper, we have revised the notion of opposition in terms of the search algorithm's behaviour. For example, most Evolutionary Multiobjective Optimization (EMO) algorithms aim to maximize two principal aspects -- i) the convergence and ii) the diversity, as the quality of a MOP solution depends on this two factors. This change now let us re-consider the opposite point generation/injection in a different perspective --
+Moreover, we have also found some examples of opposition based algorithm for Q-learning/TD-learning like scenarios \cite{?}. Similar argument can be made, as the reinforcement-learning algorithms are inherently greedy \cite{?} (as they rely on the Bellman's optimality principle). And the opposite actions during the learning phase introduces a noise; so that the search can branch out to alternative choices \cite{?}. In that sense, we can say that the injection of opposite solutions can be considered as a different form of \textit{variation operator} in population based stochastic search. 
+
+However, for the case of MOPs, existing opposition based solution generation scheme may not be effective just because of the sheer complexity of the search space. Moreover, we hardly have any room to make any assumption about the multi-modality and/or symmetry of the solution representation (i.e. such assumption could be made about N-queen problem). Therefore, in this paper, we have revised the notion of opposition in terms of the algorithm's behaviour. For example, most Evolutionary Multi-objective Optimization (EMO) algorithms aim to maximize two principal properties -- i) the convergence and ii) the diversity, as the quality of a MOP solution depends on these two factors \cite{?}. Therefore, this change of notion will now allows us to re-consider the opposite point generation/injection in a different perspective --
 \begin{itemize}
-	\item Convergence: A solution \textit{far} from the true Pareto-front is \textit{opposite} of any solution that is \textit{closer} to the true Pareto-front.
-	\item Diversity: An \textit{isolated} solution on the true Pareto-front is \textit{opposite} of a \textit{crowded} solution. 
+	\item Convergence: A solution \textit{far} from the true Pareto-front is \textit{opposite} to any solution that is \textit{closer} to the true Pareto-front.
+	\item Diversity: An \textit{isolated} solution on the true Pareto-front is \textit{opposite} to a \textit{crowded} solution. 
 \end{itemize}
 
-By taking the above two notion into account, we will deterministically generate opposition solutions during the search. Obviously, the deterministic point generation scheme will only consider the \textit{opposite trait} that is \textit{good}. In the next section we will see, how the existing EMO algorithm has limitations maintaining this two \textit{opposite traits} during the variation (i.e. solution generation) operations.  
+By taking the above two principles into account, we will deterministically generate opposite solutions during the search. Obviously, the deterministic point generation scheme will only consider the \textit{opposite trait} that is \textit{good}. In the next section we will see, how the existing EMO algorithms shows the limitations maintaining this two \textit{opposite traits} during the search (i.e. solution generation) process.  
 
-\section{Limitations with Canonical MOP Algorithms: NSGA-II}
-Show that standard algorithms like NSGA-II converges as a Pareto-line/surface for many problems
+\section{Limitations with the Canonical MOP Algorithms: The Search Trajectory Bias}
+\label{sec:limitation-canonical}
+Most of the standard EMO algorithms (e.g. NSGA-II, SPEA-II etc.), are elitist by design \cite{?}\cite{?}. They are also ``opportunistic'' in a sense that the population always try to converge to a particular portion of the Pareto-front (PF) which seems to be easier to solve at that point. They also shows a preference over a certain objective function which needs less exploration than the other. We can see such biasness in the search when we try to solve the ZDT4 problem using NSGA-II. In such case, the first objective is easier to optimize than the second one, the readers can verify this fact from the figure \ref{fig:zdt4-unbalanced-snapshot}. Therefore, the search trajectory deliberately accumulates more points over the first objective to optimize one particular portion of the Pareto-front. Moreover, while putting more solutions to the vicinity of one particular objective axis, the search trajectory looses the uniformity by forming a crowded streak of points along that axis; on the other hand we can see that there is almost no solution on the other spectrum of the objective space. This kind of non-symmetric search behaviour is, we think, causes a hindrance to the optimization algorithm. Therefore, it would be helpful if we could selectively inject points during the search where the solution distribution is more sparse. In addition, we also think that this biased nature of the search trajectory could degrade with the addition of more objective functions. Moreover, this could also lead to a stagnation on the local optima, given that the search space has a lot many of them.
+%
+% Figure
+\begin{figure}[tp]
+\centering
+\includegraphics[width=0.33\textwidth]{acmlarge-mouse}
+\caption{The effect of the \textit{search trajectory bias} could be seen when we try to solve ZDT4 problem with NSGA-II. Here we can see a long streak of crowded solution near the objective \(f_1\), where the distribution of solutions near the objective \(f_2\) is extremely sparse.}
+\label{fig:zdt4-unbalanced-snapshot}
+\end{figure}
 
-\section{The Basic Algorithm: Opposite Point Generation Scheme}
-Describe the point generation scheme.
+Given this specific scenario, now the main problem is to devise a way to deterministically generate points where the distribution of the solution is sparse. Here we assume that the lesser the number of solutions in a vicinity of objective \(f_i\), the harder it is to solve. This would be easy if we know the exact mapping of the design variable to objective values -- however such mapping is always unavailable and above all it is very expensive to infer \cite{?}. Another way could be to mutate the points where the solution is more sparse, but we think as the original algorithm already goes through such step, it is not going to be very effective \footnote{However, in the section \ref{?} we will demonstrate this fact that just mutating the sparse solutions does not help much.}.
 
-\section{Finding the Extreme Points}
-Describe how the extreme points are important and how to find them efficiently.
+Therefore, in this paper we are going to demonstrate a very effective approach to address this issue, we will show how we can maintain a balanced distribution of solutions that is parallel to the true PF. The proposed approach is also extremely effective in converging fast to the true PF as well.   
+
+\section{The Deterministic Opposite Point Generation Scheme}
+\label{sec:generation-scheme}
+As we have discussed in the section \ref{sec:alternative-interpretation}, we will utilize the so-called notion of \textit{Opposition} to deterministically generate points on the strategically useful place on the search space. In principle, we do not assume any exact mapping over the design variables to objective values, and we apply a linear approximation to achieve our goal effectively \footnote{As a matter of fact, we will also see that such opposite points are generally 30\% useful in most cases and they are more effective during the initial generations -- which is also a very interesting finding.}. 
+
+Our basic approach is to infer the true PF before starting the actual optimization run. To do this, we depend on barely \(k\) number (\(k = \text{number of objectives}\)) of extreme (or near extreme) points on the true PF since we can safely assume that the population will eventually reach to the vicinity of those extreme points in the end. Moreover, the extreme points will be used as a pivot to arbitrate the \textit{opposite} traits over the existing solutions. Also note that we are not going to deterministically define which portion of the search space is less easy (or hard) and so forth -- we will try to devise a technique that will automatically address and solve such issues on the way.
+
+Another reason to fixate over the \(k\) extreme points is that we also wanted to keep the algorithm simple so that it can only utilize the ``minimal information'' of the true PF. We also think it's valid to assume that any PF could be bounded by at least \(k\)-extreme points for any \(k\)-objective problem. Although, if we could supply other intermediary points on the true PF, we will be able to see a better performance gain with the existing model, however supply of 1 extra true PF solution comes with an added cost of extra function evaluations. As the extreme (or near extreme) points are the pivot to define the notion of \textit{opposite} in our case, we will start the next section by discussing how to find them efficiently --
+
+\subsection{Finding the Extreme Points}
+Extreme points on the Pareto-front could be found using global search as well \cite{}, however our goal was to save the extra computational cost as much as possible. Therefore, we resort to classical single-objective optimization methods to solve this problem. Our choice of such algorithms were limited to, namely, the Interior Point Method\footnote{We have used the \texttt{fmincon()} routine in MATLAB (v. R2014a) for this purpose.} and Mesh Adaptive Direct Search\footnote{We have used the \texttt{patternsearch()} routine in MATLAB (v. R2014a) for this purpose.}. Depending on the difficulty of the problems, appropriate routine parameters were empirically found out and they are summarized as follows: 
+%
+\begin{itemize}
+	\item If the number of variables $> 10$, use \texttt{fmincon()} with default options.
+	\item Otherwise use \texttt{patternsearch()} with default options, however if the number of objective $> 2$, then use these settings:
+		\begin{itemize}
+			\item \texttt{InitialMeshSize:} population size
+			\item \texttt{TolX:} $1e^{-7}$, \texttt{TolBind:} $1e^{-6}$
+			\item \texttt{Search Method:} \texttt{@MADSPositiveBasis2N} starts searching with $2N$ random directions, where $N =$ number of variables.
+			\item \texttt{CompletePoll:} \texttt{on} and \texttt{CompleteSearch:} \texttt{on}
+		\end{itemize}
+\end{itemize}
+%
+In general, for problems with less than \(10\) variables were solved using MADS and the larger problems were solved using IPM. The readers should be aware that the algorithm parameters that we have found is not universal setting, they are subjected to empirical investigations and problem domain-knowledge. 
+
+\medskip
+\begin{algorithm}[H]
+	\SetAlgoNoLine
+	$k \leftarrow$ no. of objectives for a particular problem\\
+	$T \leftarrow (\text{population size} \times (\frac{1}{4} \times \text{maximum generation})) \times \frac{1}{k}$\\
+	$E^\ast \leftarrow \{\}$, an empty solution set\\
+	\For{all $i$ from $1$ to $k$}
+	{
+		$f_i \leftarrow$ $i$-th objective function\\
+		$x \leftarrow $ random initial vector\\
+		\While{maximum of $\frac{T}{2}$ function evaluation reached}
+		{
+			\If{$|x| > 10$}
+			{
+				$x \leftarrow$ solve $f_i$ with \texttt{fmincon()}
+			}
+			\Else
+			{
+				$x \leftarrow$ solve $f_i$ with \texttt{patternsearch()}
+			}
+		}
+		$x \leftarrow$ solution found from the above optimization loop\\
+		$f_{\text{aasf}} \leftarrow $ construct AASF function from $f_i$\\
+		\While{maximum of $\frac{T}{2}$ function evaluation reached}
+		{
+			\If{$|x| > 10$}
+			{
+				$x \leftarrow$ solve $f_{\text{aasf}}$ with \texttt{fmincon()}
+			}
+			\Else
+			{
+				$x \leftarrow$ solve $f_{\text{aasf}}$ with \texttt{patternsearch()}
+			}
+		}
+		$E^\ast \leftarrow E^\ast \cup \{x\}$\\
+		return $E^\ast$ \\
+	}
+	\caption{Find Extreme Points ()}
+    	\label{algo:extreme-point}
+\end{algorithm}
+\medskip
+
+The actual extreme point location algorithm was conducted in two steps -- given a particular objective function \(f_i\), first we try to solve it directly using either IPM or MADS (depending on the problem type); then after some \(T_1\) iterations, we construct the Augmented Achievement Scalarizing Function (AASF) function from \(f_i\) and solve it again for \(T_2\) iterations. To limit the function evaluations, we kept \(T = T_1 + T_2\) to a constant value. For all problems, we have fixed this maximum iteration count to the \(\frac{1}{4}\)-th of the total generation specified. A basic listing for this routine is presented in algorithm \ref{algo:extreme-point}. The set of the extreme points \(E = \{E^\ast\}\) generated from this algorithm may not contain all unique solution, and also they might not be the true extreme always. However, our algorithm can still converge to the true PF extremes.
+
+\subsection{The Opposite Solution Generation Algorithm}
+\label{sec:main-algo}
+Once the extreme points are discovered, now we utilize them to generate the so-called \textit{opposite} points during the main evolutionary runs. On each generation, we randomly select 30\% solutions from the current population and deterministically change them to generate opposite solutions to place them in strategically viable place. And to conduct this variation, we will utilize the points in the set \(E\) as pivot points. We call these points as ``pivot'' since we will selectively try to generate points around these pivots. However, before doing this, we will \textit{refine} our pivot points \(E = \{E^\ast\}\) in a certain way. 
+
+The \textit{refinement} starts by finding the current population extreme points \(E_c\) and merging them with the set \(E\) such that \(E = \{E_c \cup E^\ast\}\). Next we apply the non-dominated sort on \(E\) to find the Pareto-front within this set. We apply this sorting to keep the true extreme points if ones are found in the later generations; and also if \(E^\ast\) are happen to be the weakly dominated points. After this step, we select the points from \(E\) that are on the best front and with \(\infty\) crowding distances\footnote{Here, by ``crowding distance'', we mean the inter-solution distances as computed in NSGA-II.}. Lets denote these selected points as \(E'\). Now at this point, only two kinds of situations are possible:
+%
+\begin{itemize}
+	\item The set \(E'\) contains only the solutions \(E^\ast\) if we are in the initial generations, or
+	\item The \(E'\) will contain the solutions \(E_c\) if we are in the later phase of the generations, where \(E_c\) will be the true PF extreme. 
+\end{itemize}
+%
+\medskip
+\begin{algorithm}[H]
+	\SetAlgoNoLine
+	$E \leftarrow$ true PF extremes $E^\ast$ found from \texttt{FIND-EXTREME-POINTS()}\\
+	$E_c \leftarrow$ find the extreme points from the current best front in population $P$\\
+	$E \leftarrow \{E^\ast \cup E_c\}$\\
+	$E' \leftarrow$ rank points in $E$ and select the extremes from the best front\\
+	\For{all points $p_i$ in $E - E'$}
+	{
+		\If{$p_i$ weakly dominates any solution $p_j \in E'$}
+		{
+			replace $p_j$ by $p_i$
+		}
+	}
+	update $E^\ast$, $E^\ast \leftarrow E'$\\
+	$G \leftarrow$ find $k$ intermediary gap points from the current best front in population $P$\\
+	$E' \leftarrow \{E' \cup G\}$\\
+	return $E'$\\
+	\caption{Generate Pivot Points ($P$, $E^\ast$)}
+    	\label{algo:main-algo}
+\end{algorithm}
+\medskip
+
+However, during the intermediary generations, it could also happen that we might include some solutions into \(E\) that weakly dominate some points already in \(E\), this inclusion will reduce the expected spread of the pivot points -- that may diminish the effect of maintaining the diversity. Therefore, if there exist a point in \(E - E'\) that is on the best front and also weakly dominated by any point in \(E'\), then replace the weakly dominating point from \(E'\) with the one from the set \(E - E'\). The readers might have already noticed that \(|E'| \le |E|\). \vfill \eject
+
+Now, at this point, we can ensure that the set \(E'\) contains either true PF extremes or points near them. Now if we can generate new points near \(E'\), they will induce both better convergence and diversity. In section \ref{sec:limitation-canonical}, we have discussed a scenario where we can see how the biasness in the search trajectory is introduced. However, the difference in the relative difficulty of the objective functions may not be the only reason for such bias, the imbalance in the solution distribution could happen for other reasons as well. For example, a disconnected Pareto-front, a local optimal front or a specific portion of the Pareto-front being more difficult to solve than the rest. In such cases, we can see a \textit{gap} forming over the Pareto-front during the search, we can see such a convergence pattern in many problems. To address these \textit{gaps}, we also find the solutions with \(k\)-highest (\(k = \) no. of objectives) crowding distance from the best front that are not \(\infty\), and denote them as \(G\). Clearly, these \(G\) solutions are those that reside on the edge of the broken Pareto-front. Now we add the \(G\) to the set \(E'\), thus we make \(E'\) as the final ``pivot'' solutions to generate the opposite points. This should also be noted that \(|E'| > k\).
+%
+\medskip
+\begin{algorithm}[H]
+	\SetAlgoNoLine
+	$t = 1$, $N \leftarrow$ population size $|P_t|$\\
+	$E^\ast \leftarrow$ call \texttt{FIND-EXTREME-POINTS()} to get the true PF extremes\\
+	\While{$t \le$ some maximum generation}
+	{
+		$P'_t \leftarrow$ randomly select 30\% solution from $P_t$\\
+		$E'_t \leftarrow$ call \texttt{GENERATE-PIVOT-POINTS($P_t$, $E^\ast$)} to make the pivot set\\
+		$O_t \leftarrow \emptyset$\\
+		\For{each solution $x_i \in P'_t$}
+		{
+			$S \leftarrow$ pick $k$ random solutions from $E'_t$\\
+			$v \leftarrow$ $v \in S$ such that it is the furthest from $x_i$\\
+			$x_c \leftarrow$ generate opposite point from $v$ and $x_i$\\
+			$O_t \leftarrow \{O_t \cup x_c\}$
+		}
+		$P_t \leftarrow \{P_t \cup  E^\ast\}$, $R_t \leftarrow P_t \cup Q_t$\\
+		$\mathcal{F} \leftarrow$ \texttt{fast-non-dominated-sort(}$R_t$\texttt{)}\\
+		$P_{t+1} \leftarrow \emptyset$, $i \leftarrow 1$\\
+		\While{$|P_{t+1}| + |\mathcal{F}_i| \le N$}
+		{
+			\texttt{crowding-distance-assignment(}$\mathcal{F}_i$\texttt{)}\\
+			$P_{t+1} \leftarrow P_t + \mathcal{F}_i$\\
+			$i \leftarrow i + 1$
+		}
+		sort $\mathcal{F}_i$ in descending order using $\prec_n$\\
+		$P_{t+1} \leftarrow$ the first $N - |P_{t+1}|$ solutions from $\mathcal{F}_i$\\
+		$Q_{t+1} \leftarrow$ \texttt{crossover-mutate(}$P_{t+1}$\texttt{)}\\
+		\For{each solution $x_i \in O_t$}
+		{
+			randomly insert $x_i$ into $Q_{t+1}$
+		}
+		$t \leftarrow t + 1$
+	}
+	\caption{NSGA-II with Opposition}
+    	\label{algo:onsga2}
+\end{algorithm}
+\medskip
+
+As we have mentioned at the beginning that we randomly select 30\% of the current population for opposite point generation. We go through each of them and every time we randomly pick \(k\) number of random points from \(E'\) and pick the pivot point that is the furthest from it, and find the opposite vector using a linear scaling. Instead of any sophistication, we do this scaling in a more straight-forward way -- given a pivot vector \(\mathbf{v}\) and a parent vector \(\mathbf{x_p}\), we generate an \textit{opposite} child \(\mathbf{x_c}\) as \(\mathbf{x_c} = U(\frac{3}{4}||\mathbf{x_c} - \mathbf{x_p}||,\frac{5}{4}||\mathbf{x_c} - \mathbf{x_p}||)\mathbf{x_p}\), where \(U(d,u)\) is a uniform random number within the range \([d,u]\). The overall procedure is presented in algorithm \ref{algo:main-algo}. When we apply this algorithm to NSGA-II, we follow the obvious way, the generated opposite population will be inserted into the child population \(Q_t\) in the NSGA-II run, the algorithm \ref{algo:onsga2} shows how to call this procedure in NSGA-II like algorithm. Moreover, this algorithm is ``pluggable'' in a sense that we can integrate it to any other elitist EMO algorithms.
 
 \section{Experiments with the Multi-objective Problem Sets}
 Intro to this section.
 
-\subsection{ZDT Problem Set}
-Discuss ZDT problem set results.
-
-\subsection{DTLZ Problem Set}
-Discuss DTLZ problem set results.
-
-\subsection{Constrained Problems}
-Discuss constrained problem (OSY) results.
-
-\subsection{Rotated Problems}
-Discuss rotated problem (NSGA-II) results.
-
-\section{Comparative Analysis}
-Discuss the comparison.
-
 \section{NSGA-II Equipped with Extreme Points}
 Discuss if NSGA-II is given two extreme points, how it behaves (less robust)
+
+\subsection{ZDT Problems}
+Discuss ZDT problem set results.
+
+\subsection{DTLZ Problems}
+Discuss DTLZ problem set results.
+
+\subsection{Constrained and Rotated Problems}
+Discuss constrained and rotated problem (OSY, DTLZ8) results.
 
 \section{NSGA-II Compensated for the Extra Function Evaluations}
 Discuss what if we run the NSGA-II with the compensated function evaluations.  
 
-\section{Algorithm without the Deterministic Opposite Point Generation}
-Now the reader may ponder that the what if we just mutate solutions near the extreme points? Show that such scheme actually does not work.
+\subsection{ZDT Problems}
+Discuss ZDT problem set results.
+
+\subsection{DTLZ Problems}
+Discuss DTLZ problem set results.
+
+\subsection{Constrained and Rotated Problems}
+Discuss constrained and rotated problem (OSY, DTLZ8) results.
+
+\section{Conclusions and Future Works}
+Discuss.
+
+\appendix
+\section*{APPENDIX}
+\begin{figure}[H]
+	\centering
+	\subfigure[zdt1]{%
+		\includegraphics[width=0.55\textwidth]{zdt1/zdt1-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{zdt1/zdt1-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[zdt2]{%
+		\includegraphics[width=0.55\textwidth]{zdt2/zdt2-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{zdt2/zdt2-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[zdt3]{%
+		\includegraphics[width=0.55\textwidth]{zdt3/zdt3-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{zdt3/zdt3-onsga2r-nsga2re-hvstat.pdf}
+	}
+\end{figure}
+	\vfill\eject
+\begin{figure}[t]
+	\centering
+	\subfigure[zdt4]{%
+		\includegraphics[width=0.55\textwidth]{zdt4/zdt4-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{zdt4/zdt4-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[zdt6]{%
+		\includegraphics[width=0.55\textwidth]{zdt6/zdt6-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{zdt6/zdt6-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[dtlz1]{%
+		\includegraphics[width=0.55\textwidth]{dtlz1/dtlz1-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz1/dtlz1-onsga2r-nsga2re-hvstat.pdf}
+	}
+\end{figure}
+	\vfill\eject
+\begin{figure}[t]
+	\centering
+	\subfigure[dtlz2]{%
+		\includegraphics[width=0.55\textwidth]{dtlz2/dtlz2-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz2/dtlz2-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[dtlz3]{%
+		\includegraphics[width=0.55\textwidth]{dtlz3/dtlz3-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz3/dtlz3-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[dtlz4]{%
+		\includegraphics[width=0.55\textwidth]{dtlz4/dtlz4-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz4/dtlz4-onsga2r-nsga2re-hvstat.pdf}
+	}
+\end{figure}
+	\vfill\eject
+\begin{figure}[t]
+	\centering
+	\subfigure[dtlz5]{%
+		\includegraphics[width=0.55\textwidth]{dtlz5/dtlz5-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz5/dtlz5-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[dtlz6]{%
+		\includegraphics[width=0.55\textwidth]{dtlz6/dtlz6-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz6/dtlz6-onsga2r-nsga2re-hvstat.pdf}
+	}
+	\subfigure[dtlz7]{%
+		\includegraphics[width=0.55\textwidth]{dtlz7/dtlz7-onsga2r-nsga2r-hvstat.pdf}
+		\includegraphics[width=0.55\textwidth]{dtlz7/dtlz7-onsga2r-nsga2re-hvstat.pdf}
+	}
+\end{figure}
 
 \begin{comment}
 
-% \vspace{-0.5cm}
-\section{Abstract} This report summarizes the experimentations done as a requirement for the CSE 812 course at Michigan State University. We have developed a framework to test how a canonical tree based GP can be used to evolve a computer program that behaves like Raymond's distributed mutex algorithm. We have also tested a novel way of fitness evaluation inspired from the $k$-fold validation scheme, and we also showed that such scheme can generate a program tree which is generalized over a wide range of unseen test cases.
+\section{---- Introduction}
 
-\section{Introduction \& Related Work}
-In this experiment, our goal was to see if a canonical tree based GP will be able to evolve a program that is near performant to the Raymond's distributed mutual exclusion algorithm. Automated synthesis of computer code is one of the very interesting topic in computer science, specially in AI domain. In this experiment we have developed a framework to conduct such type of experiments. Although in many previous works \cite{Zhu2013} \cite{Forrest2009}, it has been suggested that simpler representations like stack based GP, rule based GP etc. are good enough to evolve computer programs. However, tree based GP has a better representation power. Our experiments show that tree based GP can evolve competitive program code that behaves like Raymond's algorithm.
+Many techniques for 2D flow visualization have been developed and
+applied. These include grids of little arrows, still the most common
+for many applications, equally spaced streamlines
+\cite{Turk1996,Jobard1997}, and line integral convolution (LIC)
+\cite{Cabral1993}. But which is best and why? \citeN{Laidlaw2001}
+showed that the ``which is best'' question can be answered by means
+of user studies in which participants are asked to carry out tasks
+such as tracing advection pathways or finding critical points in the
+flow field. (Note: An advection pathway is the same as a streamline
+in a steady flow field.) \citeN{Ware2008} proposed that the ``why''
+question may be answered through the application of recent theories
+of the way contours in the environment are processed in the visual
+cortex of the brain. But Ware only provided a descriptive sketch
+with minimal detail and no formal expression. In the present paper,
+we show, through a numerical model of neural processing in the
+cortex, how the theory predicts which methods will be best for an
+advection path tracing task.
 
-In the same vein as our work, Weise and Tang~\cite{Weise2012} applied genetic programming (GP) to the problem of synthesizing distributed algorithms. They tried several different algorithm representations and designed a model for simulating asynchronous distributed system for the purpose of evaluating the performance of evolved algorithms. In their experiments they successfully evolved programs for three well known problems: the distributed greatest common divisor, the critical section problem (mutual exclusion), and leader election. This work presents the first application of GP to the critical section problem and is the most similar to our work.
+% Head 2
+\subsection{The IBQ Approach in Image Quality Estimation}
 
-First this report discusses a high level view of experimental framework, then we discuss in details how the experiments are setup. Then we show our results along with it's analysis. Then we conclude the report suggesting some pointers to the interesting future extensions.
+The IBQ approach combined with psychometric methods has proven suitable,
+especially for testing the performance of imaging devices or their
+components and then returning this quality information to the product
+development or evaluation stages. When the subjective changes in image
+quality are multivariate, the technical parameters changing in the test
+image are unknown or difficult to compute. However, the IBQ approach can be
+used to determine the subjectively important quality dimensions with a wide
+range of natural image material related to changes caused by different
+devices or their components. In order to tune the image-processing
+components for optimal performance, it is important to know what the
+subjectively crucial characteristics that change in the perceived image
+quality are as a function of the tuning parameters, or simply for different
+components. Table I describes the problems caused by multivariate changes in
+image quality and offers suggestions of how to approach them by using
+different measurement methods that complement each other. The IBQ approach
+can complement the psychometric approaches and objective measurements by
+defining the subjective meaning of image quality attributes and
+characteristics; in other words, it reveals how important they are for the
+overall perceived quality. This information can then be used as guidance in
+tuning, and no complex models are needed in order to understand the relation
+between objective measures and subjective quality ratings.
 
-\section{Experimental Framework}
-The overall experimental framework is composed of two parts, i) Genetic Programming (GP) System and a ii) Code executor. The GP system is only responsible for conducting the evolutionary mechanism, namely a tree based GP. On the other hand, the executor was responsible for executing a generated GP tree over a set of simulated distributed processing nodes. The GP module generates initial population of random trees (i.e. programs) and during the fitness evaluation, it invokes the simulator to fed the trees. A high level view of the whole framework is presented in Figure \ref{framework}. We discuss each of the parts in the following subsections.
-%
-	\begin{figure}[h]
-	\begin{center}
-	\includegraphics[width=0.6\textwidth]{framework.pdf}
-	\end{center}
-	\caption{The experimental framework}
-	\label{framework}
-	\end{figure}
-%
-	\subsection{The Genetic Programming (GP) Module}
-	The Genetic Programming (GP) that we have implemented is a canonical tree based GP, this module was developed on top of a evolutionary computation research system called ECJ \footnote{\url{http://cs.gmu.edu/~eclab/projects/ecj/}}. In GP, each of the evolving programs are represented as ``Koza-style'' \cite{koza:book} tree structures; and in the ECJ framework, these trees are represented LISP S-expressions. The GP program starts with a set of randomly generated LISP S-expressions, and evaluates performance of each tree by running it on the simulator (the simulator module is discussed in the next sub-section). Upon assessing the performance, the GP program applies selection, crossover and mutation to breed trees for the next generation; and the same process is continued for some $N$ generations until we converge to a tree which will give us the best performing distributed mutual exclusion behaviour. As we think discussion on the basic GP algorithm is out of the scope of this report, interested readers are referred to \cite{poli08:fieldguide} for more details on GP and how do they work. For example, in our case a typical GP tree should look like the one presented in the Figure \ref{ourtree}.
-	%
-	\begin{figure}[t]
-	\begin{center}
-	\begin{tikzpicture}[grow'=down]
-		\Tree [ .tree 
-			[ .\texttt{progn2}
-				[ \texttt{enter-cs} 
-				[ .\texttt{if-else} 
-					[ .\texttt{send-req-to} \texttt{q-top} ] 
-					[ \texttt{register-req-q} ] 
-					[ .\texttt{and} 
-						[ .\texttt{not} \texttt{in-cs} ] 
-						[ \texttt{want-cs} ] ] ] ] ] ]
-	\end{tikzpicture}
-	\end{center}
-	\caption{The S-expression tree for the given S-expression}
-	\label{ourtree}
-	\end{figure}
-%
-	As readers can identify, in the tree in the Figure \ref{ourtree}, the internal nodes and the leaves represent different programming constructs i.e. functions, function parameters, conditionals and branching etc. The leaves are generally known as \emph{terminals} and the internal nodes are termed as \emph{non-terminals/non-term} in the GP parlance. For example, in our case, the \emph{non-terminals} could be functions like \texttt{(send-request-to <arg>)}, \texttt{(send-token-to <arg>)}, or \texttt{(if <cond> <stmt>)} etc, and the terminals could be the program state information as \texttt{is-incs} or may refer to destination nodes like \texttt{q-top} (i.e. a node on the top of a queue or \texttt{holder}, holder node in the Raymond's algorithm). \vfill \eject
-	
-	As an example, a tree that represents the language of a program in our case is illustrated in Figure \ref{ourtree} and the corresponding S-expression for this tree looks like this --	
-%
-\begin{verbatim}
-(progn2
-    (if-else (and want-cs (not in-cs))
-        (register-req-q)
-        (send-req-tp q-top))
-    (enter-cs))
-\end{verbatim}
-%
-	For example, a typical execution trace of the tree presented in Figure \ref{ourtree} should be interpreted as follows --
-	\begin{itemize}
-	\item The execution starts at the root of the tree \texttt{progn2}, which is a branching operation where it will execute each of the children nodes in turn.
-	\item The internal node \texttt{(if-else <cond> <stmt> <stmt>)} first evaluates the conditional branch at the left most subtree starting with \texttt{(and <cond> <cond>)}.
-	\item If the result is \texttt{true}, then it executes the next branch rooted at \texttt{(register-req-q)}.
-	\item Otherwise it will execute the right most branch rooted at \texttt{(send-req-to)}.
-	\item After that, \texttt{enter-cs} will be executed.
-	\end{itemize}	
-%
-	As it follows from the preceding discussion, we should have a set of \emph{actions} and \emph{sensors} along with the conditionals and the branching construct to build a functional tree that will emulate a distributed mutual exclusion algorithm. Here we present a subset of such \emph{terminals} and the \emph{non-terminals} that have been used in our tree language in the Table \ref{langtable}, a full list along with their exact implementations can be found in the source code accompanying with this report, please refer to the \texttt{executor.py} file for these details.
-%
-\begin{table}[h]
-\begin{tabular}{lll}
-% \cline{3-3}
-Type         & Example                            & Operations                                                                                                                                  \\ \hline
-conditionals & \texttt{(and <cond> <cond>)}       & \begin{tabular}[c]{@{}l@{}}returns true if the left \texttt{<cond>} \\ and the right \texttt{<cond>} are true\end{tabular}                  \\ \hline
-branching    & \texttt{(if <cond> <stmt> <stmt>)} & \begin{tabular}[c]{@{}l@{}}if the \texttt{<cond>} is true then execute\\ left \texttt{<stmt>} or execute right \texttt{<stmt>}\end{tabular} \\ \hline
-actions      & \texttt{(send-req-to <arg>)}       & \begin{tabular}[c]{@{}l@{}}do all relevant operations to send a token \\ request to the node pointed by \texttt{<arg>}\end{tabular}   \\ \hline
-sensors      & \texttt{is-incs}                   & \begin{tabular}[c]{@{}l@{}}returns true if the calling node is in\\ \emph{Critical Section} (CS), otherwise\\ returns false\end{tabular}                                \\ \hline
-node types   & \texttt{q-top}                     & the pointed by the top of the request queue                                                                                                 \\ \hline
-\end{tabular}
-\caption{One example terminal/non-terminal from each of the categories used in the S-expression}
-\label{langtable}
+% Table
+\begin{table}[t]
+\tbl{Multivariate Changes in Image Quality Attributes, the Relationship
+of Psychometric and Objective Image Quality Estimations and the IBQ Approach}{%
+\begin{tabular}{|l|p{8pc}|p{8pc}|p{12pc}|}
+\hline
+~PROBLEM   & \multicolumn{3}{l|}{{Estimating the performance when image
+                                quality changes are multivariate}}\\\hline
+{APPROACH} & {Objective measurements}    & \multicolumn{2}{|{c}|}{Subjective measurements}\\\cline{3-4}
+           &                             & IBQ approach          & Psychometric approach\\\hline
+GOAL       & Objective and computational
+             measures for describing the
+             changes in the images       & Definition of
+                                           subjectively
+                                           crucial image quality
+                                           characteristics       & The amount of
+                                                                   change in either
+                                                                   the overall quality
+                                                                   or a single attribute\\\hline
+QUESTION   & What changes physically?    & What matters for the
+                                           observer?             & How big is the perceived
+                                                                   change?\\\hline
+\end{tabular}}
+\begin{tabnote}
+The IBQ approach can help to determine the subjectively crucial
+characteristics of an image and therefore to give weights to objective and
+computational measures.
+\end{tabnote}
+\label{tab1}
 \end{table}
-%
-The whole GP part is implemented in java and the executor part was designed in python, such a difference in the implementation language was mainly decided by the implementers' own language preference. However, the whole system could be designed with a single language for a more streamlined implementation. The interface between the java module and that of python was employed with a tool called Jython 2.7 \footnote{\url{http://www.jython.org/}}. The description of the code executor module is presented in the next section.
-	\subsection{Executor}
-	The simulator works as follows. It takes a program tree representation from the GP module as input, parses this into executable code, runs the program on a simulated network of processes for evaluation, and finally returns a fitness score to the GP module. 
 
-\subsubsection{Network structure}
-The simulated distributed network is a fully connected graph of $N$ processes and one token that can be passed between the processes. The simulator framework supports the passing of messages between each process, where a message may contain either the process ID of the sender or the token.
 
-\subsubsection{Program representation}
-The program is represented as a tree of instructions and a set of variables and a data structure. The variables and data structure are inspired by Raymond's algorithm. These are all that were necessary to write a program that can effectively access the \emph{Critical Section} (CS) without violated mutual exclusion. 
+Our basic rational is as follows. Tracing an advection pathway for a
+particle dropped in a flow field is a perceptual task that can be
+carried out with the aid of a visual representation of the flow.
+The task requires that an individual attempts to trace a continuous
+contour from some designated starting point in the flow until some
+terminating condition is realized. This terminating condition might
+be the edge of the flow field or the crossing of some designated
+boundary. If we can produce a neurologically plausible model of
+contour perception then this may be the basis of a rigorous theory of
+flow visualization efficiency.
+% description
+\begin{description}
+    \item[Identify] Characteristics of an object.
+    \item[Locate] Absolute or relative position.
+    \item[Distinguish] Recognize as the same or different.
+    \item[Categorize] Classify according to some property (e.g.,  color, position, or shape).
+    \item[Cluster] Group same or related objects together.
+    \item[Distribution] Describe the overall pattern.
+    \item[Rank] Order objects of like types.
+    \item[Compare] Evaluate different objects with each other.
+    \item[Associate] Join in a relationship.
+    \item[Correlate] A direct connection.
+\end{description}
 
-The variables/data structures include a FIFO queue, \texttt{bool holder}, \texttt{bool hasToken}, \texttt{bool waiting\-ForToken}, \texttt{bool registeredRequest}, \texttt{bool inCs}, \texttt{bool wantCs}, and the ID of the process running the program. Execution of a program starts at the root of the tree and moves down in a depth first manner. Furthermore, the instruction set contains conditional operators (\texttt{if} and \texttt{if-else}), logic gates (\texttt{not}, \texttt{and}, \texttt{or}, \texttt{nand}, and \texttt{nor}), branching actions (that run a sequence of instructions), operators that return a boolean (\texttt{is-incs}, \texttt{has-token}, \texttt{is-registered-request}, \texttt{is-waiting-for-token}, \texttt{is-queue-empty}, \texttt{is-holder}, \texttt{want-cs}, and \texttt{true}/\texttt{false}), action operators (\texttt{enter-cs}, \texttt{send-request-to}, \texttt{register-req-q}, and \texttt{send-token-to}), and lastly two operators that return a process ID (\texttt{q-top} and \texttt{holder}). Some of the instructions take arguments. In particular, the conditionals and logic gates can take the instructions that return booleans as arguments, and the instructions that send messages can take the instructions that return process IDs (of the recipient) as arguments. In this way, complex programs can be represented.
-
-\subsubsection{Running the simulator}
-Initially, each the abstract string representation of the program input from the GP module is parsed into a program that can be run, and a program is leaded onto each simulated process. Also, the holder variables of the process are initially set in a binary tree structure, with the holder of the token at the root of the tree.
-
-The simulator is run for $T$ steps. During a step each process is run in a fixed order by executing the instruction in the program tree until termination (e.g. the end of the depth first traversal at a leaf node). While a program is running it may access the CS, place messages for other processes into a buffer, or carry out any other action the instructions allow. After all the processes have run the simulator sends each message in the message buffer to the specified recipient process. Since the only code running on the processes is the evolved code, which has no reason to want to ever enter the CS, to encourage the programs to enter the CS the simulator may set a process's \texttt{wantCs bool} to \texttt{true} with a $W$ percent probability. After a processes enters the CS, the simulator will automatically remove the process from the CS after one time step. This series of events iterates until $T$ time steps pass and the simulation ends.
-
-\subsubsection{Fitness evaluation}
-The fitness score is used by the GP module to determine which programs do well at mutual exclusion and which do poorly. Protocols for mutual exclusion are generally designed to satisfy three conditions~\cite{ghosh2006}:
-
+\subsection{Conditions}
+The reproduction of the gestures was performed in the presence or
+absence of visual and auditory feedback, resulting in four (2 $\times$ 2) conditions.
+% enumerate
+\begin{enumerate}
+\item Visual and auditory feedback (V\,$+$\,A).
+\item Visual feedback, no auditory feedback (V).
+\item Auditory feedback, no visual feedback (A).
+\item No visual or auditory feedback (None).
+\end{enumerate}
+The order of the four conditions was randomized across participants.
+% itemize
 \begin{itemize}
-	\item \emph{ME1.} Mutual exclusion - At most one process can remain in its CS at any time.
-	\item \emph{ME2.} Freedom from deadlock - In every configuration, at least one process must be eligible to take an action and enter its critical section. This is also a safety property.	
-	\item \emph{ME3.} Progress - Every process trying to enter its CS must eventually succeed. 
+    \item \textit{when} $+$ \textit{where} $\Rightarrow$
+          \textit{what}: State the properties of an object or objects at a
+          certain ~time, or set of times,  and a certain place, or set of places.
+    \item \textit{when} $+$ \textit{what} $\Rightarrow$
+          \textit{where}: State the location or set of locations.
+    \item \textit{where} $+$ \textit{what} $\Rightarrow$
+          \textit{when}: State the time or set of times.
 \end{itemize}
+When conducting a user study, the goal for the study is to measure
+the suitability of the visualization in some sense. What is actually
+measured is a fundamental question that we believe can be handled by
+using the concepts of {effectiveness}, {efficiency},
+and {satisfaction}. These three concepts are derived from the
+ISO standard of usability 9241-11.
+% quote
+\begin{quote}
+    Extent to which a product can be used by specified users to
+    achieve specified goals with \textit{effectiveness},
+    \textit{efficiency}, and \textit{satisfaction} in a specified context of use.
+\end{quote}
 
-In this project we focused on \emph{ME1} and \emph{ME3} by designing a fitness function that penalizes programs with more than a single process in the CS at a time, and rewarding programs that allow processes that want to enter the CS access more quickly. During the simulation, two variables are used to measure the fitness, \textit{mutexPenalty} and \textit{progressPenaly}. Initially, these variables are set to 0. Then, each step, if there is more than one process in the CS \textit{mutexPenalty} is incremented by the number of processes in the CS. Furthermore, \textit{progressPenaly} is incremented by the number of processes that want to enter the CS. Note that the upper bound for \textit{mutexPenalty} and \textit{progressPenaly} is $T \times N$. Next, to convert the penalty scores into fitness values the following formulas are used:
+The mechanisms of contour perception have been studied by
+psychologists for at least 80 years, starting with the Gestalt
+psychologists. A major breakthrough occurred with the work of Hubel
+and Wiesel \citeyear{Hubel1962,Hubel1968} and from that time,
+neurological theories of contour perception developed. In this
+article, we show that a model of neural processing in the visual
+cortex  can be used to predict which flow representation methods will
+be better. Our model has two stages. The first is a contour
+enhancement model. Contour enhancement is achieved through lateral
+connections between nearby local edge detectors. This produces a
+neural map in which continuous contours have an enhanced
+representation. The model or cortical processing we chose to apply is
+adapted from \citeN{Li1998a}. The second stage is a contour
+integration model. This represents a higher level cognitive process
+whereby a pathway is traced.
+% Enunciations
+\begin{theorem}
+For a video sequence of $n$ frames, an optimal approach based on
+dynamic programming can retrieve all levels of key frames together
+with their temporal boundaries in O($n^4$) times.
+\end{theorem}
 
-\begin{gather*}
-mutexFitness = 1 - \frac{mutexPenalty}{T \times N} \\
-progressFitness = 1 - \frac{progressPenalty}{T \times N} 
-\end{gather*}
+We apply the model to a set of 2D flow visualization methods that
+were previously studied by \citeN{Laidlaw2001}. This allows us to
+carry out a qualitative comparison between the model and how humans
+actually performed. We evaluated the model against human performance
+in an experiment in which humans and the model performed the same task.
 
-After the fitness scores are calculated they can be aggregated together via linear combination. Notice that if only \textit{mutexFitnesses} were used to evaluate the fitness then a program that never tries to enter the CS would receive maximum fitness. This is an undesirable result so it was necessary to also implement \textit{progressFiness}. The last step for the simulator module is to return the aggregated fitness score to the GP module.
+Our article is organized as follows. First we summarize what is
+known about the cortical processing of contours and introduce Li's
+\citeyear{Li1998a} model of the cortex. Next we show how a slightly
+modified version of Li's model differentially enhances various flow
+rendering methods. Following this, we develop a perceptual model of
+advection tracing and show how it predicts different outcomes for an
+advection path-tracing task based on the prior work of
+\citeN{Laidlaw2001}. Finally we discuss how this work relates to
+other work that has applied perceptual modeling to data visualization
+and suggest other uses of the general method.
 
-\section{Experiment Setup}
-This section we are going to describe the experimentation setup. Like many other population based stochastic search algorithms, GP also comes with its own set of parameters and settings -- which is also a challenging task to tune to get a desired result. The fitness function evaluation phase was carried out like an $N$-fold generalization scheme commonly used in the machine learning community.
-
-	\subsection{Settings for the GP module} 
-	For the GP part, the tree representation was \emph{strongly typed}, which means some functions can take certain type of arguments (i.e. in \texttt{(if <cond> <stmt>)}, the \texttt{<cond>} can take only another function/terminals that only returns \texttt{<cond>} type etc.). Crossover and mutation probabilities were $0.9$ and $0.1$ respectively. The tree building algorithm that has been used is so called Koza's \emph{Half-builder} \cite{koza:book}, the node selection probabilities for subtree mutation and node selection depth parameters were identical to the experiments suggested in \cite{koza:book}. The selection mechanism that has been used is the \emph{Tournament Selection} with size $7$. The population size was kept at $200$, hence the selection pressure was moderate -- since we did not want to be a greedy algorithm that is prone to stuck at the local optima. All the functions/terminals were strongly typed and the node type (i.e. \texttt{q-top}, \texttt{holder}) was implemented as an \emph{Ephemeral Random Constant (ERC)} \cite{koza:book}. There was no \emph{Automatically Defined Function (ADF)} \cite{koza:gp2} used.
-
-	\subsection{Settings for the executor/simulator module} 
-	The simulator code does not implement real parallel threads, instead it was implemented on static process node object. On each \texttt{step} call (in the \texttt{executor.py} file), all the processes execute their individual tree for one single instruction. The fitness evaluation was quite different than the existing canonical GP approach. We maintain a global set of $M$ number of tree configurations (i.e. with different nodes, and topology), at each generation, we test the tree on a single type of tree configuration. More specifically, assume each test configuration is a tuple of i) number of nodes $n$, ii) tree topology $\tau$ iii) the number of steps that a program will execute on $t$ and iv) the probability nodes that are requesting the CS $r$, i.e. $s_i = \langle n, \tau, t , r\rangle$, and assume we have such $k$ tuples $S = \{s_1, s_2, \ldots, s_k\}$. At a particular generation $j$, all the individual programs will be assessed with the test set $s_{(j \mod k)}$. We have applied such scheme because we wanted to come up with a tree that is generalized over a set of configurations and setups. For exact values for these configurations, readers are encouraged to refer to the \texttt{DistributedSystemProblem.java} file, as this file implements the fitness evaluation call. In the next section, we will discuss the results found from our experiments.
-
-\section{Results: Evolved Raymond's Algorithm}
-Using the parameters described in the previous sections, we have conducted multiple experiments. After the experiments, we have collated the results and the analyzed the evolved code with the handcrafted Raymond's algorithm code using the same S-expression language. As also described in the previous sections, the fitness values were decided on the \emph{mutexFitness} and \emph{progressFitness} performances. The handcrafted Raymond's algorithm looked like the code given below --
-%
-\begin{verbatim}
-(progn2
-    (exit-cs)
-    (progn2
-        (if-else want-cs 
-            (if has-token (enter-cs))
-            (if (not is-regreq) (register-req-q)))
-        (progn2
-            (if (and (and (not has-token) (not is-q-empty)) is-waiting-for-token)
-                (send-req-to holder)
-                (progn2
-                    (if (and (and is-holder (not is-incs)) (not is-q-empty))
-                            (send-token-to q-top))
-                    (if (and (and has-token (not is-incs) (not is-q-empty)))
-                        (progn2
-                            (send-token-to q-top)
-                            (if (not is-q-empty)
-                                    (send-req-to holder)))))))))
-\end{verbatim}
-%
-The respective fitness values for this code was $mutexFitness = 1.0$ and $progressFitness = 0.193$ for a randomly generated tree of $10$ nodes, and CS request rate of $0.1$ over $100$ steps.
-%
-	\begin{figure}[h]
-	\begin{center}
-	\includegraphics[width=0.6\textwidth]{plot.pdf}
-	\end{center}
-	\caption{The gp convergence plot}
-	\label{plot}
-	\end{figure}
-%
-	\subsection{Convergence analysis}
-	The plot in Figure \ref{plot} shows the convergence plot from one of the experiments that we have done. We can see that after certain generation the GP program converges to a steady state fitness level. After running the experiments, we collected most fit tree and ran through the simulator again to see how it works, we have also compared it with the hand crafted Raymond's algorithm code. The result is given in the Table \ref{comptable}. Here we can see that the evolved code well maintains the \emph{safety property} (i.e. $mutexFitness = 1.0$ always) over all the test cases. Moreover, the \emph{liveness property} is also well maintained -- $progressFitness$ is better than those of the handcrafted code, in all test cases. The first $5$ rows in the table are the test cases that we have used to assess the program fitness during the evolutionary runs, and the last $5$ are the \emph{unseen} test cases. We also notice that the evolved code maintains the \emph{liveness property} well better than the handcrafted code, which in turn ensures that the evolved code with GP can also generalize. In the next section, we will present the evolved code and try to analyze it with the actual handcrafted Raymond's code side-by-side.
-	%
-\begin{table}[h]
-\footnotesize
+% Figure
+\begin{figure}[tp]
 \centering
-\begin{tabular}{|c|cc|cc|}
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Test\\ Cases\end{tabular}} & \multicolumn{2}{c}{mutexFitness}                                                                                              & \multicolumn{2}{c}{progressFitness}                                                                                              \\ 
-                                                                      & \begin{tabular}[c]{@{}c@{}}Raymond's \\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Evolved \\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Raymond's\\ Algorithm\end{tabular} & \begin{tabular}[c]{@{}c@{}}Evolved \\ Algorithm\end{tabular} \\ \hline
-test 1                                                                & 1.000                                                          & 1.000                                                        & 0.193                                                         & 0.896                                                        \\
-test 2                                                                & 1.000                                                          & 1.000                                                        & 0.091                                                         & 0.858                                                        \\
-test 3                                                                & 1.000                                                          & 1.000                                                        & 0.048                                                         & 0.800                                                        \\
-test 4                                                                & 1.000                                                          & 1.000                                                        & 0.028                                                         & 0.756                                                        \\
-test 5                                                                & 1.000                                                          & 1.000                                                        & 0.023                                                         & 0.701                                                        \\ \hline
-test 6                                                                & 1.000                                                          & 1.000                                                        & 0.016                                                         & 0.648                                                        \\
-test 7                                                                & 1.000                                                          & 1.000                                                        & 0.012                                                         & 0.600                                                        \\
-test 8                                                                & 1.000                                                          & 1.000                                                        & 0.010                                                         & 0.553                                                        \\
-test 9                                                                & 1.000                                                          & 1.000                                                        & 0.008                                                         & 0.502                                                        \\ 
-test 10                                                               & 1.000                                                          & 1.000                                                        & 0.006                                                         & 0.454                                                       \\ \hline
-\end{tabular}
-\caption{Performance comparison, all the cases from test 5$\sim$10 are unseen to the evolved code.}
-\label{comptable}
-\end{table}
+\includegraphics{acmlarge-mouse}
+\caption{Neurons are arranged in V1 in a column architecture. Neurons
+in a particular column respond preferentially to the same edge
+orientation. Moving across the cortex (by a minute amount) yields
+columns responding to edges having different orientations. A
+hypercolumn is a section of cortex that represents a complete set of
+orientations for a particular location in space.}
+\label{corticalarchitecturefig}
+\end{figure}
+
+\section{Cortical Processing of Contours}
+Visual information passes along the optic nerve from the retina of
+the eye where it is relayed, via a set of synaptic junctions in the
+midbrain lateral geniculate nucleus, to the primary visual cortex at
+the back or the brain (Visual Area 1 or V1). It has been known since
+the Hubel and Wiesel's work in the 60s that the visual cortex
+contains billions of neurons that are sensitive to oriented edges and
+contours in the light falling on the retina. Such neurons have
+localized receptive fields each responding to the orientation
+information contained within the light imaged in a small patch of
+retina. A widely used mathematical model of a V1 neuron's receptive
+field is the Gabor function \cite{Daugman1985}:
+\begin{equation}
+\label{gaboreqn}
+Gabor(u,v,\lambda,\theta,\phi,\sigma,\gamma)=e^{-\frac{u'^{2}+
+\gamma^{2}v'^{2}}{2\sigma^{2}}}cos(2\pi\frac{u'}{\lambda}+\phi).
+\end{equation}
+
+Hubel and Wiesel \citeyear{Hubel1962,Hubel1968} found that neurons
+responding to similar orientations were clustered together in a
+structure they called a column which extended from the surface of the
+visual cortex to the white matter (see Figure
+\ref{corticalarchitecturefig}). Later, they and other researchers
+discovered hypercolumn structures consisting of thousands of neurons
+all responding to the same area of visual space and selecting for a
+range of orientations. Overall, V1 contains a topographic map of the
+visual field having the property that every part of the retinal image
+is processed in parallel for all orientations. These orientation
+selective neurons have provided the basis for all subsequent theories
+of contour and edge detection.
+
+There remains the problem of how the output of orientation sensitive
+neurons, each responding to different parts of a visual contour,
+becomes combined to represent the whole contour. Part of the solution
+appears to be a contour enhancement mechanism. \citeN{Field1993}
+examined the human's ability to perceive a contour composed of
+discrete oriented elements. They placed a contour composed of
+separated Gabor patches, among a field of randomly orientated Gabor
+patches. Contours were detected when the patches were smoothly
+aligned. They were not detected when there was misalignment. This
+work suggests that there is some manner of lateral coupling among the
+visual elements involved in perceiving the Gabor patches in the
+contour. These researchers have suggested that similarly oriented
+aligned contours mutually excite one another, while they inhibit
+other neurons that are nearby (Figure~\ref{neuronalignmentfig}).
+
+\begin{figure}[tp]
+\centering
+\includegraphics{acmlarge-mouse}
+\caption{Neurons whose receptive fields are aligned along a
+continuous contour mutually reinforce each other. They inhibit nearby
+neurons with a similar orientation sensitivity.}
+\label{neuronalignmentfig}
+\end{figure}
+
+\section{Li's V1 Model}
+Based on the observed organization of the neurons in the visual
+cortex by Hubel and Wiesel \citeyear{Hubel1962,Hubel1968} and the
+experimental evidence by \citeN{Field1993}, Zhaoping Li constructed a
+simplified model of the behavior of V1 neurons and examined the
+model's ability to integrate contours across multiple V1 neurons.
+The model is introduced briefly here, and described in more detail in
+\citeN{Li1998a}. In Li's model, the cortex is approximated by a set
+of hypercolumns arranged in a hexagonal grid. Each hexagonal cell has
+12 orientation-selective neuron pairs oriented in 15-degree
+increments. One of the main simplifications embodied in Li's model is
+that it fails to incorporate the way the mammalian visual systems
+scales with respect to the fovea. Real neural architectures have much
+smaller receptive fields near the fovea at the center of vision than
+at the edges of the visual field.
+The neurons in each hex cell were grouped into excitatory and
+inhibitory pairs responding to an edge of a particular orientation at
+that location. Thus there were a total of 24 neurons per cell. The
+firing rates of both the inhibitory and excitatory neurons were
+modeled with real values. The neuron pairs affected neighboring
+neuron pairs via a transfer function that depended on the alignment
+of the edge selectivity orientations. Neuron pairs that were aligned
+with one another exhibited an excitatory effect on each other, while
+pairs that were not aligned inhibited each other. Finally, Li's model
+also contains feedback pathways for higher-level visual areas to
+influence individual neurons.
+
+In our implementation, the mapping of the hexagonal grid to the image
+space was such that the hex centers were separated by 10 pixels. For
+the V1 neuron response, we used the Gabor function (Eq.
+(\ref{gaboreqn})) with a wavelength, $\lambda$, of 21 pixels, a
+$\sigma$ of 7 pixels, and an aspect ratio, $\gamma$, of 1.
+
+\section{Streamline Tracing Algorithm}
+\citeN{Laidlaw2001} compared the effectiveness of
+visualization techniques by presenting test subjects with the task of
+estimating where a particle placed in the center of a flow field
+would exit a circle. Six different flow-field visualization methods
+were assessed by comparing the difference between the actual exit
+numerically calculated and the estimation of the exit by the human
+subjects. Laidlaw et~al.'s experiment was carried out on humans but,
+in our work, we apply this evaluation technique to humans as well as
+to our model of the human visual system and use a streamline tracing
+algorithm to trace the path of the particle.
+
+We use the term streamline tracing to describe the higher level
+process that must exist for people to judge a streamline pathway.
+We call it streamline tracing because the task seems to require the
+user to make a series of judgments, starting at the center, whereby
+the path of a particle dropped in the center is integrated in a
+stepwise pattern to the edge of the field. Though many algorithms
+exist in the machine vision literature for contour tracing, we found
+these to be inappropriate for use in this application. Contour
+tracing algorithms are generally designed to trace out the boundary
+of some shape but a streamline tracing algorithm must also be able
+able to produce a streamline in a field of disconnected contours,
+such as is the case with the regular arrows. The streamline to be
+traced will often not follow a visible contour but instead be locate
+between contours, and will sometimes pass through areas devoid of
+visual elements. Thus we developed a specialized algorithm that is
+capable of tracing streamlines that do not necessarily correspond to
+the boundary of any shape but can pass between visual contours.
+
+Perception is a combination of top-down and bottom-up processes.
+Bottom-up processes are driven by information on the retina and are
+what is simulated by Li's model \citeyear{Li1998a}. Top-down
+processes are much more varied and are driven in the brain by
+activation from regions in the frontal and temporal cortex that are
+known to be involved in the control of pattern identification and
+attention \cite{Lund2001}. All of the flow visualizations evaluated
+by \citeN{Laidlaw2001}, except for LIC, contain symbolic information
+regarding the direction of flow along the contour elements (e.g. an
+arrowhead). In a perpetual/cognitive process this would be regarded
+as a top-down influence. At present our model does not deal with
+symbolic direction information but it does do streamline tracing once
+set in the right general direction.
+
+Streamline tracing is a combination of top-down and bottom-up
+processes. Broadly speaking, top-down processes reflect task demands
+and the bottom-up processes reflect environmental information. In our
+case, the bottom-up information comes from the different types of
+visualization, while the top-down information is an attempt to model
+the cognitive process of streamline pathway tracing. Contour
+integration was modeled using the following iterative algorithm.
+
+% Algorithm
+\medskip
+\begin{algorithm}[H]
+\SetAlgoNoLine
+$current\_position \leftarrow$ center \\
+$current\_direction \leftarrow$ up \\
+$current\_position$ is inside circle \\
+\While{$current\_position$ is inside circle,}{
+  $neighborhood \leftarrow$ all grid hexes within two hexes from $current\_position$ \\
+  \For{ each $hex$ in $neighborhood$, }{
+  \For{each $neuron$ in $hex$}{
+  convert $neuron\_orientation$ to $vector$ \\
+  scale $vector$ by $neuron\_excitation$ \\
+  $vector\_sum \leftarrow vector\_sum + vector$}}
+
+  normalize $vector\_sum$ \\
+  $current\_position \leftarrow current\_position + vector\_sum$ \\
+  $current\_direction \leftarrow vector\_sum$ \\
+return $current\_position$ \\
+}
+    \caption{Iterative Algorithm}
+    \label{alg:one}
+  \end{algorithm}
+\medskip
+
+The algorithm maintains a context that contains a current position
+and direction. Initially, the position is the center, and the
+direction set to upward. This context models the higher-order,
+top-down influence on the algorithm that results from the task
+requirements (tracing from the center dot) and the directionality
+which in our experiment was set to be always in an upwardly trending direction.
+
+The algorithm traces the contour by repeatedly estimating the flow
+direction at the $current\_position$ and moving the position a small
+distance (.5 hex radii) in that direction. The flow direction is
+calculated from the neural responses in the local neighborhood of the
+$current\_position$. The excitation of each neuron is used to
+generate a vector whose length is proportional to the strength of the
+response and whose orientation is given by the receptive field
+orientation. Because receptive field orientations are ambiguous as to
+direction (for any vector aligned with the receptive field, its
+negative is similarly aligned). The algorithm chose the vector most
+closely corresponding to the vector computed on the previous
+iteration. Vectors are computed for all neurons in hypercolumns
+within a 2-hexes radius of the current position; they are summed and
+normalized to generate the next $current\_direction$.
+
+Some changes were made from the method published by
+\citeN{Pineo2008}. Previously, the algorithm considered only a single
+hex cell at each iteration of the algorithm. We found that this would
+occasionally cause unrealistically large errors in streamline
+tracing. For example, on visualizations with arrowheads, the neural
+network might yield a very strong edge orthogonal to the flow field
+positioned at the back of an arrowhead. If the algorithm considered
+only the edges at this point, it may make a significant error,
+despite the edges in nearby positions indicating the correct
+direction. We felt that creating an average over $neighborhood$ was
+the more correct approach, and we found closer agreement with human
+performance with this change.
+
+\subsection{Qualitative Evaluation}
+Four different flow visualization methods were used in our evaluation
+of the theory. These were implementations of four of the six used by
+\citeN{Laidlaw2001}. We chose to investigate a regular arrow grid
+because it is still the most commonly used in practice and a jittered
+arrow grid because of the arguments that have been made that this
+should improve perceptual aliasing problems \cite{Turk1996}. We added
+Line Integral Convolution (LIC) because of its widespread advocation
+by the visualization community \cite{Cabral1993} and head-to-tail
+aligned streaklets because of Laidlaw et al.'s finding that is was
+the best and the theoretical arguments in support of this method
+\cite{Ware2008}. Note that Laidlaw et al. used Turk and Banks
+algorithm to achieve aligned arrows on equally spaced streamlines
+while we used Jobard and Lefer's \citeyear{Jobard1997} method to
+achieve the same effect and we used streaklets without an arrowhead
+\cite{Fowler1989}.
+
+\begin{figure}[tp]
+    \begin{minipage}[t]{0.45\linewidth}
+        \centering
+        \includegraphics{acmlarge-mouse}
+        \caption{Regular arrows.}
+        \label{regularfig}
+    \end{minipage}
+    \hspace{0.1\linewidth}
+    \begin{minipage}[t]{0.45\linewidth}
+        \centering
+        \includegraphics{acmlarge-mouse}
+        \caption{Jittered arrows.}
+        \label{jitteredfig}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[tp]
+    \begin{minipage}[t]{0.45\linewidth}
+        \centering
+        \includegraphics{acmlarge-mouse}
+        \caption{Closeup of neural response to arrowheads.}
+        \label{ortharrowheadfig}
+    \end{minipage}
+    \hspace{0.1\linewidth}
+    \begin{minipage}[t]{0.45\linewidth}
+        \centering
+        \includegraphics{acmlarge-mouse}
+        \caption{Closeup of neural response to aligned streaklets.}
+        \label{alignedcloseupfig}
+    \end{minipage}
+\end{figure}
+
+
+V1 is known to have detectors at different scales. However, to make
+the problem computationally tractable we chose only a single scale
+for the V1 and designed the data visualizations with elements scaled
+such that they were effectively detected by the gabor filter used by
+the model. The widths of the arrows and streaklets were chosen to be
+smaller than the central excitatory band of the gabor filter. This
+allowed the edge to be detected even if not precisely centered on the
+receptive field of the neuron. The spatial frequency of the LIC
+visualization is defined by the texture over which the vector field
+is convoluted. Our texture was created by generating a texture of
+random white noise of one-third the necessary size and scaling it up
+via. interpolation. The resulting spacial frequency of the LIC
+visualization was of a scale that was effectively detected by the
+gabor filters of the model.
+
+% Head 3
+\subsubsection{Regular Arrows (Figure \ref{regularfig})} This
+visualization is produced by placing arrow glyphs at regular
+spacings. The magnitude of the vector field is indicated by the arrow
+length, and the flow direction by the arrow head. The grid underlying
+the regular arrows is apparent to humans, but the edge weights of the
+model show no obvious signs of being negatively affected. In fact,
+the regularity ensures that the arrows are well spaced, preventing
+any false edge responses that might be produced by the interference
+of multiple arrows. We can expect that nontangential edge responses
+will be produced by the arrowheads and these will lead to errors in
+the streamline advection task.
+
+% Head 4
+\paragraph{Jittered arrows (Figure \ref{jitteredfig})}
+This visualization is similar to the regular arrows, but the arrows
+are moved a small random distance from the regular locations. While
+composed of the same basic elements as the regular grid, we see
+instances where nearby arrows interfere with each other and produce
+edge responses nontangential to the flow direction. Also, as with
+gridded arrows, the arrowheads will excite neurons with orientation
+selectivity nontangential to the flow. This can be seen in
+Figure~\ref{ortharrowheadfig}. In this figure, we can see orthogonal
+neural excitation to each side of the upper arrow, caused by the back
+edge of the arrowhead (blue circles). We can also see excitation
+caused by the interference of two arrows at the bottom right (green
+circle). These nontangential responses are much stronger than those
+found in the aligned streaklets visualization (Figure \ref{alignedcloseupfig}).
+
+
+\section{Discussion}
+The overall agreement between the pattern of results for human
+observers and the V1-based model provides strong support of the
+perceptual theory we outlined in the introduction. The aligned arrows
+style of visualization produced clear chains of mutually reinforcing
+neurons along the flow path in the representation, making the flow
+pathway easy to trace as predicted by theory.
+
+The fact that LIC produced results as good as the equally spaced
+streamlines was something of a surprise, and this lends support to
+its popularity within the visualization community. While it did not
+produce as much neuron excitation as the aligned arrows method, this
+was offset by the lack of nontangential edge responses produced by
+glyph-based visualizations. However, its good performance was
+achieved only because our evaluation method ignored the directional
+ambiguity inherent in this method. \citeN{Laidlaw2001} found this
+method to be the worst and there is little doubt that had we allowed
+flow in any direction, up or down, human observers would have found
+pathways with close to 180 degrees of error half of the time.
+
+The performance of both the model and the human test subjects is
+likely to be highly dependent on the underlying vector field used.
+As described in Section 5.1.6, the vector field was generated by
+interpolating between an 8x8 grid of random, but generally upward
+pointing vectors. A consequence of this is that when adjacent vectors
+in this grid point somewhat toward each other, the vector field forms
+an area of convergence. This convergence area tends to funnel
+neighboring streamline paths together, reducing error in streamline
+tracing (Figure \ref{regularfig} is an example of this).  Thus, the
+overall accuracies of both the model and human subjects may be higher
+than might be might be observed using a vector field without such convergence zones.
+
+We were surprised that the computer algorithm actually did better at
+the task than human observers. One reason for this may have been that
+humans would have to make saccadic eye movements to trace a path,
+whereas the computer did not. For the patterns we used, it is likely
+that the observers had to make fixations on several successive parts
+of a path, and errors may have accumulated as they resumed a trace
+from a previous fixation. Nevertheless, we feel that the algorithm
+could easily be adjusted to make it give results closer to human
+subjects. A more sophisticated approach would be to simulate eye fixations.
+
+The model we applied is a considerable simplification over what
+actually occurs. It only uses the simplest model of the simplest
+orientation sensitive neurons, and fails to include cortical
+magnification, among other shortcomings. Real cortical receptive
+fields are not arranged in a rigid hexagonal grid as they are in Li's
+model. Furthermore, the neurons of V1 respond to many frequencies,
+however our model only uses one in its present form. In addition,
+besides the so-called simple cells modeled by \citeN{Li1998a}, other
+neurons in V1 and V2 called complex and hypercomplex cells all have
+important functions. For example, end-stopped cell respond best to a
+contour that terminates in the receptive field and understanding
+these may be important in showing how the direction of flow along a
+contour can be unambiguously shown. Moreover, visual information is
+processed through several stages following the primary cortex,
+including V2, V4 and the IT cortex. Each of these appears to abstract
+more complex, less localized patterns. Researchers are far from
+having sufficient information to model the operations of these stages
+all of which may have a role in tracing contours. Nevertheless, the
+results are compelling and there are advantages in having a
+relatively simple model. We have plans to add some of these more
+complex functions in future versions of the model.
+
+% Start of "Sample References" section
+
+\section{Typical references in new ACM Reference Format}
+A paginated journal article \cite{Abril07}, an enumerated
+journal article \cite{Cohen07}, a reference to an entire issue \cite{JCohen96},
+a monograph (whole book) \cite{Kosiur01}, a monograph/whole book in a series (see 2a in spec. document)
+\cite{Harel79}, a divisible-book such as an anthology or compilation \cite{Editor00}
+followed by the same example, however we only output the series if the volume number is given
+\cite{Editor00a} (so Editor00a's series should NOT be present since it has no vol. no.),
+a chapter in a divisible book \cite{Spector90}, a chapter in a divisible book
+in a series \cite{Douglass98}, a multi-volume work as book \cite{Knuth97},
+an article in a proceedings (of a conference, symposium, workshop for example)
+(paginated proceedings article) \cite{Andler79}, a proceedings article
+with all possible elements \cite{Smith10}, an example of an enumerated
+proceedings article \cite{VanGundy07},
+an informally published work \cite{Harel78}, a doctoral dissertation \cite{Clarkson85},
+a master's thesis: \cite{anisi03}, an online document / world wide web resource \cite{Thornburg01}, \cite{Ablamowicz07},
+\cite{Poker06}, a video game (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03}
+and \cite{Lee05} and (Case 3) a patent \cite{JoeScientist001},
+work accepted for publication \cite{rous08}, 'YYYYb'-test for prolific author
+\cite{SaeediMEJ10} and \cite{SaeediJETC10}. Other cites might contain
+'duplicate' DOI and URLs (some SIAM articles) \cite{Kirschmer:2010:AEI:1958016.1958018}.
+Boris / Barbara Beeton: multi-volume works as books
+\cite{MR781536} and \cite{MR781537}.
+
+% Appendix
+\appendix
+\section*{APPENDIX}
+\setcounter{section}{1}
+
+
+With closest point to a given set of lines we intend the point
+having the minimum Euclidean distance with respect to those lines.
+Typically, this problem is formulated using Pl\"{u}cker coordinates.
+Instead, here we compute this point by solving the problem in a closed
+form, since the resulting matrices are not ill-conditioned in our
+case. More precisely, by indicating the set of $n$ lines with
 %
-	\subsection{Evolved code analysis}
-	One of the code that we have found is presented below:
-\begin{verbatim}
-(progn2 
- (if (and (and is-waiting-for-token is-regreq) (not is-regreq)) 
-     (send-token-to holder)) 
- (progn2 
-  (if-else (and want-cs is-regreq)
-	   (progn2 
-	    (if (and (and is-waiting-for-token is-regreq) (not is-regreq)) 
-		(send-token-to holder)) 
-	    (if-else (not (or (not is-regreq) has-token)) (send-req-to q-top) 
-		     (if-else (and want-cs is-regreq) 
-			      (if is-q-empty exit-cs) 
-			      (if has-token enter-cs))))
-	   enter-cs)
-  (if-else (not (or is-regreq has-token)) 
-	   (if is-q-empty exit-cs) 
-	   (if-else (and want-cs is-regreq)
-		    (if is-q-empty exit-cs) 
-		    (if has-token enter-cs)))))
-\end{verbatim}
-One interesting feature that the above code displays is that it creates a detectable partition which is very close to a generic pattern for a typical mutual exclusion algorithm, i.e. --
-\begin{verbatim}
-    mutex()
-    {
-        enter-cs-protocol()
-        enter-cs()
-        exit-cs-protocol()
-    }
-\end{verbatim}
-If we look closely, we can see that the first \texttt{(if-else <cond> <stmt> <stmt>)} implements the \texttt{enter-cs-protocol()}, and after the \texttt{(enter-cs)} construct, the evolved code implements the \texttt{exit-cs-protocol()}. This kind of emergent signature from a GP algorithm is really interesting to notice.
-
-\section{Conclusions and Future Work}
-This experiment shows that canonical tree based GP can be used for automated synthesis of distributed protocols. Moreover, the $k$-fold validation like fitness assessment scheme can generate program that is generalized. The main contribution of this experiment is to design a testbed for future experiments and we believe there are multiple avenues for further investigations --
-
-\textbf{Grammatical evolution:} Grammatical Evolution (GE) comes with a powerful representation model. In GE, the tree generation is done based on a context free grammar and the trees are encoded in a string of integer numbers identifying the grammar rule sequences. We can also apply GE for evolving Raymond's protocol.
-
-\textbf{Co-operative co-evolution:} If we look at the generic pattern for every mutex algorithm, we can see a structure like --
-\begin{verbatim}
-    mutex()
-    {
-        enter-cs-protocol()
-        enter-cs()
-        exit-cs-protocol()
-    }
-\end{verbatim}
-If we look closely, we can see that the \texttt{enter-cs-protocol()} and \texttt{exit-cs-protocol()} have totally different behaviours (i.e. most of the time, the operations are opposite). This property makes it a very interesting problem for co-operative co-evolution, where two different sub-populations will evolve two programs with different behaviors, and the fitness will be assessed on how they perform when they are paired.
-
-\textbf{Implement a real distributed process simulator:} We also need to implement a real distributed process simulator, there are lots of thread libraries that could be utilized for this purpose.
-
-\section{Appendix: How to Run The Experiments}
-We are assuming that the users have latest jdk and python on their system, and all the java classpath environments are setup properly. The codes are structured as follows --
-\begin{itemize}
-	\item \texttt{raymond/lib}: contains all necessary libraries
-	\item \texttt{raymond/src}: contains all codes
-	\item \texttt{raymond/src/evomutex}: contains all codes related to GP module
-	\item \texttt{raymond/src/sim}: contains all codes related to simulator module
-	\item \texttt{raymond/src/pyglue}: contains all codes related to java-python interface
-	\item \texttt{raymond/src/make}: the bash script to compile and run the experiments
-\end{itemize}
-
-\textbf{To compile:} open a terminal, go to the \texttt{raymond/src} folder and type --
-\begin{verbatim}
-	user@machine:/home/raymond/src$ ./make
-\end{verbatim}
-
-\textbf{To run:} type --
-\begin{verbatim}
-	user@machine:/home/raymond/src$ ./make run
-\end{verbatim}
-
-After the execution, the results will be saved in \texttt{raymond/src/out.stat} file, this file will contain the best evolved tree at each successive generations, along with their fitness. To run a particular tree, please refer to the \texttt{raymond/src/sim/tester.py} script. 
-
-Users can also use the same script for cleaning up the compiled executables.
-
-\textbf{To clean:} type --
-\begin{verbatim}
-	user@machine:/home/raymond/src$ ./make clean
-\end{verbatim}
+\begin{equation}
+  L = \left \{ l_i = O_i + t \vec{d}_i | \, t \in {R} \right \} \,\,\, i = 1
+  \ldots n,
+  \label{eq:setoflines}
+\end{equation}
+%
+where $O_i$ is the origin of the $i$th line and $\vec{d}_i$ is the
+corresponding direction (normalized), we found the closest point by
+minimizing
+%
+\begin{equation}
+  p = \arg \min_{x} \sum_{i=1}^{n} d(x,l_i).
+  \label{eq:problemstatement}
+\end{equation}
+%
+The distance $d(x, l_i)$ can be written as
+%
+\begin{equation}
+  d(x , l_i)^2 = (x - O_i) \left [ \textbf{I} - \vec{d_i} \vec{d_i}^T \right ] (x - O_i).
+  \label{eq:distance}
+\end{equation}
+%
+The minimization is obtained by substituting (\ref{eq:distance}) in
+(\ref{eq:problemstatement}), and imposing the derivative to zero.
+%
+After some simple algebra, we obtain the final formulation:
+%
+\begin{equation}
+  p = \left [ n \textbf{I} - \sum_{i=1}^{n} \vec{d_i} \vec{d_i}^T
+  \right ]^{-1} \sum_{i=1}^{n} \left [ \textbf{I} - \vec{d_i} \vec{d_i}^T \right ] O_i.
+  \label{eq:closedform}
+\end{equation}
 
 \end{comment}
 
-\bibliographystyle{plain}
+% Bibliography
+\bibliographystyle{ACM-Reference-Format-Journals}
 \bibliography{report}
+                                % Sample .bib file with references that match those in
+                                % the 'Specifications Document (V1.5)' as well containing
+                                % 'legacy' bibs and bibs with 'alternate codings'.
+                                % Gerry Murray - March 2012
+
+% History dates
+% \received{February 2009}{July 2009}{October 2009}
+
+
+\elecappendix
+
+\begin{comment}
+
+\section{Analysis of Invalid Trials}
+\label{invalid}
+
+\subsection{Results}
+
+
+Invalid trials were previously defined as those trials in which the
+subject pressed the space bar to end the trial without first bringing
+the virtual finger to a stop. The number of invalid trials for each
+subject is presented by feedback condition in Figure~12. Due to the
+irregular distribution of the data, no significance test was run.
+However, the figure shows two notable features. First, Subject 6 had
+more invalid trials than any other subject. Second, more invalid
+trials occurred under the proprioceptive-only (NV$+$P) feedback
+condition than any other.
+
+
+
+\subsection{Discussion}
+
+Although the number of invalid trials is not directly related to task
+performance, we now consider any trends that may be seen in this
+information. No statistical tests were done with this data, but some
+inferences can be drawn from the invalid trial counts in Figure 12.
+The only obvious trend is that the NV$+$P condition appears to have
+the most invalid trials, which is the case for all but two subjects.
+In the post-experiment survey, one subject commented on this trend,
+saying that with only proprioceptive motion feedback it was hard to
+tell if the finger was moving or not. This might be a result of a
+larger threshold for absolute motion detection for proprioceptive
+feedback than for visual feedback. This difficulty in stopping the
+finger did not appear to affect the ease of use ratings provided by
+subjects, as no correlation was observed with invalid trial counts.
+
+It is interesting to note that the no-feedback condition (NV$+$NP)
+had fewer invalid trials than the proprioceptive-only condition
+(NV$+$P), especially in light of the findings of Ghez et al. [1990]
+that deafferented individuals tend to display endpoint drift in
+non-sighted targeted reaching movements (equivalent to NV$+$NP
+condition) while neurologically normal individuals do not (equivalent
+to NV$+$P condition). A notable difference between our study and the
+study by Ghez et al.\ is the availability of kinesthetic feedback
+from the thumb pressing on the force sensor, which indicates the
+magnitude of the applied force, that is, the movement command in our
+study. Thus, under the no-feedback condition, subjects could use this
+information to learn to apply grasping forces within the dead zone to
+stop finger movement. When motion feedback is available, subjects are
+likely focusing more on the feedback than on the forces applied,
+since the feedback allows them to achieve better accuracy. Thus, at
+the end of a trial, subjects are most likely using this feedback as
+an indicator of zero velocity rather than attending to the applied
+force. When visual feedback is available, it is easy to determine
+whether the finger is moving or not; however, when only
+proprioceptive feedback is available, the finger can be moving slowly
+without the subject being aware of its motion. This explanation would
+result in a larger number of failed trials for the NV$+$P condition
+than for any other, as observed.
+
+\end{comment}
 
 \end{document}
+% End of v2-acmlarge-sample.tex (March 2012) - Gerry Murray, ACM
