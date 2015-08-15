@@ -493,7 +493,11 @@ int main (int argc, char **argv)
 		mutation_pop (child_pop);
 		decode_pop(child_pop);
 
-		/* this is required for some versions of the algorithm to work */
+		/**
+		 * this "clearing" for child population is required 
+		 * for this particular nsga2 source code only, 
+		 * not a part of actual algorithm
+		 **/
 		if(i > 2) clear_opposite_flag(child_pop);
 		/* inject opposite after variation */
 		inject_opposite_shuffle(op_child, child_pop);
@@ -533,6 +537,7 @@ int main (int argc, char **argv)
 		dump_pop_list(fpt_all_survived, survived_pop);
 		fflush(fpt_all_survived);
 		free_list_ptr(survived_pop);
+		/* clear the parent's opposite flags */
 		clear_opposite_flag(parent_pop);
 		
 		fprintf(fpt_all_extreme,"# gen = %d\tfe = %d\n", i, feval);

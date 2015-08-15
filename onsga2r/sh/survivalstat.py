@@ -80,6 +80,8 @@ survivalcmd = """
     set arrow from {2:d} + 10.0,{3:.2f} + 3.0 to {2:d},{3:.2f} size screen 0.01,30 lw 4
     set arrow from 5,{4:.2f} to {5:d} - 5,{4:.2f} nohead lt 3 lw 4
     set ytics add {4:.1f}
+    set label 2 \'rate = {4:.1f}% when reached stability\' at 75, {4:.0f}+20.0
+    set arrow from 74,{4:.0f}+20.0 to 60,{4:.1f}+5.0 size screen 0.01,30 lw 4
     plot \"{1:s}\" with lines lw 3 noti
 """
 
