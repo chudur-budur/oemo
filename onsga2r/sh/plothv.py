@@ -245,6 +245,7 @@ boxcmd = """
     set ylabel \'hypervolume\'
     set format x \'%.1s%c\'
     set xrange[0:]
+    set yrange[0:]
     plot \\
 """
 
@@ -253,9 +254,13 @@ linecmd = """
     # set term pdf monochrome
     set output \"{0:s}\"
     ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
+    # print "ydiff: ", ydiff
     ymin = GPVAL_Y_MIN
+    # print "ymin: ", ymin
     liney = ymin + (ydiff * 0.5)
+    # print "liney: ", liney
     txtstart = liney + (ydiff * 0.1)
+    # print "txtstart: ", txtstart
     xthresh = 50
     set arrow from 0+xthresh,liney to {1:d}-xthresh,liney heads size screen 0.005,90 lw 4 
     set label 1 "cost to find E*" rotate left at ({1:d}+xthresh)/2,txtstart
