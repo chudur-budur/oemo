@@ -46,9 +46,9 @@ febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
 
 % if the problem does not have local optima then use fmincon()
 easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
-                    'dtlz4'; 'dtlz5'; 'dtlz7'};
+                    'dtlz4'; 'dtlz5'; 'dtlz7'; 'dtlz2'};
 % if the problem has local optima, then use patternsearch()
-hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'};
+hard_problems = {'zdt4'; 'dtlz1'; 'dtlz3'; 'dtlz6'};
 
 % set options for fmincon
 fmcopt = optimoptions('fmincon');

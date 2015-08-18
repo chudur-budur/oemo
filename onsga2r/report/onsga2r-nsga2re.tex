@@ -1,0 +1,88 @@
+\documentclass[10pt]{article}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{amsmath, amsfonts}
+\usepackage{fullpage}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{automata,positioning}
+
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+%-- Commands for header
+\renewcommand{\title}[1]{\textbf{#1}\\}
+%--  note. -0.45cm for 10pt font and -0.45 for 11pt fonts
+\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.45cm]}
+\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
+& #2\\\end{tabularx}\\[-0.45cm]}
+
+%----- my mod
+\makeatletter
+%-- change section and subsection title format
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\large\bf}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {.05ex \@plus.05ex}%
+                                  {\normalfont\normalsize\bf}}
+
+\renewcommand{\thesubfigure}{\thefigure.\arabic{subfigure}}
+%-- put "." (dot) after each section number
+%\g@addto@macro\thesection.
+%\makeatother
+
+\graphicspath{{../experiments/results/}}
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+
+\title{Experiment Report: NSGA-II+Extreme vs. New Algorithm}
+\line
+\leftright{\today}{Khaled} %-- left and right positions in the header
+	\begin{figure}[H]
+		\centering
+		\subfigure[zdt1]{
+			\includegraphics[width=0.45\textwidth]{zdt1/zdt1-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[zdt2]{
+			\includegraphics[width=0.45\textwidth]{zdt2/zdt2-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[zdt3]{
+			\includegraphics[width=0.45\textwidth]{zdt3/zdt3-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[zdt4]{
+			\includegraphics[width=0.45\textwidth]{zdt4/zdt4-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[zdt6]{
+			\includegraphics[width=0.45\textwidth]{zdt6/zdt6-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz1]{
+			\includegraphics[width=0.45\textwidth]{dtlz1/dtlz1-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz2]{
+			\includegraphics[width=0.45\textwidth]{dtlz2/dtlz2-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz3]{
+			\includegraphics[width=0.45\textwidth]{dtlz3/dtlz3-onsga2r-nsga2re-hvstat.pdf}}
+	\end{figure}
+	\vfill\eject
+	\begin{figure}[H]
+		\centering
+		\subfigure[dtlz4]{
+			\includegraphics[width=0.45\textwidth]{dtlz4/dtlz4-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz5]{
+			\includegraphics[width=0.45\textwidth]{dtlz5/dtlz5-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz6]{
+			\includegraphics[width=0.45\textwidth]{dtlz6/dtlz6-onsga2r-nsga2re-hvstat.pdf}}
+		\subfigure[dtlz7]{
+			\includegraphics[width=0.45\textwidth]{dtlz7/dtlz7-onsga2r-nsga2re-hvstat.pdf}}
+	\end{figure}
+\end{document}

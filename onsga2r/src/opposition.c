@@ -113,14 +113,10 @@ double extremes[2][30] = {{
 		1.509527e-03, -8.123022e-06, 4.439154e-03, -8.102794e-04, -2.717245e-04
 	}
 };*/
-double extremes[2][10] = {{
-		0.3, 2.993182e-04, -7.067956e-04, 3.850841e-04, 7.606947e-04,
-		1.435050e-03, -7.191367e-05, 2.906952e-03, -8.182666e-04, -4.415261e-04
-	},
-	{
-		0.7, 9.199880e-05, -4.616606e-04, -2.961500e-04, 7.312215e-04,
-		1.509527e-03, -8.123022e-06, 4.439154e-03, -8.102794e-04, -2.717245e-04
-	}
+double extremes[2][10] = 
+{
+	{1.000,	-0.009,	0.473,	0.508,	0.498,	0.393,	0.519,	0.804,	0.618,	0.384},
+	{0.000,	0.616,	0.531,	1.029,	0.690,	1.101,	0.687,	-0.538,	0.051,	0.391}
 };
 #endif
 
@@ -155,11 +151,10 @@ double extremes[2][6] = {{
 #endif
 
 #ifdef dtlz1
-double extremes[3][7] =
-{
-	{1.518001e-10, 4.416157e-07, 5.000093e-01, 5.001138e-01, 5.000324e-01, 5.000372e-01, 5.000360e-01},
-	{1.000000e+00, 1.528660e-01, 5.000343e-01, 5.001009e-01, 4.999997e-01, 5.000091e-01, 5.001080e-01},
-	{4.641804e-12, 1.000000e+00, 5.000146e-01, 5.001410e-01, 5.000250e-01, 5.000207e-01, 5.000422e-01}
+double extremes[3][12] = {
+	{0.979,	1.000,	0.637,	0.977,	0.235,	0.171,	0.502,	0.580,	0.394,	0.758,	0.730,	0.462},
+	{1.000,	0.000,	0.486,	0.498,	0.499,	0.500,	0.554,	0.596,	0.518,	0.384,	0.497,	0.334},
+	{0.000,	0.000,	0.500,	0.491,	0.391,	0.500,	0.500,	0.491,	0.500,	0.500,	0.610,	0.610}
 };
 #endif
 
@@ -386,59 +381,6 @@ double generate_opposite_population(population *pop, pop_list *op_parent, pop_li
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);
 		memcpy(ind.xreal, x, sizeof(double) * nreal);
-		ind.is_opposite = 1 ;
-		push_back(op_child, &ind);
-		deallocate_memory_ind(&ind);
-	}
-	free(x);
-	free(t);
-	free_list(pool);
-	return corrupted_genes/((double)(op_popsize * nreal)) * 100.0 ;
-}
-
-double generate_opposite_population_mutate(population *pop, pop_list *op_parent, pop_list *op_child, int gen)
-{
-	int corrupted_genes = 0, i;
-	double *x, *t ;
-	pop_list *pool ;
-	node *ptr ;
-	individual ind ;
-
-	t = (double*)malloc(sizeof(double) * nreal);
-	x = (double*)malloc(sizeof(double) * nreal);
-
-	/* pool size may not be constant */
-	pool = new_list();
-	make_pool(pop, pool);
-
-	gather_op_parent(pop, op_parent);
-	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
-	{
-		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
-		allocate_memory_ind(&ind); 
-		/* to shut the valgrind complains :-( */
-		initialize_ind_dummy(&ind);
-		memcpy(ind.xreal, t, sizeof(double) * nreal);
-		real_mutate_ind(&ind);
-		/** shoot out correction */
-		for(i = 0 ; i < nreal ; i++)
-		{
-			if(isnan(ind.xreal[i]))
-			{
-				ind.xreal[i] = rndreal(min_realvar[i], max_realvar[i]);
-				corrupted_genes++ ;
-			}
-			else if(ind.xreal[i] < min_realvar[i])
-			{
-				ind.xreal[i] = min_realvar[i] ;
-				corrupted_genes++ ;
-			}
-			else if(ind.xreal[i] > max_realvar[i])
-			{
-				ind.xreal[i] = max_realvar[i] ;
-				corrupted_genes++ ;
-			}
-		}
 		ind.is_opposite = 1 ;
 		push_back(op_child, &ind);
 		deallocate_memory_ind(&ind);

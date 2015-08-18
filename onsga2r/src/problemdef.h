@@ -21,10 +21,10 @@
 /* # define ctp8 */
 
 /* zdt sets */
-# define zdt1  /* good */
+/* # define zdt1 */ /* good */
 /* # define zdt2 */ /* good */
 /* # define zdt3 */ /* good */
-/* # define zdt4 */ /* good */
+ # define zdt4  /* good */
 /* # define zdt5 */ /* good */
 /* # define zdt6 */ /* good */
 
