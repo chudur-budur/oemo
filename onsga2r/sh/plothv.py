@@ -278,8 +278,9 @@ if __name__ == '__main__':
             'dtlz5': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz6': [[150, 3], [4.0, 4.0, 4.0]], \
             'dtlz7': [[150, 3], [2.0, 10.0, 10.0]]}
     # algo_set = ['onsga2r', 'nsga2re']
-    # algo_set = ['onsga2r', 'nsga2r']
-    algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
+    algo_set = [['onsga2r', 'nsga2r']]
+    # algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
+    # algo_set = [['onsga2rwdom', 'nsga2r']]
     argv = sys.argv[1:]
     if len(argv) >= 2:
         for algo_pair in algo_set:
