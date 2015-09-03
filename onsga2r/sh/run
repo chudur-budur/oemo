@@ -51,7 +51,7 @@ fi
 
 uid=`uuidgen` ;
 echo "********** START: run ${run} with seed: ${seed}, UUID: ${uid}." ;
-./"${executable}" "${seed}" "${uid}" 0 < "${paramfile}" ;
+./"${executable}" "${problemname}" "${seed}" "${uid}" 0 < "${paramfile}" ;
 
 if [ -f "all_pop-${uid}.out" ]; then
 	mv "all_pop-${uid}.out" "${targetdir}/all_pop-${run}.out" ;
@@ -70,6 +70,21 @@ if [ -f "all_extreme-${uid}.out" ]; then
 fi
 if [ -f "all_survival_stat-${uid}.out" ]; then
 	mv "all_survival_stat-${uid}.out" "${targetdir}/all_survival_stat-${run}.out" ;
+fi
+if [ -f "all_overshoot_stat-${uid}.out" ]; then
+	mv "all_overshoot_stat-${uid}.out" "${targetdir}/all_overshoot_stat-${run}.out" ;
+fi
+if [ -f "best_pop-${uid}.out" ]; then
+	mv "best_pop-${uid}.out" "${targetdir}/best_pop-${run}.out" ;
+fi
+if [ -f "final_pop-${uid}.out" ]; then
+	mv "final_pop-${uid}.out" "${targetdir}/final_pop-${run}.out" ;
+fi
+if [ -f "initial_pop-${uid}.out" ]; then
+	mv "initial_pop-${uid}.out" "${targetdir}/initial_pop-${run}.out" ;
+fi
+if [ -f "params-${uid}.out" ]; then
+	mv "params-${uid}.out" "${targetdir}/params-${run}.out" ;
 fi
 
 echo "********** END: run ${run} with seed: ${seed}, UUID: ${uid}" ;

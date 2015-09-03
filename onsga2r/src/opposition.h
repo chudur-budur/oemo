@@ -16,9 +16,11 @@ int init_extreme_pts_hardcoded(void);
 int init_extreme_pts_rga(int pop_size, int max_gen, double pc, double pm, double etac, double etam);
 int init_extreme_pts_rga_bilevel(int pop_size, int max_gen, double pc, double pm, double etac, double etam);
 int init_extreme_pts_sosolver(double seed);
+int init_extreme_pts_sosolver_weighted(double seed);
 void inject_extreme_points(population *pop);
 
-double generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen);
+void generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen, 
+					double *overshoot_stat);
 void make_pool(population *pop, pop_list *pool);
 pop_list* discard_weakly_dominated_points(population *pop, int size);
 int weakly_dominates(individual *i1, individual *i2);

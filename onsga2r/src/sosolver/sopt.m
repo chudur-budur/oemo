@@ -9,6 +9,9 @@ global func ;
 global index ;
 
 fval = func(x);
-f = fval(index) ;
+if (index < 0)
+    f = sum(fval .* 0.5) ;
+else
+    f = fval(index) ;
 
 end

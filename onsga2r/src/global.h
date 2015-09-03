@@ -37,6 +37,7 @@ typedef struct lists
 }
 list;
 
+extern char prob_name[16] ;
 extern int nreal;
 extern int nbin;
 extern int nobj;

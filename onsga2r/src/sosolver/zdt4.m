@@ -9,6 +9,8 @@ function f = zdt4(x)
 
 f1 = x(1);
 gvals = x(2:length(x));
+% mod to make this problem harder
+% gvals = x(2:length(x)) - 0.5;
 g = (gvals .* gvals) - (10 .* cos(4.0 .* pi .* gvals)); 
 g = 1.0 + (10.0 * (length(x) - 1.0)) + sum(g);
 h = 1.0 - sqrt(f1/g);

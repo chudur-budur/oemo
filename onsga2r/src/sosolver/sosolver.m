@@ -18,8 +18,6 @@ global func ;
 global index ;
 global f_star ;
 
-result = zeros(1, nreal + nobj + 2) ;
-
 % file_path = '../../input_data/zdt1.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 
@@ -27,7 +25,7 @@ result = zeros(1, nreal + nobj + 2) ;
 load_input_data(file_path);
 % function to optimize
 func = str2func(prob_name) ;
-fprintf(1, 'sosolver: solving "%s" problem from file "%s"\n', ...
+fprintf(1, 'sosolver.m -- solving "%s" problem from file "%s"\n', ...
             prob_name, file_path);
 
 % obj index to optimize
@@ -42,13 +40,16 @@ rng(seed, 'twister');
 x0 = min_realvar' + (rand(1,nreal) .* (max_realvar - min_realvar)');
 
 % fixed budget
-febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
+% febound = 1667 ; % for zdt6 to get a better view
+% febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
+febound = round((((200 * 0.25) * popsize) / nobj) / 2.0);
+fprintf('********** solsolver.m -- FE bound fixed to: %d\n', febound);
 
 % if the problem does not have local optima then use fmincon()
 easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
-                    'dtlz4'; 'dtlz5'; 'dtlz7'; 'dtlz2'};
+                    'dtlz4'; 'dtlz5'; 'dtlz7'};
 % if the problem has local optima, then use patternsearch()
-hard_problems = {'zdt4'; 'dtlz1'; 'dtlz3'; 'dtlz6'};
+hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'};
 
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
@@ -73,22 +74,22 @@ end
 feval = 0 ;
 % start the initial optimization
 if (ismember(prob_name, easy_problems))
-    fprintf(1, 'sosolver: Initial optimization, applying fmincon(), with FE bound %d\n', febound);
+    fprintf(1, 'sosolver.m -- Initial optimization, applying fmincon(), with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
                 = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
-    fprintf(1, 'sosolver: Initial optimization done (fmincon()).\n');
+    fprintf(1, 'sosolver.m -- Initial optimization done (fmincon()).\n');
 elseif (ismember(prob_name, hard_problems))
-    fprintf(1, 'sosolver: Initial optimization, applying patternsearch(), with FE bound %d\n', febound);
+    fprintf(1, 'sosolver.m -- Initial optimization, applying patternsearch(), with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
                 = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
     feval = feval + output.funccount ;
-    fprintf(1, 'sosolver: Initial optimization done (patternsearch()).\n');
+    fprintf(1, 'sosolver.m -- Initial optimization done (patternsearch()).\n');
 end
 % Initial level result 
 format compact ;
-fprintf(1, 'x: '); printmatrix(x);
-fprintf(1, 'f: '); printmatrix(func(x));
+fprintf(1, 'sosolver.m -- x: '); printmatrix(x);
+fprintf(1, 'sosolver.m -- f: '); printmatrix(func(x));
 disp(output);
 
 % initial result found, now use it as a starting point
@@ -97,22 +98,23 @@ f_star = func(x0) ;
 
 % next level optimization with aasf
 if (ismember(prob_name, easy_problems))
-    fprintf(1, 'sosolver: Next level AASF, applying fmincon() with FE bound %d\n', febound);
+    fprintf(1, 'sosolver.m -- Next level AASF, applying fmincon() with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
-                = fmincon(@aasf,x0,[],[],[],[],lb,ub,[],fmcopt) ;
+                = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
     feval = feval + output.funcCount ;
-    fprintf(1, 'sosolver: Next level AASF done (fmincon()).');
+    fprintf(1, 'sosolver.m -- Next level AASF done (fmincon()).');
 elseif (ismember(prob_name, hard_problems))
-    fprintf(1, 'sosolver: Next level AASF, applying patternsearch() with FE bound %d\n', febound);
+    fprintf(1, 'sosolver.m -- Next level AASF, applying patternsearch() with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
-                = patternsearch(@aasf,x0,[],[],[],[],lb,ub,[],psopt) ;
+                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
     feval = feval + output.funccount ;
-    fprintf(1, 'sosolver: Next level AASF done (patternsearch()).');
+    fprintf(1, 'sosolver.m -- Next level AASF done (patternsearch()).');
 end                
 % next level aasf results
 format compact ;
-fprintf(1, '\nx: '); printmatrix(x);
-fprintf(1, 'f: '); printmatrix(func(x));
+fprintf(1, '\nsosolver.m -- x: '); printmatrix(x);
+fprintf(1, 'sosolver.m -- f: '); printmatrix(func(x));
+fprintf(1, 'sosolver.m -- feval: %d\n', feval); 
 disp(output)
 
 % get stats
@@ -122,9 +124,12 @@ fval = func(x) ;
 
 % x x x f f e g
 % 1 2 3 4 5 6 7
-result(1:nreal) = xval ;
-result(nreal+1:nreal+nobj) = fval ;
-result(nreal+nobj+1) = feval ;
-result(end) = max_gen ;
+result = zeros(1, nreal + nobj + 2) ;
+result(1,1:nreal) = xval ;
+result(1,nreal+1:nreal+nobj) = fval ;
+result(1,nreal+nobj+1) = feval ;
+result(1,end) = max_gen ;
+fprintf('sosolver.m -- result: \n');
+disp(result');
 result = result' ;
 end

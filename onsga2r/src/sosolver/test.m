@@ -4,7 +4,7 @@ global nreal ;
 global nobj ;
 
 path = '../../input_data/dtlz6.in' ;
-idx = 2 ;
+idx = 3 ;
 result = sosolver(path, idx, 12345);
 % disp(result);
 xval = result(1:nreal);

@@ -3,10 +3,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
+# include <string.h>
 
 # include "global.h"
 # include "problemdef.h"
 # include "rand.h"
+
+char prob_name[16] ;
 
 /*  Test problem SCH1
     # of real variables = 1
@@ -14,14 +17,12 @@
     # of objectives = 2
     # of constraints = 0
     */
-#ifdef sch1
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void sch1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = pow(xreal[0],2.0);
 	obj[1] = pow((xreal[0]-2.0),2.0);
 	return;
 }
-#endif
 
 /*  Test problem SCH2
     # of real variables = 1
@@ -29,9 +30,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef sch2
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void sch2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	if (xreal[0]<=1.0)
 	{
@@ -55,7 +54,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = pow((xreal[0]-5.0),2.0);
 	return;
 }
-#endif
 
 /*  Test problem FON
     # of real variables = n
@@ -63,9 +61,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef fon
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void fon (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double s1, s2;
 	int i;
@@ -79,7 +75,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = 1.0 - exp(-s2);
 	return;
 }
-#endif
 
 /*  Test problem KUR
     # of real variables = 3
@@ -87,9 +82,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef kur
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void kur (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i;
 	double res1, res2;
@@ -103,7 +96,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	}
 	return;
 }
-#endif
 
 /*  Test problem POL
     # of real variables = 2
@@ -111,9 +103,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef pol
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void pol (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double a1, a2, b1, b2;
 	a1 = 0.5*sin(1.0) - 2.0*cos(1.0) + sin(2.0) - 1.5*cos(2.0);
@@ -124,7 +114,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = pow((xreal[0]+3.0),2.0) + pow((xreal[1]+1.0),2.0);
 	return;
 }
-#endif
 
 /*  Test problem VNT
     # of real variables = 2
@@ -132,16 +121,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 3
     # of constraints = 0
     */
-
-#ifdef vnt
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void vnt (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = 0.5*(xreal[0]*xreal[0] + xreal[1]*xreal[1]) + sin(xreal[0]*xreal[0] + xreal[1]*xreal[1]);
 	obj[1] = (pow((3.0*xreal[0] - 2.0*xreal[1] + 4.0),2.0))/8.0 + (pow((xreal[0]-xreal[1]+1.0),2.0))/27.0 + 15.0;
 	obj[2] = 1.0/(xreal[0]*xreal[0] + xreal[1]*xreal[1] + 1.0) - 1.1*exp(-(xreal[0]*xreal[0] + xreal[1]*xreal[1]));
 	return;
 }
-#endif
 
 /*  Test problem ZDT1
     # of real variables = 30
@@ -149,15 +135,15 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt1
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
 	for (i=1; i<nreal; i++)
+		/* g += sqrt((xreal[i] - 0.5) * (xreal[i] - 0.5)); */
+		/* g += pow(fabs((xreal[i] - 0.5)), 0.001) ;*/
 		g += xreal[i] ;
 	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
@@ -167,7 +153,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem ZDT2
     # of real variables = 30
@@ -175,15 +160,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt2
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i];
+	for (i=1; i<nreal; i++) g += xreal[i]; /* (xreal[i] - 0.5)^2 */
 	g = 1.0 + (9.0*g/((double)nreal - 1.0));
 	h = 1.0 - pow((f1/g),2.0);
 	f2 = g*h;
@@ -191,7 +174,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem ZDT3
     # of real variables = 30
@@ -199,15 +181,13 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt3
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i];
+	for (i=1; i<nreal; i++) g += xreal[i]; /* (xreal[i] - 0.5)^2 */
 	g = 1.0 + (9.0*g/((double)nreal - 1.0));
 	h = 1.0 - sqrt(f1/g) - (f1/g)*sin(10.0*PI*f1);
 	f2 = g*h;
@@ -215,7 +195,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem ZDT4
     # of real variables = 10
@@ -223,15 +202,15 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt4
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]);
+	/* for(i = 1; i < nreal ; i++ ) 
+		g += (xreal[i] - 0.5)*(xreal[i] - 0.5) - 10.0*cos(4.0*PI*(xreal[i] - 0.5)); */
+	for (i=1; i<nreal; i++) g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]); 
 	g += 1.0 + 10.0 * ((double)nreal - 1.0);
 	h = 1.0 - sqrt(f1/g);
 	f2 = g*h;
@@ -239,7 +218,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem ZDT5
     # of real variables = 0
@@ -249,9 +227,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt5
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt5 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j;
 	int u[11];
@@ -301,7 +277,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem ZDT6
     # of real variables = 10
@@ -309,15 +284,14 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 0
     */
-
-#ifdef zdt6
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void zdt6 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
 	f1 = 1.0 - ( exp(-4.0*xreal[0]) ) * pow( (sin(6.0*PI*xreal[0])),6.0 );
 	g = 0.0;
 	for (i=1; i<nreal; i++) g += xreal[i];
+	/* for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ;*/
 	g = g/9.0;
 	g = pow(g,0.25);
 	g = 1.0 + 9.0*g;
@@ -327,7 +301,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	obj[1] = f2;
 	return;
 }
-#endif
 
 /*  Test problem BNH
     # of real variables = 2
@@ -335,9 +308,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 2
     */
-
-#ifdef bnh
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void bnh (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = 4.0*(xreal[0]*xreal[0] + xreal[1]*xreal[1]);
 	obj[1] = pow((xreal[0]-5.0),2.0) + pow((xreal[1]-5.0),2.0);
@@ -345,7 +316,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[1] = (pow((xreal[0]-8.0),2.0) + pow((xreal[1]+3.0),2.0))/7.7 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem OSY
     # of real variables = 6
@@ -353,9 +323,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 6
     */
-
-#ifdef osy
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void osy (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = -(25.0*pow((xreal[0]-2.0),2.0) + pow((xreal[1]-2.0),2.0) + pow((xreal[2]-1.0),2.0) + pow((xreal[3]-4.0),2.0) + pow((xreal[4]-1.0),2.0));
 	obj[1] = xreal[0]*xreal[0] +  xreal[1]*xreal[1] + xreal[2]*xreal[2] + xreal[3]*xreal[3] + xreal[4]*xreal[4] + xreal[5]*xreal[5];
@@ -367,7 +335,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[5] = (pow((xreal[4]-3.0),2.0))/4.0 + xreal[5]/4.0 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem SRN
     # of real variables = 2
@@ -375,9 +342,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 2
     */
-
-#ifdef srn
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void srn (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = 2.0 + pow((xreal[0]-2.0),2.0) + pow((xreal[1]-1.0),2.0);
 	obj[1] = 9.0*xreal[0] - pow((xreal[1]-1.0),2.0);
@@ -385,7 +350,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[1] = 3.0*xreal[1]/10.0 - xreal[0]/10.0 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem TNK
     # of real variables = 2
@@ -393,9 +357,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 2
     */
-
-#ifdef tnk
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void tnk (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = xreal[0];
 	obj[1] = xreal[1];
@@ -410,7 +372,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[1] = 1.0 - 2.0*pow((xreal[0]-0.5),2.0) + 2.0*pow((xreal[1]-0.5),2.0);
 	return;
 }
-#endif
 
 /*  Test problem CTP1
     # of real variables = 2
@@ -418,9 +379,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 2
     */
-
-#ifdef ctp1
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	g = 1.0 + xreal[1];
@@ -430,7 +389,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[1] = obj[1]/(0.728*exp(-0.295*obj[0]))-1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP2
     # of real variables = 2
@@ -438,9 +396,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp2
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -462,7 +418,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP3
     # of real variables = 2
@@ -470,9 +425,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp3
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -494,7 +447,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP4
     # of real variables = 2
@@ -502,9 +454,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp4
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -526,7 +476,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP5
     # of real variables = 2
@@ -534,9 +483,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp5
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp5 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -558,7 +505,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP6
     # of real variables = 2
@@ -566,9 +512,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp6
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp6 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -590,7 +534,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP7
     # of real variables = 2
@@ -598,9 +541,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 1
     */
-
-#ifdef ctp7
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp7 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -622,7 +563,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[0] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /*  Test problem CTP8
     # of real variables = 2
@@ -630,9 +570,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
     # of objectives = 2
     # of constraints = 2
     */
-
-#ifdef ctp8
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void ctp8 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double g;
 	double theta, a, b, c, d, e;
@@ -666,7 +604,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	constr[1] = exp1/exp2 - 1.0;
 	return;
 }
-#endif
 
 /**  
  *  Test problem DTLZ1 (suggested k = 5)
@@ -676,8 +613,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  *  # of constraints = 0
  *  harder: 96 variables
  **/
-#ifdef dtlz1
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g ;
@@ -685,6 +621,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	k = nreal - nobj + 1;
 
 	g = 0.0 ;
+	/* this is ok, no need to change xreal */
 	for(i = nreal - k; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
 		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
@@ -699,7 +636,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	}
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ2 (suggested k = 10)
@@ -709,8 +645,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: 96 variables
  **/
-#ifdef dtlz2
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g ;
@@ -720,7 +655,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5));
-
+	/* g = 100.0 * g */
 	for(i = 0 ; i < nobj ; i++) obj[i] = 1.0 + g ;
 
 	for(i = 0 ; i < nobj ; i++)
@@ -732,7 +667,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	}
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ3 (suggested k = 10)
@@ -742,8 +676,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: 96 variables
  **/
-#ifdef dtlz3
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k;
 	double g ;
@@ -768,7 +701,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	}
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ4 (suggested k = 10, alpha = 100)
@@ -778,8 +710,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: same problem
  **/
-#ifdef dtlz4
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g ;
@@ -791,7 +722,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
-
+	/* g = g * 100.0 */
 	for(i = 0 ; i < nobj ; i++)
 		obj[i] = (1.0 + g) ;
 
@@ -804,7 +735,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	}
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ5 (suggested k = 10)
@@ -814,8 +744,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: same problem
  **/
-#ifdef dtlz5
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g, t;
@@ -828,7 +757,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
-
+	/* g = 100.0 * g */
 	t = PI / (4.0 * (1.0 + g)) ;
 
 	theta[0] = xreal[0] * (PI / 2.0);
@@ -848,7 +777,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	free(theta);
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ6 (suggested k = 10)
@@ -858,8 +786,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: same problem
  **/
-#ifdef dtlz6
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
 	double g, t;
@@ -871,6 +798,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += pow(xreal[i], 0.1);
+		/* g += pow(fabs(xreal[i] - 0.5), 0.1); */
 
 	t = PI / (4.0 * (1.0 + g)) ;
 	theta[0] = xreal[0] * (PI / 2.0);
@@ -890,7 +818,6 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 	free(theta);
 	return ;
 }
-#endif
 
 /**
  * Test problem DTLZ7 (suggested k = 20)
@@ -900,8 +827,7 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
  * # of constraints = 0
  * harder: same problem.
  **/
-#ifdef dtlz7
-void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, k ;
 	double g, h;
@@ -924,4 +850,75 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 
 	return ;
 }
-#endif
+
+/* wrapper */
+void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	if(strcmp(prob_name, "sch1") == 0)
+		sch1(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "sch2") == 0)
+		sch2(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "fon") == 0)
+		fon(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "kur") == 0)
+		kur(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "pol") == 0)
+		pol(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "vnt") == 0)
+		vnt(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt1") == 0)
+		zdt1(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt2") == 0)
+		zdt2(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt3") == 0)
+		zdt3(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt4") == 0)
+		zdt4(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt5") == 0)
+		zdt5(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "zdt6") == 0)
+		zdt6(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "bnh") == 0)
+		bnh(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "osy") == 0)
+		osy(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "srn") == 0)
+		srn(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "tnk") == 0)
+		tnk(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp1") == 0)
+		ctp1(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp2") == 0)
+		ctp2(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp3") == 0)
+		ctp3(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp4") == 0)
+		ctp4(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp5") == 0)
+		ctp5(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp6") == 0)
+		ctp6(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp7") == 0)
+		ctp7(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "ctp8") == 0)
+		ctp8(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz1") == 0)
+		dtlz1(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz2") == 0)
+		dtlz2(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz3") == 0)
+		dtlz3(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz4") == 0)
+		dtlz4(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz5") == 0)
+		dtlz5(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz6") == 0)
+		dtlz6(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz7") == 0)
+		dtlz7(xreal, xbin, gene, obj, constr);
+	else
+	{
+		fprintf(stdout, " Error: wrong problem string or problem not defined.\n");
+		exit(1);
+	}
+}

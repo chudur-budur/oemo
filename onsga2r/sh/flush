@@ -20,7 +20,11 @@ fi
 
 echo "rm -rf experiments/onsga2r/$problem/*" ;
 rm -rf experiments/onsga2r/$problem/* ;
+echo "rm -rf experiments/onsga2rw/$problem/*" ;
+rm -rf experiments/onsga2rw/$problem/* ;
 echo "rm -rf experiments/nsga2r/$problem/*" ;
 rm -rf experiments/nsga2r/$problem/* ;
 echo "rm -rf experiments/nsga2re/$problem/*" ;
 rm -rf experiments/nsga2re/$problem/* ;
+echo "rm -rf experiments/nsga2rew/$problem/*" ;
+rm -rf experiments/nsga2rew/$problem/* ;

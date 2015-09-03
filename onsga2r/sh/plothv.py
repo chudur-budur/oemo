@@ -2,6 +2,7 @@
 
 import sys
 import os
+import time
 import re
 import shutil
 import subprocess
@@ -269,23 +270,27 @@ linecmd = """
 """
 
 if __name__ == '__main__':
-    prob_set = {'zdt1': [[20, 2], [2.0, 2.0]], 'zdt2': [[20, 2], [2.0, 2.0]], \
-            'zdt3': [[20, 2], [2.0, 2.0]], 'zdt4': [[20, 2], [2.0, 2.0]], \
-            'zdt6': [[20, 2], [4.0, 4.0]], \
-            'dtlz1': [[20, 3], [10.0, 10.0, 10.0]], 'dtlz2': [[20, 3], [2.0, 2.0, 2.0]], \
-            'dtlz3': [[20, 3], [15.0, 15.0, 15.0]], 'dtlz4': [[20, 3], [2.0, 2.0, 2.0]], \
-            'dtlz5': [[20, 3], [2.0, 2.0, 2.0]], 'dtlz6': [[20, 3], [4.0, 4.0, 4.0]], \
-            'dtlz7': [[20, 3], [2.0, 10.0, 10.0]]}
+    prob_set = {'zdt1': [[150, 2], [2.0, 2.0]], 'zdt2': [[150, 2], [2.0, 2.0]], \
+            'zdt3': [[150, 2], [2.0, 2.0]], 'zdt4': [[150, 2], [2.0, 2.0]], \
+            'zdt6': [[150, 2], [4.0, 4.0]], \
+            'dtlz1': [[150, 3], [10.0, 10.0, 10.0]], 'dtlz2': [[150, 3], [2.0, 2.0, 2.0]], \
+            'dtlz3': [[150, 3], [15.0, 15.0, 15.0]], 'dtlz4': [[150, 3], [2.0, 2.0, 2.0]], \
+            'dtlz5': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz6': [[150, 3], [4.0, 4.0, 4.0]], \
+            'dtlz7': [[150, 3], [2.0, 10.0, 10.0]]}
     # algo_set = ['onsga2r', 'nsga2re']
-    algo_set = ['onsga2r', 'nsga2r']
+    # algo_set = ['onsga2r', 'nsga2r']
+    algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
     argv = sys.argv[1:]
     if len(argv) >= 2:
-        root_path = argv[0]
-        prob_name = argv[1]
-        max_gen = int(argv[2]) if (len(argv) >= 3 and argv[2].isdigit()) else prob_set[prob_name][0][0]
-        nobj = prob_set[prob_name][0][1]
-        ref = prob_set[prob_name][1]
-        file_lst = dump_hv_stats(root_path, algo_set, prob_name, max_gen, nobj, ref)
-        save_plot(boxcmd, linecmd, file_lst)
+        for algo_pair in algo_set:
+            root_path = argv[0]
+            prob_name = argv[1]
+            max_gen = int(argv[2]) if (len(argv) >= 3 and argv[2].isdigit()) else \
+                                                prob_set[prob_name][0][0]
+            nobj = prob_set[prob_name][0][1]
+            ref = prob_set[prob_name][1]
+            file_lst = dump_hv_stats(root_path, algo_pair, prob_name, max_gen, nobj, ref)
+            save_plot(boxcmd, linecmd, file_lst)
+            time.sleep(10)
     else:
         usage()

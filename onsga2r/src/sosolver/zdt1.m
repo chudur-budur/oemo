@@ -8,6 +8,8 @@ function f = zdt1(x)
 
 f1 = x(1);
 g = sum(x(2:length(x)));
+% mod to make this problem harder --
+% g = sum(abs(x(2:length(x)) - 0.5).^0.001);
 g = (g * 9.0) / (length(x)-1) ;
 g = 1.0 + g ;
 h = 1.0 - sqrt(f1 / g);

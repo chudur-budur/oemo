@@ -9,6 +9,7 @@
 # include "rand.h"
 # include "misc.h"
 
+char prob_name[16] ;
 int nreal;
 int nbin;
 int nobj;
@@ -48,37 +49,45 @@ int main (int argc, char **argv)
 	FILE *fpt_all_pop;
 	FILE *fpt_params;
 	FILE *gp;
+
 	population *parent_pop;
 	population *child_pop;
 	population *mixed_pop;
 
-	if (argc<2)
+	if (argc<3)
 	{
-		printf("\n Usage ./nsga2r random_seed outfile-uid gnuplot\n");
+		printf("\n Usage ./nsga2r [problem_name] [random_seed] [outfile-uid] [gnuplot option]\n");
 		exit(1);
 	}
-	seed = (double)atof(argv[1]);
+
+	sprintf(prob_name, "%s", argv[1]);
+	fprintf(stdout, "\n Solving problem %s \n", prob_name);
+
+	seed = (double)atof(argv[2]);
 	if (seed<=0.0 || seed>=1.0)
 	{
 		printf("\n Entered seed value is wrong, seed value must be in (0,1) \n");
 		exit(1);
 	}
+
 	fpt_init_pop = fopen("initial_pop.out","w");
 	fpt_final_pop = fopen("final_pop.out","w");
 	fpt_best_pop = fopen("best_pop.out","w");
-	if(argc < 3)
+	if(argc < 4)
 		fpt_all_pop = fopen("all_pop.out","w");
 	else
 	{
-		sprintf(uid_filename, "all_pop-%s.out", argv[2]);
+		sprintf(uid_filename, "all_pop-%s.out", argv[3]);
 		fpt_all_pop = fopen(uid_filename,"w");
 	}
 	fpt_params = fopen("params.out","w");
+
 	fprintf(fpt_init_pop,"# This file contains the data of initial population\n");
 	fprintf(fpt_final_pop,"# This file contains the data of final population\n");
 	fprintf(fpt_best_pop,"# This file contains the data of final feasible population (if found)\n");
 	fprintf(fpt_all_pop,"# This file contains the data of all generations\n");
 	fprintf(fpt_params,"# This file contains information about inputs as read by the program\n");
+	
 	printf("\n Enter the problem relevant and algorithm relevant parameters ... ");
 	printf("\n Enter the population size (a multiple of 4) : ");
 	scanf("%d",&popsize);
@@ -226,8 +235,7 @@ int main (int argc, char **argv)
 	choice=0;
 	printf("\n Do you want to use gnuplot to display the results realtime (0 for NO) (1 for yes) : ");
 	scanf("%d",&choice);
-	if(argc == 4)
-		choice = atoi(argv[3]);
+	if(argc == 5) choice = atoi(argv[4]);
 	if (choice!=0 && choice!=1)
 	{
 		printf("\n Entered the wrong choice, hence exiting, choice entered was %d\n",choice);
