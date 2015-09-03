@@ -460,9 +460,7 @@ int main (int argc, char **argv)
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
 	/* now find the extreme points */	
-	feval = init_extreme_pts_sosolver(seed);
-	/* feval = init_extreme_pts_sosolver_weighted(seed); */
-	/* feval = init_extreme_pts_hardcoded(); */
+	feval = init_extreme_pts_hardcoded_weak();
 	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
 	/* update the actual feval */
 	feval += popsize ;

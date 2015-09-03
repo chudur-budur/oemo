@@ -50,22 +50,6 @@ int init_extreme_pts_hardcoded(void)
 			3.227733e-05, 8.223722e-04, 1.365859e-03, 2.357370e-04, 1.958483e-04,
 			7.904188e-04, 3.570866e-05, 5.238472e-04, 1.691631e-04, 1.414751e-03
 		}};
-		/*double zdt1_extremes[2][30] = {{
-			0.3, 2.327980e-04, 1.345857e-04, 1.358861e-05, 1.956658e-04,
-			7.563202e-05, 6.145617e-06, 3.252514e-04, 1.490042e-04, 5.651175e-04,
-			3.827200e-05, 2.428821e-04, 4.078095e-04, 3.745609e-04, 3.341747e-04,
-			6.851307e-05, 4.936276e-05, 1.506193e-03, 7.898634e-04, 1.028294e-04,
-			1.160133e-04, 9.793699e-05, 1.384222e-05, 2.727065e-04, 9.804717e-06,
-			5.509704e-04, 6.057900e-04, 5.323575e-05, 3.321190e-04, 3.827791e-04
-		},
-		{
-			0.7, 6.813504e-05, 2.151707e-05, 3.381928e-04, 1.750262e-03,
-			2.220822e-04, 2.171309e-05, 7.171244e-04, 1.203925e-03, 4.141504e-04,
-			2.672924e-04, 6.309293e-04, 1.248312e-04, 1.156844e-03, 2.687615e-04,
-			8.212292e-04, 6.019056e-04, 8.462657e-04, 3.272088e-05, 9.648083e-04,
-			3.227733e-05, 8.223722e-04, 1.365859e-03, 2.357370e-04, 1.958483e-04,
-			7.904188e-04, 3.570866e-05, 5.238472e-04, 1.691631e-04, 1.414751e-03
-		}};*/
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(extremes[i], &zdt1_extremes[i], sizeof(double) * nreal);
 	}
@@ -88,7 +72,7 @@ int init_extreme_pts_hardcoded(void)
 			3.735666e-04, 1.308571e-03, 2.485873e-04, 8.701451e-05, 9.363877e-05
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &zdt2_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &zdt2_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "zdt3") == 0)
 	{
@@ -109,26 +93,18 @@ int init_extreme_pts_hardcoded(void)
 			2.971143e-04, 3.810230e-04, 1.533421e-04, 5.622700e-06, 3.645322e-04
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &zdt3_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &zdt3_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "zdt4") == 0)
 	{
-		/*double zdt4_extremes[2][10] = {{
-			9.999769e-01, 2.993182e-04, -7.067956e-04, 3.850841e-04, 7.606947e-04,
-			1.435050e-03, -7.191367e-05, 2.906952e-03, -8.182666e-04, -4.415261e-04
-		},
-		{
-			1.485687e-17, 9.199880e-05, -4.616606e-04, -2.961500e-04, 7.312215e-04,
-			1.509527e-03, -8.123022e-06, 4.439154e-03, -8.102794e-04, -2.717245e-04
-		}};*/
 		double zdt4_extremes[2][10] = {{
-			1.000,	-0.009,	0.473,	0.508,	0.498,	0.393,	0.519,	0.804,	0.618,	0.384
+			1.000,	-0.001,	-0.001,	0.000,	0.000,	-0.001,	0.002,	-0.001,	-0.001,	-0.001
 		},
 		{
-			0.000,	0.616,	0.531,	1.029,	0.690,	1.101,	0.687,	-0.538,	0.051,	0.391
+			0.000,	-0.004,	0.000,	0.000,	0.001,	-0.001,	0.000,	-0.000,	-0.002,	-0.001
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &zdt4_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &zdt4_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "zdt6") == 0)
 	{
@@ -141,7 +117,7 @@ int init_extreme_pts_hardcoded(void)
 			2.338439e-11, 1.512753e-11, 2.753128e-12, 1.182686e-11, 1.622554e-11
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &zdt6_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &zdt6_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "pol") == 0)
 	{
@@ -152,7 +128,7 @@ int init_extreme_pts_hardcoded(void)
 			1.000358e+00,	1.990154e+00
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &pol_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &pol_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "osy") == 0)
 	{
@@ -165,7 +141,7 @@ int init_extreme_pts_hardcoded(void)
 			7.195912e-05, 1.000010e+00, 2.386555e-02
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &osy_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &osy_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz1") == 0)
 	{
@@ -182,7 +158,7 @@ int init_extreme_pts_hardcoded(void)
 			0.500,	0.491,	0.500,	0.500,	0.610,	0.610
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz1_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz1_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz2") == 0)
 	{
@@ -202,7 +178,7 @@ int init_extreme_pts_hardcoded(void)
 			5.045672e-01, 5.017501e-01, 5.060027e-01, 5.000449e-01
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz2_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz2_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz3") == 0)
 	{
@@ -222,7 +198,7 @@ int init_extreme_pts_hardcoded(void)
 			4.999978e-01, 5.000153e-01, 4.999992e-01, 5.000390e-01
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz3_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz3_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz4") == 0)
 	{
@@ -242,7 +218,7 @@ int init_extreme_pts_hardcoded(void)
 			4.962075e-01, 5.206323e-01, 5.042736e-01, 4.955822e-01
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz4_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz4_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz5") == 0)
 	{
@@ -262,7 +238,7 @@ int init_extreme_pts_hardcoded(void)
 			5.003780e-01, 5.014114e-01, 4.991804e-01, 4.996749e-01
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz5_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz5_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz6") == 0)
 	{
@@ -282,7 +258,7 @@ int init_extreme_pts_hardcoded(void)
 			3.026288e-17, 0.000000e+00, 0.000000e+00, 0.000000e+00
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz6_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz6_extremes[i], sizeof(double) * nreal);
 	}
 	else if(strcmp(prob_name, "dtlz7") == 0)
 	{
@@ -308,7 +284,65 @@ int init_extreme_pts_hardcoded(void)
 			1.221824e-04, 7.156969e-05
 		}};
 		for(i = 0 ; i < nobj ; i++)
-			memcpy(&extremes[i], &dtlz7_extremes[i], sizeof(double) * nreal);
+			memcpy(extremes[i], &dtlz7_extremes[i], sizeof(double) * nreal);
+	}
+	else
+	{
+		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");
+		exit(1);
+	}
+	for(i = 0 ; i < nobj; i++)
+	{
+		fprintf(stdout, "\n********** using hardcoded extremes:\n");
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
+		memcpy(ind.xreal, extremes[i], sizeof(double) * nreal);
+		push_back(e_star, &ind);
+		deallocate_memory_ind(&ind);
+		feval += 1 ;
+	}
+	for(i = 0 ; i < nobj ; i++) free(extremes[i]);
+	free(extremes);
+	return feval ;
+}
+
+int init_extreme_pts_hardcoded_weak(void)
+{
+	double **extremes ;
+	int feval = 0, i;
+	e_star = new_list();
+	individual ind ;
+	extremes = (double**)malloc(sizeof(double*) * nobj);
+	for(i = 0 ; i < nobj ; i++) extremes[i] = (double*)malloc(sizeof(double) * nreal);
+	
+	if(strcmp(prob_name, "zdt4") == 0)
+	{
+		double zdt4_extremes[2][10] = {{
+			1.000,	-0.009,	0.473,	0.508,	0.498,	0.393,	0.519,	0.804,	0.618,	0.384
+		},
+		{
+			0.000,	0.616,	0.531,	1.029,	0.690,	1.101,	0.687,	-0.538,	0.051,	0.391
+		}};
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(extremes[i], &zdt4_extremes[i], sizeof(double) * nreal);
+	}
+	else if(strcmp(prob_name, "dtlz1") == 0)
+	{
+		double dtlz1_extremes[3][12] = {{
+			0.073,	0.000,	0.499,	0.494,	0.399,	0.500,	
+			0.500,	0.491,	0.501,	0.491,	0.601,	0.589
+		},
+		{
+			0.000,	0.031,	0.500,	0.499,	0.392,	0.506,
+			0.499,	0.492,	0.500,	0.500,	0.201,	0.610
+		},
+		{
+			1.000,	0.993,	0.500,	0.491,	0.515,	0.500,	
+			0.509,	0.596,	0.487,	0.498,	0.507,	0.609
+		}};
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(extremes[i], &dtlz1_extremes[i], sizeof(double) * nreal);
 	}
 	else
 	{
