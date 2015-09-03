@@ -114,7 +114,7 @@ NSGA-III related (work in progress)
 5. inverse-opposite plot
 6. f-x mapping fig
 7. ~~exploration fig zdt3 and zdt4~~
-8. dtlz2 variable size fig
+8. dtlz2 variable size fig (fix dtlz2)
 9. 30% table
 10. ~~weak points plot zdt4 and dtlz1~~
 11. speed-up table
