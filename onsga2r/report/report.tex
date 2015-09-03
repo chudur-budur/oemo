@@ -375,6 +375,7 @@
 	{./results/dtlz4/}%
 	{./results/dtlz5/}%
 	{./results/dtlz6/}%
+	{./results/dtlz7/}%
 	{./figs/}%
 }
 
@@ -732,15 +733,15 @@ When we apply this algorithm to NSGA-II, we follow the obvious way, the generate
 %
 \begin{figure*}[tp]
 	\centering
-	\subfloat[Exploration at generation 9 -- ZDT3 problem\label{subfig:zdt3-gen-9}]{%
-		\includegraphics[width=0.5\textwidth]{zdt3-gen-9}}
-	\subfloat[Exploration at generation 22 -- ZDT3 problem\label{subfig:zdt3-gen-22}]{%
-		\includegraphics[width=0.5\textwidth]{zdt3-gen-22}}
+	\subfloat[Exploration at generation 9 -- ZDT3 problem\label{subfig:zdt3-gen-3}]{%
+		\includegraphics[width=0.5\textwidth]{zdt3-gen-3}}
+	\subfloat[Exploration at generation 22 -- ZDT3 problem\label{subfig:zdt3-gen-18}]{%
+		\includegraphics[width=0.5\textwidth]{zdt3-gen-18}}
 	\hfill
-	\subfloat[Exploration at generation 45 -- ZDT3 problem\label{subfig:zdt3-gen-45}]{%
-		\includegraphics[width=0.5\textwidth]{zdt3-gen-45}}
-	\subfloat[Exploration at generation 6 -- ZDT4 problem\label{subfig:zdt4-gen-6}]{%
-		\includegraphics[width=0.5\textwidth]{zdt4-gen-6}}
+	\subfloat[Exploration at generation 45 -- ZDT3 problem\label{subfig:zdt3-gen-27}]{%
+		\includegraphics[width=0.5\textwidth]{zdt3-gen-27}}
+	\subfloat[Exploration at generation 6 -- ZDT4 problem\label{subfig:zdt4-gen-21}]{%
+		\includegraphics[width=0.5\textwidth]{zdt4-gen-21}}
 		\caption{This figure illustrates how our algorithm deterministically identifies which front needs to be explored first and gradually discovers the entire PF. The example here demonstrates a 3 cases of ZDT3 problem (Figure \ref{subfig:zdt3-gen-9}--\ref{subfig:zdt3-gen-45}). The orange dots represents the deterministically generated solutions that did not survived because they are weakly dominated. In the case of ZDT4 (Figure \ref{subfig:zdt4-gen-6}), we can see how the bias and gaps have been corrected by our approach.}
 	\label{fig:zdt3-gap}
 \end{figure*}
@@ -758,18 +759,18 @@ There is another interesting observation we have made, once this opposite point 
 	\centering
 	\subfloat[Convergence test for DTLZ1 problem\label{subplot:dtlz1-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz1-onsga2r-nsga2r-hvstat}}
-	\subfloat[Convergence test for DTLZ2 problem\label{subplot:dtlz2-onsga2r}]{%
-		\includegraphics[width=0.48\textwidth]{dtlz2-onsga2r-nsga2r-hvstat}}
-	\hfill
 	\subfloat[Convergence test for DTLZ3 problem\label{subplot:dtlz3-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz3-onsga2r-nsga2r-hvstat}}
+	\hfill
 	\subfloat[Convergence test for DTLZ4 problem\label{subplot:dtlz4-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz4-onsga2r-nsga2r-hvstat}}
-	\hfill
 	\subfloat[Convergence test for DTLZ5 problem\label{subplot:dtlz5-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz5-onsga2r-nsga2r-hvstat}}
-	\subfloat[Convergence test for DTLZ6 problem, hypervolume values for our algorithm can be seen near the extreme top of the graph boundary.\label{subplot:dtlz6-onsga2r}]{%
+	\hfill
+	\subfloat[Convergence test for DTLZ6 problem\label{subplot:dtlz6-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz6-onsga2r-nsga2r-hvstat}}
+	\subfloat[Convergence test for DTLZ7 problem, hypervolume values for our algorithm can be seen near the extreme top of the graph boundary.\label{subplot:dtlz6-onsga2r}]{%
+		\includegraphics[width=0.48\textwidth]{dtlz7-onsga2r-nsga2r-hvstat}}
 	\caption{These plots illustrates the comparative analysis of the convergence rates for different 3-objective problems, the curves are actually consisted of box-plots. Here onsga2r denotes our algorithm and nsga2r is NSGA-II.}
 	\label{plot:onsga2r-hv-dtlz}
 \end{figure*}
@@ -787,13 +788,13 @@ Here we can see, in DTLZ1 and DTLZ3 our approach shows noticeable improvement, a
 	\centering
 	\subfloat[ZDT4 problem\label{subplot:zdt4-nsga2re}]{%
 		\includegraphics[width=0.49\textwidth]{zdt4-onsga2r-nsga2re-hvstat}}
-	\subfloat[DTLZ1 problem\label{subplot:dtlz1-nsga2re}]{%
-		\includegraphics[width=0.49\textwidth]{dtlz1-onsga2r-nsga2re-hvstat}}
+	\subfloat[DTLZ3 problem\label{subplot:dtlz3-nsga2re}]{%
+		\includegraphics[width=0.49\textwidth]{dtlz3-onsga2r-nsga2re-hvstat}}
 	\hfill
-	\subfloat[DTLZ5 problem\label{subplot:dtlz5-nsga2re}]{%
-		\includegraphics[width=0.49\textwidth]{dtlz5-onsga2r-nsga2re-hvstat}}
-	\subfloat[DTLZ6 problem, hypervolume values for our algorithm can be seen near the extreme top of the graph boundary.\label{subplot:dtlz6-nsga2re}]{%
+	\subfloat[DTLZ6 problem\label{subplot:dtlz6-nsga2re}]{%
 		\includegraphics[width=0.49\textwidth]{dtlz6-onsga2r-nsga2re-hvstat}}
+	\subfloat[DTLZ7 problem, hypervolume values for our algorithm can be seen near the extreme top of the graph boundary.\label{subplot:dtlz6-nsga2re}]{%
+		\includegraphics[width=0.49\textwidth]{dtlz7-onsga2r-nsga2re-hvstat}}
 		\caption{These plots illustrates the comparative analysis of the convergence rates for different 2 and 3-objective problems, the curves are actually consisted of box-plots. Here onsga2r denotes our algorithm and nsga2re is the NSGA-II equipped with extreme points.}
 	\label{plot:nsga2re-hv}
 \end{figure*}
