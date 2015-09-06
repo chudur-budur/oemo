@@ -111,13 +111,14 @@ NSGA-III related (work in progress)
 2. ~~onsga2r/nsga2re hv plot~~
 3. ~~onsga2r/onsga2rw hv plot~~
 4. ~~survivial stat~~
-5. inverse-opposite plot
-6. f-x mapping fig
+5. ~~inverse-opposite plot~~
+6. ~~f-x mapping fig~~
 7. ~~exploration fig zdt3 and zdt4~~
-8. dtlz2 variable size fig (fix dtlz2)
-9. 30% table
+8. ~~dtlz4 variable size fig (fix dtlz4)~~
+9. ~~30% table~~
 10. ~~weak points plot zdt4 and dtlz1~~
-11. speed-up table
-12. survival analysis
-13. take opposites from the worst front
+11. ~~speed-up table~~
+12. ~~survival analysis~~
+13. ~~Make all figs monochrome~~
+14. ~~take opposites from the worst front~~
 

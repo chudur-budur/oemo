@@ -23,11 +23,17 @@ void inject_extreme_points(population *pop);
 
 void generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen, 
 					double *overshoot_stat);
+void generate_opposite_population_inverse(population *pop, pop_list *op_parent, pop_list *op_child, int gen, 
+					double *overshoot_stat);
+void generate_opposite_population_random(population *pop, pop_list *op_parent, pop_list *op_child, int gen, 
+					double *overshoot_stat);
 void make_pool(population *pop, pop_list *pool);
 pop_list* discard_weakly_dominated_points(population *pop, int size);
 int weakly_dominates(individual *i1, individual *i2);
 void gather_op_parent(population *pop, pop_list *op_parent);
 void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
+void get_closest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
+void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
 int generate_opposite_vector_q3(double *s, double *t, double *d);
 
 void clear_opposite_flag(population *pop);

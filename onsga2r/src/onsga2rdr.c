@@ -479,7 +479,7 @@ int main (int argc, char **argv)
 	op_parent = new_list();
 	op_child = new_list();
 	printf("\n *** Will apply opposition based variation.");
-	generate_opposite_population(parent_pop, op_parent, op_child, 1, overshoot_stat);
+	generate_opposite_population_random(parent_pop, op_parent, op_child, 1, overshoot_stat);
 	/* some overshoot stats */
 	fprintf(stdout, "\n gen = %4d\tfe = %8d", 1, feval);
 	fprintf(stdout, "\tind = %4.2f%%\tgenes/ind = %4.3f",overshoot_stat[0], overshoot_stat[1]);
@@ -540,7 +540,7 @@ int main (int argc, char **argv)
 		make_empty(op_child);
 		make_empty_ptr(op_parent);
 		/* some overshoot stats */
-		generate_opposite_population(parent_pop, op_parent, op_child, i, overshoot_stat);
+		generate_opposite_population_random(parent_pop, op_parent, op_child, i, overshoot_stat);
 		fprintf(stdout, " gen = %4d\tfe = %8d", i, feval);
 		fprintf(stdout, "\tind = %4.2f%%\tgenes/ind = %4.3f",overshoot_stat[0], overshoot_stat[1]);
 		fprintf(stdout, "\tmax_gene = %4.2f%%\tno_gene = %4.2f%%\n",overshoot_stat[2], overshoot_stat[3]);

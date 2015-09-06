@@ -23,7 +23,7 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg sosolv
 
-all: onsga2r onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom
+all: onsga2r onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi onsga2rdr
 wfg: wfg-1.10/wfg
 whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
@@ -35,6 +35,12 @@ onsga2rw: $(OBJ) src/onsga2rw.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 
 onsga2rwdom: $(OBJ) src/onsga2rwdom.o src/sosolver.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+
+onsga2rdi: $(OBJ) src/onsga2rdi.o src/sosolver.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+
+onsga2rdr: $(OBJ) src/onsga2rdr.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 
 nsga2re: $(OBJ) src/nsga2re.o src/sosolver.o
@@ -53,6 +59,12 @@ src/onsga2rw.o: src/onsga2rw.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/onsga2rwdom.o: src/onsga2rwdom.c
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+
+src/onsga2rdi.o: src/onsga2rdi.c
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+
+src/onsga2rdr.o: src/onsga2rdr.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/nsga2re.o: src/nsga2re.c
@@ -90,7 +102,7 @@ clean:
 	rm -f src/*.d
 	rm -f src/*.gc*
 	rm -f $(OBJ) src/*.o src/sosolver/*.o
-	rm -f onsga2r nsga2re nsga2r onsga2rw nsga2rew
+	rm -f onsga2r onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi onsga2rdr
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#

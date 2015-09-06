@@ -682,10 +682,14 @@ When we apply this algorithm to NSGA-II, we follow the obvious way, the generate
 		\STATE $O_t \leftarrow \emptyset$
 		\FOR{each solution $\mathbf{x_i} \in P'_t$}
 			\STATE $S \leftarrow$ pick $k$ random solutions from $E'_t$
-			\STATE $\mathbf{v} \leftarrow$ $\mathbf{v} \in S$ such that $\mathbf{v}$ is furthest from $\mathbf{x_i}$
+			\STATE $\mathbf{v} \leftarrow$ $\mathbf{v} \in S$ such that $\mathbf{v}$ is the furthest point from $\mathbf{x_i}$
 			\STATE $d \leftarrow ||\mathbf{v} - \mathbf{x_i}||$
 			\STATE $\mathbf{x_c} \leftarrow \mathbf{x_i} + \mathbf{U}[(\frac{3d}{4}, \frac{5d}{4})] \circ (\frac{1}{d}(\mathbf{x_i} - \mathbf{v}))$
-			\STATE correct $\mathbf{x_c}$ using the variable bounds, if necessary.
+			\FOR{each $x_i \in \mathbf{x_c}$}
+				\IF{$x_i$ violates the variable bound}
+					\STATE $x_i \leftarrow v_i \in \mathbf{v}$
+				\ENDIF
+			\ENDFOR
 			\STATE $O_t \leftarrow \{O_t \cup \mathbf{x_c}\}$
 		\ENDFOR
 		\STATE $P_t \leftarrow \{P_t \cup  E^\ast\}$
@@ -701,7 +705,7 @@ When we apply this algorithm to NSGA-II, we follow the obvious way, the generate
 		\STATE sort $\mathcal{F}_i$ in descending order using $\prec_n$
 		\STATE $P_{t+1} \leftarrow$ the first $N - |P_{t+1}|$ solutions from $\mathcal{F}_i$
 		\STATE $Q_{t+1} \leftarrow$ select, crossover and mutate $P_{t+1}$
-		\STATE randomly insert all $x_i \in O_t$ into $Q_{t+1}$ with no overlapping $x_i$
+		\STATE randomly insert all $x_i \in O_t$ into $Q_{t+1}$
 		\STATE $t \leftarrow t + 1$
 	\ENDWHILE
 \end{algorithmic}
@@ -759,11 +763,11 @@ There is another interesting observation we have made, once this opposite point 
 	\centering
 	\subfloat[Convergence test for DTLZ1 problem\label{subplot:dtlz1-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz1-onsga2r-nsga2r-hvstat}}
+	\subfloat[Convergence test for DTLZ2 problem\label{subplot:dtlz2-onsga2r}]{%
+		\includegraphics[width=0.48\textwidth]{dtlz2-onsga2r-nsga2r-hvstat}}
+	\hfill
 	\subfloat[Convergence test for DTLZ3 problem\label{subplot:dtlz3-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz3-onsga2r-nsga2r-hvstat}}
-	\hfill
-	\subfloat[Convergence test for DTLZ4 problem\label{subplot:dtlz4-onsga2r}]{%
-		\includegraphics[width=0.48\textwidth]{dtlz4-onsga2r-nsga2r-hvstat}}
 	\subfloat[Convergence test for DTLZ5 problem\label{subplot:dtlz5-onsga2r}]{%
 		\includegraphics[width=0.48\textwidth]{dtlz5-onsga2r-nsga2r-hvstat}}
 	\hfill
@@ -802,7 +806,7 @@ Here we can see, in DTLZ1 and DTLZ3 our approach shows noticeable improvement, a
 % Figure
 \begin{figure}[tp]
 \centering
-\includegraphics[width=0.5\textwidth]{dtlz2-longvar}
+\includegraphics[width=0.5\textwidth]{dtlz4-longvar}
 \caption{The experiment with the varying variable length for DTLZ2 problem. `onsga2r' stands for our approach and `nsga2r' is the NSGA-II algorithm, \(n\) is the variable size. NSGA-II is also compensated for the extra function evaluations to find the true PF extremes. The lines for our algorithm shows the \textit{minimum} hypervolume achieved in each run; and for NSGA-II, we have taken the \textit{maximum} of it.}
 \label{plot:longvar}\vspace{-3.0pt}
 \end{figure}
@@ -837,10 +841,10 @@ In the next sections we are going to experiments with more interesting what-if a
 \label{table:survival}
 \centering
 {\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{l|llllllll|lll}
-Problems	& ZDT1            & ZDT2            & ZDT3           & ZDT4            & ZDT6            & DTLZ1           & DTLZ3           & DTLZ6           & DTLZ2           & DTLZ4    & DTLZ5	\\ \hline
-Improvement Seen            & \textbf{Yes}  & \textbf{Yes}  & \textbf{Yes} & \textbf{Yes}  & \textbf{Yes}  & \textbf{Yes}  & \textbf{Yes}  & \textbf{Yes}  & No              & No       & No      \\ \hline
-	Static Survival Rate (\(\%\)) & \textbf{33.5} & \textbf{33.3} & 13.8           & \textbf{31.0} & \textbf{32.6} & \textbf{32.4} & \textbf{27.7} & \textbf{38.3} & \textbf{28.1} & 19.1 & \textbf{29.8} \\ \hline
+\begin{tabular}{l|llllllll|llll}
+Problems		& ZDT1 & ZDT2 & ZDT4 & ZDT6 & DTLZ1 & DTLZ3 & DTLZ6 & DTLZ7 & ZDT3 & DTLZ2 & DTLZ4 & DTLZ5\\ \hline
+Speed-up	& \textbf{2.67} & \textbf{3.56} & \textbf{2.93} & \textbf{6.82} & \textbf{2.14} & \textbf{2.59} & \textbf{1.22} & \textbf{2.47} & 0.0 & 0.0 & 0.0 & 0.0\\ \hline
+Static Survival Rate (\(\%\))	& \textbf{33.0} & \textbf{32.6}	& \textbf{26.0} & \textbf{28.5} & \textbf{27.4} & 22.2 & 11.8 & \textbf{28.8} & 19.1 & 24.7 & 19.0 & \textbf{29.6}\\ \hline
 \end{tabular}}
 \end{table*}
 %
@@ -852,7 +856,7 @@ The results are shown for problems ZDT4 and DTLZ1 in Figure \ref{plot:weak-hv}, 
 % Figure
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.5\textwidth]{zdt1-survival}
+\includegraphics[width=0.5\textwidth]{zdt1-onsga2r-survival}
 \caption{The survival rate problem ZDT1 over the generations, we can see the highest peek at generation \(2\) and settles down to \(33.5\%\) around generation \(20\).}
 \label{plot:zdt1-survival}
 \end{figure}

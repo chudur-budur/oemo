@@ -17,6 +17,7 @@
 #include "vecutils.h"
 
 #define debug 0
+#define showmap 0
 
 pop_list *e_star ;
 int popsize ;
@@ -425,10 +426,24 @@ void generate_opposite_population(population *pop, pop_list *op_parent, pop_list
 	make_pool(pop, pool);
 
 	gather_op_parent(pop, op_parent);
+	if(showmap) fprintf(stdout, "\ngen = %d\n", gen);
 	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
 	{
 		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
 		int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x);
+		
+		if(showmap) {
+			individual p ;
+			allocate_memory_ind(&p) ;
+			initialize_ind_dummy(&p) ;
+			memcpy(p.xreal, t, sizeof(double) * nreal);
+			evaluate_ind(&p);
+			/* parent */
+			dump_individual(stdout, ptr->ind);
+			/* pivot */
+			dump_individual(stdout, &p);
+			deallocate_memory_ind(&p);
+		}
 		/* fprintf(stdout, "\n\t\tgenes_corrupted = %d", genes_corrupted);*/
 		
 		/* some stats for gene overshoot */
@@ -443,6 +458,148 @@ void generate_opposite_population(population *pop, pop_list *op_parent, pop_list
 		memcpy(ind.xreal, x, sizeof(double) * nreal);
 		ind.is_opposite = 1 ;
 		push_back(op_child, &ind);
+		evaluate_ind(&ind);
+		if(showmap) { 
+			/* child */
+			dump_individual(stdout, &ind); 
+			fprintf(stdout, "\n");
+		}
+		deallocate_memory_ind(&ind);
+	}
+	free(x);
+	free(t);
+	free_list(pool);
+	overshoot_stat[0] = (any_gene_corrupted / (double)op_popsize) * 100.0 ;
+	overshoot_stat[1] = (sum_genes_corrupted/ (double)(op_popsize * nreal))/(double)op_popsize;
+	overshoot_stat[2] = (max_gene_corrupted/(double)op_popsize) * 100.0 ;
+	overshoot_stat[3] = (all_correct/(double)op_popsize) * 100.0 ;
+	return;
+}
+
+void generate_opposite_population_inverse(population *pop, pop_list *op_parent, pop_list *op_child, int gen,
+		double *overshoot_stat)
+{
+	int any_gene_corrupted = 0, max_gene_corrupted = 0, all_correct = 0 ;
+	int sum_genes_corrupted = 0  ;
+	double *x, *t ;
+	pop_list *pool ;
+	node *ptr ;
+	individual ind ;
+
+	t = (double*)malloc(sizeof(double) * nreal);
+	x = (double*)malloc(sizeof(double) * nreal);
+
+	/* pool size may not be constant */
+	pool = new_list();
+	make_pool(pop, pool);
+
+	gather_op_parent(pop, op_parent);
+	if(showmap) fprintf(stdout, "\ngen = %d\n", gen);
+	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
+	{
+		get_closest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
+		int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x);
+		
+		if(showmap) {
+			individual p ;
+			allocate_memory_ind(&p) ;
+			initialize_ind_dummy(&p) ;
+			memcpy(p.xreal, t, sizeof(double) * nreal);
+			evaluate_ind(&p);
+			/* parent */
+			dump_individual(stdout, ptr->ind);
+			/* pivot */
+			dump_individual(stdout, &p);
+			deallocate_memory_ind(&p);
+		}
+		/* fprintf(stdout, "\n\t\tgenes_corrupted = %d", genes_corrupted);*/
+		
+		/* some stats for gene overshoot */
+		if(genes_corrupted > 0) any_gene_corrupted++ ;
+		if(genes_corrupted == 30) max_gene_corrupted++ ;
+		if(genes_corrupted == 0) all_correct++;
+		sum_genes_corrupted += genes_corrupted ;
+
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
+		memcpy(ind.xreal, x, sizeof(double) * nreal);
+		ind.is_opposite = 1 ;
+		push_back(op_child, &ind);
+		evaluate_ind(&ind);
+		if(showmap) { 
+			/* child */
+			dump_individual(stdout, &ind); 
+			fprintf(stdout, "\n");
+		}
+		deallocate_memory_ind(&ind);
+	}
+	free(x);
+	free(t);
+	free_list(pool);
+	overshoot_stat[0] = (any_gene_corrupted / (double)op_popsize) * 100.0 ;
+	overshoot_stat[1] = (sum_genes_corrupted/ (double)(op_popsize * nreal))/(double)op_popsize;
+	overshoot_stat[2] = (max_gene_corrupted/(double)op_popsize) * 100.0 ;
+	overshoot_stat[3] = (all_correct/(double)op_popsize) * 100.0 ;
+	return;
+}
+
+void generate_opposite_population_random(population *pop, pop_list *op_parent, pop_list *op_child, int gen,
+		double *overshoot_stat)
+{
+	int any_gene_corrupted = 0, max_gene_corrupted = 0, all_correct = 0 ;
+	int sum_genes_corrupted = 0  ;
+	double *x, *t ;
+	pop_list *pool ;
+	node *ptr ;
+	individual ind ;
+
+	t = (double*)malloc(sizeof(double) * nreal);
+	x = (double*)malloc(sizeof(double) * nreal);
+
+	/* pool size may not be constant */
+	pool = new_list();
+	make_pool(pop, pool);
+
+	gather_op_parent(pop, op_parent);
+	if(showmap) fprintf(stdout, "\ngen = %d\n", gen);
+	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
+	{
+		get_random_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
+		int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x);
+		
+		if(showmap) {
+			individual p ;
+			allocate_memory_ind(&p) ;
+			initialize_ind_dummy(&p) ;
+			memcpy(p.xreal, t, sizeof(double) * nreal);
+			evaluate_ind(&p);
+			/* parent */
+			dump_individual(stdout, ptr->ind);
+			/* pivot */
+			dump_individual(stdout, &p);
+			deallocate_memory_ind(&p);
+		}
+		/* fprintf(stdout, "\n\t\tgenes_corrupted = %d", genes_corrupted);*/
+		
+		/* some stats for gene overshoot */
+		if(genes_corrupted > 0) any_gene_corrupted++ ;
+		if(genes_corrupted == 30) max_gene_corrupted++ ;
+		if(genes_corrupted == 0) all_correct++;
+		sum_genes_corrupted += genes_corrupted ;
+
+		allocate_memory_ind(&ind); 
+		/* to shut the valgrind complains :-( */
+		initialize_ind_dummy(&ind);
+		memcpy(ind.xreal, x, sizeof(double) * nreal);
+		ind.is_opposite = 1 ;
+		push_back(op_child, &ind);
+		evaluate_ind(&ind);
+		if(showmap) { 
+			/* child */
+			dump_individual(stdout, &ind); 
+			fprintf(stdout, "\n");
+		}
 		deallocate_memory_ind(&ind);
 	}
 	free(x);
@@ -687,6 +844,75 @@ void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, d
 	}
 
 	memcpy(t, max_ptr->ind->xreal, sizeof(double) * nreal);
+	free_list_ptr(selected);
+	return ;
+}
+
+void get_closest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
+{
+	int i, index ;
+	double min_dist, dist ;
+	pop_list *selected ;
+	node *ptr, *min_ptr ;
+	selected = new_list();
+
+	while(selected->size != m)
+	{
+		index = rnd(0, pool->size-1);
+		for(ptr = pool->head, i = 0 ; ptr != END ; ptr = ptr->next, i++)
+			if(i == index)
+			{
+				push_back_ptr(selected, ptr->ind);
+				break ;
+			}
+	}
+
+	min_dist = get_vector_distance(s, selected->head->ind->xreal, nreal);
+	min_ptr = selected->head ;
+	for(ptr = selected->head->next ; ptr != END ; ptr = ptr->next)
+	{
+		dist = get_vector_distance(s, ptr->ind->xreal, nreal);
+		if(dist <= min_dist)
+		{
+			min_dist = dist ;
+			min_ptr = ptr ;
+		}
+	}
+
+	memcpy(t, min_ptr->ind->xreal, sizeof(double) * nreal);
+	free_list_ptr(selected);
+	return ;
+}
+
+void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
+{
+	int i, index ;
+	pop_list *selected ;
+	node *ptr, *sel_ptr ;
+	selected = new_list();
+
+	while(selected->size != m)
+	{
+		index = rnd(0, pool->size-1);
+		for(ptr = pool->head, i = 0 ; ptr != END ; ptr = ptr->next, i++)
+			if(i == index)
+			{
+				push_back_ptr(selected, ptr->ind);
+				break ;
+			}
+	}
+
+	index = rnd(0, selected->size-1) ;
+	for(ptr = selected->head, i = 0 ; ptr != END ; ptr = ptr->next, i++)
+	{
+		if(i == index)
+		{
+			sel_ptr = ptr ;
+			break ;
+		}
+	}
+
+	memcpy(t, sel_ptr->ind->xreal, sizeof(double) * nreal);
 	free_list_ptr(selected);
 	return ;
 }
