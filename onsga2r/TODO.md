@@ -121,4 +121,6 @@ NSGA-III related (work in progress)
 12. ~~survival analysis~~
 13. ~~Make all figs monochrome~~
 14. ~~take opposites from the worst front~~
-15. pattern search not working for zdt4, need to fix and rerun parallel
+15. again!! test with constrained problems and engineering problems
+16. fix the sosolver for zdt4 like problems
+17. devise a new problem with different pareto partition
