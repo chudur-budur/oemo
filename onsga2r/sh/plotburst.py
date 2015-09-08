@@ -13,15 +13,16 @@ def parse_gpcmd(gpcmd):
     return lines
 
 
-def get_gpstr(algo_files):
+def get_gpstr_2d(algo_files):
     lstyle = 1
     gpstr = ''
+    algoname_regex = re.compile('onsga2r*')
     for algo in sorted(algo_files):
-        if algo == 'onsga2r':
+        if algoname_regex.match(algo):
             lslst = [str(i) for i in range(lstyle, lstyle + 5)]
             args = sorted(algo_files[algo]) + lslst \
                 + ['extreme-pts', 'opp-child',
-                    'opp-parent', 'onsga2r', 'survived-pts']
+                    'opp-parent', algo, 'survived-pts']
             gpstr += """
             \"{0:s}\" using 1:2 w circles ls {5:s} ti '{10:s}', \\
             \"{1:s}\" using 1:2 w circles ls {6:s} ti '{11:s}', \\
@@ -43,9 +44,45 @@ def get_gpstr(algo_files):
     return gpstr[:-3]
 
 
-def save_pdf_plot(algo_files, out_file):
+def get_gpstr_3d(algo_files):
+    lstyle = 1
+    gpstr = ''
+    algoname_regex = re.compile('onsga2r*')
+    for algo in sorted(algo_files):
+        if algoname_regex.match(algo):
+            lslst = [str(i) for i in range(lstyle, lstyle + 5)]
+            args = sorted(algo_files[algo]) + lslst \
+                + ['extreme-pts', 'opp-child',
+                    'opp-parent', algo, 'survived-pts']
+            gpstr += """
+            \"{0:s}\" using 1:2:3 w circles ls {5:s} ti '{10:s}', \\
+            \"{1:s}\" using 1:2:3 w circles ls {6:s} ti '{11:s}', \\
+            \"{2:s}\" using 1:2:3 w circles ls {7:s} ti '{12:s}', \\
+            \"{3:s}\" using 1:2:3 w circles ls {8:s} ti '{13:s}', \\
+            \"{4:s}\" using 1:2:3 w circles ls {9:s} ti '{14:s}', \\\n""".format(*args)
+            lstyle += 5
+        else:
+            try:
+                regex = re.compile('.*all_pop.*')
+                gpstr += """            \"{0:s}\" using 1:2:3 w circles ls {1:s} ti '{2:s}', \\\n"""\
+                    .format([fname for fname in algo_files[algo] if regex.match(fname)][0],
+                            str(lstyle), algo)
+                lstyle += 1
+            except Exception as e:
+                print(e.message, e.args)
+                sys.exit()
+    gpstr = os.linesep.join([s for s in gpstr.splitlines() if s])
+    return gpstr[:-3]
+
+
+def save_pdf_plot(algo_files, out_file, problem):
     print("saving {}".format(out_file))
-    cmd = pf2dcmd.format(out_file) + get_gpstr(algo_files)
+    prob_set = {'zdt1': 2, 'zdt2': 2, 'zdt3': 2, 'zdt4': 2, 'zdt6': 2, \
+            'dtlz1': 3, 'dtlz2': 3, 'dtlz3': 3, 'dtlz4': 3, 'dtlz5': 3, 'dtlz6': 3, 'dtlz7': 3}
+    if prob_set[problem] == 2:
+        cmd = pf2dcmd.format(out_file) + get_gpstr_2d(algo_files)
+    else:
+        cmd = pf3dcmd.format(out_file) + get_gpstr_3d(algo_files)
     lines = parse_gpcmd(cmd)
     # print(cmd)
     # for line in lines:
@@ -98,7 +135,7 @@ def save_pf(root_path, algo_names, prob_name, run):
                         else:
                             algo_files[algo] = [pth]
                 out_file = os.path.join(plot_dir, 'gen-' + gen + '.pdf')
-                save_pdf_plot(algo_files, out_file)
+                save_pdf_plot(algo_files, out_file, prob_name)
         else:
             print("warning: gen_lst is empty, hence \'{0:s}\' is not generated.".format(out_file))
     except Exception as e:
@@ -108,22 +145,25 @@ def save_pf(root_path, algo_names, prob_name, run):
 pf2dcmd = """
 	set term pdf enhanced color
 	set style fill transparent solid 0.75 noborder
-	# set term pdf monochrome
-	# set style fill pattern
         set output \"{0:s}\"
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set3.plt\'
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Set2.plt\'
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Pastel1.plt\'
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/sequential/Oranges.plt\'
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/diverging/Spectral.plt\'
-	# load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Accent.plt\'
 	load \'~/gnuplot-utils/gnuplot-palettes/dark2.pal\'
-	# load \'~/gnuplot-utils/gnuplot-palettes/paired.pal\'
 	set style circle radius screen 0.0075
 	set xlabel \'f1\'
 	set ylabel \'f2\'
 	set key out horiz bot cent
 	plot \\
+"""
+
+pf3dcmd = """
+	set term pdf enhanced color
+	set style fill transparent solid 0.75 noborder
+        set output \"{0:s}\"
+	load \'~/gnuplot-utils/gnuplot-palettes/dark2.pal\'
+	set style circle radius screen 0.0075
+	set xlabel \'f1\'
+	set ylabel \'f2\'
+	set key out horiz bot cent
+	splot \\
 """
 
 
@@ -137,9 +177,8 @@ if __name__ == '__main__':
     argv = sys.argv[1:]
     # algo_names = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
     # algo_names = ['onsga2r', 'onsga2rm']
-    algo_names = ['nsga2r', 'onsga2r']
+    algo_names = ['nsga2r', 'onsga2rw']
     # algo_names = ['onsga2r']
-    prob_set = {'zdt1': 2}
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]
         save_pf(argv[0], algo_names, argv[1], run)
