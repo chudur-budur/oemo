@@ -121,4 +121,4 @@ NSGA-III related (work in progress)
 12. ~~survival analysis~~
 13. ~~Make all figs monochrome~~
 14. ~~take opposites from the worst front~~
-
+15. pattern search not working for zdt4, need to fix and rerun parallel
