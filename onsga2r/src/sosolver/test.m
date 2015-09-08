@@ -3,8 +3,8 @@ global popsize ;
 global nreal ;
 global nobj ;
 
-path = '../../input_data/dtlz5.in' ;
-idx = 3 ;
+path = '../../input_data/dtlz4.in' ;
+idx = -1 ;
 result = sosolver(path, idx, 12345);
 % disp(result);
 xval = result(1:nreal);

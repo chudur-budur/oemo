@@ -60,13 +60,14 @@ fmcopt.Display = 'off' ;
 psopt = psoptimset(@patternsearch);
 psopt = psoptimset(psopt, 'MaxFunEvals', febound);
 if (nobj > 2)
-    psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));    
+    psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));
+    % psopt = psoptimset(psopt, 'InitialMeshSize', 1.0);
     psopt = psoptimset(psopt, 'TolX', 1e-7, 'TolBind', 1e-6);
     psopt = psoptimset(psopt, 'SearchMethod', @MADSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', @GPSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', @GSSPositiveBasis2N);
     % psopt = psoptimset(psopt, 'SearchMethod', {@searchneldermead,10});
-    % psopt = psoptimset(psopt, 'SearchMethod', {@searchga,10});
+    % psopt = psoptimset(psopt, 'SearchMethod', {@searchga,100});
     psopt = psoptimset(psopt, 'CompletePoll', 'on');
     psopt = psoptimset(psopt, 'CompleteSearch', 'on');   
 end
