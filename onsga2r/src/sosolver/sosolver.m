@@ -25,8 +25,11 @@ global f_star ;
 load_input_data(file_path);
 % function to optimize
 func = str2func(prob_name) ;
+constfunc = str2func(strcat(prob_name, '_constfunc'));
 fprintf(1, 'sosolver.m -- solving "%s" problem from file "%s"\n', ...
             prob_name, file_path);
+fprintf(1, 'sosolver.m -- using func: "%s" and constfun: "%s"\n', ...
+            strcat(prob_name, '()'), strcat(prob_name, '_constfunc()'));
 
 % obj index to optimize
 index = findex ;
@@ -47,7 +50,7 @@ fprintf('********** solsolver.m -- FE bound fixed to: %d\n', febound);
 
 % if the problem does not have local optima then use fmincon()
 easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
-                    'dtlz4'; 'dtlz5'; 'dtlz7'};
+                    'dtlz4'; 'dtlz5'; 'dtlz7'; 'osy'};
 % if the problem has local optima, then use patternsearch()
 hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'};
 
@@ -77,13 +80,13 @@ feval = 0 ;
 if (ismember(prob_name, easy_problems))
     fprintf(1, 'sosolver.m -- Initial optimization, applying fmincon(), with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
-                = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
+                = fmincon(@sopt,x0,[],[],[],[],lb,ub,constfunc,fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver.m -- Initial optimization done (fmincon()).\n');
 elseif (ismember(prob_name, hard_problems))
     fprintf(1, 'sosolver.m -- Initial optimization, applying patternsearch(), with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
-                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
+                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,constfunc,psopt) ;
     feval = feval + output.funccount ;
     fprintf(1, 'sosolver.m -- Initial optimization done (patternsearch()).\n');
 end
@@ -101,13 +104,13 @@ f_star = func(x0) ;
 if (ismember(prob_name, easy_problems))
     fprintf(1, 'sosolver.m -- Next level AASF, applying fmincon() with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
-                = fmincon(@sopt,x0,[],[],[],[],lb,ub,[],fmcopt) ;
+                = fmincon(@sopt,x0,[],[],[],[],lb,ub,constfunc,fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver.m -- Next level AASF done (fmincon()).');
 elseif (ismember(prob_name, hard_problems))
     fprintf(1, 'sosolver.m -- Next level AASF, applying patternsearch() with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
-                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,[],psopt) ;
+                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,constfunc,psopt) ;
     feval = feval + output.funccount ;
     fprintf(1, 'sosolver.m -- Next level AASF done (patternsearch()).');
 end                

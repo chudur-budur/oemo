@@ -30,27 +30,35 @@ sosolv: $(SOSOLVEROBJ)
 
 onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip onsga2r
 
 onsga2rw: $(OBJ) src/onsga2rw.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip onsga2rw
 
 onsga2rwdom: $(OBJ) src/onsga2rwdom.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip onsga2rwdom
 
 onsga2rdi: $(OBJ) src/onsga2rdi.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip onsga2rdi
 
 onsga2rdr: $(OBJ) src/onsga2rdr.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip onsga2rdr
 
 nsga2re: $(OBJ) src/nsga2re.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip nsga2re
 
 nsga2rew: $(OBJ) src/nsga2rew.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip nsga2rew
 
 nsga2r: $(OBJ) src/nsga2r.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+	strip nsga2r
 
 src/onsga2r.o: src/onsga2r.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@

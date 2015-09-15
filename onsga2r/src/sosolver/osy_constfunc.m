@@ -1,4 +1,4 @@
-function f = osy(x)
+function [c, ceq] = osy_constfunc(x)
 %   This procedure implements Osyczka and Kundu's function.
 %   The canonical zdt1 function is defined as below --
 %   f_1 = -25.0 * ((x_1 - 2)^2 - (x_2 - 2)^2 - (x_3 - 1)^2 
@@ -19,12 +19,12 @@ function f = osy(x)
 %       1 <= x_5 <= 5.0
 %       0 <= x_6 <= 10.0
 
-f1 = -(25.0 * ...
-        ((x(1) - 2.0) ^ 2.0) + ((x(2) - 2.0) ^ 2.0) + ...
-        ((x(3) - 1.0) ^ 2.0) + ((x(4) - 4.0) ^ 2.0) + ...
-        ((x(5) - 1.0) ^ 2.0));
-f2 = sum((x .^ 2.0)) ;
-
-f = [f1, f2];
-
+% constraints
+c(1) = ((x(1) + x(2)) / 2.0) - 1.0 ;
+c(2) = 1.0 - ((x(1) + x(2)) / 6.0);
+c(3) = 1.0 - ((x(2) + x(1)) / 2.0);
+c(4) = 1.0 - (x(1) / 2.0) + (3.0 * (x(2) / 2.0));
+c(5) = 1.0 - (((x(3) - 3.0) ^ 2.0) / 4.0) - (x(4) / 4.0);
+c(6) = (((x(5) - 3.0) ^ 2.0) / 4.0) + (x(6) / 4.0) - 1.0;
+ceq = [] ;
 end

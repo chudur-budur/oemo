@@ -192,6 +192,8 @@ void load_path(char *dest)
 		sprintf(dest, "input_data/dtlz6.in");
 	else if(strcmp(prob_name, "dtlz7") == 0)
 		sprintf(dest, "input_data/dtlz7.in");
+	else if(strcmp(prob_name, "osy") == 0)
+		sprintf(dest, "input_data/osy.in");
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");
