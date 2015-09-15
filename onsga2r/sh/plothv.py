@@ -327,13 +327,13 @@ if __name__ == '__main__':
             'dtlz1': [[150, 3], [10.0, 10.0, 10.0]], 'dtlz2': [[150, 3], [2.0, 2.0, 2.0]], \
             'dtlz3': [[150, 3], [15.0, 15.0, 15.0]], 'dtlz4': [[150, 3], [2.0, 2.0, 2.0]], \
             'dtlz5': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz6': [[150, 3], [4.0, 4.0, 4.0]], \
-            'dtlz7': [[150, 3], [10.0, 10.0, 10.0]]}
+            'dtlz7': [[150, 3], [10.0, 10.0, 10.0]], 'osy': [[150, 2], [0,80.0]]}
     # algo_set = [['onsga2r', 'nsga2re']]
-    # algo_set = [['onsga2r', 'nsga2r']]
+    algo_set = [['onsga2r', 'nsga2r']]
     # algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
     # algo_set = [['onsga2r', 'onsga2rdi']]
-    algo_set = [['onsga2r', 'onsga2rdr']]
+    # algo_set = [['onsga2r', 'onsga2rdr']]
     argv = sys.argv[1:]
     if len(argv) >= 2:
         for algo_pair in algo_set:
