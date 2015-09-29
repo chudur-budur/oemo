@@ -12,8 +12,8 @@ seed=$5 ;
 
 _usage()
 {
-	# example: ./run onsga2r input_data/zdt1.in experiments/ [1] [0.12345]
-	printf '%s\n\t%s\n' "Usage: ./run [executable] [param-file] [out-dir] [run-id] [seed]";
+	# example: ./run onsga2r zdt1 input_data/zdt1.in experiments/ [1] [0.12345]
+	printf '%s\n\t%s\n' "Usage: ./run [executable] [problem] [param-file] [out-dir] [run-id] [seed]";
 	1>&2; exit 1;
 }
 
