@@ -45,14 +45,17 @@ x0 = min_realvar' + (rand(1,nreal) .* (max_realvar - min_realvar)');
 % fixed budget
 % febound = 1667 ; % for zdt6 to get a better view
 % febound = round((((ngen * 0.25) * popsize) / nobj) / 2.0);
-febound = round((((200 * 0.25) * popsize) / nobj) / 2.0);
+% febound = round((((200 * 0.25) * popsize) / nobj) / 2.0);
+% this works for osy, ctp4
+febound = round((((30 * 0.25) * popsize) / nobj) / 2.0);
 fprintf('********** solsolver.m -- FE bound fixed to: %d\n', febound);
 
 % if the problem does not have local optima then use fmincon()
 easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
                     'dtlz4'; 'dtlz5'; 'dtlz7'; 'osy'};
 % if the problem has local optima, then use patternsearch()
-hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'};
+hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; ...
+                    'ctp4'; 'ctp8'};
 
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
