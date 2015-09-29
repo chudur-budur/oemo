@@ -78,7 +78,8 @@ def get_gpstr_3d(algo_files):
 def save_pdf_plot(algo_files, out_file, problem):
     print("saving {}".format(out_file))
     prob_set = {'zdt1': 2, 'zdt2': 2, 'zdt3': 2, 'zdt4': 2, 'zdt6': 2, \
-            'dtlz1': 3, 'dtlz2': 3, 'dtlz3': 3, 'dtlz4': 3, 'dtlz5': 3, 'dtlz6': 3, 'dtlz7': 3}
+            'dtlz1': 3, 'dtlz2': 3, 'dtlz3': 3, 'dtlz4': 3, 'dtlz5': 3, 'dtlz6': 3, 'dtlz7': 3, \
+            'osy': 2, 'ctp4': 2}
     if prob_set[problem] == 2:
         cmd = pf2dcmd.format(out_file) + get_gpstr_2d(algo_files)
     else:
@@ -177,7 +178,8 @@ if __name__ == '__main__':
     argv = sys.argv[1:]
     # algo_names = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
     # algo_names = ['onsga2r', 'onsga2rm']
-    algo_names = ['nsga2r', 'onsga2rw']
+    # algo_names = ['nsga2r', 'onsga2rw']
+    algo_names = ['nsga2r', 'onsga2r']
     # algo_names = ['onsga2r']
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]
