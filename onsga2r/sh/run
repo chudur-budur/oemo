@@ -51,7 +51,7 @@ fi
 
 uid=`uuidgen` ;
 echo "********** START: run ${run} with seed: ${seed}, UUID: ${uid}." ;
-./"${executable}" "${problemname}" "${seed}" "${uid}" 0 < "${paramfile}" ;
+LD_LIBRARY_PATH="/opt/MATLAB/R2014a/runtime/glnxa64/" ./"${executable}" "${problemname}" "${seed}" "${uid}" 0 < "${paramfile}" ;
 
 if [ -f "all_pop-${uid}.out" ]; then
 	mv "all_pop-${uid}.out" "${targetdir}/all_pop-${run}.out" ;
