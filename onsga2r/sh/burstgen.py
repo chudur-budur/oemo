@@ -48,7 +48,9 @@ def usage():
 #           ./burstgen experiments/ zdt1 [1]
 if __name__ == '__main__':
     argv = sys.argv[1:]
-    algorithms = ['onsga2r', 'onsga2rw', 'onsga2rwdom', 'nsga2re', 'nsga2rew', 'nsga2r', 'onsga2rdi', 'onsga2rdr']
+    # algorithms = ['onsga2r', 'onsga2rw', 'onsga2rwdom', 'nsga2re', 'nsga2rew', \
+    #                 'nsga2r', 'onsga2rdi', 'onsga2rdr']
+    algorithms = ['onsga2r', 'nsga2r']
     file_prefixes = ['all_pop-', 'all_op_parent-',
                      'all_op_child-', 'all_extreme-', 'all_survived-']
     if len(argv) >= 2:

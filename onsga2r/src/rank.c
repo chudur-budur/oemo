@@ -105,5 +105,5 @@ void assign_rank_and_crowding_distance (population *new_pop)
 	}
 	free (orig);
 	free (cur);
-	return;
+	return ;
 }

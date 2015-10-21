@@ -142,9 +142,9 @@ void zdt1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	f1 = xreal[0] ;
 	g = 0.0;
 	for (i=1; i<nreal; i++)
-		/* g += sqrt((xreal[i] - 0.5) * (xreal[i] - 0.5)); */
+		g += (xreal[i] - 0.5) * (xreal[i] - 0.5); 
 		/* g += pow(fabs((xreal[i] - 0.5)), 0.001) ;*/
-		g += xreal[i] ;
+		/* g += xreal[i] ;*/
 	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - sqrt(f1/g);

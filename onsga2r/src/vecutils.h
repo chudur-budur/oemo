@@ -9,7 +9,7 @@ void clear_vector(double *x, int length);
 void get_unit_vector(double *x, int length, double *unit_vector);
 void get_random_indices(int *x, int length);
 void get_random_int_vector(int *x, int length, int min, int max);
-void get_radom_double_vector(double *x, int length, double min, double max);
+void get_random_double_vector(double *x, int length, double min, double max);
 void get_mid_point(double *x_1, double *x_2, int length, double *x_mid);
 void multiply_scalar(double *x, int length, double val);
 double get_dot_product(double *x, double *y, int length);
@@ -24,6 +24,6 @@ double max(double a, double b);
 double max_n(double *x, int length);
 double sum(double a, double b);
 double sum_n(double *x, int length);
-void print_vector(double *x, int length, FILE *fpt);
+void print_vector(FILE *fpt, double *x, int length);
 
 # endif

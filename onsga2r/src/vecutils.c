@@ -40,7 +40,7 @@ void get_random_int_vector(int *x, int length, int min, int max)
 }
 
 /* get a random double vector */
-void get_radom_double_vector(double *x, int length, double min, double max)
+void get_random_double_vector(double *x, int length, double min, double max)
 {
 	int i ;
 	for(i = 0 ; i < length ; i++)
@@ -201,7 +201,7 @@ int fltcmp(double a, double b, double delta)
 }
 
 /* prints a vector */
-void print_vector(double *x, int length, FILE *fpt)
+void print_vector(FILE *fpt, double *x, int length)
 {
 	int i;
 	for(i = 0 ; i < length ; i++)

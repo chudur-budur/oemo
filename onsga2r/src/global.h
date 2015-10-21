@@ -113,7 +113,6 @@ void real_mutate_ind (individual *ind);
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 void assign_rank_and_crowding_distance (population *new_pop);
-void assign_rank_and_euclidean_crowding_distance (population *new_pop);
 
 void report_pop (population *pop, FILE *fpt);
 void report_feasible (population *pop, FILE *fpt);

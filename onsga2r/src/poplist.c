@@ -366,7 +366,7 @@ void to_list_ptr(population *pop, int size, pop_list *lst)
 void dump_pop_list(FILE *fpt, pop_list *lst)
 {
 	node *curr ;
-	for(curr = lst->head; curr != END; curr = curr->next)
+	for(curr = lst->head ; curr != END ; curr = curr->next)
 	{
 		if(fpt == stdout || fpt == stderr)
 			dumpf_individual(fpt, curr->ind);
@@ -379,8 +379,8 @@ void dump_pop_list(FILE *fpt, pop_list *lst)
 void evaluate_pop_list(pop_list *pop)
 {
 	node *ptr ;
-	for(ptr = pop->head; ptr != END ; ptr = ptr->next)
-		evaluate_ind(ptr->ind);
+		for(ptr = pop->head; ptr != END ; ptr = ptr->next)
+			evaluate_ind(ptr->ind);
 	return ;
 }
 
