@@ -45,7 +45,7 @@ Now you can build the main code --
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun -si -n 31 -c "./sh/run onsga2r input_data/zdt1.in experiments/"	
+	./sh/maprun -si -n 31 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
 	./sh/maprun -si -n 31 -c "./sh/run nsga2re input_data/zdt1.in experiments/"
 ```
 
@@ -59,29 +59,29 @@ Now you can build the main code --
 	./sh/maprun -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
-##### 4. Clean up all generated results for one particular problem (e.g. zdt1):
+##### 5. Clean up all generated results for one particular problem (e.g. zdt1):
 ```shell
 	./sh/flush zdt1
 ```
 
-##### 5. Generate one snapshot report:
+##### 6. Generate one snapshot report:
 
-Assuming bursting has already been done from the previous step 4 --
+Assuming bursting has already been done from the previous step 5 --
 ```shell
 	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
 ```
 can also be done for multiple runs with `maprun`.
 
-##### 6. Generate hypervolume comparison stat for one problem:
+##### 7. Generate hypervolume comparison stat for one problem:
 
 Assuming `wfg` has already been compiled --
 ```shell
 	./sh/plothv.py experiments/ zdt1
 ```
 
-##### 7. Generate stats for the survival of opposite points:
+##### 8. Generate stats for the survival of opposite points:
 
-Assuming bursting has already been done from the previous step 4 --
+Assuming bursting has already been done from the previous step 5 --
 ```shell
 	./sh/survivalstat.py experiments/ zdt1
 ```
