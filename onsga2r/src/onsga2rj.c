@@ -459,9 +459,11 @@ int main (int argc, char **argv)
 	printf("\n Initialization done, now performing first generation");
 	decode_pop(parent_pop);
 	evaluate_pop (parent_pop);
-	/* now find the extreme points */	
-	feval = init_extreme_pts_sosolver(seed);
-	fprintf(stdout, "****** extreme point computation, total function eval: %d\n", feval);
+	/* now find the extreme points */
+	e_star = new_list(); 	
+	/* feval = init_extreme_pts_sosolver(seed); */
+	feval = 0 ;
+	fprintf(stdout, "\n****** extreme point computation, total function eval: %d\n", feval);
 	/* update the actual feval */
 	feval += popsize ;
 	
@@ -472,14 +474,14 @@ int main (int argc, char **argv)
 	fprintf(fpt_all_pop, "# gen = 1\tfe = %d\n", feval);
 	dump_population(fpt_all_pop, parent_pop, popsize);
 	
-	inject_extreme_points(parent_pop);
+	/* inject_extreme_points(parent_pop); */
 	assign_rank_and_crowding_distance (parent_pop);
 
 	/* opposition stuff */
 	op_parent = new_list();
 	op_child = new_list();
 	printf("\n *** Will apply opposition based variation.");
-	generate_opposite_population(parent_pop, op_parent, op_child, 1, overshoot_stat);
+	generate_opposite_population_jump(parent_pop, op_parent, op_child, 1, overshoot_stat);
 	/* some overshoot stats */
 	fprintf(stdout, "\n gen = %4d\tfe = %8d", 1, feval);
 	fprintf(stdout, "\tind = %4.2f%%\tgenes/ind = %4.3f",overshoot_stat[0], overshoot_stat[1]);
@@ -514,6 +516,7 @@ int main (int argc, char **argv)
 	sleep(1);
 
 	for (i=2; i<=ngen; i++)
+	/*for (i=2; i<=5; i++)*/
 	{
 		selection (parent_pop, child_pop);
 
@@ -529,7 +532,7 @@ int main (int argc, char **argv)
 		/* inject opposite after variation */
 		inject_opposite_shuffle(op_child, child_pop);
 		/* also we need to inject newly found extreme points */
-		inject_extreme_points(child_pop);
+		inject_extreme_points(child_pop); 
 
 		evaluate_pop(child_pop);
 		feval += popsize ;
@@ -540,7 +543,7 @@ int main (int argc, char **argv)
 		make_empty(op_child);
 		make_empty_ptr(op_parent);
 		/* some overshoot stats */
-		generate_opposite_population(parent_pop, op_parent, op_child, i, overshoot_stat);
+		generate_opposite_population_jump(parent_pop, op_parent, op_child, i, overshoot_stat);
 		fprintf(stdout, " gen = %4d\tfe = %8d", i, feval);
 		fprintf(stdout, "\tind = %4.2f%%\tgenes/ind = %4.3f",overshoot_stat[0], overshoot_stat[1]);
 		fprintf(stdout, "\tmax_gene = %4.2f%%\tno_gene = %4.2f%%\n",overshoot_stat[2], overshoot_stat[3]);
@@ -556,6 +559,7 @@ int main (int argc, char **argv)
 		fprintf(fpt_all_ochild,"# gen = %d\tfe = %d\n", i, feval);
 		dump_pop_list(fpt_all_ochild, op_child);
 		fflush(fpt_all_ochild);
+		
 		/**
 		 * now do some analysis of the opposite solutions
 		 * not required for the actual algorithm to work

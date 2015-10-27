@@ -142,9 +142,8 @@ void zdt1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	f1 = xreal[0] ;
 	g = 0.0;
 	for (i=1; i<nreal; i++)
-		g += (xreal[i] - 0.5) * (xreal[i] - 0.5); 
-		/* g += pow(fabs((xreal[i] - 0.5)), 0.001) ;*/
 		/* g += xreal[i] ;*/
+		g += (xreal[i] - 0.5) * (xreal[i] - 0.5); 
 	g = 9.0*g/((double)nreal - 1.0);
 	g += 1.0;
 	h = 1.0 - sqrt(f1/g);
@@ -166,7 +165,8 @@ void zdt2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i]; /* (xreal[i] - 0.5)^2 */
+	/* for (i=1; i<nreal; i++) g += xreal[i]; */
+	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5);
 	g = 1.0 + (9.0*g/((double)nreal - 1.0));
 	h = 1.0 - pow((f1/g),2.0);
 	f2 = g*h;
@@ -187,7 +187,8 @@ void zdt3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i]; /* (xreal[i] - 0.5)^2 */
+	/* for (i=1; i<nreal; i++) g += xreal[i];*/
+	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ; 
 	g = 1.0 + (9.0*g/((double)nreal - 1.0));
 	h = 1.0 - sqrt(f1/g) - (f1/g)*sin(10.0*PI*f1);
 	f2 = g*h;
@@ -208,9 +209,9 @@ void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	/* for(i = 1; i < nreal ; i++ ) 
-		g += (xreal[i] - 0.5)*(xreal[i] - 0.5) - 10.0*cos(4.0*PI*(xreal[i] - 0.5)); */
-	for (i=1; i<nreal; i++) g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]); 
+	for(i = 1; i < nreal ; i++ ) 
+		g += (xreal[i] - 0.5)*(xreal[i] - 0.5) - 10.0*cos(4.0*PI*(xreal[i] - 0.5)); 
+	/*for (i=1; i<nreal; i++) g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]); */
 	g += 1.0 + 10.0 * ((double)nreal - 1.0);
 	h = 1.0 - sqrt(f1/g);
 	f2 = g*h;
@@ -290,8 +291,8 @@ void zdt6 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = 1.0 - ( exp(-4.0*xreal[0]) ) * pow( (sin(6.0*PI*xreal[0])),6.0 );
 	g = 0.0;
-	for (i=1; i<nreal; i++) g += xreal[i];
-	/* for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ;*/
+	/* for (i=1; i<nreal; i++) g += xreal[i]; */
+	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ;
 	g = g/9.0;
 	g = pow(g,0.25);
 	g = 1.0 + 9.0*g;
@@ -797,8 +798,8 @@ void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
-		g += pow(xreal[i], 0.1);
-		/* g += pow(fabs(xreal[i] - 0.5), 0.1); */
+		/* g += pow(xreal[i], 0.1);*/
+		g += pow(fabs(xreal[i] - 0.5), 0.1); 
 
 	t = PI / (4.0 * (1.0 + g)) ;
 	theta[0] = xreal[0] * (PI / 2.0);
@@ -836,7 +837,8 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
-		g += xreal[i] ;
+		/*g += xreal[i] ;*/
+		g += fabs(xreal[i] - 0.5);
 	g = 1.0 + ((9.0 * g) / k) ;
 
 	for(i = 0 ; i < nobj - 1 ; i++)
