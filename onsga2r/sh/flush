@@ -8,23 +8,23 @@ problem=$1
 
 _usage()
 {
-	# example: ./flush zdt1
-	printf '%s\n\n' "Usage: ./flush [problem]" ;
+	# example: ./flush nsga2r zdt1
+	printf '%s\n\n' "Usage: ./flush [algorithm] [problem]" ;
 	1>&2; exit 1 ;
 }
 
-if [[ -z $problem ]]; then
+if [[ -z $algorithm || -z $problem ]]; then
 	echo "error: some of the parameters are missing, hence exiting ...";
 	_usage ;
 fi
 
-echo "rm -rf experiments/onsga2r/$problem/*" ;
-rm -rf experiments/onsga2r/$problem/* ;
-echo "rm -rf experiments/onsga2rw/$problem/*" ;
-rm -rf experiments/onsga2rw/$problem/* ;
-echo "rm -rf experiments/nsga2r/$problem/*" ;
-rm -rf experiments/nsga2r/$problem/* ;
-echo "rm -rf experiments/nsga2re/$problem/*" ;
-rm -rf experiments/nsga2re/$problem/* ;
-echo "rm -rf experiments/nsga2rew/$problem/*" ;
-rm -rf experiments/nsga2rew/$problem/* ;
+echo "rm -rf experiments/$algorithm/$problem/*" ;
+rm -rf experiments/$algorithm/$problem/* ;
+echo "rm -rf experiments/$algorithm/$problem/*" ;
+rm -rf experiments/$algorithm/$problem/* ;
+echo "rm -rf experiments/$algorithm/$problem/*" ;
+rm -rf experiments/$algorithm/$problem/* ;
+echo "rm -rf experiments/$algorithm/$problem/*" ;
+rm -rf experiments/$algorithm/$problem/* ;
+echo "rm -rf experiments/$algorithm/$problem/*" ;
+rm -rf experiments/$algorithm/$problem/* ;
