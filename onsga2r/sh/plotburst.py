@@ -179,7 +179,7 @@ if __name__ == '__main__':
     # algo_names = ['onsga2r', 'nsga2re', 'nsga2r', 'onsga2rm']
     # algo_names = ['onsga2r', 'onsga2rm']
     # algo_names = ['nsga2r', 'onsga2rw']
-    algo_names = ['nsga2r', 'onsga2r']
+    algo_names = ['nsga2r', 'onsga2rj']
     # algo_names = ['onsga2r']
     if len(argv) >= 2:
         run = '1' if len(argv) == 2 else argv[2]

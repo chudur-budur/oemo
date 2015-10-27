@@ -318,7 +318,8 @@ linecmd_mono = """
     replot
 """
 
-color = "mono"
+# color = "mono"
+color = "color"
 
 if __name__ == '__main__':
     prob_set = {\
@@ -331,7 +332,7 @@ if __name__ == '__main__':
             'osy': [[150, 2], [0,80.0]], 'ctp4': [[1000, 2], [2.0, 2.0]]\
             }
     # algo_set = [['onsga2r', 'nsga2re']]
-    algo_set = [['onsga2r', 'nsga2r']]
+    algo_set = [['onsga2rj', 'nsga2r']]
     # algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
     # algo_set = [['onsga2r', 'onsga2rdi']]
