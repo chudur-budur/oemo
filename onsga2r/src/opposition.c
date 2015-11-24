@@ -665,9 +665,15 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 		{
 			get_closest_point_from_refs(refs, ptr->ind->xreal, t, gen);
 			/*get_random_double_vector(t, nreal, 0.0, 1.0);*/
-			int genes_corrupted = generate_opposite_vector_q3_retry(ptr->ind->xreal, t, x, 
-					1.01, 5.0);
-			
+			/*int genes_corrupted = generate_opposite_vector_q3(
+						ptr->ind->xreal, t, x);*/
+			int genes_corrupted = generate_opposite_vector_q3_retry(
+			 			ptr->ind->xreal, t, x, 1.01, 5.0);
+			/*int genes_corrupted = generate_opposite_hadamard_q3(
+			 			ptr->ind->xreal, t, x);*/
+			/*int genes_corrupted = generate_opposite_hadamard_q3_retry(
+			 			ptr->ind->xreal, t, x, 1.01, 5.0);*/
+
 			/* some stats for gene overshoot */
 			if(genes_corrupted > 0) any_gene_corrupted++ ;
 			if(genes_corrupted == nreal) max_gene_corrupted++ ;
@@ -1131,7 +1137,7 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 		if(rndreal(0.0, 1.0) < 0.5)
 			multiply_scalar(stu, nreal, rndreal(dist * 0.75, dist));
 		else
-			multiply_scalar(stu, nreal, rndreal(dist * 1.25, dist));
+			multiply_scalar(stu, nreal, rndreal(dist, dist * 1.25));
 		vector_add(s, stu, nreal, d);
 	}
 	else
@@ -1168,7 +1174,7 @@ int generate_opposite_vector_q3_retry(double *s, double *t, double *d,
 		get_unit_vector(s_t, nreal, stu);
 		multiply_scalar(stu, nreal, rndreal(dist * minjmp, dist * maxjmp)); // 1.01, 1.5
 		vector_add(s, stu, nreal, d);
-		if(is_overshoot(d) > 0) 
+		if(sum_overshoot(d) > 0) 
 		{
 			get_unit_vector(s_t, nreal, stu_);
 			multiply_scalar(stu_, nreal, rndreal(dist * 0.75, dist));
@@ -1182,10 +1188,67 @@ int generate_opposite_vector_q3_retry(double *s, double *t, double *d,
 	free(stu_);
 	free(s_t);
 
-	return is_overshoot(d);
+	return sum_overshoot(d);
 }
 
-int is_overshoot(double *d)
+/**
+ * from s and t find the opposite vector d using mirroring, with no vector op.
+ */ 
+int generate_opposite_hadamard_q3(double *s, double *t, double *d)
+{
+	int i, shootouts = 0 ;
+	double dist, close, far ;
+
+	for(i = 0 ; i < nreal ; i++)
+	{
+		dist = fabs(s[i] - t[i]); 
+		if(dist > 0.001)
+		{
+			close = rndreal(0.75, 1.0);
+			far = rndreal(1.0, 1.5);
+			if(rndreal(0.0,1.0) < 0.5) d[i] = s[i] + close ;
+			else 
+			{
+				d[i] = s[i] + far ;
+				if(isnan(d[i]) || d[i] < min_realvar[i] || d[i] > max_realvar[i])
+				{
+					close = rndreal(0.75, 1.0);
+					d[i] = s[i] + close ;
+					shootouts++ ;
+				}
+			}
+		}
+	}
+	return shootouts ;
+}
+
+int generate_opposite_hadamard_q3_retry(double *s, double *t, double *d, 
+		double minjmp, double maxjmp)
+{
+	int i, shootouts = 0 ;
+	double dist, close, far ;
+
+	for(i = 0 ; i < nreal ; i++)
+	{
+		dist = fabs(s[i] - t[i]); 
+		if(dist > 0.001)
+		{
+			close = rndreal(1.0, minjmp);
+			far = rndreal(1.0, maxjmp);
+			if(rndreal(0.0,1.0) < 0.5) d[i] = s[i] + close ;
+			else d[i] = s[i] + far ;
+			if(isnan(d[i]) || d[i] < min_realvar[i] || d[i] > max_realvar[i])
+			{
+				close = rndreal(0.75, 1.0);
+				d[i] = s[i] + close ;
+				shootouts++ ;
+			}
+		}
+	}
+	return shootouts ;
+}
+
+int sum_overshoot(double *d)
 {
 	int i, overshoot = 0 ;
 	for(i = 0 ; i < nreal ; i++)

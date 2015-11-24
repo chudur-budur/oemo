@@ -43,7 +43,10 @@ void get_closest_point_from_refs(pop_list *refs, double *s, double *t, int gen);
 int generate_opposite_vector_q3(double *s, double *t, double *d);
 int generate_opposite_vector_q3_retry(double *s, double *t, double *d, 
 		double minjmp, double maxjmp);
-int is_overshoot(double *d);
+int generate_opposite_hadamard_q3(double *s, double *t, double *d);
+int generate_opposite_hadamard_q3_retry(double *s, double *t, double *d, 
+		double minjmp, double maxjmp);
+int sum_overshoot(double *d);
 
 void clear_opposite_flag(population *pop);
 void inject_opposite_shuffle(pop_list *op_child, population *destpop);

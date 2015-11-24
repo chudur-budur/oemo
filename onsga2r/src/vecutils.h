@@ -12,6 +12,7 @@ void get_random_int_vector(int *x, int length, int min, int max);
 void get_random_double_vector(double *x, int length, double min, double max);
 void get_mid_point(double *x_1, double *x_2, int length, double *x_mid);
 void multiply_scalar(double *x, int length, double val);
+void hadamard_product(double *x, double *y, int length);
 double get_dot_product(double *x, double *y, int length);
 double get_vector_distance(double *x, double *y, int length);
 void vector_subtract(double *x, double *y, int length, double *z);

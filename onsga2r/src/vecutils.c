@@ -79,6 +79,15 @@ void multiply_scalar(double *x, int length, double val)
 	return ;
 }
 
+/* hadamard product */
+void hadamard_product(double *x, double *y, int length)
+{
+	int i ;
+	for(i = 0 ; i < length ; i++)
+		x[i] *= y[i] ;
+	return ;
+}
+
 /* dot product */
 double get_dot_product(double *x, double *y, int length)
 {
