@@ -17,6 +17,7 @@ double get_dot_product(double *x, double *y, int length);
 double get_vector_distance(double *x, double *y, int length);
 void vector_subtract(double *x, double *y, int length, double *z);
 void vector_add(double *x, double *y, int length, double *z);
+void vector_abs(double *x, int length, double *y);
 double get_determinant(double **m, int n);
 int fltcmp(double a, double b, double delta); /* a == b, a < b, a > b */
 double bracket(double x); /* <x> operator */

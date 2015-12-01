@@ -126,6 +126,14 @@ void vector_add(double *x, double *y, int length, double *z)
 	return ;
 }
 
+void vector_abs(double *x, int length, double *y)
+{
+	int i ;
+	for(i = 0 ; i < length ; i++) 
+		if(x[i] < 0) y[i] = fabs(x[i]) ;
+	return ;
+}
+
 double get_determinant(double **matrix, int n)
 {
 	int i,j,j1,j2 ;		   // general loop and matrix subscripts

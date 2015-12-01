@@ -39,13 +39,11 @@ void gather_ref_points(population *pop, pop_list *refs);
 void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
 void get_closest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
 void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, double *t);
-void get_closest_point_from_refs(pop_list *refs, double *s, double *t, int gen);
+void get_closest_point_from_refs(pop_list *refs, double *s, double *t);
 int generate_opposite_vector_q3(double *s, double *t, double *d);
 int generate_opposite_vector_q3_retry(double *s, double *t, double *d, 
 		double minjmp, double maxjmp);
-int generate_opposite_hadamard_q3(double *s, double *t, double *d);
-int generate_opposite_hadamard_q3_retry(double *s, double *t, double *d, 
-		double minjmp, double maxjmp);
+int generate_opposite_hadamard_q3(double *p, double *v, double *c);
 int sum_overshoot(double *d);
 
 void clear_opposite_flag(population *pop);

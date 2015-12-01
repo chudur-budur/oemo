@@ -649,30 +649,51 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 	pop_list *pool, *refs ;
 	node *ptr ;
 	individual ind ;
-	int v ;
+	int op_popsize_reflect ;
 
 	t = (double*)malloc(sizeof(double) * nreal);
 	x = (double*)malloc(sizeof(double) * nreal);
 	
-	v = (int)floor((2.0 * op_popsize) / 3.0) ;
-	gather_op_parent_skip_pareto(pop, op_parent, v);
-	v = op_parent->size ;
+	op_popsize_reflect = (int)floor((2.0 * op_popsize) / 3.0) ;
+	/*fprintf(stdout, "\n** gen %d, v = %d\n", gen, op_popsize_reflect);*/
+	gather_op_parent_skip_pareto(pop, op_parent, op_popsize_reflect);
+	op_popsize_reflect = op_parent->size ;
 	refs = new_list();
 	gather_ref_points(pop, refs);
-	if(v > 0)
+	/*fprintf(stdout, "** gen %d, popsize = %d, op_parent->size = %d, refs->size = %d\n", 
+			gen, popsize, op_parent->size, refs->size);*/
+	/* if >0 number of opposition parents found from the rank > 1 */
+	if(op_popsize_reflect > 0)
 	{
 		for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
 		{
-			get_closest_point_from_refs(refs, ptr->ind->xreal, t, gen);
+			/* get the closest from the solutions in rank 1 */
+			get_closest_point_from_refs(refs, ptr->ind->xreal, t);
 			/*get_random_double_vector(t, nreal, 0.0, 1.0);*/
 			/*int genes_corrupted = generate_opposite_vector_q3(
 						ptr->ind->xreal, t, x);*/
-			int genes_corrupted = generate_opposite_vector_q3_retry(
-			 			ptr->ind->xreal, t, x, 1.01, 5.0);
-			/*int genes_corrupted = generate_opposite_hadamard_q3(
-			 			ptr->ind->xreal, t, x);*/
+			/* int genes_corrupted = generate_opposite_vector_q3_retry(
+			 			ptr->ind->xreal, t, x, 1.01, 5.0);*/
+			int genes_corrupted = generate_opposite_hadamard_q3(
+			 			ptr->ind->xreal, t, x);
 			/*int genes_corrupted = generate_opposite_hadamard_q3_retry(
 			 			ptr->ind->xreal, t, x, 1.01, 5.0);*/
+			
+			/* this section shows the mapping from parent to child */
+			if(showmap) {
+				individual p ;
+				allocate_memory_ind(&p) ;
+				initialize_ind_dummy(&p) ;
+				memcpy(p.xreal, t, sizeof(double) * nreal);
+				evaluate_ind(&p);
+				/* parent */
+				fprintf(stdout, "*p: ");
+				dump_individual(stdout, ptr->ind);
+				/* pivot */
+				fprintf(stdout, "*v: ");
+				dump_individual(stdout, &p);
+				deallocate_memory_ind(&p);
+			}
 
 			/* some stats for gene overshoot */
 			if(genes_corrupted > 0) any_gene_corrupted++ ;
@@ -687,6 +708,12 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 			ind.is_opposite = 1 ;
 			push_back(op_child, &ind);
 			evaluate_ind(&ind);
+			if(showmap) { 
+				/* child */
+				fprintf(stdout, "*c: ");
+				dump_individual(stdout, &ind); 
+				fprintf(stdout, "\n");
+			}
 			deallocate_memory_ind(&ind);
 		}
 	}
@@ -696,12 +723,15 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 	pool = new_list();
 	make_pool(pop, pool);
 
-	gather_op_parent_with_size(pop, op_parent, op_popsize - v);
+	gather_op_parent_with_size(pop, op_parent, op_popsize - op_popsize_reflect);
+	/*fprintf(stdout, "** gen %d, pool->size = %d, op_parent->size = %d\n", 
+			gen, pool->size, op_parent->size);*/
 	if(showmap) fprintf(stdout, "\ngen = %d\n", gen);
 	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
 	{
 		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
-		int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x);
+		/* int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x); */
+		int genes_corrupted = generate_opposite_hadamard_q3(ptr->ind->xreal, t, x);
 		
 		/* this section shows the mapping from parent to child */
 		if(showmap) {
@@ -711,8 +741,10 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 			memcpy(p.xreal, t, sizeof(double) * nreal);
 			evaluate_ind(&p);
 			/* parent */
-			dump_individual(stdout, ptr->ind);
+			fprintf(stdout, "p: ");
+			dump_individual(stdout, ptr->ind); 
 			/* pivot */
+			fprintf(stdout, "v: ");
 			dump_individual(stdout, &p);
 			deallocate_memory_ind(&p);
 		}
@@ -733,6 +765,7 @@ void generate_opposite_population_jump(population *pop, pop_list *op_parent,
 		evaluate_ind(&ind);
 		if(showmap) { 
 			/* child */
+			fprintf(stdout, "c: ");
 			dump_individual(stdout, &ind); 
 			fprintf(stdout, "\n");
 		}
@@ -1100,7 +1133,7 @@ void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, dou
 	return ;
 }
 
-void get_closest_point_from_refs(pop_list *refs, double *s, double *t, int gen)
+void get_closest_point_from_refs(pop_list *refs, double *s, double *t)
 {
 	double min_dist, dist ;
 	node *ptr, *min_ptr ;
@@ -1194,55 +1227,69 @@ int generate_opposite_vector_q3_retry(double *s, double *t, double *d,
 /**
  * from s and t find the opposite vector d using mirroring, with no vector op.
  */ 
-int generate_opposite_hadamard_q3(double *s, double *t, double *d)
+int generate_opposite_hadamard_q3(double *p, double *v, double *c)
 {
 	int i, shootouts = 0 ;
-	double dist, close, far ;
-
+	double dist, a, b, e, d;
 	for(i = 0 ; i < nreal ; i++)
 	{
-		dist = fabs(s[i] - t[i]); 
-		if(dist > 0.001)
+		dist = p[i] - v[i] ;
+		/*fprintf(stdout, "dist = %.3f, p[%d] = %.3f, v[%d] = %.3f\n", 
+				dist, i, p[i], i, v[i]);*/
+		if(fabs(dist) > 0.001)
 		{
-			close = rndreal(0.75, 1.0);
-			far = rndreal(1.0, 1.5);
-			if(rndreal(0.0,1.0) < 0.5) d[i] = s[i] + close ;
-			else 
+			if(dist > 0.0)
 			{
-				d[i] = s[i] + far ;
-				if(isnan(d[i]) || d[i] < min_realvar[i] || d[i] > max_realvar[i])
+				a = fabs(dist) ;
+				b = fabs(v[i] - min_realvar[i]) ;
+				if(b < a) 
 				{
-					close = rndreal(0.75, 1.0);
-					d[i] = s[i] + close ;
-					shootouts++ ;
+					d = ((2.0 * a)/3.0) + (b/2.0) ;
+					e = rndreal(0.0, d) + (a/3.0) ;
 				}
-			}
-		}
-	}
-	return shootouts ;
-}
-
-int generate_opposite_hadamard_q3_retry(double *s, double *t, double *d, 
-		double minjmp, double maxjmp)
-{
-	int i, shootouts = 0 ;
-	double dist, close, far ;
-
-	for(i = 0 ; i < nreal ; i++)
-	{
-		dist = fabs(s[i] - t[i]); 
-		if(dist > 0.001)
-		{
-			close = rndreal(1.0, minjmp);
-			far = rndreal(1.0, maxjmp);
-			if(rndreal(0.0,1.0) < 0.5) d[i] = s[i] + close ;
-			else d[i] = s[i] + far ;
-			if(isnan(d[i]) || d[i] < min_realvar[i] || d[i] > max_realvar[i])
+				else if (b > a) 
+				{
+					d = (a * 3.0/2.0);
+					e = rndreal(0.0, d) + (a/2.0);
+				}
+				else e = 0.0 ;
+				c[i] = p[i] - e ;
+				/*fprintf(stdout, ">: c[%d] = %.3f, p[%d] = %.3f, e = %.3f\n", 
+						i, c[i], i, p[i], e);*/
+			}	
+			else
 			{
-				close = rndreal(0.75, 1.0);
-				d[i] = s[i] + close ;
+				a = fabs(dist) ;
+				b = fabs(v[i] - max_realvar[i]) ;
+				if(b < a) 
+				{
+					d = ((2.0 * a)/3.0) + (b/2.0) ;
+					e = rndreal(0.0, d) + (a/3.0) ;
+				}
+				else if (b > a) 
+				{
+					d = (a * 3.0/2.0);
+					e = rndreal(0.0, d) + (a/2.0);
+				}
+				else e = 0.0 ;
+				e = rndreal(0.0, d);
+				c[i] = p[i] + e ;
+				/*fprintf(stdout, "<: c[%d] = %.3f, p[%d] = %.3f, e = %.3f\n", 
+						i, c[i], i, p[i], e);*/
+			}
+			if(isnan(c[i]) || c[i] < min_realvar[i] || c[i] > max_realvar[i])
+			{
+				c[i] = v[i] ;
+				/* fprintf(stdout, "*: c[%d] = %.3f, v[%d] = %.3f\n", 
+						i, c[i], i, v[i]);*/
 				shootouts++ ;
 			}
+		}
+		else
+		{
+			c[i] = p[i] ;
+			/*fprintf(stdout, "=: c[%d] = %.3f, p[%d] = %.3f\n", 
+						i, c[i], i, p[i]);*/
 		}
 	}
 	return shootouts ;
