@@ -32,18 +32,25 @@ plot \
 	zdt4file50	us 1:7 w l ls 6 lw 5 ti "ratio = 50%", \
 	zdt4file75	us 1:7 w l ls 5 lw 5 ti "ratio = 75%", \
 	zdt4file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%" \
+set term postscript eps enhanced color
+set output "zdt4-hv-trend.eps"
+replot
 #
 unset xrange
 unset yrange
 set yrange[2400:]
 set xrange[10000:40000]
+set term pdf enhanced color
 set output "dtlz3-hv-trend.pdf"
 plot \
 	dtlz3file10	us 1:7 w l ls 8 lw 5 ti "ratio = 10%", \
 	dtlz3file25	us 1:7 w l ls 7 lw 5 ti "ratio = 25%", \
 	dtlz3file50	us 1:7 w l ls 6 lw 5 ti "ratio = 50%", \
 	dtlz3file75	us 1:7 w l ls 5 lw 5 ti "ratio = 75%", \
-	dtlz3file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%"
+	dtlz3file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%" \
+set term postscript eps enhanced color
+set output "dtlz3-hv-trend.eps"
+replot
 } else {
 reset 
 print "doing monochrome plot"
@@ -61,10 +68,14 @@ plot \
 	zdt4file25	us 1:7 w l ls 7 lw 5 ti "ratio = 25%", \
 	zdt4file50	us 1:7 w l ls 6 lw 5 ti "ratio = 50%", \
 	zdt4file75	us 1:7 w l ls 5 lw 5 ti "ratio = 75%", \
-	zdt4file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%" \
+	zdt4file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color
+set output "zdt4-hv-trend.eps"
+replot
 #
 unset xrange
 unset yrange
+set term pdf enhanced color
 set output "dtlz3-hv-trend.pdf"
 set yrange[2400:]
 set xrange[10000:40000]
@@ -74,4 +85,7 @@ plot \
 	dtlz3file50	us 1:7 w l ls 6 lw 5 ti "ratio = 50%", \
 	dtlz3file75	us 1:7 w l ls 5 lw 5 ti "ratio = 75%", \
 	dtlz3file90	us 1:7 w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color
+set output "dtlz3-hv-trend.eps"
+replot
 }

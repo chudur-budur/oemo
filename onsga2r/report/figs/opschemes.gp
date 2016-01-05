@@ -30,25 +30,36 @@ set xrange[:7000]
 plot \
 	zdt4	us 1:7 w l ls 1 lw 5 ti "opposite", \
 	zdt4i	us 1:7 w l ls 2 lw 5 ti "inverse-opposite", \
-	zdt4r	us 1:7 w l ls 3 lw 5 ti "random" \
+	zdt4r	us 1:7 w l ls 3 lw 5 ti "random"
+set term postscript enhanced color
+set output "zdt4-hv-opschemes.eps"
+replot
 #
 set yrange[8:]
 set xrange[:4000]
+set term pdf enhanced color
 set output "zdt6-hv-opschemes.pdf"
 plot \
 	zdt6	us 1:7 w l ls 1 lw 5 ti "opposite", \
 	zdt6i	us 1:7 w l ls 2 lw 5 ti "inverse-opposite", \
-	zdt6r	us 1:7 w l ls 3 lw 5 ti "random" \
+	zdt6r	us 1:7 w l ls 3 lw 5 ti "random"
+set term postscript enhanced color
+set output "zdt6-hv-opschemes.eps"
+replot
 #
 set noautoscale x
 set noautoscale y
 set yrange[20:60]
 set xrange[10000:50000]
+set term pdf enhanced color
 set output "dtlz6-hv-opschemes.pdf"
 plot \
 	dtlz6	us 1:7 w l ls 1 lw 5 ti "opposite", \
 	dtlz6i	us 1:7 w l ls 2 lw 5 ti "inverse-opposite", \
-	dtlz6r	us 1:7 w l ls 3 lw 5 ti "random" \
+	dtlz6r	us 1:7 w l ls 3 lw 5 ti "random"
+set term postscript enhanced color
+set output "dtlz6-hv-opschemes.eps"
+replot
 } else {
 reset 
 print "doing monochrome plot"
@@ -64,23 +75,34 @@ set xrange[:7000]
 plot \
 	zdt4	us 1:7 w l ls 8 lw 5 ti "opposite", \
 	zdt4i	us 1:7 w l ls 6 lw 5 ti "inverse-opposite", \
-	zdt4r	us 1:7 w l ls 4 lw 5 ti "random" \
+	zdt4r	us 1:7 w l ls 4 lw 5 ti "random"
+set term postscript enhanced color
+set output "zdt4-hv-opschemes.eps"
+replot
 #
 set yrange[8:]
 set xrange[:4000]
+set term pdf enhanced color
 set output "zdt6-hv-opschemes.pdf"
 plot \
 	zdt6	us 1:7 w l ls 8 lw 5 ti "opposite", \
 	zdt6i	us 1:7 w l ls 6 lw 5 ti "inverse-opposite", \
-	zdt6r	us 1:7 w l ls 4 lw 5 ti "random" \
+	zdt6r	us 1:7 w l ls 4 lw 5 ti "random"
+set term postscript enhanced color
+set output "zdt6-hv-opschemes.eps"
+replot
 #
 set noautoscale x
 set noautoscale y
 set yrange[20:60]
 set xrange[10000:50000]
+set term pdf enhanced color
 set output "dtlz6-hv-opschemes.pdf"
 plot \
 	dtlz6	us 1:7 w l ls 8 lw 5 ti "opposite", \
 	dtlz6i	us 1:7 w l ls 6 lw 5 ti "inverse-opposite", \
-	dtlz6r	us 1:7 w l ls 4 lw 5 ti "random" \
+	dtlz6r	us 1:7 w l ls 4 lw 5 ti "random"
+set term postscript enhanced color
+set output "dtlz6-hv-opschemes.eps"
+replot
 }

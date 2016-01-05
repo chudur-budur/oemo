@@ -25,9 +25,13 @@ plot \
 	"./data/zdt3-child-gen-3.out" using 1:2 w circles ls 2 ti "child solutions", \
 	"./data/zdt3-extreme-gen-3.out" using 1:2 w circles ls 3 ti "extremes",\
 	"./data/zdt3-survived-gen-3.out" using 1:2 w circles ls 4 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-3.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt3-gen-18.pdf"
 set arrow from 0.6,1.25 to 0.45,0.3 size screen 0.015,30 lw 4
 set label 1 "front being constructed" at 0.5,1.65
@@ -44,9 +48,13 @@ plot \
 	"./data/zdt3-child-gen-18.out" using 1:2 w circles ls 2 ti "child solutions", \
 	"./data/zdt3-extreme-gen-18.out" using 1:2 w circles ls 3 ti "extremes",\
 	"./data/zdt3-survived-gen-18.out" using 1:2 w circles ls 4 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-18.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt3-gen-27.pdf"
 set arrow from 0.52,-0.35 to 0.62,-0.35 size screen 0.015,30 lw 4
 set label 1 "refining fronts using" at 0.35,-0.25
@@ -64,9 +72,13 @@ plot \
 	"./data/zdt3-child-gen-27.out" using 1:2 w circles ls 2 ti "child solutions", \
 	"./data/zdt3-extreme-gen-27.out" using 1:2 w circles ls 3 ti "extremes",\
 	"./data/zdt3-survived-gen-27.out" using 1:2 w circles ls 4 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-27.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt4-gen-21.pdf"
 set arrow from 0.2,32.0 to 0.02,5.0 size screen 0.015,30 lw 4
 set arrow from 0.3,32.0 to 0.55,5.0 size screen 0.015,30 lw 4
@@ -79,6 +91,9 @@ set label 3 "bias correction" at 0.4,60
 plot \
 	"./data/zdt4-pop-gen-21.out" using 1:2 w circles ls 1 ti "all solutions", \
 	"./data/zdt4-survived-gen-21.out" using 1:2 w circles ls 4 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-21.eps"
+replot
 } else {
 reset
 set term pdf enhanced color
@@ -102,9 +117,13 @@ plot \
 	"./data/zdt3-child-gen-3.out" using 1:2 w circles ls 7 ti "child solutions", \
 	"./data/zdt3-extreme-gen-3.out" using 1:2 w circles ls 8 ti "extremes",\
 	"./data/zdt3-survived-gen-3.out" using 1:2 w circles ls 8 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-3.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt3-gen-18.pdf"
 set arrow from 0.6,1.25 to 0.45,0.3 size screen 0.015,30 lw 4
 set label 1 "front being constructed" at 0.5,1.65
@@ -121,9 +140,13 @@ plot \
 	"./data/zdt3-child-gen-18.out" using 1:2 w circles ls 7 ti "child solutions", \
 	"./data/zdt3-extreme-gen-18.out" using 1:2 w circles ls 8 ti "extremes",\
 	"./data/zdt3-survived-gen-18.out" using 1:2 w circles ls 8 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-18.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt3-gen-27.pdf"
 set arrow from 0.52,-0.35 to 0.62,-0.35 size screen 0.015,30 lw 4
 set label 1 "refining fronts using" at 0.35,-0.25
@@ -141,9 +164,13 @@ plot \
 	"./data/zdt3-child-gen-27.out" using 1:2 w circles ls 7 ti "child solutions", \
 	"./data/zdt3-extreme-gen-27.out" using 1:2 w circles ls 8 ti "extremes",\
 	"./data/zdt3-survived-gen-27.out" using 1:2 w circles ls 8 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-27.eps"
+replot
 #
 unset arrow
 unset label
+set term pdf enhanced color
 set output "zdt4-gen-21.pdf"
 set arrow from 0.2,32.0 to 0.02,5.0 size screen 0.015,30 lw 4
 set arrow from 0.3,32.0 to 0.55,5.0 size screen 0.015,30 lw 4
@@ -156,4 +183,7 @@ set label 3 "bias correction" at 0.4,60
 plot \
 	"./data/zdt4-pop-gen-21.out" using 1:2 w circles ls 6 ti "all solutions", \
 	"./data/zdt4-survived-gen-21.out" using 1:2 w circles ls 8 ti "survived solutions"
+set term postscript eps enhanced color
+set output "zdt3-gen-21.eps"
+replot
 }

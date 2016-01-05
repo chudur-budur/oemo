@@ -21,6 +21,9 @@ plot \
 	"../results/dtlz4-12/dtlz4-onsga2r-hv.stat"	u 1:2 w l ls 2 lw 6 ti "onsga2r, n = 12", \
 	"../results/dtlz4-60/dtlz4-onsga2r-hv.stat"	u 1:2 w l ls 4 lw 6 ti "onsga2r, n = 60", \
 	"../results/dtlz4-96/dtlz4-onsga2r-hv.stat"	u 1:2 w l ls 6 lw 6 ti "onsga2r, n = 96"
+set term postscript eps enhanced color
+set output "dtlz4-longvar.eps"
+replot
 } else {
 reset
 print "doing monochrome plot"
@@ -39,4 +42,7 @@ plot \
 	"../results/dtlz4-12/dtlz4-onsga2r-hv.stat"	u 1:2 w l lt 1 lw 6 ti "onsga2r, n = 12", \
 	"../results/dtlz4-60/dtlz4-onsga2r-hv.stat"	u 1:2 w l lt 2 lw 6 ti "onsga2r, n = 60", \
 	"../results/dtlz4-96/dtlz4-onsga2r-hv.stat"	u 1:2 w l lt 3 lw 6 ti "onsga2r, n = 96"
+set term postscript eps monochrome dashed
+set output "dtlz4-longvar.eps"
+replot
 }

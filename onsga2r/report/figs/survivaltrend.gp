@@ -39,9 +39,13 @@ plot \
 	zdt4file25	w l ls 7 lw 5 ti "ratio = 25%", \
 	zdt4file50	w l ls 6 lw 5 ti "ratio = 50%", \
 	zdt4file75	w l ls 5 lw 5 ti "ratio = 75%", \
-	zdt4file90	w l ls 4 lw 5 ti "ratio = 90%" \
+	zdt4file90	w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color dashed
+set output "zdt4-survival-trend.eps"
+replot
 #
 unset arrow
+set term pdf enhanced color dashed
 set output "dtlz3-survival-trend.pdf"
 set key top right
 set xlabel "generations"
@@ -62,6 +66,9 @@ plot \
 	dtlz3file50	w l ls 6 lw 5 ti "ratio = 50%", \
 	dtlz3file75	w l ls 5 lw 5 ti "ratio = 75%", \
 	dtlz3file90	w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color dashed
+set output "dtlz3-survival-trend.eps"
+replot
 } else {
 reset 
 print "doing monochrome plot"
@@ -87,9 +94,13 @@ plot \
 	zdt4file25	w l ls 7 lw 5 ti "ratio = 25%", \
 	zdt4file50	w l ls 6 lw 5 ti "ratio = 50%", \
 	zdt4file75	w l ls 5 lw 5 ti "ratio = 75%", \
-	zdt4file90	w l ls 4 lw 5 ti "ratio = 90%" \
+	zdt4file90	w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color dashed
+set output "zdt4-survival-trend.eps"
+replot
 #
 unset arrow
+set term pdf enhanced color dashed
 set output "dtlz3-survival-trend.pdf"
 set key top right
 set xlabel "generations"
@@ -110,4 +121,7 @@ plot \
 	dtlz3file50	w l ls 6 lw 5 ti "ratio = 50%", \
 	dtlz3file75	w l ls 5 lw 5 ti "ratio = 75%", \
 	dtlz3file90	w l ls 4 lw 5 ti "ratio = 90%"
+set term postscript eps enhanced color dashed
+set output "dtlz3-survival-trend.eps"
+replot
 }

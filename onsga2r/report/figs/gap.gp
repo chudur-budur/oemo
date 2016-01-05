@@ -13,3 +13,6 @@ set arrow from 0.65,0.8 to 0.50,0.34 size screen 0.015,30 lw 4
 set arrow from 0.65,0.8 to 0.61,0.25 size screen 0.015,30 lw 4 
 set label 1 "trade-off gaps" at 0.57,0.85
 plot "./data/zdt4-gen-146.out" us 1:2 w circles ls 8
+set term postscript eps enhanced color
+set output "zdt4-gap.eps"
+replot
