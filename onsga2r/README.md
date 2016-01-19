@@ -45,8 +45,8 @@ Now you can build the main code --
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun -si -n 31 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
-	./sh/maprun -si -n 31 -c "./sh/run nsga2re input_data/zdt1.in experiments/"
+	./sh/maprun -si -n 11 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
+	./sh/maprun -si -n 11 -c "./sh/run nsga2re input_data/zdt1.in experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
@@ -54,9 +54,9 @@ Now you can build the main code --
 	./sh/burstgen.py experiments/ zdt1 1
 ```
 	
-##### 4. Burst all 31 runs at once:
+##### 4. Burst all 11 runs at once:
 ```shell
-	./sh/maprun -i -n 31 -c "./sh/burstgen.py experiments/ zdt1"
+	./sh/maprun -i -n 11 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
 ##### 5. Clean up all generated results for one particular problem (e.g. zdt1):
