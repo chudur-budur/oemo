@@ -1,6 +1,6 @@
 #!/usr/local/bin/gnuplot
 
-coloropt = "mono"
+coloropt = "color"
 
 zdt4gen6 = "./data/zdt4-onsga2rw-gen-6.out"
 zdt4gen15 = "./data/zdt4-onsga2rw-gen-15.out"

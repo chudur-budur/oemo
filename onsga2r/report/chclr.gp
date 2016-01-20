@@ -4,7 +4,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 
 colorscheme = "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt" 
 
-probs = "zdt1 zdt2 zdt3 zdt4 zdt6 dtlz1 dtlz2 dtlz3 dtlz5 dtlz6 dtlz7"
+probs = "zdt1 zdt2 zdt3 zdt4 zdt6 dtlz1 dtlz2 dtlz3 dtlz5 dtlz6 dtlz7 crash"
 do for [i = 1:words(probs)] {
 	prob = word(probs,i)
 	algo1 = sprintf("results/%s/%s-nsga2r-hv.stat", prob, prob)
@@ -22,6 +22,7 @@ do for [i = 1:words(probs)] {
 	set xrange[0:]
 	if(prob eq "dtlz6") { set xrange[0:40000] }
 	if(prob eq "dtlz5") { set xrange[0:5000] }
+	if(prob eq "crash") { set xrange[0:6000]}
 	set yrange[0:]
 	plot \
 		algo2 using 1:3:2:6:5 with candlesticks \

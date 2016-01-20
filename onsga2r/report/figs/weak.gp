@@ -5,7 +5,7 @@ zdt4file2 = "../results/zdt4/zdt4-nsga2r-hv.stat"
 dtlz1file1 = "../results/dtlz1/dtlz1-onsga2rwdom-hv.stat"
 dtlz1file2 = "../results/dtlz1/dtlz1-nsga2r-hv.stat"
 
-coloropt = "mono"
+coloropt = "color"
 
 if (coloropt eq "color") {
 reset

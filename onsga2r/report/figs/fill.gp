@@ -1,6 +1,6 @@
 #!/usr/local/bin/gnuplot
 
-coloropt = "mono"
+coloropt = "color"
 
 if (coloropt eq "color") {
 reset
