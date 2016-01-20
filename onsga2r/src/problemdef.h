@@ -76,6 +76,12 @@ void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
+/* engineering problems */
+// vehicle crash worthiness
+void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+// welded beam design
+void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 

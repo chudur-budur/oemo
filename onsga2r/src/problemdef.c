@@ -853,6 +853,46 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	return ;
 }
 
+void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	obj[0] = 1640.2823 + (2.3573285 * xreal[0]) 
+		+ (2.3220035 * xreal[1]) + (4.5688768 * xreal[2])
+		+ (7.7213633 * xreal[3]) + (4.4559504 * xreal[4]) ;
+
+	obj[1] = 6.5856 + (1.15 * xreal[0]) - (1.0427 * xreal[1]) 
+		+ (0.9738 * xreal[2]) + (0.8364 * xreal[3])
+		- (0.3695 * xreal[0] * xreal[3]) + (0.0861 * xreal[0] * xreal[4]) 
+		+ (0.3628 * xreal[1] * xreal[3]) - (0.1106 * xreal[0] * xreal[0]) 
+		- (0.3437 * xreal[2] * xreal[2]) + (0.1764 * xreal[3] * xreal[3]) ;
+	
+	obj[2] = -0.0551 + (0.0181 * xreal[0]) 
+		+ (0.1024 * xreal[1]) + (0.0421 * xreal[2]) 
+		- (0.0073 * xreal[0] * xreal[1]) + (0.024 * xreal[1] * xreal[2]) 
+		- (0.0118 * xreal[1] * xreal[3]) - (0.0204 * xreal[2] * xreal[3]) 
+		- (0.008 * xreal[2] * xreal[4]) - (0.0241 * xreal[1] * xreal[1])
+		+ (0.0109 * xreal[3] * xreal[3]);
+}
+
+void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	double h, b, l, t ;
+	double pcx, sigmax, tau_, tau__, taux ;
+	h =  xreal[0], b = xreal[1], l = xreal[2], t = xreal[3] ;
+	pcx = 64746.022 * (1 - 0.0282346 * t) * t * b * b * b ;
+	sigmax = 504000 / (t * t * b);
+	tau_ = 6000 / (sqrt(2) * h * l) ;
+	tau__ = (6000 * (14 + 0.5 * l) * sqrt(0.25 * (l * l + pow(h + t, 2.0)))) /
+			(2 * (0.707 * h * l * (((l * l) / 12) + (0.25 * pow(h + t, 2.0))))) ;
+	taux = sqrt((tau_ * tau_) + (tau__ * tau__) 
+			+ ((l * tau_ * tau__) / sqrt(0.25 * (l * l + pow(h + t, 2.0)))));
+	obj[0] = (1.10471 * h * h * l) + (0.04811 * t * b * (14.0 + l));
+	obj[1] = 2.1952 / (t * t * t * b) ;
+	constr[0] = 1.0 - (taux / 13600);
+	constr[1] = 1.0 - (sigmax / 30000);
+	constr[2] = 1.0 - (h/b) ;
+	constr[3] = (pcx/6000) - 1.0 ; 
+}
+
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -918,6 +958,10 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		dtlz6(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "dtlz7") == 0)
 		dtlz7(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "crash") == 0)
+		crash(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "beam") == 0)
+		beam(xreal, xbin, gene, obj, constr);
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined.\n");

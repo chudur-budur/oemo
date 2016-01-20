@@ -329,10 +329,12 @@ if __name__ == '__main__':
             'dtlz2': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz3': [[150, 3], [15.0, 15.0, 15.0]], \
             'dtlz4': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz5': [[150, 3], [2.0, 2.0, 2.0]], \
             'dtlz6': [[150, 3], [4.0, 4.0, 4.0]], 'dtlz7': [[150, 3], [10.0, 10.0, 10.0]], \
-            'osy': [[150, 2], [0,80.0]], 'ctp4': [[1000, 2], [2.0, 2.0]]\
+            'osy': [[150, 2], [0,80.0]], 'ctp4': [[1000, 2], [2.0, 2.0]], \
+            'crash': [[150, 3], [1700, 11, 0.3]]
             }
+    algo_set = [['onsga2r', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re']]
-    algo_set = [['onsga2rj', 'nsga2r']]
+    # algo_set = [['onsga2rj', 'nsga2r']]
     # algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]
     # algo_set = [['onsga2r', 'onsga2rdi']]

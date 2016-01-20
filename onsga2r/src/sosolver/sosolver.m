@@ -52,10 +52,10 @@ fprintf('********** solsolver.m -- FE bound fixed to: %d\n', febound);
 
 % if the problem does not have local optima then use fmincon()
 easy_problems = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; ...
-                    'dtlz4'; 'dtlz5'; 'dtlz7'; 'osy'};
+                    'dtlz4'; 'dtlz5'; 'dtlz7'; 'osy'; 'crash'};
 % if the problem has local optima, then use patternsearch()
 hard_problems = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; ...
-                    'ctp4'; 'ctp8'};
+                    'ctp4'; 'ctp8'; 'beam'};
 
 % set options for fmincon
 fmcopt = optimoptions('fmincon');

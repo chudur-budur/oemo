@@ -196,6 +196,10 @@ void load_path(char *dest)
 		sprintf(dest, "input_data/osy.in");
 	else if(strcmp(prob_name, "ctp4") == 0)
 		sprintf(dest, "input_data/ctp4.in");
+	else if(strcmp(prob_name, "crash") == 0)
+		sprintf(dest, "input_data/crash.in");
+	else if(strcmp(prob_name, "beam") == 0)
+		sprintf(dest, "input_data/beam.in");
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");
