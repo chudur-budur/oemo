@@ -257,7 +257,7 @@ boxcmd = """
     set style fill noborder
     set boxwidth 0.5 relative
     load \'~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt\'
-    set xlabel \'function evaluations\'
+    set xlabel \'solution evaluations\'
     set ylabel \'hypervolume\'
     set format x \'%.1s%c\'
     set xrange[0:]
@@ -272,7 +272,7 @@ boxcmd_mono = """
     set key bottom right
     set style fill pattern noborder
     set boxwidth 0.5 relative
-    set xlabel \'function evaluations\'
+    set xlabel \'solution evaluations\'
     set ylabel \'hypervolume\'
     set format x \'%.1s%c\'
     set xrange[0:]
@@ -330,7 +330,8 @@ if __name__ == '__main__':
             'dtlz4': [[150, 3], [2.0, 2.0, 2.0]], 'dtlz5': [[150, 3], [2.0, 2.0, 2.0]], \
             'dtlz6': [[150, 3], [4.0, 4.0, 4.0]], 'dtlz7': [[150, 3], [10.0, 10.0, 10.0]], \
             'osy': [[150, 2], [0,80.0]], 'ctp4': [[1000, 2], [2.0, 2.0]], \
-            'crash': [[150, 3], [1700, 11, 0.3]]
+            'crash': [[150, 3], [1700, 11, 0.3]], 'beam': [[20, 2], [40, 1.0]], \
+            'gear': [[150, 2], [10.0, 61.0]]\
             }
     algo_set = [['onsga2r', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re']]

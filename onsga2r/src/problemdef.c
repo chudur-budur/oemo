@@ -328,7 +328,21 @@ void osy (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = -(25.0*pow((xreal[0]-2.0),2.0) + pow((xreal[1]-2.0),2.0) + pow((xreal[2]-1.0),2.0) + pow((xreal[3]-4.0),2.0) + pow((xreal[4]-1.0),2.0));
 	obj[1] = xreal[0]*xreal[0] +  xreal[1]*xreal[1] + xreal[2]*xreal[2] + xreal[3]*xreal[3] + xreal[4]*xreal[4] + xreal[5]*xreal[5];
+	/**
+	 *	c1(x) = x1 + x2 - 2 >= 0
+	 * -->	(x1+x2) >= 2
+	 * -->	(x1+x2)/2 >= 1
+	 * -->	(x1+x2)/2 - 1 >= 0
+	 */
 	constr[0] = (xreal[0]+xreal[1])/2.0 - 1.0;
+	/**
+	 * 	c2(x) = 6 - x1 - x2 >= 0
+	 * -->	-(x1+x2) >= -6
+	 * -->	(x1+x2) <= 6
+	 * -->	(x1+x2)/6 <= 1
+	 * -->	1 >= (x1+x2)/6
+	 * -->	1 - (x1+x2)/6 >= 0
+	 */
 	constr[1] = 1.0 - (xreal[0]+xreal[1])/6.0;
 	constr[2] = 1.0 - xreal[1]/2.0 + xreal[0]/2.0;
 	constr[3] = 1.0 - xreal[0]/2.0 + 3.0*xreal[1]/2.0;
@@ -893,6 +907,29 @@ void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	constr[3] = (pcx/6000) - 1.0 ; 
 }
 
+void gear (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i ;
+	double x1, x2, x3, x4, maxx ;
+	x1 = xreal[0];
+	x2 = xreal[1];
+	x3 = xreal[2];
+	x4 = xreal[3];
+	maxx = x1 ;
+	for(i = 1 ; i < nreal ; i++)
+		if(xreal[i] >= maxx)
+			maxx = xreal[i];
+	obj[0] = fabs(6.931 - ((x3/x1)*(x4/x2)));
+	obj[1] = maxx ;
+	/**
+	 * c1(x) = f1(x)/6.931 <= 0.5
+	 * -->	f1(x)/(6.931 * 0.5) <= 1
+	 * --> 1 >= f1(x)/(6.931 * 0.5)
+	 * --> 1 - (f1(x)/(6.931 * 0.5)) >= 0
+	 */
+	constr[0] = (obj[0]/(6.931 * 0.5)) - 1.0;
+}
+
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -962,6 +999,8 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		crash(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "beam") == 0)
 		beam(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "gear") == 0)
+		gear(xreal, xbin, gene, obj, constr);
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined.\n");

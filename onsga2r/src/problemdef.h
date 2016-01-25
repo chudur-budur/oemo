@@ -81,6 +81,8 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 // welded beam design
 void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+// gear train design
+void gear (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);
