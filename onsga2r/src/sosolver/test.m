@@ -3,7 +3,7 @@ global popsize ;
 global nreal ;
 global nobj ;
 
-path = '../../input_data/beam.in' ;
+path = '../../input_data/gear.in' ;
 idx = 1 ;
 result = sosolver(path, idx, 12345);
 % disp(result);
