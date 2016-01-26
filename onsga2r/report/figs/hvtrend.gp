@@ -40,9 +40,6 @@ plot \
 	zdt4file75	us 1:7 w l ls 4 lw 5 ti "ratio = 75% (mean-hv)", \
 	zdt4file90	us 1:7 w l ls 3 lw 5 ti "ratio = 90% (mean-hv)", \
 	zdt4nsga2r	us 1:6 w l ls 8 lw 5 ti "nsga2r (max-hv)"
-# set term postscript eps enhanced color
-# set output "zdt4-hv-trend.eps"
-# replot
 #
 unset xrange
 unset yrange
@@ -57,6 +54,3 @@ plot \
 	dtlz3file75	us 1:7 w l ls 4 lw 5 ti "ratio = 75% (mean-hv)", \
 	dtlz3file90	us 1:7 w l ls 3 lw 5 ti "ratio = 90% (mean-hv)", \
 	dtlz3nsga2r	us 1:6 w l ls 8 lw 5 ti "ratio = 90% (max-hv)"
-# set term postscript eps enhanced color
-# set output "dtlz3-hv-trend.eps"
-# replot
