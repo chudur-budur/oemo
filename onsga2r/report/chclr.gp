@@ -29,10 +29,12 @@ do for [i = 1:words(probs)] {
 				fs transparent solid 0.3 ls 1 lw 3 title "onsga2r" whiskerbars 0.5, \
 		algo2 using 1:7:7:7:7 with candlesticks ls 8 lw 3 title 'mean', \
 		algo2 using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \
+		algo2 using 1:4 with lines ls 3 lw 1 noti, \
 		algo1 using 1:3:2:6:5 with candlesticks \
 				fs transparent solid 0.3 ls 2 lw 3 title "nsga2r" whiskerbars 0.5, \
 		algo1 using 1:7:7:7:7 with candlesticks ls 8 lw 3 noti, \
-		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti
+		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti, \
+		algo1 using 1:4 with lines ls 3 lw 1 noti
 	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
 	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
@@ -79,10 +81,12 @@ do for [i = 1:words(probs)] {
 				fs transparent solid 0.3 ls 1 lw 3 title "onsga2r" whiskerbars 0.5, \
 		algo2 using 1:7:7:7:7 with candlesticks ls 8 lw 3 title 'mean', \
 		algo2 using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \
+		algo2 using 1:4 with lines ls 3 lw 1 noti, \
 		algo1 using 1:3:2:6:5 with candlesticks \
 				fs transparent solid 0.3 ls 2 lw 3 title "nsga2re" whiskerbars 0.5, \
 		algo1 using 1:7:7:7:7 with candlesticks ls 8 lw 3 noti, \
-		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti
+		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti, \
+		algo1 using 1:4 with lines ls 3 lw 1 noti
 	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
 	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
@@ -131,10 +135,12 @@ do for [i = 1:words(probs)] {
 				fs transparent solid 0.3 ls 1 lw 3 title "onsga2rw" whiskerbars 0.5, \
 		algo2 using 1:7:7:7:7 with candlesticks ls 8 lw 3 title 'mean', \
 		algo2 using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \
+		algo2 using 1:4 with lines ls 3 lw 1 noti, \
 		algo1 using 1:3:2:6:5 with candlesticks \
 				fs transparent solid 0.3 ls 2 lw 3 title "onsga2r" whiskerbars 0.5, \
 		algo1 using 1:7:7:7:7 with candlesticks ls 8 lw 3 noti, \
-		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti
+		algo1 using 1:4:4:4:4 with candlesticks ls 3 lw 3 noti, \
+		algo1 using 1:4 with lines ls 3 lw 1 noti
 	minfe = femin(algo2)
 	print sprintf("%s, minfe: %s", prob, minfe)
 	set term push
