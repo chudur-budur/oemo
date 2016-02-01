@@ -52,9 +52,9 @@ if __name__ == '__main__':
         tol = 0.9 if len(argv) == 2 else (float(argv[2]) \
                 if float(argv[2]) < 1.0 else (float(argv[2])/100.0))
         result = compute_speedup(root_path, problem, algos, tol)
-        print("{5:s} -- {0:s}: {1:d}\t{2:s}: {3:d}\tspeed-up: {4:.2f}"\
+        print("{5:s} {6:.2f} -- {0:s}: {1:d}\t{2:s}: {3:d}\tspeed-up: {4:.2f}"\
                 .format(result[0][0], result[0][1], \
                         result[1][0], result[1][1], \
-                        result[2], problem))
+                        result[2], problem, tol))
     else:
         usage()
