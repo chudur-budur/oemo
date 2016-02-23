@@ -851,8 +851,8 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
-		/*g += xreal[i] ;*/
-		g += fabs(xreal[i] - 0.5);
+		g += xreal[i] ;
+		/*g += fabs(xreal[i] - 0.5);*/
 	g = 1.0 + ((9.0 * g) / k) ;
 
 	for(i = 0 ; i < nobj - 1 ; i++)
@@ -864,6 +864,86 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	h = ((double)nobj) - h ;
 	obj[nobj-1] = (1.0 + g) * h;
 
+	return ;
+}
+
+/**  
+ *  Test problem C1DTLZ1 (suggested k = 5)
+ *  # of objectives = M = 3
+ *  # of real variables = n = M + k - 1 = 3 + 5 - 1 = 7
+ *  # of bin variables = 0
+ *  # of constraints = 0
+ *  harder: 96 variables
+ **/
+void c1dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k ;
+	double g, fsum ;
+
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	/* this is ok, no need to change xreal */
+	for(i = nreal - k; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
+		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
+	g = 100.0 * (k + g);
+
+	for(i = 0 ; i < nobj ; i++) obj[i] = (1.0 + g) * 0.5 ;
+
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0; j < nobj - (i+1); j++) obj[i] *= xreal[j];
+		if(i != 0) obj[i] *= 1.0 - xreal[nobj - (i + 1)];
+	}
+	
+	fsum = 0.0 ;
+	for(i = 0 ; i < nobj - 1 ; i++)
+		fsum += obj[i]/0.5 ;
+	constr[0] = 1.0 - (obj[nobj-1]/0.6) - fsum ;
+	
+	return ;
+}
+
+/**
+ * Test problem DTLZ3 (suggested k = 10)
+ * # of objectives = M = 3
+ * # of real variables = n = M + k - 1 = 3 + 10 - 1 = 12
+ * # of bin variables = 0
+ * # of constraints = 0
+ * harder: 96 variables
+ **/
+void c1dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, k;
+	double g, fsum1, fsum2;
+
+	k = nreal - nobj + 1;
+
+	g = 0.0 ;
+	for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
+		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
+	g = 100.0 * (k + g);
+
+	for(i = 0 ; i < nobj ; i++)
+		obj[i] = (1.0 + g) ;
+
+	for(i = 0 ; i < nobj ; i++)
+	{
+		for(j = 0 ; j < nobj - (i+1); j++)
+			obj[i] *= cos(xreal[j] * 0.5 * PI);
+		if(i != 0)
+			obj[i] *= sin(xreal[nobj - (i+1)] * 0.5 * PI);
+	}
+
+	fsum1 = 0.0, fsum2 = 0.0 ;
+	for(i = 0 ; i < nobj ; i++)
+	{
+		fsum1 += (obj[i] * obj[i]) - 16 ; 
+		fsum2 += (obj[i] * obj[i]) - 9 ; /* for nobj = 3 */
+	}
+	constr[0] = fsum1 * fsum2 ;
 	return ;
 }
 
@@ -995,6 +1075,10 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		dtlz6(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "dtlz7") == 0)
 		dtlz7(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "c1dtlz1") == 0)
+		c1dtlz1(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "c1dtlz3") == 0)
+		c1dtlz3(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "crash") == 0)
 		crash(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "beam") == 0)

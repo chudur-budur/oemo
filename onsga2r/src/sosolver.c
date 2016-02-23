@@ -192,6 +192,10 @@ void load_path(char *dest)
 		sprintf(dest, "input_data/dtlz6.in");
 	else if(strcmp(prob_name, "dtlz7") == 0)
 		sprintf(dest, "input_data/dtlz7.in");
+	else if(strcmp(prob_name, "c1dtlz1") == 0)
+		sprintf(dest, "input_data/c1dtlz1.in");
+	else if(strcmp(prob_name, "c1dtlz3") == 0)
+		sprintf(dest, "input_data/c1dtlz3.in");
 	else if(strcmp(prob_name, "osy") == 0)
 		sprintf(dest, "input_data/osy.in");
 	else if(strcmp(prob_name, "ctp4") == 0)

@@ -76,6 +76,10 @@ void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
+/* constrained dtlz problems */
+void c1dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void c1dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
 /* engineering problems */
 // vehicle crash worthiness
 void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr);
