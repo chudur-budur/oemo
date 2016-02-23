@@ -79,7 +79,7 @@ def save_pdf_plot(algo_files, out_file, problem):
     print("saving {}".format(out_file))
     prob_set = {'zdt1': 2, 'zdt2': 2, 'zdt3': 2, 'zdt4': 2, 'zdt6': 2, \
             'dtlz1': 3, 'dtlz2': 3, 'dtlz3': 3, 'dtlz4': 3, 'dtlz5': 3, 'dtlz6': 3, 'dtlz7': 3, \
-            'c1dtlz1': 3, \
+            'c1dtlz1': 3, 'c1dtlz3': 3,\
             'osy': 2, 'ctp4': 2, 'crash': 3, 'beam': 2, 'gear': 2}
     if prob_set[problem] == 2:
         cmd = pf2dcmd.format(out_file) + get_gpstr_2d(algo_files)
