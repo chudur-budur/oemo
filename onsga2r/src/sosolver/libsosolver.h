@@ -1,9 +1,11 @@
 /*
  * MATLAB Compiler: 5.1 (R2014a)
- * Date: Mon Jan 25 00:14:32 2016
+ * Date: Tue Feb 23 06:58:01 2016
  * Arguments: "-B" "macro_default" "-B" "csharedlib:libsosolver" "-W"
  * "lib:libsosolver" "-T" "link:lib" "-v" "src/sosolver/aasf.m"
  * "src/sosolver/beam_constfunc.m" "src/sosolver/beam.m" "src/sosolver/bnh.m"
+ * "src/sosolver/c1dtlz1_constfunc.m" "src/sosolver/c1dtlz1.m"
+ * "src/sosolver/c1dtlz3_constfunc.m" "src/sosolver/c1dtlz3.m"
  * "src/sosolver/crash_constfunc.m" "src/sosolver/crash.m"
  * "src/sosolver/ctp4_constfunc.m" "src/sosolver/ctp4.m"
  * "src/sosolver/ctp8_constfunc.m" "src/sosolver/ctp8.m"
@@ -104,6 +106,20 @@ bool MW_CALL_CONV mlxBeam(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxBnh(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC1dtlz1_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
+                                       *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC1dtlz1(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC1dtlz3_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
+                                       *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC1dtlz3(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxCrash_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
@@ -267,6 +283,14 @@ extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfBeam_constfunc(int nargout, mx
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfBeam(int nargout, mxArray** f, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfBnh(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz1_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz1(int nargout, mxArray** f, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz3_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz3(int nargout, mxArray** f, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfCrash_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
 
