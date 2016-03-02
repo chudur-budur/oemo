@@ -1,4 +1,5 @@
 function [c, ceq] = ctp4_constfunc(x)
+% Constraints definitions for ct4 problem
 
 theta = -0.2 * pi ;
 a = 0.75;

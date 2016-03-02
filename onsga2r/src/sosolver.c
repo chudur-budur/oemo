@@ -196,6 +196,10 @@ void load_path(char *dest)
 		sprintf(dest, "input_data/c1dtlz1.in");
 	else if(strcmp(prob_name, "c1dtlz3") == 0)
 		sprintf(dest, "input_data/c1dtlz3.in");
+	else if(strcmp(prob_name, "c2dtlz2") == 0)
+		sprintf(dest, "input_data/c2dtlz2.in");
+	else if(strcmp(prob_name, "c3dtlz1") == 0)
+		sprintf(dest, "input_data/c3dtlz1.in");
 	else if(strcmp(prob_name, "osy") == 0)
 		sprintf(dest, "input_data/osy.in");
 	else if(strcmp(prob_name, "ctp4") == 0)
@@ -206,6 +210,8 @@ void load_path(char *dest)
 		sprintf(dest, "input_data/beam.in");
 	else if(strcmp(prob_name, "gear") == 0)
 		sprintf(dest, "input_data/gear.in");
+	else if(strcmp(prob_name, "antenna") == 0)
+		sprintf(dest, "input_data/antenna.in");
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");

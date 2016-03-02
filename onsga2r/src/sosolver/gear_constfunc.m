@@ -1,5 +1,5 @@
 function [c, ceq] = gear_constfunc(x)
-%   The caint functions for the beam design problem
+%   The constraint functions for the gear design problem
 
 % x_ = round(x) ; 
 x_ = x ; 

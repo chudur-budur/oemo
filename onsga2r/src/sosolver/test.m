@@ -3,8 +3,8 @@ global popsize ;
 global nreal ;
 global nobj ;
 
-path = '../../input_data/c1dtlz3.in' ;
-idx = 1 ;
+path = '../../input_data/antenna.in' ;
+idx = 3 ;
 result = sosolver(path, idx, 12345);
 % disp(result);
 xval = result(1:nreal);

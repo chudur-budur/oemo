@@ -1,4 +1,5 @@
 function [c, ceq] = ctp8_constfunc(x)
+% CTP8 constraints definitions.
 
 theta = 0.1 * pi;
 a = 40.0;

@@ -1,6 +1,6 @@
 function [c, ceq] = zdt4_constfunc(x)
-%ZDT1_CONSTFUNC Summary of this function goes here
-%   Detailed explanation goes here
+%ZDT4_CONSTFUNC Summary of this function goes here
+%   This function has no constraint
     c = [] ;
     ceq = [] ;
 end

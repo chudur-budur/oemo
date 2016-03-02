@@ -1,5 +1,5 @@
 function [c, ceq] = beam_constfunc(x)
-%   The caint functions for the beam design problem
+%   The constraint functions for the beam design problem
 
 h =  x(1); b = x(2); l = x(3); t = x(4) ;
 pcx = 64746.022 * (1 - 0.0282346 * t) * t * b * b * b ;

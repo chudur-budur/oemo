@@ -1,5 +1,5 @@
 function f = ctp8(x)
-%   This procedure implements CTP4 function.
+%   This procedure implements CTP8 function.
 
 g = 1.0 + x(2);
 f1 = x(1);

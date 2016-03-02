@@ -1,5 +1,5 @@
-function f = c1dtlz1(x)
-%   This procedure implements c1dtlz1 function.
+function f = c3dtlz1(x)
+%   This procedure implements c3dtlz1 function.
 
 global nobj ;
 

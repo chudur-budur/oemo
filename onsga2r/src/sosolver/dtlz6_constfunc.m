@@ -1,6 +1,6 @@
 function [c, ceq] = dtlz6_constfunc(x)
-%ZDT1_CONSTFUNC Summary of this function goes here
-%   Detailed explanation goes here
+%DTLZ6_CONSTFUNC Summary of this function goes here
+%   dtlz6 has no constraint
     c = [] ;
     ceq = [] ;
 end

@@ -79,6 +79,8 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 /* constrained dtlz problems */
 void c1dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 void c1dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void c2dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void c3dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 /* engineering problems */
 // vehicle crash worthiness
@@ -87,6 +89,29 @@ void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr
 void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 // gear train design
 void gear (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
+// the antenna design problem
+typedef struct dnode dnode ;
+struct dnode {
+	double value ; dnode *next ; dnode *prev ;
+};
+typedef struct {
+	int size; dnode *head ; dnode *tail ;
+} double_list ;
+double_list* new_double_list();
+void append(double_list *lst, double value);
+double pop_max(double_list *lst);
+void free_double_list(double_list *lst);
+void print_double_list(double_list *lst);
+void printv(double *x, int len);
+void mapvars(double *x, int xlen, double *y);
+double array_factor(double *x, double phi, double phi_desired, 
+			double distance, int dim);
+double trapezoid(double *xval, double upper, double lower, int N1, 
+			double phi_desired, double distance, int dim);
+void linspace(double a, double b, int n, double *vals);
+void antenna(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+
 
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);
