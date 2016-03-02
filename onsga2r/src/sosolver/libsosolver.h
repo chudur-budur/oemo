@@ -1,11 +1,15 @@
 /*
  * MATLAB Compiler: 5.1 (R2014a)
- * Date: Tue Feb 23 06:58:01 2016
+ * Date: Tue Mar  1 12:23:20 2016
  * Arguments: "-B" "macro_default" "-B" "csharedlib:libsosolver" "-W"
  * "lib:libsosolver" "-T" "link:lib" "-v" "src/sosolver/aasf.m"
- * "src/sosolver/beam_constfunc.m" "src/sosolver/beam.m" "src/sosolver/bnh.m"
+ * "src/sosolver/antenna_constfunc.m" "src/sosolver/antenna.m"
+ * "src/sosolver/array_factor.m" "src/sosolver/beam_constfunc.m"
+ * "src/sosolver/beam.m" "src/sosolver/bnh.m"
  * "src/sosolver/c1dtlz1_constfunc.m" "src/sosolver/c1dtlz1.m"
  * "src/sosolver/c1dtlz3_constfunc.m" "src/sosolver/c1dtlz3.m"
+ * "src/sosolver/c2dtlz2_constfunc.m" "src/sosolver/c2dtlz2.m"
+ * "src/sosolver/c3dtlz1_constfunc.m" "src/sosolver/c3dtlz1.m"
  * "src/sosolver/crash_constfunc.m" "src/sosolver/crash.m"
  * "src/sosolver/ctp4_constfunc.m" "src/sosolver/ctp4.m"
  * "src/sosolver/ctp8_constfunc.m" "src/sosolver/ctp8.m"
@@ -17,12 +21,15 @@
  * "src/sosolver/dtlz6_constfunc.m" "src/sosolver/dtlz6.m"
  * "src/sosolver/dtlz7_constfunc.m" "src/sosolver/dtlz7.m" "src/sosolver/fon.m"
  * "src/sosolver/gear_constfunc.m" "src/sosolver/gear.m" "src/sosolver/kur.m"
- * "src/sosolver/load_input_data.m" "src/sosolver/osy_constfunc.m"
- * "src/sosolver/osy.m" "src/sosolver/pol.m" "src/sosolver/printmatrix.m"
+ * "src/sosolver/load_input_data.m" "src/sosolver/mapvars.m"
+ * "src/sosolver/osy_constfunc.m" "src/sosolver/osy.m"
+ * "src/sosolver/plot_gain.m" "src/sosolver/pol.m" "src/sosolver/printmatrix.m"
  * "src/sosolver/sch1.m" "src/sosolver/sch2.m" "src/sosolver/sopt.m"
- * "src/sosolver/sosolver.m" "src/sosolver/srn.m" "src/sosolver/test.m"
- * "src/sosolver/tnk.m" "src/sosolver/vnt.m" "src/sosolver/zdt1_constfunc.m"
- * "src/sosolver/zdt1.m" "src/sosolver/zdt2_constfunc.m" "src/sosolver/zdt2.m"
+ * "src/sosolver/sosolver.m" "src/sosolver/srn.m"
+ * "src/sosolver/tester_antenna.m" "src/sosolver/test.m" "src/sosolver/tnk.m"
+ * "src/sosolver/trapezoid.m" "src/sosolver/vnt.m"
+ * "src/sosolver/zdt1_constfunc.m" "src/sosolver/zdt1.m"
+ * "src/sosolver/zdt2_constfunc.m" "src/sosolver/zdt2.m"
  * "src/sosolver/zdt3_constfunc.m" "src/sosolver/zdt3.m"
  * "src/sosolver/zdt4_constfunc.m" "src/sosolver/zdt4.m" "src/sosolver/zdt5.m"
  * "src/sosolver/zdt6_constfunc.m" "src/sosolver/zdt6.m" 
@@ -99,6 +106,16 @@ extern LIB_libsosolver_C_API
 bool MW_CALL_CONV mlxAasf(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxAntenna_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
+                                       *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxAntenna(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxArray_factor(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxBeam_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
@@ -120,6 +137,20 @@ bool MW_CALL_CONV mlxC1dtlz3_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxAr
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxC1dtlz3(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC2dtlz2_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
+                                       *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC2dtlz2(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC3dtlz1_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
+                                       *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxC3dtlz1(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxCrash_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray 
@@ -206,10 +237,16 @@ bool MW_CALL_CONV mlxLoad_input_data(int nlhs, mxArray *plhs[], int nrhs, mxArra
                                      *prhs[]);
 
 extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxMapvars(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxOsy_constfunc(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxOsy(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxPlot_gain(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxPol(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
@@ -233,10 +270,16 @@ extern LIB_libsosolver_C_API
 bool MW_CALL_CONV mlxSrn(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxTester_antenna(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxTest(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxTnk(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+
+extern LIB_libsosolver_C_API 
+bool MW_CALL_CONV mlxTrapezoid(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxVnt(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
@@ -278,6 +321,12 @@ bool MW_CALL_CONV mlxZdt6(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfAasf(int nargout, mxArray** f, mxArray* x);
 
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfAntenna_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfAntenna(int nargout, mxArray** f, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfArray_factor(int nargout, mxArray** y, mxArray* x, mxArray* phi, mxArray* phi_desired, mxArray* distance, mxArray* dim);
+
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfBeam_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfBeam(int nargout, mxArray** f, mxArray* x);
@@ -291,6 +340,14 @@ extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz1(int nargout, mxArray**
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz3_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC1dtlz3(int nargout, mxArray** f, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC2dtlz2_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC2dtlz2(int nargout, mxArray** f, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC3dtlz1_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfC3dtlz1(int nargout, mxArray** f, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfCrash_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
 
@@ -342,9 +399,13 @@ extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfKur(int nargout, mxArray** par
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfLoad_input_data(mxArray* datafile);
 
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfMapvars(int nargout, mxArray** yvals, mxArray* xvals);
+
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfOsy_constfunc(int nargout, mxArray** c, mxArray** ceq, mxArray* x);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfOsy(int nargout, mxArray** f, mxArray* x);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfPlot_gain(mxArray* nplot, mxArray* gbest, mxArray* phi_desired, mxArray* distance);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfPol(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
 
@@ -360,9 +421,13 @@ extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfSosolver(int nargout, mxArray*
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfSrn(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
 
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTester_antenna();
+
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTest();
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTnk(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
+
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTrapezoid(int nargout, mxArray** q, mxArray* xval, mxArray* upper, mxArray* lower, mxArray* N1, mxArray* phi_desired, mxArray* distance, mxArray* dim);
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfVnt(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
 
