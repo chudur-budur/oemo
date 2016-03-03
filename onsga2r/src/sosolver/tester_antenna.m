@@ -6,8 +6,7 @@ N = 12 ; % number of antenna elements
 
 % code to generate 3000 sample objective values and save in
 % the mat data format.
-M = 5000 ;
-% f = zeros(M,2); % 2-obj
+M = 2000 ;
 mcf = zeros(M,3); % 3-obj
 for i = 1:M
     x = rand(1,N);
