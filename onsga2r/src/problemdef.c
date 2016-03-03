@@ -1331,7 +1331,9 @@ void antenna(double *xreal, double *xbin, int **gene, double *obj, double *const
 
 	dim = nreal ;
 	x = (double*)malloc(sizeof(double) * dim);
-	mapvars(xreal, dim, x); 
+	/* mapvars(xreal, dim, x); */ /* not doing it anymore */
+	for(i = 0 ; i < nreal ; i++)
+		x[i] = xreal[i] ;
 
 	num_null = sizeof(nullv)/sizeof(nullv[0]) ;
 	num1 = 300 ;
