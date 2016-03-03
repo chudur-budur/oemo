@@ -15,7 +15,8 @@ phi_desired = 180 ;
 distance = 0.5 ;
 
 dim = length(x);
-x_ = mapvars(x);
+% x_ = mapvars(x) % not doing it anymore
+x_ = x;
 
 % y = 0;
 num_null = size(null, 2); % 1,2 = size(null)

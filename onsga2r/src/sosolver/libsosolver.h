@@ -1,6 +1,6 @@
 /*
  * MATLAB Compiler: 5.1 (R2014a)
- * Date: Tue Mar  1 12:23:20 2016
+ * Date: Thu Mar  3 03:00:37 2016
  * Arguments: "-B" "macro_default" "-B" "csharedlib:libsosolver" "-W"
  * "lib:libsosolver" "-T" "link:lib" "-v" "src/sosolver/aasf.m"
  * "src/sosolver/antenna_constfunc.m" "src/sosolver/antenna.m"
@@ -26,8 +26,8 @@
  * "src/sosolver/plot_gain.m" "src/sosolver/pol.m" "src/sosolver/printmatrix.m"
  * "src/sosolver/sch1.m" "src/sosolver/sch2.m" "src/sosolver/sopt.m"
  * "src/sosolver/sosolver.m" "src/sosolver/srn.m"
- * "src/sosolver/tester_antenna.m" "src/sosolver/test.m" "src/sosolver/tnk.m"
- * "src/sosolver/trapezoid.m" "src/sosolver/vnt.m"
+ * "src/sosolver/tester_antenna.m" "src/sosolver/test_sosolver.m"
+ * "src/sosolver/tnk.m" "src/sosolver/trapezoid.m" "src/sosolver/vnt.m"
  * "src/sosolver/zdt1_constfunc.m" "src/sosolver/zdt1.m"
  * "src/sosolver/zdt2_constfunc.m" "src/sosolver/zdt2.m"
  * "src/sosolver/zdt3_constfunc.m" "src/sosolver/zdt3.m"
@@ -273,7 +273,7 @@ extern LIB_libsosolver_C_API
 bool MW_CALL_CONV mlxTester_antenna(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
-bool MW_CALL_CONV mlxTest(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
+bool MW_CALL_CONV mlxTest_sosolver(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
 
 extern LIB_libsosolver_C_API 
 bool MW_CALL_CONV mlxTnk(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[]);
@@ -423,7 +423,7 @@ extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfSrn(int nargout, mxArray** par
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTester_antenna();
 
-extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTest();
+extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTest_sosolver();
 
 extern LIB_libsosolver_C_API bool MW_CALL_CONV mlfTnk(int nargout, mxArray** parent_pop, mxArray* parent_pop_in1);
 
