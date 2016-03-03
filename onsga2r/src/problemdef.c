@@ -1234,10 +1234,10 @@ void mapvars(double *x, int xlen, double *y)
 	int i, N, x1_min, x1_max ;
 	double x2_min, x2_max ;
 	N = xlen ;
-	x1_min = 1; x1_max = N ;
+	x1_min = 0.2 ; x1_max = 1.0 ;
 	x2_min = -180.0; x2_max = 180.0 ;
 	for(i = 0 ; i < N/2 ; i++)
-		y[i] = round(x1_min + (x[i] * (x1_max - x1_min)));
+		y[i] = x1_min + (x[i] * (x1_max - x1_min));
 	for(i = N/2 ; i < N ; i++)
 		y[i] = x2_min + (x[i] * (x2_max - x2_min));
 	return ;
