@@ -83,14 +83,14 @@ void c2dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *cons
 void c3dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 /* engineering problems */
-// vehicle crash worthiness
+/* vehicle crash worthiness */
 void crash (double *xreal, double *xbin, int **gene, double *obj, double *constr);
-// welded beam design
+/* welded beam design */
 void beam (double *xreal, double *xbin, int **gene, double *obj, double *constr);
-// gear train design
+/* gear train design */
 void gear (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
-// the antenna design problem
+/* the antenna design problem */
 typedef struct dnode dnode ;
 struct dnode {
 	double value ; dnode *next ; dnode *prev ;

@@ -4,9 +4,36 @@ rng(123456, 'twister');
 
 N = 12 ; % number of antenna elements
 
-% % code to generate 3000 sample objective values and save in
-% % the mat data format.
-% M = 5000 ;
+% exhaustive enumeration -- caution, takes 2/3 hours.
+% x1 = linspace(0.2, 1.0, 6);
+% x2 = linspace(-180, 180, 6);
+% x1_ = perms(x1);
+% x2_ = perms(x2);
+% x = zeros(length(x1_) * length(x2_), N);
+% c = 1 ;
+% for i = 1:length(x1_)
+%     for j = 1:length(x2_)
+%         x(c,:) = [x1_(i,:), x2_(j,:)] ;
+%         c = c + 1;
+%     end
+% end
+% disp(length(x));
+% save('antenna_permx.mat', 'x'); 
+% mcf = zeros(length(x), 3);
+% parfor i = 1:length(x)
+%     if mod(i, 1000) == 0
+%         fprintf('evaluated x(%d).\n',i);
+%     end
+%     mcf(i,:) = antenna(x(i,:));
+% end
+% % figure(1);
+% % scatter3(mcf(:,1), mcf(:,2), mcf(:,3)) % 3-obj
+% % and save
+% save('antenna_permf.mat', 'mcf')
+% fprintf('done.\n')
+
+% code to generate M random samples
+% M = 3000 ;
 % mcf = zeros(M,3); % 3-obj
 % for i = 1:M
 %     x = rand(1,N);
@@ -14,22 +41,11 @@ N = 12 ; % number of antenna elements
 %     mcf(i,:) = antenna(y);
 % end
 % % plot the generated data
-% figure(1);
-% scatter3(mcf(:,1), mcf(:,2), mcf(:,3)) % 3-obj
+% % figure(1);
+% % scatter3(mcf(:,1), mcf(:,2), mcf(:,3)) % 3-obj
 % % and save
 % save('antenna_mcf.mat', 'mcf')
 % fprintf('done.\n')
-
-% display the frequency domain plot of a single solution
-% x_ = [0.31734, 0.066496, 0.88683, 0.66221, 0.12396, 0.43691, 0.28435, 0.41935];
-% x = mapvars(x_);
-% plot_gain(2, x, 180, 0.5);
-% x_ = [0.3093, 0.6185, 0.68918, 0.12031, 0.4014, 0.81329, 0.50161, 0.71623];
-% x = mapvars(x_);
-% plot_gain(3, x, 180, 0.5);
-% x_ = [0.55461, 0.40988, 0.58627, 0.64679, 0.023027, 0.76575, 0.78093, 0.16094];
-% x = mapvars(x_);
-% plot_gain(4, x, 180, 0.5);
 
 % testing array_factor
 % x_ = rand(1,N)
@@ -57,21 +73,35 @@ N = 12 ; % number of antenna elements
 
 % testing antenna function with extreme point solver
 load pivots_antenna ;
-x1 = pivots(1, 1:N);
-x2 = pivots(2, 1:N);
-x3 = pivots(3, 1:N);
+pv1 = pivots(1, 1:N);
+pv2 = pivots(2, 1:N);
+pv3 = pivots(3, 1:N);
 
-plot_gain(5, x1, 180, 0.5);
-plot_gain(6, x2, 180, 0.5);
-plot_gain(7, x3, 180, 0.5);
+plot_gain(5, pv1, 180, 0.5);
+plot_gain(6, pv2, 180, 0.5);
+plot_gain(7, pv3, 180, 0.5);
 
-f1 = antenna(x1);
-f2 = antenna(x2);
-f3 = antenna(x3);
-pvf = [f1; f2; f3];
+pvs = [antenna(pv1); antenna(pv2); antenna(pv3)];
 
-load antenna_mcf ;
-figure(8);
-scatter3(mcf(:,1), mcf(:,2), mcf(:,3), 'y') % 3-obj
+% load antenna_permf ; % 8.2 MB
+datafile = 'antenna_mcf.mat' ;
+load(datafile) ;
+fig = figure(8);
+clf(fig);
+scatter3(mcf(:,1)', mcf(:,2)', mcf(:,3)', 'y') % 3-obj
 hold on ;
-scatter3(pvf(:,1), pvf(:,2), pvf(:,3), 'b');
+scatter3(pvs(:,1)', pvs(:,2)', pvs(:,3)', 'b');
+xlabel('f1'); ylabel('f2'); zlabel('f3');
+view(26, 22);
+
+% save the samples into text format for gnuplot
+[pathstr, fname, ext] = fileparts(datafile);
+outfile = strcat('../../report/figs/data/', fname, '.out'); 
+fp = fopen(outfile, 'w');
+fprintf(fp, '%.3f\t%.3f\t%.3f\n', mcf');
+fclose(fp);
+% save the pivots as well.
+pivotfile = '../../report/figs/data/antenna-pivots-sosolver.out' ;
+fp = fopen(pivotfile, 'w');
+fprintf(fp, '%10.3f\t%10.3f\t%10.3f\n', pivots(:, N+1:N+3)');
+fclose(fp);

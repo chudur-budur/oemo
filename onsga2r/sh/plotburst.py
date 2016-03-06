@@ -45,33 +45,36 @@ def get_gpstr_2d(algo_files):
 
 
 def get_gpstr_3d(algo_files):
-    lstyle = 1
+    # lstyle = 1
     gpstr = ''
     algoname_regex = re.compile('onsga2r*')
     for algo in sorted(algo_files):
         if algoname_regex.match(algo):
-            lslst = [str(i) for i in range(lstyle, lstyle + 5)]
-            args = sorted(algo_files[algo]) + lslst \
-                + ['extreme-pts', 'opp-child',
-                    'opp-parent', algo, 'survived-pts']
+            # lslst = [str(i) for i in range(lstyle, lstyle + 5)]
+            args = sorted(algo_files[algo]) \
+                    + ['extreme-pts', 'opp-child', 'opp-parent', algo, 'survived-pts']
             gpstr += """
-            \"{0:s}\" using 1:2:3 w circles ls {5:s} ti '{10:s}', \\
-            \"{1:s}\" using 1:2:3 w circles ls {6:s} ti '{11:s}', \\
-            \"{2:s}\" using 1:2:3 w circles ls {7:s} ti '{12:s}', \\
-            \"{3:s}\" using 1:2:3 w circles ls {8:s} ti '{13:s}', \\
-            \"{4:s}\" using 1:2:3 w circles ls {9:s} ti '{14:s}', \\\n""".format(*args)
-            lstyle += 5
+            \"{0:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"red\"    ti '{5:s}', \\ 
+            \"{1:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"green\"  ti '{6:s}', \\
+            \"{2:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"blue\"   ti '{7:s}', \\
+            \"{3:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"black\"  ti '{8:s}', \\
+            \"{4:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"orange\" ti '{9:s}', \\\n""".format(*args)
+            # lstyle += 5
         else:
             try:
                 regex = re.compile('.*all_pop.*')
-                gpstr += """            \"{0:s}\" using 1:2:3 w circles ls {1:s} ti '{2:s}', \\\n"""\
-                    .format([fname for fname in algo_files[algo] if regex.match(fname)][0],
-                            str(lstyle), algo)
-                lstyle += 1
+                gpstr += \
+                    """            \"{0:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"grey\" ti '{1:s}', \\\n"""\
+                    .format([fname for fname in algo_files[algo] if regex.match(fname)][0], algo)
+                # lstyle += 1
             except Exception as e:
                 print(e.message, e.args)
                 sys.exit()
+
+    gpstr += """            \"{0:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"navyblue\" ti '{1:s}', \\\n""" \
+            .format("report/figs/data/antenna_mcf-c.out", "samples")
     gpstr = os.linesep.join([s for s in gpstr.splitlines() if s])
+    # print(gpstr[:-3])
     return gpstr[:-3]
 
 
@@ -158,10 +161,8 @@ pf2dcmd = """
 
 pf3dcmd = """
 	set term pdf enhanced color
-	set style fill transparent solid 0.75 noborder
         set output \"{0:s}\"
-	load \'~/gnuplot-utils/gnuplot-palettes/dark2.pal\'
-	set style circle radius screen 0.0075
+        set view 43, 321
 	set xlabel \'f1\'
 	set ylabel \'f2\'
 	set key out horiz bot cent

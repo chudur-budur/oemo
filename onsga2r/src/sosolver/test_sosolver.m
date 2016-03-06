@@ -4,6 +4,7 @@ global nreal ;
 global nobj ;
 
 filepath = '../../input_data/antenna.in' ;
+load_input_data(filepath);
 [pathstr, pname, ext] = fileparts(filepath);
 matfile = strcat('pivots_', pname, '.mat');
 pivots = zeros(nobj, nreal + nobj);
