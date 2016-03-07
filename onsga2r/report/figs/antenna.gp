@@ -77,6 +77,13 @@ splot nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "black" ti "Pareto-front (NSGA-II)",
 set term pop
 reset
 unset output
+set ztics 0, 0.5, 2.0
+set view 35, 311
+# set key outside bottom horizontal nobox
+set key at -15,350,3
+set xlabel "f1"
+set ylabel "f2"
+set zlabel "f3"
 gens = "3 20 90 200"
 do for [i = 1:words(gens)] {
 	g = word(gens, i)
@@ -90,14 +97,6 @@ do for [i = 1:words(gens)] {
 	
 	print sprintf("doing monochrome plot, gen = %s", g)
 	
-	set ztics 0, 0.5, 2.0
-	set view 35, 311
-	# set key outside bottom horizontal nobox
-	set key at -15,350,3
-	set xlabel "f1"
-	set ylabel "f2"
-	set zlabel "f3"
-
 	set term push
 	set term pdf enhanced color
 	set output outfile
