@@ -101,7 +101,7 @@ do for [i = 1:words(gens)] {
 	set term pdf enhanced color
 	set output outfile
 	splot \
-		mcf			u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" 	ti "nsga2", \
+		mcf			u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" 	ti "samples", \
 		nsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "grey" 	ti "nsga2", \
 		onsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "onsga2r", \
 		extreme			u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "extreme pts.", \
