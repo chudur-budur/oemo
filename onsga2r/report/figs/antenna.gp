@@ -53,14 +53,17 @@ unset output
 set term pdf enhanced color
 set output "antenna-pf.pdf"
 
-pf_nsga2r = "data/antenna-nsga2r-gen-194.out"
-pf_onsga2r = "data/antenna-onsga2r-gen-194.out"
+nsga2r = "data/antenna/nsga2r-gen-200.out"
+mcf = "data/antenna/antenna_mcf-c.out"
+pivots = "data/antenna/pivots-sosolver.out"
 
 set xlabel "f1"
 set ylabel "f2"
 set zlabel "f3"
-set ztics 0,0.1,0.5
-set view 53,33
+set ztics 0, 0.5, 2.0
+set view 35, 311
+set key at -10,350,2
 
-splot pf_nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "grey" ti "nsga2", \
-	pf_onsga2r u 1:2:3 w p pt 8 ps 0.5 lc rgb "black" ti "onsga2"
+splot nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "black" ti "Pareto-front (NSGA-II)", \
+	mcf u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" ti "random solutions (5000)", \
+	pivots u 1:2:3 w p pt 6 ps 0.5 lc rgb "red" ti "extreme points (approx.)", \
