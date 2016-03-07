@@ -1,4 +1,4 @@
-function[] = plot_gain(nplot, gbest, phi_desired, distance)
+function[theta, db] = plot_pattern(nplot, gbest, phi_desired, distance)
 
 N = 5000 ;
 dim = length(gbest);
@@ -25,5 +25,8 @@ figure(nplot);
 plot(phi, yax, 'g');
 xlabel('Azimuth angle(deg)');
 ylabel('Gain(db)');
+
+theta = phi ;
+db = yax ;
 
 end
