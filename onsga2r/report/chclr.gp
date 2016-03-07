@@ -22,7 +22,7 @@ do for [i = 1:words(probs)] {
 	set xrange[0:]
 	if(prob eq "dtlz6") { set xrange[0:40000] }
 	if(prob eq "dtlz5") { set xrange[0:5000] }
-	if(prob eq "crash") { set xrange[0:6000]}
+	if(prob eq "crash") { set xrange[0:8000]}
 	set yrange[0:]
 	plot \
 		algo2 using 1:3:2:6:5 with candlesticks \

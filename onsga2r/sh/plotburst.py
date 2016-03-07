@@ -71,8 +71,9 @@ def get_gpstr_3d(algo_files):
                 print(e.message, e.args)
                 sys.exit()
 
-    gpstr += """            \"{0:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"navyblue\" ti '{1:s}', \\\n""" \
-            .format("report/figs/data/antenna_mcf-c.out", "samples")
+    # this line is for antenna problem's sampled data points
+    # gpstr += """            \"{0:s}\" u 1:2:3 w p pt 6 ps 0.5 lc rgb \"navyblue\" ti '{1:s}', \\\n""" \
+    #         .format("report/figs/data/antenna_mcf-c.out", "samples")
     gpstr = os.linesep.join([s for s in gpstr.splitlines() if s])
     # print(gpstr[:-3])
     return gpstr[:-3]
@@ -162,7 +163,10 @@ pf2dcmd = """
 pf3dcmd = """
 	set term pdf enhanced color
         set output \"{0:s}\"
-        set view 43, 321
+        # this view is better for antenna problem
+        # set view 43, 321
+        # this view is better for crash problem
+        set view 69, 133
 	set xlabel \'f1\'
 	set ylabel \'f2\'
 	set key out horiz bot cent
