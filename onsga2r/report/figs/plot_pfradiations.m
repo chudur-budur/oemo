@@ -12,6 +12,8 @@ datapath = '/tmp/rad-data' ;
 pffilepath = 'data/antenna/onsga2r-gen-200.out';
 % the pivot file
 pivotfilepath = 'data/antenna/extreme-gen-200.out';
+% the ga solution file
+gafilepath = 'data/antenna/ga-pattern.out';
 % bash command template
 bcmd = 'gnuplot -e \"filename=''%s''\" radiation.gp' ;
 
@@ -20,6 +22,12 @@ if exist(datapath, 'dir')
     rmdir(datapath, 's');
 end
 mkdir(datapath);
+
+% plot the solution found from ga
+cmd = strcat(sprintf(bcmd, gafilepath));
+system(cmd);
+movefile('data/antenna/ga-pattern.pdf', 'ga-pattern.pdf');
+
 
 % now plotting the extreme points
 p = importdata(pivotfilepath);
@@ -37,7 +45,7 @@ for i = 1:n
     fclose(fp);
     fprintf('%d: plotting %s\n\n', i, filepath);
     cmd = strcat(sprintf(bcmd, filepath));
-    system(cmd)
+    system(cmd);
 end
 
 % now plot all the solutions from the pf
@@ -56,6 +64,6 @@ for i = 1:n
     fclose(fp);
     fprintf('%d: plotting %s\n\n', i, filepath);
     cmd = strcat(sprintf(bcmd, filepath));
-    system(cmd)
+    system(cmd);
 end
 disp('done');

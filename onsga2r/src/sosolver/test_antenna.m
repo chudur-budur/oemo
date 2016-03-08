@@ -106,28 +106,13 @@ N = 12 ; % number of antenna elements
 % fprintf(fp, '%10.3f\t%10.3f\t%10.3f\n', pivots(:, N+1:N+3)');
 % fclose(fp);
 
-% plot the azimuth pattern from 3 solutions, 
+% plot the azimuth pattern of the solution found from
+% single objective ga
 % also saves the data for gnuplot
-x1 = [0.240, 0.333, 0.366, 0.237, 0.946, 0.903, ...
-        162.381, 176.390, 76.734, -160.187, -54.398, 72.076];
-[theta, db] = plot_pattern(9, x1, 180, 0.5);
-outfile = '../../report/figs/data/antenna/extreme1-pattern.out';
-fp = fopen(outfile, 'w');
-fprintf(fp, '%10.3f\t%10.3f\n', [theta; db]);
-fclose(fp);
-
-x2 = [0.813, 0.441, 0.371, 0.248, 0.229, 0.843, ...
-        158.601, -157.263, 84.664, -178.959, -73.120, 160.364];
-[theta, db] = plot_pattern(10, x2, 180, 0.5);
-outfile = '../../report/figs/data/antenna/extreme2-pattern.out';
-fp = fopen(outfile, 'w');
-fprintf(fp, '%10.3f\t%10.3f\n', [theta; db]);
-fclose(fp);
-
-x3 = [0.966, 0.363, 0.373, 0.243, 0.249, 0.843, ...
-        158.384, -140.514, 84.702, 138.158, -57.385, 159.203];
-[theta, db] = plot_pattern(11, x3, 180, 0.5);
-outfile = '../../report/figs/data/antenna/solution1-pattern.out';
+x1 = [0.97565, 0.5715, 0.30977, 0.32848, 0.25926, 0.79118, ...
+    163.77, -170.17, 141.65, 163.08, -154.38, 177.09];
+[theta, db] = plot_radiation(9, x1, 180, 0.5);
+outfile = '../../report/figs/data/antenna/ga-pattern.out';
 fp = fopen(outfile, 'w');
 fprintf(fp, '%10.3f\t%10.3f\n', [theta; db]);
 fclose(fp);
