@@ -2,6 +2,9 @@
 
 # plots all antenna related stuffs from the actual data
 
+# title option
+titleopt = "false"
+
 # antenna convergenece plot
 hv_nsga2r = "../results/antenna/antenna-nsga2r-hv.stat"
 hv_onsga2r = "../results/antenna/antenna-onsga2r-hv.stat"
@@ -36,6 +39,7 @@ if (coloropt eq "color") {
 } else {
 	set term pdf monochrome dashed
 }
+if (titleopt eq "true") { set title "ANTENNNA: SE vs. HV"}
 set output "../results/antenna/antenna-nobox.pdf"
 xval = real(system(sprintf("cat %s | head -n 1 | awk -F\" \" \'{print $1}\'", hv_onsga2r)))
 ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
@@ -68,6 +72,7 @@ set zlabel "f3"
 set ztics 0, 0.5, 2.0
 set view 35, 311
 set key at -10,350,2
+if (titleopt eq "true") { set title "ANTENNNA: search space"}
 
 splot nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "black" ti "Pareto-front (NSGA-II)", \
 	mcf u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" ti "random solutions (5000)", \
@@ -94,9 +99,11 @@ do for [i = 1:words(gens)] {
 	onsga2r		= sprintf("data/antenna/onsga2r-gen-%s.out", g)
 	mcf		= "data/antenna/antenna_mcf-c.out"
 	outfile		= sprintf("antenna-g%s.pdf", g)
+	titlestr	= sprintf("generation: %s", g)
 	
 	print sprintf("doing monochrome plot, gen = %s", g)
 	
+	if (titleopt eq "true") { set title titlestr}
 	set term push
 	set term pdf enhanced color
 	set output outfile

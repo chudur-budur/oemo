@@ -1,6 +1,7 @@
 #!/usr/local/bin/gnuplot
 
 coloropt = "color"
+titleopt = "false"
 
 reset
 set term pdf enhanced color
@@ -9,6 +10,7 @@ if (coloropt eq "color") {
 } else {
 	load "~/gnuplot-utils/gnuplot-colorbrewer/sequential/Greys.plt"
 }
+if (titleopt eq "true") { set title "zdt3, generation: 3" }
 set output "zdt3-gen-3.pdf"
 set style fill transparent solid 0.75 noborder
 set style circle radius screen 0.01
@@ -31,6 +33,7 @@ plot \
 #
 unset arrow
 unset label
+if (titleopt eq "true") { set title "zdt3, generation: 18" }
 set output "zdt3-gen-18.pdf"
 set arrow from 0.6,1.25 to 0.45,0.3 size screen 0.015,30 lw 4
 set label 1 "front being constructed" at 0.5,1.65
@@ -50,6 +53,7 @@ plot \
 #
 unset arrow
 unset label
+if (titleopt eq "true") { set title "zdt3, generation: 27" }
 set output "zdt3-gen-27.pdf"
 set arrow from 0.52,-0.35 to 0.62,-0.35 size screen 0.015,30 lw 4
 set label 1 "refining fronts using" at 0.35,-0.25
@@ -71,6 +75,7 @@ plot \
 unset arrow
 unset label
 set term pdf enhanced color
+if (titleopt eq "true") { set title "zdt4, generation: 21" }
 set output "zdt4-gen-21.pdf"
 set arrow from 0.2,32.0 to 0.02,5.0 size screen 0.015,30 lw 4
 set arrow from 0.3,32.0 to 0.55,5.0 size screen 0.015,30 lw 4
