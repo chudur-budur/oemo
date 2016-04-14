@@ -67,10 +67,10 @@ set arrow from 0.17,-0.31 to 0.2,0.42 size screen 0.015,30 lw 4
 set arrow from 0.22,-0.31 to 0.4,0.0 size screen 0.015,30 lw 4
 set label 5 "completed fronts" at 0.1,-0.4
 plot \
-	"./data/zdt3-pop-gen-27.out" using 1:2 w circles ls 1 ti "all solutions", \
-	"./data/zdt3-child-gen-27.out" using 1:2 w circles ls 2 ti "child solutions", \
-	"./data/zdt3-extreme-gen-27.out" using 1:2 w circles ls 3 ti "extremes",\
-	"./data/zdt3-survived-gen-27.out" using 1:2 w circles ls 4 ti "survived solutions"
+	"./data/zdt3-pop-gen-27.out" using 1:2 w circles ls 4 ti "all solutions", \
+	"./data/zdt3-child-gen-27.out" using 1:2 w circles ls 5 ti "child solutions", \
+	"./data/zdt3-extreme-gen-27.out" using 1:2 w circles ls 6 ti "extremes",\
+	"./data/zdt3-survived-gen-27.out" using 1:2 w circles ls 7 ti "survived solutions"
 #
 unset arrow
 unset label
