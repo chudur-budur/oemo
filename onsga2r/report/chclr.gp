@@ -65,7 +65,7 @@ do for [i = 1:words(probs)] {
 }
 
 # onsga2r vs. nsga2re
-probs = "zdt4 dtlz3 dtlz6 dtlz7"
+probs = "zdt1 zdt4 dtlz3 dtlz6 dtlz7"
 do for [i = 1:words(probs)] {
 	prob = word(probs,i)
 	algo1 = sprintf("results/%s/%s-nsga2re-hv.stat", prob, prob)
@@ -120,7 +120,7 @@ do for [i = 1:words(probs)] {
 }
 
 # onsga2r vs. onsga2rw
-probs = "dtlz3 dtlz6 zdt2 zdt4"
+probs = "dtlz3 dtlz6 zdt2 zdt3 zdt4"
 do for [i = 1:words(probs)] {
 	prob = word(probs,i)
 	algo1 = sprintf("results/%s/%s-onsga2r-hv.stat", prob, prob)
@@ -141,6 +141,7 @@ do for [i = 1:words(probs)] {
 	if(prob eq "dtlz6") { set xrange[0:40000] }
 	if(prob eq "zdt2") { set xrange[0:6000] }
 	if(prob eq "zdt4") { set xrange[0:12000] }
+	if(prob eq "zdt3") { set xrange[0:10000] }
 	set yrange[0:]
 	plot \
 		algo2 using 1:3:2:6:5 with candlesticks \
