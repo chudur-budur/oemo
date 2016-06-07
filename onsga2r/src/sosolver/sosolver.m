@@ -112,13 +112,13 @@ f_star = func(x0) ;
 if (ismember(prob_name, easy_problems))
     fprintf(1, 'sosolver.m -- Next level AASF, applying fmincon() with FE bound %d\n', febound);
     [x,fval,exitflag,output,lambda,grad,hessian] ...
-                = fmincon(@sopt,x0,[],[],[],[],lb,ub,constfunc,fmcopt) ;
+                = fmincon(@aasf,x0,[],[],[],[],lb,ub,constfunc,fmcopt) ;
     feval = feval + output.funcCount ;
     fprintf(1, 'sosolver.m -- Next level AASF done (fmincon()).');
 elseif (ismember(prob_name, hard_problems))
     fprintf(1, 'sosolver.m -- Next level AASF, applying patternsearch() with FE bound %d\n', febound);
     [x,fval,exitflag,output] ...
-                = patternsearch(@sopt,x0,[],[],[],[],lb,ub,constfunc,psopt) ;
+                = patternsearch(@aasf,x0,[],[],[],[],lb,ub,constfunc,psopt) ;
     feval = feval + output.funccount ;
     fprintf(1, 'sosolver.m -- Next level AASF done (patternsearch()).');
 end                
@@ -145,3 +145,4 @@ fprintf('sosolver.m -- result: \n');
 disp(result');
 result = result' ;
 end
+
