@@ -9,18 +9,14 @@ titleopt = "false"
 hv_nsga2r = "../results/antenna/antenna-nsga2r-hv.stat"
 hv_onsga2r = "../results/antenna/antenna-onsga2r-hv.stat"
 
-coloropt = "color"
+coloropt = "nocolor"
 
 reset 
 if (coloropt eq "color") {
 	print "doing color plot"
 	load "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Paired.plt"
-	set term push
-	set terminal unknown
 } else {
 	print "doing monochrome plot"
-	set term push
-	set terminal unknwon
 }
 
 set key bottom right
@@ -28,12 +24,13 @@ set xlabel "solution evaluations"
 set ylabel "hypervolume"
 set format x "%.1s%c"
 plot \
-	hv_nsga2r	u 1:7 w l ls 1 lw 6 ti "nsga2r-mean", \
-	hv_onsga2r	u 1:7 w l ls 2 lw 6 ti "onsga2r-mean", \
-	hv_nsga2r	u 1:4 w l ls 3 lw 6 ti "nsga2r-median", \
-	hv_onsga2r	u 1:4 w l ls 4 lw 6 ti "onsga2r-median", \
-	hv_nsga2r	u 1:6 w l ls 7 lw 6 ti "nsga2r-max", \
-	hv_onsga2r	u 1:6 w l ls 8 lw 6 ti "onsga2r-max"
+	hv_nsga2r	u 1:7 w lp ps 0.5 pt 1 pi -2 lw 2 ti "nsga2r-mean", \
+	hv_onsga2r	u 1:7 w lp ps 0.5 pt 4 pi -2 lw 2 ti "algorithm3-mean", \
+	hv_nsga2r	u 1:4 w lp ps 0.5 pt 6 pi -2 lw 2 ti "nsga2r-median", \
+	hv_onsga2r	u 1:4 w lp ps 0.5 pt 2 pi -2 lw 2 ti "algorithm3-median", \
+	hv_nsga2r	u 1:6 w lp ps 0.5 pt 5 pi -2 lw 2 ti "nsga2r-max", \
+	hv_onsga2r	u 1:6 w lp ps 0.5 pt 7 pi -2 lw 2 ti "algorithm3-max"
+set term push
 if (coloropt eq "color") {
 	set term pdf enhanced color
 } else {
@@ -51,6 +48,7 @@ set arrow from 0!+xthresh,liney to xval-xthresh,liney heads size screen 0.005,90
 set label 1 "cost to find E*" rotate left at (xval+xthresh)/2,txtstart
 set arrow from (xval+xthresh)/2,txtstart-(ydiff * 0.01) to (xval+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
 replot
+unset output
 set term pop
 
 
@@ -76,7 +74,7 @@ if (titleopt eq "true") { set title "ANTENNNA: search space"}
 
 splot nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "black" ti "Pareto-front (NSGA-II)", \
 	mcf u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" ti "random solutions (5000)", \
-	pivots u 1:2:3 w p pt 6 ps 0.5 lc rgb "red" ti "extreme points (approx.)", \
+	pivots u 1:2:3 w p pt 6 ps 0.5 lc rgb "red" ti "Z*_b", \
 
 # plot 6 snapshots
 set term pop
@@ -110,9 +108,9 @@ do for [i = 1:words(gens)] {
 	splot \
 		mcf			u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" 	ti "samples", \
 		nsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "grey" 	ti "nsga2", \
-		onsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "onsga2r", \
-		extreme			u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "extreme pts.", \
-		child			u 1:2:3 w p pt 6 ps 0.5 lc rgb "green"	ti "child", \
+		onsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "algorithm3", \
+		extreme			u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "Z*_b", \
+		child			u 1:2:3 w p pt 6 ps 0.5 lc rgb "green"	ti "x_c", \
 		survived		u 1:2:3 w p pt 6 ps 0.5 lc rgb "orange"	ti "survived"
 
 	unset output

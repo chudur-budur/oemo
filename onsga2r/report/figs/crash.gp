@@ -28,13 +28,13 @@ do for [i = 1:words(gens)] {
 	set view 69, 133
 
 	set term push
-	set term pdf enhanced color
+	set term pdf enhanced monochrome
 	set output outfile
 	splot \
 		nsga2r_all		u 1:2:3 w p pt 6 ps 0.5 lc rgb "grey" 	ti "nsga2", \
-		onsga2r_all		u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "onsga2r", \
-		onsga2r_extreme		u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "extreme pts.", \
-		onsga2r_child		u 1:2:3 w p pt 6 ps 0.5 lc rgb "green"	ti "child", \
+		onsga2r_all		u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "algorithm 3", \
+		onsga2r_extreme		u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "Z*_b", \
+		onsga2r_child		u 1:2:3 w p pt 6 ps 0.5 lc rgb "green"	ti "x_c", \
 		onsga2r_survived	u 1:2:3 w p pt 6 ps 0.5 lc rgb "orange"	ti "survived"
 
 	unset output

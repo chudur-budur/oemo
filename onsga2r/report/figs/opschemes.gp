@@ -1,6 +1,6 @@
 #!/usr/local/bin/gnuplot
 
-coloropt = "color"
+coloropt = "nocolor"
 
 zdt4  = "../results/zdt4/zdt4-onsga2r-hv.stat"
 zdt4i = "../results/zdt4/zdt4-onsga2rdi-hv.stat"
