@@ -30,7 +30,7 @@ plot \
 xval = real(system(sprintf("cat %s | head -n 1 | awk -F\" \" \'{print $1}\'", c1dtlz1_onsga2r)))
 ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
 ymin = GPVAL_Y_MIN
-liney = ymin + (ydiff * 0.5)
+liney = ymin + (ydiff * 0.4)
 txtstart = liney + (ydiff * 0.1)
 xthresh = 50
 set arrow from 0+xthresh,liney to xval-xthresh,liney heads size screen 0.005,90 lw 4 
@@ -48,6 +48,7 @@ unset output
 set term pop
 
 reset
+set key bottom right
 set xlabel "solution evaluations"
 set ylabel "hypervolume"
 set format x "%.1s%c"
@@ -61,7 +62,7 @@ plot \
 xval = real(system(sprintf("cat %s | head -n 1 | awk -F\" \" \'{print $1}\'", c1dtlz3_onsga2r)))
 ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
 ymin = GPVAL_Y_MIN
-liney = ymin + (ydiff * 0.5)
+liney = ymin + (ydiff * 0.10)
 txtstart = liney + (ydiff * 0.1)
 xthresh = 50
 set arrow from 0+xthresh,liney to xval-xthresh,liney heads size screen 0.005,90 lw 4 

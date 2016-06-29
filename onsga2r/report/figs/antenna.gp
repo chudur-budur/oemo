@@ -1,6 +1,15 @@
 #!/usr/local/bin/gnuplot
 
+g1 = "#1d1d1d"
+g2 = "#313131"
+g3 = "#484848"
+g4 = "#616161"
+g5 = "#7b7b7b"
+g6 = "#959595"
+g7 = "#afafaf"
+
 # plots all antenna related stuffs from the actual data
+#
 
 # title option
 titleopt = "false"
@@ -34,18 +43,18 @@ set term push
 if (coloropt eq "color") {
 	set term pdf enhanced color
 } else {
-	set term pdf monochrome dashed
+	set term pdf enhanced monochrome dashed
 }
 if (titleopt eq "true") { set title "ANTENNNA: SE vs. HV"}
 set output "../results/antenna/antenna-nobox.pdf"
 xval = real(system(sprintf("cat %s | head -n 1 | awk -F\" \" \'{print $1}\'", hv_onsga2r)))
 ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
 ymin = GPVAL_Y_MIN
-liney = ymin + (ydiff * 0.3)
+liney = ymin + (ydiff * 0.4)
 txtstart = liney + (ydiff * 0.1)
 xthresh = 50
 set arrow from 0!+xthresh,liney to xval-xthresh,liney heads size screen 0.005,90 lw 4 
-set label 1 "cost to find E*" rotate left at (xval+xthresh)/2,txtstart
+set label 1 "cost to find Z*_b" rotate left at (xval+xthresh)/2,txtstart
 set arrow from (xval+xthresh)/2,txtstart-(ydiff * 0.01) to (xval+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
 replot
 unset output
@@ -53,7 +62,12 @@ set term pop
 
 
 # the antenna pf plot
-print "doing monochrome plot"
+if (coloropt eq "color") {
+	print "doing color plot"
+	load "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Paired.plt"
+} else {
+	print "doing monochrome plot"
+}
 reset
 unset output
 set term push
@@ -71,10 +85,11 @@ set ztics 0, 0.5, 2.0
 set view 35, 311
 set key at -10,350,2
 if (titleopt eq "true") { set title "ANTENNNA: search space"}
+splot \
+	nsga2r	u 1:2:3 w p pt 06 ps 0.75 lw 1 lc rgb g2 ti "Pareto-front (NSGA-II)", \
+	mcf	u 1:2:3 w p pt 06 ps 0.75 lw 1 lc rgb g7 ti "random solutions (5000)", \
+	pivots	u 1:2:3 w p pt 12 ps 1.50 lw 4 lc rgb g4 ti "Z*_b", \
 
-splot nsga2r u 1:2:3 w p pt 6 ps 0.5 lc rgb "black" ti "Pareto-front (NSGA-II)", \
-	mcf u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" ti "random solutions (5000)", \
-	pivots u 1:2:3 w p pt 6 ps 0.5 lc rgb "red" ti "Z*_b", \
 
 # plot 6 snapshots
 set term pop
@@ -106,13 +121,13 @@ do for [i = 1:words(gens)] {
 	set term pdf enhanced color
 	set output outfile
 	splot \
-		mcf			u 1:2:3 w p pt 6 ps 0.5 lc rgb "navy" 	ti "samples", \
-		nsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "grey" 	ti "nsga2", \
-		onsga2r			u 1:2:3 w p pt 6 ps 0.5 lc rgb "black"	ti "algorithm3", \
-		extreme			u 1:2:3 w p pt 6 ps 0.5 lc rgb "red"	ti "Z*_b", \
-		child			u 1:2:3 w p pt 6 ps 0.5 lc rgb "green"	ti "x_c", \
-		survived		u 1:2:3 w p pt 6 ps 0.5 lc rgb "orange"	ti "survived"
+		mcf		u 1:2:3 w p pt 06 ps 0.50 lw 1 lc rgb g7  ti "samples", \
+		nsga2r		u 1:2:3 w p pt 06 ps 1.00 lw 4 lc rgb g4  ti "nsga2", \
+		onsga2r		u 1:2:3 w p pt 07 ps 0.50 lw 1 lc rgb g3  ti "algorithm3", \
+		extreme		u 1:2:3 w p pt 12 ps 1.50 lw 4 lc rgb g2  ti "Z*_b"
 
 	unset output
 	set term pop
 }
+# child		u 1:2:3 w p pt 06 ps 0.5 lc rgb g5  ti "x_c", \
+# survived	u 1:2:3 w p pt 06 ps 0.5 lc rgb g6  ti "survived"
