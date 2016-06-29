@@ -121,7 +121,12 @@ NSGA-III related (work in progress)
 12. ~~survival analysis~~
 13. ~~Make all figs monochrome~~
 14. ~~take opposites from the worst front~~
-15. again!! test with constrained problems and engineering problems
+15. ~~again!! test with constrained problems and engineering problems~~
 16. fix the sosolver for zdt4 like problems
-17. devise a new problem with different pareto partition
-18. Some more of this endless crap.
+
+#### Paper is almost ready except the moea/d results --
+1. make the nadir estimation code independent from the actual nsga2 code
+2. convert the nadir estimation code in such a way that it can be called
+independently and will store all the approximated nadir solutions in one 
+file for each problem. i.e. zdt1.nadir.in
+3. clean up the code.

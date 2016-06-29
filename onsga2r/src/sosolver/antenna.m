@@ -134,7 +134,7 @@ end;
 % y3 = 3rd term, minimize |phi_0 - phi_des|
 % y1 = 4th term, null control 
 
-f = sllreturn + y + y3 + y1 ; % single objective case
-% f = [sllreturn, y + y3, y1] ; % MOP case
+% f = sllreturn + y + y3 + y1 ; % single objective case
+f = [sllreturn, y + y3, y1] ; % MOP case
 
 end

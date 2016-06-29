@@ -21,5 +21,5 @@ for i = 1:nobj
     fprintf('%d = %d x %d\n', feval, popsize, max_gen);
     pivots(i,:) = [xval', fval'];
 end
-disp(pivots);
+% disp(pivots);
 save(matfile, 'pivots');
