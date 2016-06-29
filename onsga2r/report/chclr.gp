@@ -49,7 +49,7 @@ do for [i = 1:words(probs)] {
 	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
 	# print "ymin: ", ymin
-	liney = ymin + (ydiff * 0.5)
+	liney = ymin + (ydiff * 0.075)
 	# print "liney: ", liney
 	txtstart = liney + (ydiff * 0.1)
 	# print "txtstart: ", txtstart
@@ -149,7 +149,7 @@ do for [i = 1:words(probs)] {
 	set yrange[0:]
 	plot \
 		algo2 using 1:3:2:6:5 with candlesticks \
-				fs transparent solid 0.3 ls 8 lw 3 title "algorithm 3(w)" whiskerbars 0.5, \
+				fs transparent solid 0.3 ls 8 lw 3 title "algorithm 3(weighted)" whiskerbars 0.5, \
 		algo2 using 1:7:7:7:7 with candlesticks ls 4 lw 3 title 'mean', \
 		algo2 using 1:4:4:4:4 with candlesticks ls 3 lw 3 title 'median', \
 		algo2 using 1:4 with lines ls 3 lw 5 noti, \
