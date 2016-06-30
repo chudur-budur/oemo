@@ -65,7 +65,7 @@ int init_extreme_pts_hardcoded(void)
 {
 	double **extremes ;
 	int feval = 0, i;
-	/* e_star = new_list(); */
+	/* e_star = new_list(); */ /* not needed because we are hard coding in the function */
 	individual ind ;
 	extremes = (double**)malloc(sizeof(double*) * nobj);
 	for(i = 0 ; i < nobj ; i++) extremes[i] = (double*)malloc(sizeof(double) * nreal);
