@@ -25,6 +25,7 @@
 	void inject_extreme_points(population *pop)
 	
 	void generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen, double *overshoot_stat)
+
 	void make_pool(population *pop, pop_list *pool)
 	pop_list* discard_weakly_dominated_points(population *E_, int size)
 	int weakly_dominates(individual *i1, individual *i2)
