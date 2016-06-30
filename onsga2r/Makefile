@@ -17,7 +17,6 @@ MIFLAGS		:= -I"/opt/MATLAB/R2014a/extern/include"\
 			-I./src/sosolver
 MLDFLAGS	:= -pthread -Wl,-rpath-link,/opt/MATLAB/R2014a/bin/glnxa64 -O\
 			$(SOSOLVEROBJ) -L"/opt/MATLAB/R2014a/runtime/glnxa64" -lmwmclmcrrt
-# OBJ 		:= $(SRC:.c=.o)
 OBJ 		:= $(patsubst %c,%o,$(SRC))
 DEPS		:= $(OBJ:.o=.d)
 
@@ -25,7 +24,6 @@ DEPS		:= $(OBJ:.o=.d)
 
 all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
-whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
 
 onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
@@ -79,10 +77,6 @@ wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
 	cp wfg-1.10/wfg .
 
-whv-pisa/hyp_ind: whv-pisa/premo_wdfs.c whv-pisa/hyp_ind.c
-	$(CC) -g -Wall -pedantic -std=gnu99 -I/whv-pisa/premo_wdfs.h $^ -o $@ $(LDFLAGS)
-	cp whv-pisa/hyp_ind whv
-
 -include $(DEPS)
 
 clean:
@@ -103,4 +97,3 @@ clean-sosolv:
 
 clean-all: clean
 	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
-	rm -f whv-pisa/*.o whv-pisa/hyp_ind whv
