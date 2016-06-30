@@ -5,6 +5,7 @@
 
 /**
  * Some random utility functions, some of them are used in opposition.c
+ * some of them are written for statistical purposes, not part of the actual algorithm
  */
 
 /* printing op */
