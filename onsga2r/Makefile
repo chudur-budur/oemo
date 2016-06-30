@@ -23,7 +23,7 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg sosolv
 
-all: onsga2r onsga2rj onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi onsga2rdr
+all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
 whv: whv-pisa/hyp_ind
 sosolv: $(SOSOLVEROBJ)
@@ -31,10 +31,6 @@ sosolv: $(SOSOLVEROBJ)
 onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 	strip onsga2r
-
-onsga2rj: $(OBJ) src/onsga2rj.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
-	strip onsga2rj
 
 onsga2rw: $(OBJ) src/onsga2rw.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
@@ -44,21 +40,9 @@ onsga2rwdom: $(OBJ) src/onsga2rwdom.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 	strip onsga2rwdom
 
-onsga2rdi: $(OBJ) src/onsga2rdi.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
-	strip onsga2rdi
-
-onsga2rdr: $(OBJ) src/onsga2rdr.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
-	strip onsga2rdr
-
 nsga2re: $(OBJ) src/nsga2re.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
 	strip nsga2re
-
-nsga2rew: $(OBJ) src/nsga2rew.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
-	strip nsga2rew
 
 nsga2r: $(OBJ) src/nsga2r.o src/sosolver.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
@@ -67,25 +51,13 @@ nsga2r: $(OBJ) src/nsga2r.o src/sosolver.o
 src/onsga2r.o: src/onsga2r.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
-src/onsga2rj.o: src/onsga2rj.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
-
 src/onsga2rw.o: src/onsga2rw.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/onsga2rwdom.o: src/onsga2rwdom.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
-src/onsga2rdi.o: src/onsga2rdi.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
-
-src/onsga2rdr.o: src/onsga2rdr.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
-
 src/nsga2re.o: src/nsga2re.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
-
-src/nsga2rew.o: src/nsga2rew.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/nsga2r.o: src/nsga2r.c
@@ -117,7 +89,7 @@ clean:
 	rm -f src/*.d
 	rm -f src/*.gc*
 	rm -f $(OBJ) src/*.o src/sosolver/*.o
-	rm -f onsga2r onsga2rj onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi onsga2rdr
+	rm -f onsga2r onsga2rj onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#
