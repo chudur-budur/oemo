@@ -40,13 +40,13 @@ Now you can build the main code --
 ##### 1. Run a single experiment:
 ```shell
 	./sh/run onsga2r input_data/zdt1.in experiments/ 1 0.12345
-	./sh/run nsga2re input_data/zdt1.in experiments/ 1 0.12345
+	./sh/run nsga2r input_data/zdt1.in experiments/ 1 0.12345
 ```
 
 ##### 2. Run multiple experiments at once:
 ```shell
 	./sh/maprun -si -n 11 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
-	./sh/maprun -si -n 11 -c "./sh/run nsga2re input_data/zdt1.in experiments/"
+	./sh/maprun -si -n 11 -c "./sh/run nsga2r input_data/zdt1.in experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
