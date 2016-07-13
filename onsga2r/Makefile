@@ -22,29 +22,30 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg sosolv
 
-all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
+all: nsga2r onsga2r
+# all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
 sosolv: $(SOSOLVEROBJ)
 
-onsga2r: $(OBJ) src/onsga2r.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+onsga2r: $(OBJ) src/onsga2r.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 	strip onsga2r
 
-onsga2rw: $(OBJ) src/onsga2rw.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+onsga2rw: $(OBJ) src/onsga2rw.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 	strip onsga2rw
 
-onsga2rwdom: $(OBJ) src/onsga2rwdom.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+onsga2rwdom: $(OBJ) src/onsga2rwdom.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 	strip onsga2rwdom
 
-nsga2re: $(OBJ) src/nsga2re.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
-	strip nsga2re
-
-nsga2r: $(OBJ) src/nsga2r.o src/sosolver.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(MLDFLAGS)
+nsga2r: $(OBJ) src/nsga2r.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 	strip nsga2r
+
+nsga2re: $(OBJ) src/nsga2re.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	strip nsga2re
 
 src/onsga2r.o: src/onsga2r.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
@@ -55,11 +56,12 @@ src/onsga2rw.o: src/onsga2rw.c
 src/onsga2rwdom.o: src/onsga2rwdom.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
+src/nsga2r.o: src/nsga2r.c
+	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+
 src/nsga2re.o: src/nsga2re.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
-src/nsga2r.o: src/nsga2r.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
 
 src/sosolver.o: src/sosolver.c
 	$(CC) $(CFLAGS) $(MCFLAGS) $(MIFLAGS) -c -MMD -MP $< -o $@
@@ -83,7 +85,7 @@ clean:
 	rm -f src/*.d
 	rm -f src/*.gc*
 	rm -f $(OBJ) src/*.o src/sosolver/*.o
-	rm -f onsga2r onsga2rj onsga2rw nsga2re nsga2rew nsga2r onsga2rwdom onsga2rdi
+	rm -f onsga2r onsga2rw onsga2rwdom nsga2re nsga2r
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#
