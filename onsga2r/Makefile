@@ -13,10 +13,9 @@ LDFLAGS 	:= -lm
 OBJ 		:= $(patsubst %c,%o,$(SRC))
 DEPS		:= $(OBJ:.o=.d)
 
-.PHONY: clean all wfg sosolv
+.PHONY: clean all wfg
 
 all: nsga2r onsga2r nsga2re onsga2rw onsga2rwdom
-# all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
 
 onsga2r: $(OBJ) src/onsga2r.o
