@@ -140,7 +140,7 @@ int init_extreme_pts_from_file(void)
 	size_t len = 0 ; ssize_t read ;
 	double **vals ; int index ;
 	individual *ind ;
-	sprintf(nadir_path, "nadirs/%s-nadirs.out", prob_name);
+	sprintf(nadir_path, "chimps/%s-chimps.out", prob_name);
 	fprintf(stdout, "\n*********** loading from file: %s\n", nadir_path);
 	lines = count_lines(nadir_path);
 	vals = (double**)malloc(sizeof(double*) * lines);
@@ -184,7 +184,7 @@ int init_extreme_pts_from_file_weighted(void)
 	size_t len = 0 ; ssize_t read ;
 	double **vals ; int index ;
 	individual *ind ;
-	sprintf(nadir_path, "nadirs/%s-nadirs.out", prob_name);
+	sprintf(nadir_path, "chimps/%s-chimps.out", prob_name);
 	fprintf(stdout, "\n*********** loading from file: %s\n", nadir_path);
 	lines = count_lines(nadir_path);
 	vals = (double**)malloc(sizeof(double*) * lines);

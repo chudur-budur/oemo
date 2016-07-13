@@ -1,4 +1,4 @@
-%% GEN_NADIR Generate all nadir points and save them in a file
+%% GEN_CHIMPS Generate all CHIM bounding points and save them in a file
 
 clear ; % clear craps
 addpath('problemdef') ;
@@ -50,10 +50,10 @@ set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
 file_path = '../input_data/dtlz2.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 % make file path to save all the nadir solutions
-out_dir = '../nadirs' ;
+out_dir = '../chimps' ;
 if(~exist(out_dir, 'dir')), mkdir(out_dir); end
-out_file = strcat(out_dir, '/', prob_name, '-nadirs.out');
-fprintf('** Saving nadirs to: %s\n', out_file);
+out_file = strcat(out_dir, '/', prob_name, '-chimps.out');
+fprintf('** Saving CHIM bounds to: %s\n', out_file);
     
 %% load the problem parameters
 load_input_data(file_path);
