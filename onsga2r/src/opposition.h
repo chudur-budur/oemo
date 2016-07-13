@@ -17,9 +17,8 @@ extern pop_list *e_star ;
 
 int init_extreme_pts_hardcoded(void);
 int init_extreme_pts_hardcoded_weak(void);
-int init_extreme_pts_sosolver(double seed);
-int init_extreme_pts_sosolver_weighted(double seed);
-int init_extreme_pts_from_file();
+int init_extreme_pts_from_file(void);
+int init_extreme_pts_from_file_weighted(void);
 
 void inject_extreme_points(population *pop);
 
