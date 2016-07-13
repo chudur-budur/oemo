@@ -30,7 +30,7 @@ probs = {...
 % ratios to fix FE bounds
 ratios = {...
     30.0, 30.0, 25.0, 8.0, 8.0, ...
-    500, 500, 500, 500, 500, 500, 500, ...
+    8.0, 40.0, 500, 500, 500, 500, 500, ...
     500, 500, 500, ...
     500, 500, 500, ...
     500, 500, 500, 500};
@@ -47,7 +47,7 @@ set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
 
 %% file paths
 % file_path is the problem parameters from input_data folder
-file_path = '../input_data/zdt6.in' ;
+file_path = '../input_data/dtlz2.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 % make file path to save all the nadir solutions
 out_dir = '../nadirs' ;
@@ -86,7 +86,7 @@ fmcopt.Display = 'off' ;
 psopt = psoptimset(@patternsearch);
 psopt = psoptimset(psopt, 'MaxFunEvals', febound);
 % this can be removed, may be ?
-if (nobj > 4)
+if (nobj > 2)
     psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));
     % psopt = psoptimset(psopt, 'InitialMeshSize', 1.0);
     psopt = psoptimset(psopt, 'TolX', 1e-7, 'TolBind', 1e-6);

@@ -680,8 +680,10 @@ void dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	k = nreal - nobj + 1;
 
 	g = 0.0 ;
+	/* for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)); */
 	for(i = nreal - k ; i < nreal ; i++)
-		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5));
+		g += fabs(xreal[i] - 0.5);
 	/* g = 100.0 * g */
 	for(i = 0 ; i < nobj ; i++) obj[i] = 1.0 + g ;
 
