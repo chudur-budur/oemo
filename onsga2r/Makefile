@@ -15,7 +15,7 @@ DEPS		:= $(OBJ:.o=.d)
 
 .PHONY: clean all wfg sosolv
 
-all: nsga2r onsga2r
+all: nsga2r onsga2r nsga2re
 # all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
 
