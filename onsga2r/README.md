@@ -12,12 +12,10 @@ Once you have found all the bounding solutions (using the MATLAB scritps in the 
 ```shell
 	make
 ```
-
 Once you build, you will find the following executables --
 
-	* `nsga2r`:
-
-	* `onsga2r`:
+  * `nsga2r`: blah blah
+  * `onsga2r`: blah blah
 
 ##### 2. cleaning up:
 ```shell
