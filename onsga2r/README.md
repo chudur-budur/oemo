@@ -3,23 +3,12 @@ EMO with *CHIM<sub>+<sub>* outer-bounds (a.k.a oemo)
 
 ### Experiments with *CHIM<sub>+<sub>* bound injection in EMO.
 
-#### How to compile the classical search component:
-This part is written in MATLAB (`R2014a`), extensively using `fmincon()` and `patternsearch()`. All the related matlab scripts could be found in `src/sosolver` and the wrapper function is in `src/sosolver.c` and `src/sosolver.h`. To compile and run this part, you need to add `$matlabroot/runtime/glnxa64` and `$matlabroot/bin/glnxa64` to `$LD_LIBRARY_PATH`. So there it goes -- 
+#### How to find the *CHIM<sub>+<sub>* bounds:
+This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/nadir-solver).
 
-##### 1. To build the whole application, first you need to build the matlab's single obj. optimization solver
-```shell
-	make sosolv
-```
+Once you have found all the bounding solutions (using the MATLAB scritps in the `nadir-solver` folder), now you can build the main code --
 
-##### 2. cleaning up the so-solver
-```shell
-	make clean-sosolv
-```
-
-Now you can build the main code --
-
-
-##### 3. building the main code (nsga2 and opposition based nsga2):
+##### 3. building the main executables (nsga2r, onsga2r etc.):
 ```shell
 	make
 ```
@@ -33,7 +22,6 @@ Now you can build the main code --
 ```shell
 	make wfg
 ``` 
-
 
 #### How to run the experiments and to statistical analysis:
 
