@@ -9,5 +9,6 @@ All the *CHIM<sub>+<sub>* bounding solutions are saved in the `../nadirs` folder
 	```matalb
 	file_path = '../input_data/zdt6.in' ;
 	```
+and then run the script.
 
 2. `test_antenna.m`: The script to run and test the multi-objective circular antenna array problem solver.
