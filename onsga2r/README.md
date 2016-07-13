@@ -14,7 +14,6 @@ Once you have found all the bounding solutions (using the MATLAB scritps in the 
 ```
 
 Once you build, you will find the following executables --
-
 	* `nsga2r`:
 	* `onsga2r`:
 
