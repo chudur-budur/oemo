@@ -1,5 +1,5 @@
 function f = zdt6(x)
-%   This procedure implements zdt6 function.
+%%   This procedure implements zdt6 function.
 %   The canonical zdt6 function is defined as below --
 %   f_1 = 1.0 - exp(-4.0 * x_1) * sin(6 * pi * x_1)
 %   f_2 = g * (1.0 - (f_1/g)^2)

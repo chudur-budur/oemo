@@ -1,10 +1,10 @@
-% the testing code
-
+%% the testing code for antenna
+clear ; % clear craps
 rng(123456, 'twister');
-
 N = 12 ; % number of antenna elements
 
-% exhaustive enumeration -- caution, takes 2/3 hours.
+%% exhaustive enumeration -- caution, takes 2/3 hours.
+% this will generate 2 files: antenna_permx.mat and antenna_permf.mat
 % x1 = linspace(0.2, 1.0, 6);
 % x2 = linspace(-180, 180, 6);
 % x1_ = perms(x1);
@@ -32,22 +32,23 @@ N = 12 ; % number of antenna elements
 % save('antenna_permf.mat', 'mcf')
 % fprintf('done.\n')
 
-% code to generate M random samples
-% M = 3000 ;
-% mcf = zeros(M,3); % 3-obj
-% for i = 1:M
-%     x = rand(1,N);
-%     y = mapvars(x);
-%     mcf(i,:) = antenna(y);
-% end
-% % plot the generated data
-% % figure(1);
-% % scatter3(mcf(:,1), mcf(:,2), mcf(:,3)) % 3-obj
-% % and save
-% save('antenna_mcf.mat', 'mcf')
-% fprintf('done.\n')
+%% code to generate M random samples
+% this will generate 1 file: antenna_mcf.mat
+M = 3000 ;
+mcf = zeros(M,3); % 3-obj
+for i = 1:M
+    x = rand(1,N);
+    y = mapvars(x);
+    mcf(i,:) = antenna(y);
+end
+% plot the generated data
+% figure(1);
+% scatter3(mcf(:,1), mcf(:,2), mcf(:,3)) % 3-obj
+% and save
+save('antenna_mcf.mat', 'mcf')
+fprintf('done.\n')
 
-% testing array_factor
+%% testing array_factor() function
 % x_ = rand(1,N)
 % x = mapvars(x_)
 % y = array_factor(x, (pi/180) * 0.25, 180, 0.5, length(x))
@@ -55,7 +56,7 @@ N = 12 ; % number of antenna elements
 % x = mapvars(x_)
 % y = array_factor(x, (pi/180) * 0.25, 180, 0.5, length(x))
 
-% testing trapezoid
+%% testing trapezoid() function
 % x_ = rand(1,N)
 % x = mapvars(x_)
 % uavg = trapezoid(x, 0, 2 * pi, 50, 180, 0.5, length(x))
@@ -63,7 +64,7 @@ N = 12 ; % number of antenna elements
 % x = mapvars(x_)
 % uavg = trapezoid(x, 0, 2 * pi, 50, 180, 0.5, length(x))
 
-% testing antenna function with one instance
+%% testing antenna function with one instance
 % x = rand(1,N)
 % y = mapvars(x)
 % f = antenna(y)
@@ -71,7 +72,7 @@ N = 12 ; % number of antenna elements
 % y = mapvars(x)
 % f = antenna(x)
 
-% % testing antenna function with extreme point solver
+%% testing antenna function with extreme point solver
 % load pivots_antenna ;
 % pv1 = pivots(1, 1:N);
 % pv2 = pivots(2, 1:N);
@@ -106,13 +107,12 @@ N = 12 ; % number of antenna elements
 % fprintf(fp, '%10.3f\t%10.3f\t%10.3f\n', pivots(:, N+1:N+3)');
 % fclose(fp);
 
-% plot the azimuth pattern of the solution found from
-% single objective ga
-% also saves the data for gnuplot
-x1 = [0.97565, 0.5715, 0.30977, 0.32848, 0.25926, 0.79118, ...
-    163.77, -170.17, 141.65, 163.08, -154.38, 177.09];
-[theta, db] = plot_radiation(9, x1, 180, 0.5);
-outfile = '../../report/figs/data/antenna/ga-pattern.out';
-fp = fopen(outfile, 'w');
-fprintf(fp, '%10.3f\t%10.3f\n', [theta; db]);
-fclose(fp);
+%% plot the azimuth pattern of the solution found from the 
+%% single objective ga, also saves the data for gnuplot
+% x1 = [0.97565, 0.5715, 0.30977, 0.32848, 0.25926, 0.79118, ...
+%     163.77, -170.17, 141.65, 163.08, -154.38, 177.09];
+% [theta, db] = plot_radiation(9, x1, 180, 0.5);
+% outfile = '../../report/figs/data/antenna/ga-pattern.out';
+% fp = fopen(outfile, 'w');
+% fprintf(fp, '%10.3f\t%10.3f\n', [theta; db]);
+% fclose(fp);

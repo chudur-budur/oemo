@@ -1,6 +1,7 @@
-%GEN_NADIR Generate all nadir points and save them in a file
+%% GEN_NADIR Generate all nadir points and save them in a file
 
-clear ;
+clear ; % clear craps
+addpath('problemdef') ;
 
 % these are from the load_input_data() function
 global min_realvar ;

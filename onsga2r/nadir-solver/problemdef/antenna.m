@@ -1,7 +1,7 @@
 function f = antenna(x)
 % function [sllreturn, y, y3, y1, sumf] = antenna(xvals)
 
-% This function calculates the fitness value of 
+%% This function calculates the fitness value of 
 % array 'x1' which is returned in 'y'
 
 % not sure, what the f*ck this is for, not used at all
@@ -68,7 +68,7 @@ sidelobes = [lobes{:}];
 % sidelobes = sort(sidelobes, 'descend');
 
 % lets do this instead --
-[ignore, index] = max(sidelobes);
+[~, index] = max(sidelobes);
 sidelobes(index) = realmin('double');
 y = max(sidelobes)/maxi;
 sllreturn = 20 * log10(y);
@@ -126,8 +126,8 @@ if bwfn > 80
 end;
 
 % directivity
-% y3 = abs((phizero - phi_desired) * (pi/180));
-% y = y + y1 + 1/y2 + y3;
+% y3 = abs((phizero - phi_desired) * (pi/180)); % do we need this ?
+% y = y + y1 + 1/y2 + y3; % wtf is this ?
 
 % sllreturn = 1st term, suppress sidelobes
 % y = 2nd term, maximize directivity
