@@ -1,19 +1,9 @@
 howto
-=====
+======
 
-This file shows how to compile the matlab implementation of finding extreme solutions on the true pareto-front.
+This folder contains the MATLAB (`R2014a`) codes to find the approximated *CHIM<sub>+<sub>* bounds.
+All the *CHIM<sub>+<sub>* bounding solutions are saved in the `../nadirs` folder.
 
-1. To make the `libsosolver.so`, `libsosolver.c` and `libsosolver.h`:
-```
-user@pc:~$ mcc -B csharedlib:libsosolver *.m -v
-```
+1. `gen_nadir.m`: the main executable script, read this file to understand how this works.
 
-2. To compile the tester:
-```
-user@pc:~$ mbuild test.c libsosolver.so -v
-```
-
-3. You may need to specify the dynamic shared lib path:
-```
-user@pc:~$ LD_LIBRARY_PATH="$LD_LIBRARY_PATH:." ./test
-```
+2. `test_antenna.m`: the script to run and test the multi-objective circular antenna array problem solver.
