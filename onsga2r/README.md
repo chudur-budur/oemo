@@ -6,6 +6,7 @@ EMO with *CHIM<sub>+<sub>* outer-bounds (a.k.a oemo)
 #### How to find the *CHIM<sub>+<sub>* bounds:
 This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/nadir-solver). 
 
+
 Once you have found all the bounding solutions (using the MATLAB scritps in the `nadir-solver` folder), now you can build the main code --
 
 ##### 1. building the main executables:
@@ -26,7 +27,7 @@ Once you build, you will find the following executables --
 ```shell
 	make wfg
 ``` 
----
+
 
 #### How to run the experiments and to do the statistical analysis:
 
