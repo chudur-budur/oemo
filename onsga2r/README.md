@@ -4,26 +4,27 @@ EMO with *CHIM<sub>+<sub>* outer-bounds (a.k.a oemo)
 ### Experiments with *CHIM<sub>+<sub>* bound injection in EMO.
 
 #### How to find the *CHIM<sub>+<sub>* bounds:
-This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/nadir-solver).
+This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/nadir-solver). 
 
 Once you have found all the bounding solutions (using the MATLAB scritps in the `nadir-solver` folder), now you can build the main code --
 
-##### 3. building the main executables (nsga2r, onsga2r etc.):
+##### 1. building the main executables (nsga2r, onsga2r etc.):
 ```shell
 	make
 ```
 
-##### 4. cleaning up:
+##### 2. cleaning up:
 ```shell
 	make clean
 ```
 
-##### 5. building the wfg Hypervolume computation code:
+##### 3. building the wfg Hypervolume computation code:
 ```shell
 	make wfg
 ``` 
+---
 
-#### How to run the experiments and to statistical analysis:
+#### How to run the experiments and to do the statistical analysis:
 
 ##### 1. Run a single experiment:
 ```shell
