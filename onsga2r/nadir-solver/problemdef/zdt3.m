@@ -1,5 +1,5 @@
 function f = zdt3(x)
-%   This procedure implements zdt3 function.
+%%   This procedure implements zdt3 function.
 %   The canonical zdt3 function is defined as below --
 %   f_1 = x_1
 %   f_2 = g * h

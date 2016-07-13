@@ -1,5 +1,5 @@
 function f = zdt1(x)
-%   This procedure implements zdt1 function.
+%%   This procedure implements zdt1 function.
 %   The canonical zdt1 function is defined as below --
 %   f_1 = x_1
 %   f_2 = g * (1.0 - sqrt(f_1/g))

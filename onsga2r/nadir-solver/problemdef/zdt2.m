@@ -1,5 +1,5 @@
 function f = zdt2(x)
-%   This procedure implements zdt2 function.
+%%   This procedure implements zdt2 function.
 %   The canonical zdt2 function is defined as below --
 %   f_1 = x_1
 %   f_2 = g * (1.0 - (f_1/g)^2)

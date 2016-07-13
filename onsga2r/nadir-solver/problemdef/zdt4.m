@@ -1,5 +1,5 @@
 function f = zdt4(x)
-%   This procedure implements zdt4 function.
+%%   This procedure implements zdt4 function.
 %   The canonical zdt4 function is defined as below --
 %   f_1 = x_1
 %   f_2 = g * h
