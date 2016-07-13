@@ -14,10 +14,13 @@ Once you have found all the bounding solutions (using the MATLAB scritps in the 
 ```shell
 	make
 ```
-Once you build, you will find the following executables --
+Once you have built the source, you will find the following executables --
 
-  * `nsga2r`: blah blah
-  * `onsga2r`: blah blah
+  * `nsga2r`: the original NSGA-II from [here](http://www.coin-laboratory.com/#!codes/rr8aj). 
+  * `onsga2r`: the experimental NSGA-II code that utilizes the *CHIM<sub>+<sub>* bounds.
+  * `nsga2re`: NSGA-II, where *CHIM<sub>+<sub>* bounds are injected into the initial population, and that's all.
+  * `onsga2rw`: the `onsga2r` code where the algorithm utilizes only *one* approximated solution on the PF which was found using objective function scalarization.
+  * `onsga2rwdom`: the `onsga2r` code where it starts with a set of *weakly-dominated* bounds. 
 
 ##### 2. cleaning up:
 ```shell
