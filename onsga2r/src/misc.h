@@ -37,4 +37,12 @@ void initialize_ind_dummy (individual *ind);
 void initialize_pop_with_size(population *pop, int poplength);
 void initialize_pop_dummy_with_size(population *pop, int poplength);
 
+/**
+ * some file related functions to making file handling like c++
+ */
+FILE* open_file(char *path, char *mode);
+int count_lines(char *path);
+int count_tokens(char *line);
+void parse_double_array(char *line, double *arr);
+
 # endif

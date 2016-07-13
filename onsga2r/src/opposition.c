@@ -12,46 +12,8 @@
 #include "problemdef.h"
 #include "opposition.h"
 #include "poplist.h"
-#include "sosolver.h"
 #include "misc.h"
 #include "vecutils.h"
-
-/** function list **
-	int init_extreme_pts_hardcoded(void)
-	int init_extreme_pts_hardcoded_weak(void)
-	int init_extreme_pts_sosolver(double seed)
-	int init_extreme_pts_sosolver_weighted(double seed)
-
-	void inject_extreme_points(population *pop)
-	
-	void generate_opposite_population(population *pop, pop_list *op_parent, pop_list *op_child, int gen, double *overshoot_stat)
-
-	void make_pool(population *pop, pop_list *pool)
-	pop_list* discard_weakly_dominated_points(population *E_, int size)
-	int weakly_dominates(individual *i1, individual *i2)
-	
-	void gather_op_parent(population *pop, pop_list *op_parent)
-	// void gather_op_parent_with_size(population *pop, pop_list *op_parent, int sz)
-	// void gather_op_parent_skip_pareto(population *pop, pop_list *op_parent, int sz)
-	
-	// void gather_ref_points(population *pop, pop_list *refs)
-	
-	void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
-	// void get_closest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
-	void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
-	// void get_closest_point_from_refs(pop_list *refs, double *s, double *t)
-	
-	int generate_opposite_vector_q3(double *s, double *t, double *d)
-	// int generate_opposite_vector_q3_retry(double *s, double *t, double *d, double minjmp, double maxjmp)
-	// int generate_opposite_hadamard_q3(double *p, double *v, double *c)
-	
-	int sum_overshoot(double *d)
-	void clear_opposite_flag(population *pop)
-	void inject_opposite_shuffle(pop_list *op_child, population *destpop)
-	void gather_survived_individuals(population *parent_pop, pop_list *survived_pop)
-	void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize)
-	// int count_max_rank(population *pop)
- */
 
 #define debug 0
 #define showmap 0
@@ -60,6 +22,8 @@ pop_list *e_star ;
 int popsize ;
 int op_popsize ;
 char prob_name[16] ;
+int nobj ;
+int nreal ;
 
 int init_extreme_pts_hardcoded(void)
 {
@@ -405,24 +369,67 @@ int init_extreme_pts_hardcoded_weak(void)
 
 int init_extreme_pts_sosolver(double seed)
 {
-	int feval = 0 ;
-	/* e_star = new_list(); */
+	/*int feval = 0 ;
 	fprintf(stdout, "\n********** sosolver:\n");
 	feval += sosolver(e_star, seed);
 	fprintf(stdout, "e_star:\n");
 	dump_pop_list(stdout, e_star);
-	return feval;
+	return feval;*/
+	return 0 ;
 }
 
 int init_extreme_pts_sosolver_weighted(double seed)
 {
-	int feval = 0 ;
-	/* e_star = new_list(); */
+	/*int feval = 0 ;
 	fprintf(stdout, "\n********** sosolver:\n");
 	feval += sosolver_weighted(e_star, seed);
 	fprintf(stdout, "e_star:\n");
 	dump_pop_list(stdout, e_star);
-	return feval;
+	return feval;*/
+	return 0 ;
+}
+
+int init_extreme_pts_from_file()
+{
+	FILE *fp ;
+	char nadir_path[LINECHARS];
+	int i, j, k, lines, token_count, feval ; char *line = NULL ;
+	size_t len = 0 ; ssize_t read ;
+	double **vals ; int index ;
+	individual *ind ;
+	sprintf(nadir_path, "nadirs/%s-nadirs.out", prob_name);
+	fprintf(stdout, "\n*********** loading from file: %s\n", nadir_path);
+	lines = count_lines(nadir_path);
+	vals = (double**)malloc(sizeof(double*) * lines);
+	fp = open_file(nadir_path, "r");
+	i = 0 ;
+	while((read = getline(&line, &len, fp)) != -1)
+	{
+		token_count = count_tokens(line);
+		vals[i] = (double*)malloc(sizeof(double) * token_count);
+		parse_double_array(line, vals[i]);
+		i++ ;
+	}
+	free(line);
+	fclose(fp);
+	index = 2 * rnd(0, lines/nobj );
+	fprintf(stdout, "\nindex: %d\n", index);
+	ind = (individual*)malloc(sizeof(individual) * nobj);
+	feval = 0 ;
+	for(i = index, k = 0 ; i < index + nobj ; i++, k++)
+	{
+		allocate_memory_ind(&ind[k]); initialize_ind_dummy(&ind[k]);
+		for(j = 0 ; j < nreal ; j++) ind[k].xreal[j] = vals[i][j];
+		push_back(e_star, &ind[k]);
+		feval += ((int)vals[i][(nreal + nobj)]);
+	}
+	free(ind);
+	/* free the array */
+	for(i = 0 ; i < lines ; i++) free(vals[i]) ;
+	free(vals);
+	fprintf(stdout, "feval: %d, e_star:\n", feval);
+	dump_pop_list(stdout, e_star);
+	return feval ;
 }
 
 void inject_extreme_points(population *pop)
@@ -466,7 +473,8 @@ void generate_opposite_population(population *pop, pop_list *op_parent, pop_list
 	if(showmap) fprintf(stdout, "\ngen = %d\n", gen);
 	for(ptr = op_parent->head; ptr != END ; ptr = ptr->next)
 	{
-		get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
+		/*get_furthest_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);*/
+		get_random_point_from_m_random_select(pool, nobj, ptr->ind->xreal, t);
 		int genes_corrupted = generate_opposite_vector_q3(ptr->ind->xreal, t, x);
 		
 		if(showmap) {
@@ -709,45 +717,6 @@ void gather_op_parent(population *pop, pop_list *op_parent)
 	return ;
 }
 
-/*void gather_op_parent_with_size(population *pop, pop_list *op_parent, int sz)
-{
-	int i ;
-	int rank_compare_asc(individual *i1, individual *i2);
-	int *idx = (int*)malloc(sizeof(int) * sz);
-	get_random_indices(idx, sz);
-	quicksort_(pop, popsize, rank_compare_asc);
-	for(i = 0 ; i < sz; i++)
-		push_back_ptr(op_parent, &pop->ind[idx[i]]);
-	free(idx);
-	return ;
-}*/
-
-/*
-void gather_op_parent_skip_pareto(population *pop, pop_list *op_parent, int sz)
-{
-	int i, pushcount ;
-	int rank_compare_desc(individual *i1, individual *i2);
-	quicksort_(pop, popsize, rank_compare_desc);
-	pushcount = 0 ;
-	for(i = 0 ; i < popsize ; i++) 
-		if(pop->ind[i].rank > 1) {
-			push_back_ptr(op_parent, &pop->ind[i]);
-			pushcount++ ;
-			if(pushcount == sz) break ;
-		}
-	return ;
-}*/
-
-/*void gather_ref_points(population *pop, pop_list *refs)
-{
-	int i ;
-	for(i = 0 ; i < popsize ; i++) 
-		if(pop->ind[i].rank == 1) {
-			push_back_ptr(refs, &pop->ind[i]);
-		}
-	return ;
-}*/
-
 /* inner functions */
 int rank_compare_asc(individual *i1, individual *i2) 
 	{ if(i1->rank <= i2->rank) return 1; else return 0 ;}
@@ -795,44 +764,6 @@ void get_furthest_point_from_m_random_select(pop_list *pool, int m, double *s, d
 	return ;
 }
 
-/*
-void get_closest_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
-{
-	int i, index ;
-	double min_dist, dist ;
-	pop_list *selected ;
-	node *ptr, *min_ptr ;
-	selected = new_list();
-
-	while(selected->size != m)
-	{
-		index = rnd(0, pool->size-1);
-		for(ptr = pool->head, i = 0 ; ptr != END ; ptr = ptr->next, i++)
-			if(i == index)
-			{
-				push_back_ptr(selected, ptr->ind);
-				break ;
-			}
-	}
-
-	min_dist = get_vector_distance(s, selected->head->ind->xreal, nreal);
-	min_ptr = selected->head ;
-	for(ptr = selected->head->next ; ptr != END ; ptr = ptr->next)
-	{
-		dist = get_vector_distance(s, ptr->ind->xreal, nreal);
-		if(dist <= min_dist)
-		{
-			min_dist = dist ;
-			min_ptr = ptr ;
-		}
-	}
-
-	memcpy(t, min_ptr->ind->xreal, sizeof(double) * nreal);
-	free_list_ptr(selected);
-	return ;
-}
-*/
-
 void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, double *t)
 {
 	int i, index ;
@@ -865,26 +796,6 @@ void get_random_point_from_m_random_select(pop_list *pool, int m, double *s, dou
 	free_list_ptr(selected);
 	return ;
 }
-
-/*
-void get_closest_point_from_refs(pop_list *refs, double *s, double *t)
-{
-	double min_dist, dist ;
-	node *ptr, *min_ptr ;
-	min_dist = get_vector_distance(s, refs->head->ind->xreal, nreal);
-	for(min_ptr = refs->head, ptr = refs->head->next ; ptr != END ; ptr = ptr->next)
-	{
-		dist = get_vector_distance(s, ptr->ind->xreal, nreal);
-		if(dist <= min_dist)
-		{
-			min_dist = dist ;
-			min_ptr = ptr ;
-		}
-	}
-	memcpy(t, min_ptr->ind->xreal, sizeof(double) * nreal);
-	return ;
-}
-*/
 
 /**
  * from s and t find the opposite vector d using mirroring.
@@ -925,122 +836,6 @@ int generate_opposite_vector_q3(double *s, double *t, double *d)
 	}
 	return shootouts ;
 }
-
-/*
-int generate_opposite_vector_q3_retry(double *s, double *t, double *d, 
-		double minjmp, double maxjmp)
-{
-	double *stu, *stu_, *s_t, dist ;
-
-	s_t = (double*)malloc(sizeof(double) * nreal);
-	stu = (double*)malloc(sizeof(double) * nreal);
-	stu_ = (double*)malloc(sizeof(double) * nreal);
-
-	dist = get_vector_distance(s, t, nreal);
-	if(fabs(dist) > 0.0001)
-	{
-		vector_subtract(t, s, nreal, s_t);
-		get_unit_vector(s_t, nreal, stu);
-		multiply_scalar(stu, nreal, rndreal(dist * minjmp, dist * maxjmp)); // 1.01, 1.5
-		vector_add(s, stu, nreal, d);
-		if(sum_overshoot(d) > 0) 
-		{
-			get_unit_vector(s_t, nreal, stu_);
-			multiply_scalar(stu_, nreal, rndreal(dist * 0.75, dist));
-			vector_add(s, stu_, nreal, d);
-		}
-	}
-	else
-		memcpy(d, s, sizeof(double) * nreal);
-
-	free(stu);
-	free(stu_);
-	free(s_t);
-
-	return sum_overshoot(d);
-}
-*/
-
-/**
- * from s and t find the opposite vector d using mirroring, with no vector op.
- */ 
-/*
-int generate_opposite_hadamard_q3(double *p, double *v, double *c)
-{
-	int i, shootouts = 0 ;
-	double dist, a, b, e, d;
-	for(i = 0 ; i < nreal ; i++)
-	{
-		dist = p[i] - v[i] ;*/
-		/*fprintf(stdout, "dist = %.3f, p[%d] = %.3f, v[%d] = %.3f\n", 
-				dist, i, p[i], i, v[i]);*/
-		/*if(fabs(dist) > 0.001)
-		{
-			if(dist > 0.0)
-			{
-				a = fabs(dist) ;
-				b = fabs(v[i] - min_realvar[i]) ;
-				if(b < a) 
-				{
-					d = ((2.0 * a)/3.0) + (b/2.0) ;
-					e = rndreal(0.0, d) + (a/3.0) ;
-				}
-				else if (b > a) 
-				{
-					d = (a * 3.0/2.0);
-					e = rndreal(0.0, d) + (a/2.0);
-				}
-				else e = 0.0 ;
-				c[i] = p[i] - e ;*/
-				/*fprintf(stdout, ">: c[%d] = %.3f, p[%d] = %.3f, e = %.3f\n", 
-						i, c[i], i, p[i], e);*/
-			/*}	
-			else
-			{
-				a = fabs(dist) ;
-				b = fabs(v[i] - max_realvar[i]) ;
-				if(b < a) 
-				{
-					d = ((2.0 * a)/3.0) + (b/2.0) ;
-					e = rndreal(0.0, d) + (a/3.0) ;
-				}
-				else if (b > a) 
-				{
-					d = (a * 3.0/2.0);
-					e = rndreal(0.0, d) + (a/2.0);
-				}
-				else e = 0.0 ;
-				e = rndreal(0.0, d);
-				c[i] = p[i] + e ;*/
-				/*fprintf(stdout, "<: c[%d] = %.3f, p[%d] = %.3f, e = %.3f\n", 
-						i, c[i], i, p[i], e);*/
-			/*}
-			if(isnan(c[i]) || c[i] < min_realvar[i] || c[i] > max_realvar[i])
-			{
-				c[i] = v[i] ;*/
-				/* fprintf(stdout, "*: c[%d] = %.3f, v[%d] = %.3f\n", 
-						i, c[i], i, v[i]);*/
-				/*shootouts++ ;
-			}
-		}
-		else
-		{
-			c[i] = p[i] ;*/
-			/*fprintf(stdout, "=: c[%d] = %.3f, p[%d] = %.3f\n", 
-						i, c[i], i, p[i]);*/
-		/*}
-	}
-	return shootouts ;
-}*/
-
-/*int sum_overshoot(double *d)
-{
-	int i, overshoot = 0 ;
-	for(i = 0 ; i < nreal ; i++)
-		if(isnan(d[i]) || d[i] < min_realvar[i] || d[i] > max_realvar[i])
-			overshoot++;
-	return overshoot ;
-}*/
 
 /* clears all the opposite flag of the individuals in a population */
 void clear_opposite_flag(population *pop)
@@ -1169,12 +964,3 @@ void assign_rank_and_crowding_distance_with_size (population *new_pop, int psize
 	free (cur);
 	return;
 }
-
-/*int count_max_rank(population *pop)
-{
-	int maxrank = -1 ;
-	for(int i = 0 ; i < popsize ; i++)
-		if(pop->ind[i].rank >= maxrank)
-			maxrank = pop->ind[i].rank ;
-	return maxrank ;
-}*/

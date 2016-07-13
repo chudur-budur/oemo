@@ -143,16 +143,18 @@ void zdt1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
-	for (i=1; i<nreal; i++)
-		/* g += xreal[i] ;*/
-		g += (xreal[i] - 0.5) * (xreal[i] - 0.5); 
-	g = 9.0*g/((double)nreal - 1.0);
-	g += 1.0;
-	h = 1.0 - sqrt(f1/g);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
-	return;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
+	/* for (i=1; i<nreal; i++)  g += xreal[i] ;*/
+	/* for(i = 1 ; i < nreal ; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5); */
+	/* for(i = 1 ; i < nreal ; i++) g += sqrt(fabs((xreal[i] - 0.5))) ; */
+	for(i = 1 ; i < nreal ; i++) g += fabs((xreal[i] - 0.5)) ;
+	g = 9.0 * g / ((double)nreal - 1.0) ;
+	g += 1.0 ;
+	h = 1.0 - sqrt(f1/g) ;
+	f2 = g * h ;
+	obj[0] = f1 ;
+	obj[1] = f2 ;
+	return ;
 }
 
 /*  Test problem ZDT2
@@ -167,14 +169,16 @@ void zdt2 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
 	/* for (i=1; i<nreal; i++) g += xreal[i]; */
-	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5);
-	g = 1.0 + (9.0*g/((double)nreal - 1.0));
-	h = 1.0 - pow((f1/g),2.0);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
-	return;
+	for (i = 1 ; i < nreal ; i++) g += fabs((xreal[i] - 0.5)); 
+	g = 9.0 * g / ((double)nreal - 1.0);
+	g += 1.0 ;
+	h = 1.0 - pow((f1/g), 2.0) ;
+	f2 = g * h ;
+	obj[0] = f1 ;
+	obj[1] = f2 ;
+	return ;
 }
 
 /*  Test problem ZDT3
@@ -189,14 +193,16 @@ void zdt3 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
 	/* for (i=1; i<nreal; i++) g += xreal[i];*/
-	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ; 
-	g = 1.0 + (9.0*g/((double)nreal - 1.0));
-	h = 1.0 - sqrt(f1/g) - (f1/g)*sin(10.0*PI*f1);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
-	return;
+	for (i = 1 ; i < nreal ; i++) g += fabs((xreal[i] - 0.5)); 
+	g = 9.0 * g / ((double)nreal - 1.0);
+	g += 1.0 ;
+	h = 1.0 - sqrt(f1/g) - (f1/g) * sin(10.0 * PI * f1) ;
+	f2 = g * h ;
+	obj[0] = f1 ;
+	obj[1] = f2 ;
+	return ;
 }
 
 /*  Test problem ZDT4
@@ -211,14 +217,17 @@ void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	int i;
 	f1 = xreal[0] ;
 	g = 0.0;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
+	/* for (i=1; i<nreal; i++) 
+	 	g += (xreal[i] * xreal[i]) - 10.0 * cos(4.0*PI*xreal[i]); */
 	for(i = 1; i < nreal ; i++ ) 
-		g += (xreal[i] - 0.5)*(xreal[i] - 0.5) - 10.0*cos(4.0*PI*(xreal[i] - 0.5)); 
-	/*for (i=1; i<nreal; i++) g += xreal[i]*xreal[i] - 10.0*cos(4.0*PI*xreal[i]); */
-	g += 1.0 + 10.0 * ((double)nreal - 1.0);
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) 
+			- 10.0 * cos(4.0*PI*(xreal[i] - 0.5)); 
+	g += 1.0 + (10.0 * ((double)nreal - 1.0));
 	h = 1.0 - sqrt(f1/g);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
+	f2 = g * h ;
+	obj[0] = f1 ;
+	obj[1] = f2 ;
 	return;
 }
 
@@ -291,18 +300,19 @@ void zdt6 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	double f1, f2, g, h;
 	int i;
-	f1 = 1.0 - ( exp(-4.0*xreal[0]) ) * pow( (sin(6.0*PI*xreal[0])),6.0 );
+	f1 = 1.0 - (exp(-4.0 * xreal[0])) * pow((sin(6.0*PI*xreal[0])), 6.0);
 	g = 0.0;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
 	/* for (i=1; i<nreal; i++) g += xreal[i]; */
-	for (i=1; i<nreal; i++) g += (xreal[i] - 0.5) * (xreal[i] - 0.5) ;
-	g = g/9.0;
-	g = pow(g,0.25);
-	g = 1.0 + 9.0*g;
-	h = 1.0 - pow((f1/g),2.0);
-	f2 = g*h;
-	obj[0] = f1;
-	obj[1] = f2;
-	return;
+	for (i = 1 ; i < nreal ; i++) g += fabs((xreal[i] - 0.5));
+	g = g / 9.0 ;
+	g = pow(g, 0.25) ;
+	g = 1.0 + 9.0 * g ;
+	h = 1.0 - pow((f1/g), 2.0) ;
+	f2 = g * h ;
+	obj[0] = f1 ;
+	obj[1] = f2 ;
+	return ;
 }
 
 /*  Test problem BNH

@@ -261,3 +261,40 @@ void initialize_pop_dummy_with_size (population *pop, int poplength)
 	return;
 }
 
+FILE* open_file(char *path, char *mode)
+{
+	FILE *fp ;
+	fp = fopen(path, mode);
+	if(fp == NULL) { 
+		fprintf(stderr, "Error: file %s not found in open_file().\n", path); 
+		exit(1);
+	}
+	return fp ;
+}
+
+int count_lines(char *path)
+{
+	int lines ; char ch ; FILE *fp = open_file(path, "r");
+	lines = 0 ; while((ch = fgetc(fp)) != EOF) if(ch == '\n') lines++ ;
+        fclose(fp);
+	return lines ;
+}
+
+int count_tokens(char *line)
+{
+	int token_count ; char *ptr ;
+	ptr = line ; token_count = 0 ;
+	while((ptr = strchr(ptr, ' ')) != NULL) { token_count++ ; ptr++;}
+	return token_count ;
+}
+
+void parse_double_array(char *line, double *arr)
+{
+	char *token ; int i ;
+	token = strtok(line, " "); i = 0 ;
+	while (token) {
+		sscanf(token, "%lf", &arr[i]);
+		token = strtok(NULL, " ");
+		i++ ;
+	}	
+}

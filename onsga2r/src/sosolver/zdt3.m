@@ -8,8 +8,11 @@ function f = zdt3(x)
 %   0 <= x_i <= 1.0 (i = 1, 2, 3, ..., n)
 
 f1 = x(1);
-g = sum(x(2:length(x)));
-g = (g * 9.0) / (length(x)-1) ;
+% sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i)
+% g = sum(x(2:length(x)));
+% mod to make this problem harder to converge --
+g = sum(abs(x(2:length(x)) - 0.5));
+g = 9.0 * g / (length(x)-1) ;
 g = 1.0 + g ;
 h = 1.0 - sqrt(f1/g) - ((f1/g) * sin(10.0 * pi * f1));
 f2 = g * h ;

@@ -8,7 +8,10 @@ function f = zdt6(x)
 
 x1 = x(1);
 f1 = 1.0 - (exp(-4.0 * x1) * (sin(6.0 * pi * x1) ^ 6.0));
-g = sum(x(2:length(x)));
+% sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i)
+% g = sum(x(2:length(x)));
+% mod to make this problem harder to converge --
+g = sum(abs(x(2:length(x)) - 0.5)) ;
 g = g / 9.0 ;
 g = g ^ 0.25 ;
 g = 1.0 + (9.0 * g) ;
