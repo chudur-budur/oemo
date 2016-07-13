@@ -4,11 +4,11 @@ EMO with *CHIM<sub>+<sub>* outer-bounds (a.k.a oemo)
 ### Experiments with *CHIM<sub>+<sub>* bound injection in EMO.
 
 #### How to find the *CHIM<sub>+<sub>* bounds:
-This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/nadir-solver). 
+This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more details can be found [here](https://github.com/chudur-budur/oemo/tree/master/onsga2r/chimp-solver). 
 
 
 
-Once you have found all the bounding solutions (using the MATLAB scritps in the `nadir-solver` folder), now you can build the main code --
+Once you have found all the bounding solutions (using the MATLAB scritps in the `chimp-solver` folder), now you can build the main code --
 
 ##### 1. building the main executables:
 ```shell
