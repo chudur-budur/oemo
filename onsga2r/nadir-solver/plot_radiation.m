@@ -1,4 +1,5 @@
-function[theta, db] = plot_pattern(nplot, gbest, phi_desired, distance)
+function[theta, db] = plot_radiation(nplot, gbest, phi_desired, distance)
+%% PLOT_RADIATION function to plot the radiation pattern
 
 N = 5000 ;
 dim = length(gbest);

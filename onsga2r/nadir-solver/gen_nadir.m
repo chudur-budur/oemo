@@ -2,8 +2,9 @@
 
 clear ; % clear craps
 addpath('problemdef') ;
+% rng(123456, 'twister');
 
-% these are from the load_input_data() function
+%% these are from the load_input_data() function
 global min_realvar ;
 global max_realvar ;
 global nreal ;
@@ -11,14 +12,15 @@ global nobj ;
 global popsize ;
 global ngen ;
 
-% these are from the aasf()
+%% these are from the aasf()
 global func ;
 global index ;
 global f_star ;
 
+%% total number of runs, setting it 20
 nruns = 20 ;
 
-% problem names
+%% problem names for the hashmap
 probs = {...
     'zdt1', 'zdt2', 'zdt3', 'zdt4', 'zdt6', ...
     'dtlz1', 'dtlz2', 'dtlz3', 'dtlz4', 'dtlz5', 'dtlz6', 'dtlz7', ...
@@ -35,7 +37,7 @@ ratios = {...
 % hashmap: problem name -> (FE bound, problem type)
 ratio_map = containers.Map(probs, ratios);
 
-% problem classes
+%% problem classes for the choice of search algorithms
 % if the problem does not have local optima then use fmincon()
 set_one = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; 'dtlz4'; 'dtlz5'; ...
     'dtlz7'; 'c3dtlz1'; 'osy'; 'crash'; 'antenna'};
@@ -43,24 +45,24 @@ set_one = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; 'dtlz4'; 'dtlz5'; ...
 set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
     'ctp8'; 'c1dtlz1'; 'c1dtlz3'; 'c2dtlz2'; 'beam'; 'gear'};
 
+%% file paths
 % file_path is the problem parameters from input_data folder
-file_path = '../../input_data/zdt6.in' ;
+file_path = '../input_data/zdt6.in' ;
 [path, prob_name, ext] = fileparts(file_path);
-
 % make file path to save all the nadir solutions
-out_dir = '../../nadirs' ;
+out_dir = '../nadirs' ;
 if(~exist(out_dir, 'dir')), mkdir(out_dir); end
 out_file = strcat(out_dir, '/', prob_name, '-nadirs.out');
 fprintf('** Saving nadirs to: %s\n', out_file);
     
-% load the problem parameters
+%% load the problem parameters
 load_input_data(file_path);
 
-% copy the variable bounds
+%5 copy the variable bounds
 lb = min_realvar' ;
 ub = max_realvar' ;
 
-% function to optimize
+%% function to optimize
 func = str2func(prob_name) ;
 % the constraint related to the func
 constfunc = str2func(strcat(prob_name, '_constfunc'));
@@ -69,22 +71,21 @@ fprintf(1, '*** Solving "%s" problem from file "%s"\n', ...
 fprintf(1, '*** Using func: "%s" and constfun: "%s"\n', ...
             strcat(prob_name, '()'), strcat(prob_name, '_constfunc()'));
         
-% fixed budget
+%% fixed budget
 % febound = 1667 ; % for zdt6 to get a better view
 fetotal = ngen * popsize ;
 febound = round((fetotal / ratio_map(prob_name)) / nobj) ;
 fprintf('*** FE bound fixed to: %d\n', febound);
-        
+  
+%% algorithm options
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
 fmcopt.MaxFunEvals = febound;
 fmcopt.Display = 'off' ;
-
 % set options for patternsearch
 psopt = psoptimset(@patternsearch);
 psopt = psoptimset(psopt, 'MaxFunEvals', febound);
-
-% this can be removed, may be
+% this can be removed, may be ?
 if (nobj > 4)
     psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));
     % psopt = psoptimset(psopt, 'InitialMeshSize', 1.0);
@@ -98,15 +99,13 @@ if (nobj > 4)
     psopt = psoptimset(psopt, 'CompleteSearch', 'on');   
 end        
         
-
-% open the nadir file
+%% open the nadir file and solve the problem for nruns times
 fid = fopen(out_file, 'w');
 for runs = 1:nruns
     for i = 1:nobj
         % obj index to optimize
         index = i ;
 
-        % rng(123456, 'twister');
         % random initial point
         x0 = min_realvar' + (rand(1,nreal) .* ...
             (max_realvar - min_realvar)');

@@ -1,5 +1,5 @@
 function load_input_data(datafile)
-%LOAD_INPUT_DATA Loads problem parameters from file
+%% LOAD_INPUT_DATA Loads problem parameters from file
 %   This is similar to the original nsga2 c code's main() function
 %   where the program starts by reading the algorithm parameters
 %   from a file like input_data/zdt1.in etc. It just reads the file

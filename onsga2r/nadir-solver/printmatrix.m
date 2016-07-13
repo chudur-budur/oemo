@@ -1,6 +1,6 @@
 function printmatrix(X,dec);
 
-% PRINTMATRIX prints to the screen a nice easy to read printout of the matrix X
+%% PRINTMATRIX prints to the screen a nice easy to read printout of the matrix X
 % that can be copied and pasted into other applications (e.g. Excel).
 %
 % PRINTMATRIX(X); prints out the contents of X with 3 decimal places
@@ -16,7 +16,7 @@ if(any(~isreal(X)))
     error('Input Must be Real');
 end
 
-[N,M]=size(X);
+[N,~]=size(X);
 
 ff = ceil(log10(max(max(abs(X)))))+dec+3;
 

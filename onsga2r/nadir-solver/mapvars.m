@@ -1,5 +1,5 @@
 function [yvals] = mapvars(xvals)
-%MAPVARS Maps the given x to y
+%% MAPVARS Maps the given x to y
 %   xvals: is an array of N random variables in U(0,1)
 %   yvals: y(1:N/2) is an array of random variables in [1,N]
 %          y(N/2+1:N) is an array of random variables in [-180, 180]
