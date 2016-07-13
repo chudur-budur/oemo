@@ -1,7 +1,7 @@
-EMO with *CHIM<sub>+<sub>* bounds (oemo)
-========================================
+EMO with *CHIM<sub>+<sub>* outer-bounds (a.k.a oemo)
+=====================================================
 
-Experiments with *CHIM<sub>+<sub>* bound injection in EMO.
+### Experiments with *CHIM<sub>+<sub>* bound injection in EMO.
 
 #### How to compile the classical search component:
 This part is written in MATLAB (`R2014a`), extensively using `fmincon()` and `patternsearch()`. All the related matlab scripts could be found in `src/sosolver` and the wrapper function is in `src/sosolver.c` and `src/sosolver.h`. To compile and run this part, you need to add `$matlabroot/runtime/glnxa64` and `$matlabroot/bin/glnxa64` to `$LD_LIBRARY_PATH`. So there it goes -- 
