@@ -2,9 +2,9 @@ howto
 ======
 
 This folder contains the MATLAB (`R2014a`) codes to find the approximated *CHIM<sub>+<sub>* bounds.
-All the *CHIM<sub>+<sub>* bounding solutions are saved in the `../nadirs` folder.
+All the *CHIM<sub>+<sub>* bounding solutions are saved in the `../chimps` folder.
 
-1. `gen_nadir.m`: The main executable script, read this file to understand how this works. For example if you want to find the extreme solution for `zdt1` problem, go to line 50 and change the problem parameter file-path to an appropriate name --
+1. `gen_chimps.m`: The main executable script, read this file to understand how this works. For example if you want to find the extreme solution for `zdt1` problem, go to line 50 and change the problem parameter file-path to an appropriate name --
 
 	```matalb
 	file_path = '../input_data/zdt6.in' ;
