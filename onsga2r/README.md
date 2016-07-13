@@ -8,10 +8,15 @@ This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more detai
 
 Once you have found all the bounding solutions (using the MATLAB scritps in the `nadir-solver` folder), now you can build the main code --
 
-##### 1. building the main executables (nsga2r, onsga2r etc.):
+##### 1. building the main executables:
 ```shell
 	make
 ```
+
+Once you build, you will find the following executables --
+
+	* `nsga2r`:
+	* `onsga2r`:
 
 ##### 2. cleaning up:
 ```shell
