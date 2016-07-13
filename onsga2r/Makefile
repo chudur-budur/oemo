@@ -10,13 +10,6 @@ SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
 CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
 LDFLAGS 	:= -lm
-MCFLAGS		:= -D_GNU_SOURCE  -DUNIX -DX11 -pthread -O -DNDEBUG
-SOSOLVEROBJ	:= src/sosolver/libsosolver.so
-MIFLAGS		:= -I"/opt/MATLAB/R2014a/extern/include"\
-			-I"/opt/MATLAB/R2014a/simulink/include"\
-			-I./src/sosolver
-MLDFLAGS	:= -pthread -Wl,-rpath-link,/opt/MATLAB/R2014a/bin/glnxa64 -O\
-			$(SOSOLVEROBJ) -L"/opt/MATLAB/R2014a/runtime/glnxa64" -lmwmclmcrrt
 OBJ 		:= $(patsubst %c,%o,$(SRC))
 DEPS		:= $(OBJ:.o=.d)
 
@@ -25,7 +18,6 @@ DEPS		:= $(OBJ:.o=.d)
 all: nsga2r onsga2r
 # all: nsga2r nsga2re onsga2r onsga2rw onsga2rwdom
 wfg: wfg-1.10/wfg
-sosolv: $(SOSOLVEROBJ)
 
 onsga2r: $(OBJ) src/onsga2r.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -48,32 +40,22 @@ nsga2re: $(OBJ) src/nsga2re.o
 	strip nsga2re
 
 src/onsga2r.o: src/onsga2r.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 src/onsga2rw.o: src/onsga2rw.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 src/onsga2rwdom.o: src/onsga2rwdom.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 src/nsga2r.o: src/nsga2r.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 src/nsga2re.o: src/nsga2re.c
-	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
-
-
-src/sosolver.o: src/sosolver.c
-	$(CC) $(CFLAGS) $(MCFLAGS) $(MIFLAGS) -c -MMD -MP $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(MIFLAGS) -c -MMD -MP $< -o $@
-
-$(SOSOLVEROBJ): src/sosolver/*.m
-	$(MCC) -B csharedlib:libsosolver -v $^
-	mv libsosolver.* src/sosolver/
-	mv mcc* src/sosolver/
-	mv readme.txt src/sosolver/
+	$(CC) $(CFLAGS) $(MIFLAGS) -c $< -o $@
 
 wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
@@ -84,18 +66,13 @@ wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 clean:
 	rm -f src/*.d
 	rm -f src/*.gc*
-	rm -f $(OBJ) src/*.o src/sosolver/*.o
+	rm -f $(OBJ) src/*.o
 	rm -f onsga2r onsga2rw onsga2rwdom nsga2re nsga2r
 	rm -f *.out
 	rm -f *~
 	rm -f \#*\#
 	rm -f input_data/*~
 	rm -f input_data/\#*\#
-
-clean-sosolv:
-	rm -rf src/sosolver/libsosolver.*
-	rm -rf src/sosolver/mcc*
-	rm -f src/sosolver/readme.txt
 
 clean-all: clean
 	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
