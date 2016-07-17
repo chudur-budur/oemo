@@ -1,5 +1,5 @@
 function [c, ceq] = osy_constfunc(x)
-%   This procedure implements Osyczka and Kundu's function.
+%%   This procedure implements Osyczka and Kundu's function.
 %   The canonical zdt1 function is defined as below --
 %   f_1 = -25.0 * ((x_1 - 2)^2 - (x_2 - 2)^2 - (x_3 - 1)^2 
 %                           - (x_4 - 4)^2 - (x_5 - 1)^2)

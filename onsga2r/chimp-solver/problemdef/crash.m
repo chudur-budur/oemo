@@ -1,5 +1,5 @@
 function f = crash(x)
-% the vehicle crash worthiness problem
+%% the vehicle crash worthiness problem
 
 f1 = 1640.2823 + (2.3573285 * x(1)) + (2.3220035 * x(2)) ...
     + (4.5688768 * x(3)) + (7.7213633 * x(4)) ...

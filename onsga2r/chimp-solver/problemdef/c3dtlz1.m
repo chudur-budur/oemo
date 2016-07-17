@@ -1,11 +1,12 @@
 function f = c3dtlz1(x)
-%   This procedure implements c3dtlz1 function.
+%%   This procedure implements c3dtlz1 function.
 
 global nobj ;
 
 k = length(x) - nobj + 1;
 
-x_ = x(((end-k)+1):end);
+x_ = x(((end - k) + 1):end);
+% (x_i - 0.5) was in the original definition
 g = 100.0 * (k + sum(((x_ - 0.5) .* (x_ - 0.5)) - ...
                         cos(20.0 .* pi .* (x_ - 0.5))));
 f = (ones(1,nobj) + g) .* 0.5 ;

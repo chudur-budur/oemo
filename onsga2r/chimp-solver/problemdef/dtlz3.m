@@ -1,11 +1,14 @@
 function f = dtlz3(x)
-%   This procedure implements dtlz3 function.
+%%   This procedure implements dtlz3 function.
 
 global nobj ;
 
 k = length(x) - nobj + 1;
 
-x_ = x(((end-k)+1):end);
+% x_i - 0.5 was already done in the actual problem
+% definition, so no adjustment is necessary.
+
+x_ = x(((end - k) + 1):end);
 g = sum(((x_ - 0.5) .* (x_ - 0.5)) - cos(20.0 .* pi .* (x_ - 0.5)));
 g = 100.0 * (k + g);
 f = ones(1,nobj) + g ;

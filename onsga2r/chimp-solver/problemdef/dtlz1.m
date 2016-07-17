@@ -3,9 +3,9 @@ function f = dtlz1(x)
 
 global nobj ;
 
-k = length(x) - nobj + 1;
+k = length(x) - nobj + 1; % k = 12 - 3 + 1 = 10
 
-x_ = x(((end-k)+1):end);
+x_ = x(((end - k) + 1):end); % 12 - 10 + 1 = 3
 % (x_i - 0.5) was in the original definition
 g = 100.0 * (k + sum(((x_ - 0.5) .* (x_ - 0.5)) - ...
                         cos(20.0 .* pi .* (x_ - 0.5))));
