@@ -78,12 +78,12 @@ int init_extreme_pts_hardcoded(void)
 			memcpy(extremes[i], &dtlz7_extremes[i], sizeof(double) * nreal);
 	else
 	{
-		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");
+		fprintf(stdout, " Error: a wrong problem string or problem not defined. \n");
 		exit(1);
 	}
 	for(i = 0 ; i < nobj; i++)
 	{
-		fprintf(stdout, "\n********** using hardcoded extremes:\n");
+		fprintf(stdout, "\n********** using hardcoded CHIM bounds:\n");
 		allocate_memory_ind(&ind); 
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);
@@ -113,12 +113,12 @@ int init_extreme_pts_hardcoded_weak(void)
 			memcpy(extremes[i], &dtlz1_weak_extremes[i], sizeof(double) * nreal);
 	else
 	{
-		fprintf(stdout, " Error: wrong problem string or problem not defined. \n");
+		fprintf(stdout, " Error: a wrong problem string or problem not defined. \n");
 		exit(1);
 	}
 	for(i = 0 ; i < nobj; i++)
 	{
-		fprintf(stdout, "\n********** using hardcoded extremes:\n");
+		fprintf(stdout, "\n********** using hardcoded CHIM bounds:\n");
 		allocate_memory_ind(&ind); 
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);

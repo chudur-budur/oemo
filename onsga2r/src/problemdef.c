@@ -338,8 +338,11 @@ void bnh (double *xreal, double *xbin, int **gene, double *obj, double *constr)
     */
 void osy (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
-	obj[0] = -(25.0*pow((xreal[0]-2.0),2.0) + pow((xreal[1]-2.0),2.0) + pow((xreal[2]-1.0),2.0) + pow((xreal[3]-4.0),2.0) + pow((xreal[4]-1.0),2.0));
-	obj[1] = xreal[0]*xreal[0] +  xreal[1]*xreal[1] + xreal[2]*xreal[2] + xreal[3]*xreal[3] + xreal[4]*xreal[4] + xreal[5]*xreal[5];
+	obj[0] = -(25.0*pow((xreal[0]-2.0),2.0) + pow((xreal[1]-2.0),2.0) 
+			+ pow((xreal[2]-1.0),2.0) + pow((xreal[3]-4.0),2.0) 
+			+ pow((xreal[4]-1.0),2.0));
+	obj[1] = xreal[0]*xreal[0] +  xreal[1]*xreal[1] + xreal[2]*xreal[2] 
+		+ xreal[3]*xreal[3] + xreal[4]*xreal[4] + xreal[5]*xreal[5];
 	/**
 	 *	c1(x) = x1 + x2 - 2 >= 0
 	 * -->	(x1+x2) >= 2
@@ -645,11 +648,14 @@ void dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	int i, j, k ;
 	double g ;
 
-	k = nreal - nobj + 1;
+	k = nreal - nobj + 1; /* k = 12 - 3 + 1 = 10 */
 
+	/** 
+	 * this is ok, no need to change xreal, 
+	 * since it is already done in the actual problem.
+	 */
 	g = 0.0 ;
-	/* this is ok, no need to change xreal */
-	for(i = nreal - k; i < nreal ; i++)
+	for(i = nreal - k; i < nreal ; i++) /* i = 12 - 10 = 2 ; i < 12 ; i++ */
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
 		     - cos(20.0 * PI *  (xreal[i] - 0.5)) ;
 	g = 100.0 * (k + g);
@@ -680,11 +686,11 @@ void dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	k = nreal - nobj + 1;
 
 	g = 0.0 ;
+	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
 	/* for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)); */
 	for(i = nreal - k ; i < nreal ; i++)
 		g += fabs(xreal[i] - 0.5);
-	/* g = 100.0 * g */
 	for(i = 0 ; i < nobj ; i++) obj[i] = 1.0 + g ;
 
 	for(i = 0 ; i < nobj ; i++)
@@ -712,6 +718,10 @@ void dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	k = nreal - nobj + 1;
 
+	/**
+	 * in the acutal problem definision, x_i - 0.5 was
+	 * already done, so no need to make any adjustments.
+	 */
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
 		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5))
@@ -748,9 +758,16 @@ void dtlz4 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	k = nreal - nobj + 1;
 
+	/**
+	 * the original problem already does x_i - 0.5,
+	 * so no adjustment is required.
+	 */
 	g = 0.0 ;
+	/* for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ; */
+	/* but this adjustment may make nsga2 to converge slow */
 	for(i = nreal - k ; i < nreal ; i++)
-		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
+		g += fabs(xreal[i] - 0.5);
 	/* g = g * 100.0 */
 	for(i = 0 ; i < nobj ; i++)
 		obj[i] = (1.0 + g) ;
@@ -783,10 +800,13 @@ void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	k = nreal - nobj + 1;
 
+	/* similarly, there is no need to make the x_i - 0.5 adjustments. */
 	g = 0.0 ;
+	/* for(i = nreal - k ; i < nreal ; i++)
+		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ; */
+	/* but this might make the problem slower for nsga2 to converge */
 	for(i = nreal - k ; i < nreal ; i++)
-		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) ;
-	/* g = 100.0 * g */
+		g += fabs(xreal[i] - 0.5) ;
 	t = PI / (4.0 * (1.0 + g)) ;
 
 	theta[0] = xreal[0] * (PI / 2.0);
@@ -826,8 +846,8 @@ void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
-		/* g += pow(xreal[i], 0.1);*/
-		g += pow(fabs(xreal[i] - 0.5), 0.1); 
+		/* g += pow(xreal[i], 0.1); */
+		g += pow(fabs(xreal[i] - 0.5), 0.1);
 
 	t = PI / (4.0 * (1.0 + g)) ;
 	theta[0] = xreal[0] * (PI / 2.0);
@@ -865,8 +885,8 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 
 	g = 0.0 ;
 	for(i = nreal - k ; i < nreal ; i++)
-		g += xreal[i] ;
-		/*g += fabs(xreal[i] - 0.5);*/
+		/* g += xreal[i] ; */
+		g += fabs(xreal[i] - 0.5);
 	g = 1.0 + ((9.0 * g) / k) ;
 
 	for(i = 0 ; i < nobj - 1 ; i++)
@@ -931,6 +951,11 @@ void c1dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *cons
 {
 	int i, j, k;
 	double g, fsum1, fsum2;
+	double r[15] = { 
+		0.0, 0.0, 9.0,  0.0, 12.5, 
+		0.0, 0.0, 12.5, 0.0, 15.0, 
+		0.0, 0.0, 0.0,  0.0, 15.0
+	};
 
 	k = nreal - nobj + 1;
 
@@ -955,7 +980,7 @@ void c1dtlz3 (double *xreal, double *xbin, int **gene, double *obj, double *cons
 	for(i = 0 ; i < nobj ; i++)
 	{
 		fsum1 += (obj[i] * obj[i]) - 16 ; 
-		fsum2 += (obj[i] * obj[i]) - 9 ; /* for nobj = 3 */
+		fsum2 += (obj[i] * obj[i]) - (r[nobj - 1] * r[nobj - 1]) ; /* M = 3, r = 9 */
 	}
 	constr[0] = fsum1 * fsum2 ;
 	return ;
@@ -1017,8 +1042,7 @@ void c2dtlz2 (double *xreal, double *xbin, int **gene, double *obj, double *cons
 void c3dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i, j, k ;
-	double g ;
-	double *fsum ;
+	double g, fsum ;
 
 	k = nreal - nobj + 1;
 
@@ -1037,12 +1061,13 @@ void c3dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *cons
 		if(i != 0) obj[i] *= 1.0 - xreal[nobj - (i + 1)];
 	}
 	
-	fsum = (double*)malloc(sizeof(double) * nobj);
-	for(i = 0, j = 0 ; i < nobj ; i++, j++) 
-		if(i != j) fsum[i] += obj[j] ;
 	for(i = 0 ; i < nobj ; i++)
-		constr[i] = fsum[i] + obj[i]/0.5 - 1.0 ;
-	free(fsum);
+	{
+		fsum = 0.0 ;
+		for(j = 0 ; j < nobj ; j++)
+			if(i != j) fsum += obj[j] ; 
+		constr[i] = fsum + (obj[i]/0.5) - 1.0 ;
+	}
 	return ;
 }
 
