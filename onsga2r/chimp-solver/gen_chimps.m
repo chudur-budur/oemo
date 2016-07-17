@@ -33,7 +33,7 @@ ratios = {...
     8.0, 40.0, 6.0, 30.0, 30.0, 10.0, 30.0, ...
     6.0, 8.0, 8.0, ...
     15.0, 6.0, 6.0, 15.0, ...
-    15.0, 10.0, 500, 500};
+    15.0, 6.0, 500, 500};
 % hashmap: problem name -> (FE bound, problem type)
 ratio_map = containers.Map(probs, ratios);
 
@@ -47,7 +47,7 @@ set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
 
 %% file paths
 % file_path is the problem parameters from input_data folder
-file_path = '../input_data/antenna.in' ;
+file_path = '../input_data/zdt4.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 % make file path to save all the nadir solutions
 out_dir = '../chimps' ;

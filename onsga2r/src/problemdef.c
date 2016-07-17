@@ -216,13 +216,14 @@ void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	double f1, f2, g, h;
 	int i;
 	f1 = xreal[0] ;
+	/** 
+	 * sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) 
+	 * but for zdt4, there is no need for adjustment, because the variable bounds
+	 * are within [-5.0, 5.0] and the solution lies in the middle, x = 0.0
+	 */
 	g = 0.0;
-	/* sum((x_i - 0.5)^2) is easier than sum(|x_i - 0.5|) is easier than sum(x_i) */
-	/* for (i=1; i<nreal; i++) 
-	 	g += (xreal[i] * xreal[i]) - 10.0 * cos(4.0*PI*xreal[i]); */
-	for(i = 1; i < nreal ; i++ ) 
-		g += ((xreal[i] - 0.5) * (xreal[i] - 0.5)) 
-			- 10.0 * cos(4.0*PI*(xreal[i] - 0.5)); 
+	for (i = 1 ; i < nreal ; i++) 
+	 	g += (xreal[i] * xreal[i]) - (10.0 * cos(4.0*PI*xreal[i]));
 	g += 1.0 + (10.0 * ((double)nreal - 1.0));
 	h = 1.0 - sqrt(f1/g);
 	f2 = g * h ;

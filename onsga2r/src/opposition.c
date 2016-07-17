@@ -49,12 +49,6 @@ int init_extreme_pts_hardcoded(void)
 	else if(strcmp(prob_name, "zdt6") == 0)
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(extremes[i], &zdt6_extremes[i], sizeof(double) * nreal);
-	else if(strcmp(prob_name, "pol") == 0)
-		for(i = 0 ; i < nobj ; i++)
-			memcpy(extremes[i], &pol_extremes[i], sizeof(double) * nreal);
-	else if(strcmp(prob_name, "osy") == 0)
-		for(i = 0 ; i < nobj ; i++)
-			memcpy(extremes[i], &osy_extremes[i], sizeof(double) * nreal);
 	else if(strcmp(prob_name, "dtlz1") == 0)
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(extremes[i], &dtlz1_extremes[i], sizeof(double) * nreal);
