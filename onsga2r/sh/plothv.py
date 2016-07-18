@@ -335,7 +335,7 @@ if __name__ == '__main__':
             'crash': [[150, 3], [1700, 11, 0.3]], 'beam': [[20, 2], [40, 1.0]], \
             'gear': [[150, 2], [10.0, 61.0]], 'antenna': [[150, 3], [0, 355, 2.0]]\
             }
-    algo_set = [['onsga2r', 'nsga2r'], ['onsga2r', 'nsga2re']]
+    algo_set = [['onsga2r', 'nsga2r'], ['onsga2r', 'nsga2re'], ['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re']]
     # algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re'], ['onsga2r', 'nsga2r'], ['onsga2r', 'onsga2rw']]

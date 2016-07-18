@@ -81,6 +81,11 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
 						c1=yu;
 					if (c2>yu)
 						c2=yu;
+					/* what if c1 or c2 fails ??? */
+					if(isnan(c1) || c1 < min_realvar[i] || c1 > max_realvar[i]) 
+						c1 = rndreal(min_realvar[i], max_realvar[i]);
+					if(isnan(c2) || c2 < min_realvar[i] || c2 > max_realvar[i]) 
+						c2 = rndreal(min_realvar[i], max_realvar[i]);
 					if (randomperc()<=0.5)
 					{
 						child1->xreal[i] = c2;

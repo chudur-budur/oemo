@@ -54,7 +54,7 @@ int main (int argc, char **argv)
 	population *child_pop;
 	population *mixed_pop;
 
-	if (argc<3)
+	if (argc < 3)
 	{
 		printf("\n Usage ./nsga2r [problem_name] [random_seed] [outfile-uid] [gnuplot option]\n");
 		exit(1);

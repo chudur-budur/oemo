@@ -42,7 +42,7 @@ int angle1;
 int angle2;
 
 /* opposition bases stuffs */
-float op_ratio = 0.25;
+float op_ratio = 0.25 ;
 int op_popsize;
 pop_list *e_star ;
 

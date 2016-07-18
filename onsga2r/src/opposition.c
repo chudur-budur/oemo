@@ -102,12 +102,18 @@ int init_extreme_pts_hardcoded_weak(void)
 	if(strcmp(prob_name, "zdt4") == 0)
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(extremes[i], &zdt4_weak_extremes[i], sizeof(double) * nreal);
+	else if(strcmp(prob_name, "zdt6") == 0)
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(extremes[i], &zdt6_weak_extremes[i], sizeof(double) * nreal);
 	else if(strcmp(prob_name, "dtlz1") == 0)
 		for(i = 0 ; i < nobj ; i++)
 			memcpy(extremes[i], &dtlz1_weak_extremes[i], sizeof(double) * nreal);
+	else if(strcmp(prob_name, "dtlz6") == 0)
+		for(i = 0 ; i < nobj ; i++)
+			memcpy(extremes[i], &dtlz6_weak_extremes[i], sizeof(double) * nreal);
 	else
 	{
-		fprintf(stdout, " Error: a wrong problem string or problem not defined. \n");
+		fprintf(stdout, "\n Error: a wrong problem string or problem not defined. \n");
 		exit(1);
 	}
 	for(i = 0 ; i < nobj; i++)

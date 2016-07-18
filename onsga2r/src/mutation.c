@@ -93,6 +93,9 @@ void real_mutate_ind (individual *ind)
 				y = yl;
 			if (y>yu)
 				y = yu;
+			/* what if y fails ?? */
+			if(isnan(y) || y < min_realvar[j] || y > max_realvar[j]) 
+				y = rndreal(min_realvar[j], max_realvar[j]);
 			ind->xreal[j] = y;
 			nrealmut+=1;
 		}

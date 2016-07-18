@@ -223,7 +223,7 @@ void zdt4 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	 */
 	g = 0.0;
 	for (i = 1 ; i < nreal ; i++) 
-	 	g += (xreal[i] * xreal[i]) - (10.0 * cos(4.0*PI*xreal[i]));
+	 	g += (xreal[i] * xreal[i]) - (10.0 * cos(4.0 * PI * xreal[i]));
 	g += 1.0 + (10.0 * ((double)nreal - 1.0));
 	h = 1.0 - sqrt(f1/g);
 	f2 = g * h ;
