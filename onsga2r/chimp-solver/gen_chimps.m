@@ -42,12 +42,13 @@ ratio_map = containers.Map(probs, ratios);
 set_one = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; 'dtlz4'; 'dtlz5'; ...
     'dtlz7'; 'c3dtlz1'; 'osy'; 'crash'; 'antenna'};
 % if the problem has local optima, then use patternsearch()
+% move the problem to set_two if the number of variable is many
 set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
     'ctp8'; 'c1dtlz1'; 'c1dtlz3'; 'c2dtlz2'; 'c3dtlz1'; 'beam'; 'gear'};
 
 %% file paths
 % file_path is the problem parameters from input_data folder
-file_path = '../input_data/zdt4.in' ;
+file_path = '../input_data/dtlz4.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 % make file path to save all the nadir solutions
 out_dir = '../chimps' ;
