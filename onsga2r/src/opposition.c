@@ -75,9 +75,10 @@ int init_extreme_pts_hardcoded(void)
 		fprintf(stdout, " Error: a wrong problem string or problem not defined. \n");
 		exit(1);
 	}
+	fprintf(stdout, "\n");
 	for(i = 0 ; i < nobj; i++)
 	{
-		fprintf(stdout, "\n********** using hardcoded CHIM bounds:\n");
+		fprintf(stdout, "\n********** using hardcoded CHIM bounds, f[%d]:", i);
 		allocate_memory_ind(&ind); 
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);
@@ -86,6 +87,7 @@ int init_extreme_pts_hardcoded(void)
 		deallocate_memory_ind(&ind);
 		feval += 1 ;
 	}
+	fprintf(stdout, "\n");
 	for(i = 0 ; i < nobj ; i++) free(extremes[i]);
 	free(extremes);
 	return feval ;
@@ -116,9 +118,10 @@ int init_extreme_pts_hardcoded_weak(void)
 		fprintf(stdout, "\n Error: a wrong problem string or problem not defined. \n");
 		exit(1);
 	}
+	fprintf(stdout, "\n");
 	for(i = 0 ; i < nobj; i++)
 	{
-		fprintf(stdout, "\n********** using hardcoded CHIM bounds:\n");
+		fprintf(stdout, "\n********** using hardcoded CHIM bounds, f[%d]:", i);
 		allocate_memory_ind(&ind); 
 		/* to shut the valgrind complains :-( */
 		initialize_ind_dummy(&ind);
@@ -127,6 +130,7 @@ int init_extreme_pts_hardcoded_weak(void)
 		deallocate_memory_ind(&ind);
 		feval += 1 ;
 	}
+	fprintf(stdout, "\n");
 	for(i = 0 ; i < nobj ; i++) free(extremes[i]);
 	free(extremes);
 	return feval ;
@@ -166,6 +170,7 @@ int init_extreme_pts_from_file(void)
 		push_back(e_star, &ind[k]);
 		feval += ((int)vals[i][(nreal + nobj)]);
 	}
+	for(i = 0 ; i < nobj ; i++) deallocate_memory_ind(&ind[i]);
 	free(ind);
 	/* free the array */
 	for(i = 0 ; i < lines ; i++) free(vals[i]) ;
@@ -180,11 +185,12 @@ int init_extreme_pts_from_file_weighted(void)
 	/* not done yet */
 	FILE *fp ;
 	char nadir_path[LINECHARS];
-	int i, j, k, lines, token_count, feval ; char *line = NULL ;
+	int i, j, lines, token_count, feval ; char *line = NULL ;
 	size_t len = 0 ; ssize_t read ;
 	double **vals ; int index ;
-	individual *ind ;
-	sprintf(nadir_path, "chimps/%s-chimps.out", prob_name);
+	/* individual *ind ; */
+	individual ind ;
+	sprintf(nadir_path, "chimps/%s-chimps-weighted.out", prob_name);
 	fprintf(stdout, "\n*********** loading from file: %s\n", nadir_path);
 	lines = count_lines(nadir_path);
 	vals = (double**)malloc(sizeof(double*) * lines);
@@ -199,18 +205,31 @@ int init_extreme_pts_from_file_weighted(void)
 	}
 	free(line);
 	fclose(fp);
-	index = 2 * rnd(0, lines/nobj );
+	index = rnd(0, lines);
 	fprintf(stdout, "\nindex: %d\n", index);
-	ind = (individual*)malloc(sizeof(individual) * nobj);
-	feval = 0 ;
-	for(i = index, k = 0 ; i < index + nobj ; i++, k++)
+	for(i = 0 ; i < lines ; i++) {
+		fprintf(stdout, "%d: ", i);
+		for(j = 0 ; j < token_count ; j++) fprintf(stdout, "%.3f ", vals[i][j]);
+		fprintf(stdout, "\n");
+	}
+
+	/*ind = (individual*)malloc(sizeof(individual) * nobj);
+	for(k = 0 ; k < nobj ; k++)
 	{
 		allocate_memory_ind(&ind[k]); initialize_ind_dummy(&ind[k]);
-		for(j = 0 ; j < nreal ; j++) ind[k].xreal[j] = vals[i][j];
+		for(j = 0 ; j < nreal ; j++) ind[k].xreal[j] = vals[index][j];
 		push_back(e_star, &ind[k]);
-		feval += ((int)vals[i][(nreal + nobj)]);
+		feval = ((int)vals[index][(nreal + nobj)]);
 	}
-	free(ind);
+	for(i = 0 ; i < nobj ; i++) deallocate_memory_ind(&ind[i]);
+	free(ind);*/
+		
+	allocate_memory_ind(&ind); initialize_ind_dummy(&ind);
+	for(j = 0 ; j < nreal ; j++) ind.xreal[j] = vals[index][j];
+	push_back(e_star, &ind);
+	feval = ((int)vals[index][(nreal + nobj)]);
+	deallocate_memory_ind(&ind);
+	
 	/* free the array */
 	for(i = 0 ; i < lines ; i++) free(vals[i]) ;
 	free(vals);

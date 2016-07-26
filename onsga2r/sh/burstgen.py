@@ -49,7 +49,7 @@ def usage():
 if __name__ == '__main__':
     argv = sys.argv[1:]
     # algorithms = ['nsga2re']
-    algorithms = ['onsga2r', 'nsga2r', 'nsga2re', 'onsga2rwdom']
+    algorithms = ['onsga2r', 'nsga2r', 'nsga2re', 'onsga2rwdom', 'onsga2rw']
     file_prefixes = ['all_pop-', 'all_op_parent-',
                      'all_op_child-', 'all_extreme-', 'all_survived-']
     if len(argv) >= 2:

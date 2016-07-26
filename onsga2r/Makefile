@@ -1,6 +1,5 @@
 # onsga2r stuffs
 CC 		:= gcc
-MCC		:= mcc
 INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
 			dominance.c eval.c fillnds.c initialize.c list.c merge.c misc.c\
@@ -54,7 +53,7 @@ src/nsga2re.o: src/nsga2re.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(MIFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
 	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)

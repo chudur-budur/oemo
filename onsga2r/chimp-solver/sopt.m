@@ -13,5 +13,4 @@ if (index < 0)
     f = sum(fval .* 0.5) ;
 else
     f = fval(index) ;
-
 end

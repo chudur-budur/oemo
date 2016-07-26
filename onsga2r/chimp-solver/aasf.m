@@ -11,9 +11,15 @@ global nobj ;
 global index ;
 
 
-w = ones(1,nobj) * (0.1 / (nobj - 1.0));
-w(index) = 0.9 ;
-fval = (func(x) - f_star) ./ w ;
-f = max(fval) + (0.0001 * sum(fval)) ;
+if index > 0
+    w = ones(1,nobj) * (0.1 / (nobj - 1.0));
+    w(index) = 0.9 ;
+    fval = (func(x) - f_star) ./ w ;
+    f = max(fval) + (0.0001 * sum(fval)) ;
+else
+    w = ones(1, nobj) * 0.5 ;
+    fval = (func(x) - f_star) ./ w ;
+    f = max(fval) + (0.0001 * sum(fval)) ;    
+end
 
 end
