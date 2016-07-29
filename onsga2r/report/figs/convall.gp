@@ -6,7 +6,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 # title option: yes/no
 showtitle = "no"
 # color option: yes/no
-coloropt = "yes"
+coloropt = "no"
 
 # colorcheme and pallettes
 if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
@@ -267,6 +267,69 @@ do for [i = 1:words(probs)] {
 	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
 	txtthresh = 50
 	if(prob eq "dtlz1") { txtthresh = 5000 }
+	set label 1 "cost to find Z*_b" rotate left at (minfe+txtthresh)/2,txtstart
+	# vertical arrow
+	set arrow from (minfe+txtthresh)/2,txtstart-(ydiff * 0.01) \
+		to (minfe+txtthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	set term push
+	set term pdf enhanced color
+	set output outfile
+	replot
+	unset output
+	# unset macros
+	set term pop
+}
+
+# nsga2r vs. onsga2r on constrained problems
+print sprintf("re-coloring nsga2r vs. onsga2r for constrained problems")
+probs = "c1dtlz1 c1dtlz3"
+do for [i = 1:words(probs)] {
+	# set up file names
+	prob = word(probs, i)
+	algo1 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
+	algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
+	if(coloropt eq "no") {
+		outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstat.pdf", prob, prob)
+	} else {
+		outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatc.pdf", prob, prob)
+	}
+	titlestr = sprintf("%s: SE vs. HV", prob)
+	# now do the plot
+	reset
+	# set macros
+	if(showtitle eq "yes") { set title titlestr }
+	set key bottom right
+	set style fill border
+	if(coloropt eq "yes") { load rgbscheme } else { load greyscheme }
+	set xlabel "solution evaluations"
+	set ylabel "hypervolume"
+	set format x "%.1s%c"
+	set xrange[0:]
+	set yrange[0:]
+	plot \
+		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
+		algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.75 pt 6 pi 10 ti "nsga2 (median)", \
+		algo1 using 1:6 with lp lc rgb "#000000" lw 1 ps 0.75 pt 8 pi 10 ti "nsga2 (max)", \
+		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.75 pt 5 pi 10 ti "algorithm 3 (mean)", \
+		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.75 pt 7 pi 10 ti "algorithm (median)", \
+		algo2 using 1:6 with lp lc rgb "#000000" lw 1 ps 0.75 pt 9 pi 10 ti "algorithm (max)", \
+	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
+	# print "ydiff: ", ydiff
+	ymin = GPVAL_Y_MIN
+	# print "ymin: ", ymin
+	# default ydiffr
+	ydiffr = 0.25
+	liney = ymin + (ydiff * ydiffr)
+	# print "liney: ", liney
+	txtstart = liney + (ydiff * ydiffr)
+	# print "txtstart: ", txtstart
+	# default xtresh
+	xthresh = 50
+	minfe = femin(algo3)
+	print sprintf("%s, minfe: %s", prob, minfe)
+	# horizontal t-bar
+	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
+	txtthresh = 50
 	set label 1 "cost to find Z*_b" rotate left at (minfe+txtthresh)/2,txtstart
 	# vertical arrow
 	set arrow from (minfe+txtthresh)/2,txtstart-(ydiff * 0.01) \
