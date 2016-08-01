@@ -16,7 +16,7 @@ rgbscheme = "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt"
 # color sequence for Greys 8,4,3,5-6,4,3,5
 greyscheme = "~/gnuplot-utils/gnuplot-colorbrewer/sequential/Greys.plt" 
 
-# nsga2r vs. onsga2r
+# nsga2r vs. onsga2r, the conv plot for antenna is done at the end.
 print sprintf("re-coloring nsga2r vs. onsga2r")
 probs = "zdt1 zdt2 zdt3 zdt4 zdt6 dtlz1 dtlz2 dtlz3 dtlz4 dtlz5 dtlz6 dtlz7 crash antenna osy"
 do for [i = 1:words(probs)] {
@@ -32,7 +32,6 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
-	# set macros
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -55,30 +54,39 @@ do for [i = 1:words(probs)] {
 		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
 		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
 		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
-	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
-	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
-	# print "ymin: ", ymin
-	# where to put t-bar, default 0.075
-	ydiffr = 0.075
-	if(prob eq "zdt3") { ydiffr = 0.50 }
-	liney = ymin + (ydiff * ydiffr)
-	# print "liney: ", liney
-	txtstart = liney + (ydiff * 0.1)
-	# print "txtstart: ", txtstart
-	xthresh = 50
-	minfe = femin(algo2)
-	print sprintf("%s, minfe: %s", prob, minfe)
-	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
-	set label 1 "cost to find Z*_b" rotate left at (minfe+xthresh)/2,txtstart
-	set arrow from (minfe+xthresh)/2,txtstart-(ydiff * 0.01) \
-		to (minfe+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	ymax = GPVAL_Y_MAX
+	deltay = (ymax - ymin)
+	deltax = femin(algo2) + 0
+	print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+				prob, ymin, ymax, deltay, deltax)
+	tx = 0.05
+	ty = 0.05
+	if(prob eq "zdt1") { ty = 0.50 }
+	if(prob eq "zdt3") { ty = 0.50 }
+	tthreshx = (deltax * tx)
+	tthreshy = (deltay * ty)
+	# horizontal t-bar
+	set arrow from (0 + tthreshx),tthreshy to \
+		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+	ax = 0.50
+	ay = 0.01
+	arrowlen = 0.10
+	if(prob eq "zdt1") { arrowlen = 0.10 }
+	if(prob eq "zdt3") { arrowlen = 0.10 }
+	athreshx = (deltax * ax)
+	athreshy = (deltay * ay) 
+	# vertical arrow
+	set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+		to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+	# vertical text
+	set label 1 "cost to find Z*_b" rotate left at \
+		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
 	set term push
 	set term pdf enhanced color
 	set output outfile
 	replot
 	unset output
-	# unset macros
 	set term pop
 }
 
@@ -89,7 +97,8 @@ do for [i = 1:words(probs)] {
 	# set up file names
 	prob = word(probs, i)
 	algo1 = sprintf("../results/%s/%s-nsga2re-hv.stat", prob, prob)
-	algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
+	algo2 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
+	algo3 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	if(coloropt eq "no") {
 		outfile = sprintf("../results/%s/%s-onsga2r-nsga2re-hvstat.pdf", prob, prob)
 	} else {
@@ -98,7 +107,6 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
-	# set macros
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -111,34 +119,46 @@ do for [i = 1:words(probs)] {
 	set yrange[0:]
 	plot \
 		algo1 using 1:2:6 with filledcu \
-			fs transparent solid 0.75 ls seq1 lw 3 ti "nsga2re", \
+			fs transparent solid 0.75 ls seq1 lw 3 ti "nsga2r", \
 		algo2 using 1:2:6 with filledcu \
-			fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3", \
+			fs transparent solid 0.75 ls seq2 lw 3 ti "nsga2re", \
+		algo3 using 1:2:6 with filledcu \
+			fs transparent solid 0.75 ls seq3 lw 3 ti "algorithm 3", \
 		algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
 		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
-		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
-		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
-	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
-	# print "ydiff: ", ydiff
+		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
+		algo3 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
+		algo3 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
 	ymin = GPVAL_Y_MIN
-	# print "ymin: ", ymin
-	liney = ymin + (ydiff * 0.075)
-	# print "liney: ", liney
-	txtstart = liney + (ydiff * 0.1)
-	# print "txtstart: ", txtstart
-	xthresh = 50
-	minfe = femin(algo2)
-	print sprintf("%s, minfe: %s", prob, minfe)
-	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
-	set label 1 "cost to find Z*_b" rotate left at (minfe+xthresh)/2,txtstart
-	set arrow from (minfe+xthresh)/2,txtstart-(ydiff * 0.01) \
-		to (minfe+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	ymax = GPVAL_Y_MAX
+	deltay = (ymax - ymin)
+	deltax = femin(algo3) + 0
+	print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+				prob, ymin, ymax, deltay, deltax)
+	tx = 0.05
+	ty = 0.20
+	tthreshx = (deltax * tx)
+	tthreshy = (deltay * ty)
+	# horizontal t-bar
+	set arrow from (0 + tthreshx),tthreshy to \
+		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+	ax = 0.50
+	ay = 0.01
+	arrowlen = 0.30
+	athreshx = (deltax * ax)
+	athreshy = (deltay * ay) 
+	# vertical arrow
+	set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+		to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+	# vertical text
+	set label 1 "cost to find Z*_b" rotate left at \
+		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
 	set term push
 	set term pdf enhanced color
 	set output outfile
 	replot
 	unset output
-	# unset macros
 	set term pop
 }
 
@@ -158,7 +178,6 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
-	# set macros
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -181,27 +200,35 @@ do for [i = 1:words(probs)] {
 		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
 		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
 		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
-	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
-	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
-	# print "ymin: ", ymin
-	liney = ymin + (ydiff * 0.075)
-	# print "liney: ", liney
-	txtstart = liney + (ydiff * 0.1)
-	# print "txtstart: ", txtstart
-	xthresh = 50
-	minfe = femin(algo2)
-	print sprintf("%s, minfe: %s", prob, minfe)
-	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
-	set label 1 "cost to find Z*_b" rotate left at (minfe+xthresh)/2,txtstart
-	set arrow from (minfe+xthresh)/2,txtstart-(ydiff * 0.01) \
-		to (minfe+xthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	ymax = GPVAL_Y_MAX
+	deltay = (ymax - ymin)
+	deltax = femin(algo2) + 0
+	print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+				prob, ymin, ymax, deltay, deltax)
+	tx = 0.05
+	ty = 0.20
+	tthreshx = (deltax * tx)
+	tthreshy = (deltay * ty)
+	# horizontal t-bar
+	set arrow from (0 + tthreshx),tthreshy to \
+		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+	ax = 0.50
+	ay = 0.01
+	arrowlen = 0.30
+	athreshx = (deltax * ax)
+	athreshy = (deltay * ay) 
+	# vertical arrow
+	set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+		to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+	# vertical text
+	set label 1 "cost to find Z*_b" rotate left at \
+		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
 	set term push
 	set term pdf enhanced color
 	set output outfile
 	replot
 	unset output
-	# unset macros
 	set term pop
 }
 
@@ -222,7 +249,6 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
-	# set macros
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -247,36 +273,36 @@ do for [i = 1:words(probs)] {
 		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
 		algo3 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
 		algo3 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
-	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
-	# print "ydiff: ", ydiff
 	ymin = GPVAL_Y_MIN
-	# print "ymin: ", ymin
-	# default ydiffr
-	ydiffr = 0.075
-	if(prob eq "zdt4")  { ydiffr = 0.5 }
-	if(prob eq "dtlz1") { ydiffr = 0.075 }
-	liney = ymin + (ydiff * ydiffr)
-	# print "liney: ", liney
-	txtstart = liney + (ydiff * 0.1)
-	# print "txtstart: ", txtstart
-	# default xtresh
-	xthresh = 50
-	minfe = femin(algo3)
-	print sprintf("%s, minfe: %s", prob, minfe)
+	ymax = GPVAL_Y_MAX
+	deltay = (ymax - ymin)
+	deltax = femin(algo3) + 0
+	print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+				prob, ymin, ymax, deltay, deltax)
+	tx = 0.01
+	ty = 0.30
+	tthreshx = (deltax * tx)
+	tthreshy = (deltay * ty)
 	# horizontal t-bar
-	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
-	txtthresh = 50
-	if(prob eq "dtlz1") { txtthresh = 5000 }
-	set label 1 "cost to find Z*_b" rotate left at (minfe+txtthresh)/2,txtstart
+	set arrow from (0 + tthreshx),tthreshy to \
+		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+	ax = 0.50
+	if(prob eq "dtlz1") { ax = 0.75 }
+	ay = 0.01
+	arrowlen = 0.30
+	athreshx = (deltax * ax)
+	athreshy = (deltay * ay) 
 	# vertical arrow
-	set arrow from (minfe+txtthresh)/2,txtstart-(ydiff * 0.01) \
-		to (minfe+txtthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+		to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+	# vertical text
+	set label 1 "cost to find Z*_b" rotate left at \
+		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
 	set term push
 	set term pdf enhanced color
 	set output outfile
 	replot
 	unset output
-	# unset macros
 	set term pop
 }
 
@@ -296,7 +322,6 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
-	# set macros
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -307,38 +332,100 @@ do for [i = 1:words(probs)] {
 	set xrange[0:]
 	set yrange[0:]
 	plot \
-		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
-		algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.75 pt 6 pi 10 ti "nsga2 (median)", \
-		algo1 using 1:6 with lp lc rgb "#000000" lw 1 ps 0.75 pt 8 pi 10 ti "nsga2 (max)", \
-		algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.75 pt 5 pi 10 ti "algorithm 3 (mean)", \
-		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.75 pt 7 pi 10 ti "algorithm (median)", \
-		algo2 using 1:6 with lp lc rgb "#000000" lw 1 ps 0.75 pt 9 pi 10 ti "algorithm (max)", \
-	ydiff = (GPVAL_Y_MAX - GPVAL_X_MIN)
-	# print "ydiff: ", ydiff
+		algo1 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
+		algo1 using 1:4 w lp lc rgb "#000000" lw 1 ps 0.75 pt 6 pi 10 ti "nsga2 (median)", \
+		algo1 using 1:6 w lp lc rgb "#000000" lw 1 ps 0.75 pt 8 pi 10 ti "nsga2 (max)", \
+		algo2 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 5 pi 10 ti "algorithm 3 (mean)", \
+		algo2 using 1:4 w lp lc rgb "#000000" lw 1 ps 0.75 pt 7 pi 10 ti "algorithm 3 (median)", \
+		algo2 using 1:6 w lp lc rgb "#000000" lw 1 ps 0.75 pt 9 pi 10 ti "algorithm 3 (max)", \
 	ymin = GPVAL_Y_MIN
-	# print "ymin: ", ymin
-	# default ydiffr
-	ydiffr = 0.25
-	liney = ymin + (ydiff * ydiffr)
-	# print "liney: ", liney
-	txtstart = liney + (ydiff * ydiffr)
-	# print "txtstart: ", txtstart
-	# default xtresh
-	xthresh = 50
-	minfe = femin(algo3)
-	print sprintf("%s, minfe: %s", prob, minfe)
+	ymax = GPVAL_Y_MAX
+	deltay = (ymax - ymin)
+	deltax = femin(algo2) + 0
+	print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+				prob, ymin, ymax, deltay, deltax)
+	tx = 0.025
+	ty = 0.20
+	tthreshx = (deltax * tx)
+	tthreshy = (deltay * ty)
 	# horizontal t-bar
-	set arrow from 0+xthresh,liney to minfe-xthresh,liney heads size screen 0.005,90 lw 4 
-	txtthresh = 50
-	set label 1 "cost to find Z*_b" rotate left at (minfe+txtthresh)/2,txtstart
+	set arrow from (0 + tthreshx),tthreshy to \
+		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+	ax = 0.50
+	ay = 0.01
+	arrowlen = 0.30
+	athreshx = (deltax * ax)
+	athreshy = (deltay * ay) 
 	# vertical arrow
-	set arrow from (minfe+txtthresh)/2,txtstart-(ydiff * 0.01) \
-		to (minfe+txtthresh)/2,liney+(ydiff * 0.01) size screen 0.01,45 lw 3
+	set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+		to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+	# vertical text
+	set label 1 "cost to find Z*_b" rotate left at \
+		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
 	set term push
 	set term pdf enhanced color
 	set output outfile
 	replot
 	unset output
-	# unset macros
 	set term pop
 }
+
+# specialized antenna conv. plot
+print sprintf("re-coloring antenna problem")
+prob = "antenna"
+algo1 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
+algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
+if(coloropt eq "no") {
+	outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstat.pdf", prob, prob)
+} else {
+	outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatc.pdf", prob, prob)
+}
+titlestr = sprintf("%s: SE vs. HV", prob)
+# now do the plot
+reset
+if(showtitle eq "yes") { set title titlestr }
+set key bottom right
+set style fill border
+if(coloropt eq "yes") { load rgbscheme } else { load greyscheme }
+set xlabel "solution evaluations"
+set ylabel "hypervolume"
+set format x "%.1s%c"
+set xrange[0:]
+set yrange[0:]
+plot \
+	algo1 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
+	algo1 using 1:4 w lp lc rgb "#000000" lw 1 ps 0.75 pt 6 pi 10 ti "nsga2 (median)", \
+	algo1 using 1:6 w lp lc rgb "#000000" lw 1 ps 0.75 pt 8 pi 10 ti "nsga2 (max)", \
+	algo2 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 5 pi 10 ti "algorithm 3 (mean)", \
+	algo2 using 1:4 w lp lc rgb "#000000" lw 1 ps 0.75 pt 7 pi 10 ti "algorithm 3 (median)", \
+	algo2 using 1:6 w lp lc rgb "#000000" lw 1 ps 0.75 pt 9 pi 10 ti "algorithm 3 (max)", \
+ymin = GPVAL_Y_MIN
+ymax = GPVAL_Y_MAX
+deltay = (ymax - ymin)
+deltax = femin(algo2) + 0
+print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
+			prob, ymin, ymax, deltay, deltax)
+tx = 0.12
+ty = 0.20
+tthreshx = (deltax * tx)
+tthreshy = (deltay * ty)
+# horizontal t-bar
+set arrow from (0 + tthreshx),tthreshy to \
+	(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
+ax = 0.50
+ay = 0.01
+arrowlen = 0.30
+athreshx = (deltax * ax)
+athreshy = (deltay * ay) 
+# vertical arrow
+set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
+	to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
+# vertical text
+set label 1 "cost to find Z*_b" rotate left at \
+	0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+set term push
+set term pdf enhanced color
+set output outfile
+replot
+unset output
+set term pop
