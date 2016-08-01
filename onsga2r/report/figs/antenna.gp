@@ -1,5 +1,6 @@
 #!/usr/local/bin/gnuplot
 
+# grey scale colors
 g1 = "#1d1d1d"
 g2 = "#313131"
 g3 = "#484848"
@@ -9,18 +10,10 @@ g6 = "#959595"
 g7 = "#afafaf"
 
 # plots all antenna related stuffs from the actual data
-#
 
 # title option
-titleopt = "false"
+titleopt = "no"
 
-# the antenna pf plot
-if (coloropt eq "color") {
-	print "doing color plot"
-	load "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Paired.plt"
-} else {
-	print "doing monochrome plot"
-}
 reset
 unset output
 set term push
@@ -37,26 +30,26 @@ set zlabel "f3"
 set ztics 0, 0.5, 2.0
 set view 35, 311
 set key at -10,350,2
-if (titleopt eq "true") { set title "ANTENNNA: search space"}
+if (titleopt eq "yes") { set title "ANTENNNA: search space"}
 splot \
 	nsga2r	u 1:2:3 w p pt 06 ps 0.75 lw 1 lc rgb g2 ti "Pareto-front (NSGA-II)", \
 	mcf	u 1:2:3 w p pt 06 ps 0.75 lw 1 lc rgb g7 ti "random solutions (5000)", \
-	pivots	u 1:2:3 w p pt 12 ps 1.50 lw 4 lc rgb g4 ti "Z*_b", \
+	pivots	u 1:2:3 w p pt 12 ps 1.50 lw 4 lc rgb g4 ti "Z*_b"
 
-
-# plot 6 snapshots
 set term pop
 reset
 unset output
-set ztics 0, 0.5, 2.0
-set view 35, 311
-# set key outside bottom horizontal nobox
-set key at -15,350,3
-set xlabel "f1"
-set ylabel "f2"
-set zlabel "f3"
+
+# plot 6 snapshots
 gens = "3 20 90 200"
 do for [i = 1:words(gens)] {
+	set ztics 0, 0.5, 2.0
+	set view 35, 311
+	# set key outside bottom horizontal nobox
+	set key at -15,350,3
+	set xlabel "f1"
+	set ylabel "f2"
+	set zlabel "f3"
 	g = word(gens, i)
 	nsga2r		= sprintf("data/antenna/nsga2r-gen-%s.out", g)
 	extreme		= sprintf("data/antenna/extreme-gen-%s.out", g)
@@ -69,7 +62,7 @@ do for [i = 1:words(gens)] {
 	
 	print sprintf("doing monochrome plot, gen = %s", g)
 	
-	if (titleopt eq "true") { set title titlestr}
+	if (titleopt eq "yes") { set title titlestr}
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -81,6 +74,7 @@ do for [i = 1:words(gens)] {
 
 	unset output
 	set term pop
+	reset
 }
 # child		u 1:2:3 w p pt 06 ps 0.5 lc rgb g5  ti "x_c", \
 # survived	u 1:2:3 w p pt 06 ps 0.5 lc rgb g6  ti "survived"
