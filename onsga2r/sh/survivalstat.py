@@ -29,6 +29,7 @@ def compute_mean_survival(root_path, algorithm, problem):
         max_val = gen_data[max_key]
         data_file = os.path.join(
             root_path, 'results', problem, problem + '-' + algorithm + '-survival.stat')
+        # print("data_file: {}".format(data_file))
         fd = open(data_file, 'w')
         for gen in sorted(gen_data):
             fd.write("{0:d}\t{1:0.3f}\n".format(gen, gen_data[gen]))
@@ -48,8 +49,8 @@ def parse_gpcmd(gpcmd):
 
 
 def save_plot(cmd, data_file, min_data, max_data, stable_mean, max_gen):
-    out_file = os.path.join(os.path.join(*data_file.split('/')[:-1]),
-                            data_file.split('/')[-1].split('.')[0] + '.pdf')
+    fname, fext = os.path.splitext(data_file)
+    out_file = fname + '.pdf'
     print("saving {}".format(out_file))
     command = cmd.format(out_file, data_file, max_data[0], max_data[1], stable_mean, max_gen)
     lines = parse_gpcmd(command)
@@ -113,6 +114,7 @@ if __name__ == '__main__':
     if len(argv) == 2:
         root_path = argv[0]
         problem = argv[1]
+        # print("problem (argv[1]): {}".format(problem))
         for algo in algorithms:
             [data_file, min_data, max_data, stable_mean, max_gen] = \
                     compute_mean_survival(root_path, algo, problem)
