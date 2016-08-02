@@ -8,7 +8,7 @@ This part is implemented in some stand-alone MATLAB (`R2014a`) codes, more detai
 
 
 
-This module assumes that you have [jMetal](git@github.com:chudur-budur/jMetal.git) library in your stash. Once you have found all the bounding solutions (using the MATLAB scritps in the `chimp-solver` folder), now you can build the main code --
+This module assumes that you have [jMetal](https://github.com/jMetal/jMetal) library in your stash. Once you have found all the bounding solutions (using the MATLAB scritps in the `chimp-solver` folder), now you can build the main code --
 
 ##### 1. building the main executables:
 ```shell
