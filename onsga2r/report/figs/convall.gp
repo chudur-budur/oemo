@@ -6,7 +6,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 # title option: yes/no
 showtitle = "no"
 # color option: yes/no
-coloropt = "yes"
+coloropt = "no"
 
 # colorcheme and pallettes
 if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
@@ -25,7 +25,7 @@ do for [i = 1:words(probs)] {
 	algo1 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
 	algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	if(coloropt eq "no") {
-		outfile = sprintf("../results/%s/%s-onsga2r-nsga2r-hvstat.pdf", prob, prob)
+		outfile = sprintf("../results/%s/%s-onsga2r-nsga2r-hvstatg.pdf", prob, prob)
 	} else {
 		outfile = sprintf("../results/%s/%s-onsga2r-nsga2r-hvstatc.pdf", prob, prob)
 	}
@@ -40,8 +40,13 @@ do for [i = 1:words(probs)] {
 	set ylabel "hypervolume"
 	set format x "%.1s%c"
 	set xrange[0:]
-	if(prob eq "dtlz6") { set xrange[0:40000] }
-	if(prob eq "dtlz5") { set xrange[0:5000]  }
+	if(prob eq "zdt1")  { set xrange[0:13000]  }
+	if(prob eq "zdt3")  { set xrange[0:13000]  }
+	if(prob eq "dtlz1") { set xrange[0:40000]  }
+	if(prob eq "dtlz2") { set xrange[0:25000]  }
+	if(prob eq "dtlz3") { set xrange[0:42000]  }
+	if(prob eq "dtlz5") { set xrange[0:17000]  }
+	if(prob eq "dtlz7") { set xrange[0:25000]  }
 	if(prob eq "crash") { set xrange[0:8000]  }
 	if(prob eq "osy")   { set xrange[0:30000] }
 	set yrange[0:]
@@ -63,13 +68,21 @@ do for [i = 1:words(probs)] {
 	tx = 0.05
 	ty = 0.05
 	if(prob eq "zdt1") { ty = 0.50 }
-	if(prob eq "zdt3") { ty = 0.50 }
+	if(prob eq "zdt2") { ty = 0.50 }
+	if(prob eq "zdt3") { ty = 0.02 }
+	if(prob eq "zdt4") { ty = 0.20 }
+	if(prob eq "zdt6") { ty = 0.20 }
+	if(prob eq "dtlz2") { ty = 0.50 }
+	if(prob eq "dtlz5") { ty = 0.50 }
+	if(prob eq "dtlz7") { ty = 0.50 }
+	if(prob eq "osy") { ty = 0.02 }
 	tthreshx = (deltax * tx)
 	tthreshy = (deltay * ty)
 	# horizontal t-bar
 	set arrow from (0 + tthreshx),tthreshy to \
 		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
 	ax = 0.50
+	if(prob eq "osy") { ax = 0.60 }
 	ay = 0.01
 	arrowlen = 0.10
 	if(prob eq "zdt1") { arrowlen = 0.10 }
@@ -92,7 +105,8 @@ do for [i = 1:words(probs)] {
 
 # nsga2re vs. onsga2r
 print sprintf("re-coloring nsga2re vs. onsga2r")
-probs = "zdt1 zdt4 dtlz3 dtlz6 dtlz7"
+# probs = "zdt1 zdt4 dtlz3 dtlz6 dtlz7"
+probs = "zdt4 dtlz3 dtlz6"
 do for [i = 1:words(probs)] {
 	# set up file names
 	prob = word(probs, i)
@@ -100,7 +114,7 @@ do for [i = 1:words(probs)] {
 	algo2 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
 	algo3 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	if(coloropt eq "no") {
-		outfile = sprintf("../results/%s/%s-onsga2r-nsga2re-hvstat.pdf", prob, prob)
+		outfile = sprintf("../results/%s/%s-onsga2r-nsga2re-hvstatg.pdf", prob, prob)
 	} else {
 		outfile = sprintf("../results/%s/%s-onsga2r-nsga2re-hvstatc.pdf", prob, prob)
 	}
@@ -115,7 +129,7 @@ do for [i = 1:words(probs)] {
 	set ylabel "hypervolume"
 	set format x "%.1s%c"
 	set xrange[0:]
-	if(prob eq "dtlz6") { set xrange[0:40000] }
+	# if(prob eq "dtlz6") { set xrange[0:40000] }
 	set yrange[0:]
 	plot \
 		algo1 using 1:2:6 with filledcu \
@@ -164,14 +178,15 @@ do for [i = 1:words(probs)] {
 
 # onsga2r vs. onsga2rw
 print sprintf("re-coloring onsga2r vs. onsga2rw")
-probs = "dtlz3 dtlz6 zdt2 zdt3 zdt4"
+# probs = "dtlz3 dtlz6 zdt2 zdt3 zdt4"
+probs = "dtlz3 dtlz6"
 do for [i = 1:words(probs)] {
 	# set up file names
 	prob = word(probs, i)
 	algo1 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	algo2 = sprintf("../results/%s/%s-onsga2rw-hv.stat", prob, prob)
 	if(coloropt eq "no") {
-		outfile = sprintf("../results/%s/%s-onsga2r-onsga2rw-hvstat.pdf", prob, prob)
+		outfile = sprintf("../results/%s/%s-onsga2r-onsga2rw-hvstatg.pdf", prob, prob)
 	} else {
 		outfile = sprintf("../results/%s/%s-onsga2r-onsga2rw-hvstatc.pdf", prob, prob)
 	}
@@ -188,7 +203,6 @@ do for [i = 1:words(probs)] {
 	set xrange[0:]
 	if(prob eq "dtlz6") { set xrange[0:40000] }
 	if(prob eq "zdt2")  { set xrange[0:6000]  }
-	if(prob eq "zdt4")  { set xrange[0:12000] }
 	if(prob eq "zdt3")  { set xrange[0:10000] }
 	set yrange[0:]
 	plot \
@@ -234,7 +248,7 @@ do for [i = 1:words(probs)] {
 
 # nsga2r vs. onsga2rwdom
 print sprintf("re-coloring nsga2r vs. onsga2rwdom")
-probs = "zdt4 dtlz1"
+probs = "zdt4 zdt6 dtlz1"
 do for [i = 1:words(probs)] {
 	# set up file names
 	prob = word(probs, i)
@@ -242,7 +256,7 @@ do for [i = 1:words(probs)] {
 	algo2 = sprintf("../results/%s/%s-onsga2rwdom-hv.stat", prob, prob)
 	algo3 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	if(coloropt eq "no") {
-		outfile = sprintf("../results/%s/%s-nsga2r-onsga2rwdom-hvstat.pdf", prob, prob)
+		outfile = sprintf("../results/%s/%s-nsga2r-onsga2rwdom-hvstatg.pdf", prob, prob)
 	} else {
 		outfile = sprintf("../results/%s/%s-nsga2r-onsga2rwdom-hvstatc.pdf", prob, prob)
 	}
@@ -257,8 +271,8 @@ do for [i = 1:words(probs)] {
 	set ylabel "hypervolume"
 	set format x "%.1s%c"
 	set xrange[0:]
-	if(prob eq "zdt4")  { set xrange[0:16000] }
-	if(prob eq "dtlz1") { set xrange[0:30000] }
+	if(prob eq "zdt4") { set xrange[0:20000] }
+	if(prob eq "zdt6") { set xrange[0:16000] }
 	set yrange[0:]
 	plot \
 		algo1 using 1:2:6 with filledcu \
@@ -287,7 +301,7 @@ do for [i = 1:words(probs)] {
 	set arrow from (0 + tthreshx),tthreshy to \
 		(deltax - tthreshx),tthreshy heads size screen 0.005,90 lw 4 
 	ax = 0.50
-	if(prob eq "dtlz1") { ax = 0.75 }
+	if(prob eq "dtlz1") { ax = 0.2 }
 	ay = 0.01
 	arrowlen = 0.30
 	athreshx = (deltax * ax)
@@ -315,7 +329,7 @@ do for [i = 1:words(probs)] {
 	algo1 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
 	algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 	if(coloropt eq "no") {
-		outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstat.pdf", prob, prob)
+		outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatg.pdf", prob, prob)
 	} else {
 		outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatc.pdf", prob, prob)
 	}
@@ -330,6 +344,7 @@ do for [i = 1:words(probs)] {
 	set ylabel "hypervolume"
 	set format x "%.1s%c"
 	set xrange[0:]
+	if(prob eq "c1dtlz3") { set xrange[0:60000] }
 	set yrange[0:]
 	plot \
 		algo1 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
@@ -376,7 +391,7 @@ prob = "antenna"
 algo1 = sprintf("../results/%s/%s-nsga2r-hv.stat", prob, prob)
 algo2 = sprintf("../results/%s/%s-onsga2r-hv.stat", prob, prob)
 if(coloropt eq "no") {
-	outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstat.pdf", prob, prob)
+	outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatg.pdf", prob, prob)
 } else {
 	outfile = sprintf("../results/%s/%s-nsga2r-onsga2r-hvstatc.pdf", prob, prob)
 }
@@ -390,7 +405,7 @@ if(coloropt eq "yes") { load rgbscheme } else { load greyscheme }
 set xlabel "solution evaluations"
 set ylabel "hypervolume"
 set format x "%.1s%c"
-set xrange[0:]
+set xrange[0:50000]
 set yrange[0:]
 plot \
 	algo1 using 1:7 w lp lc rgb "#000000" lw 1 ps 0.75 pt 4 pi 10 ti "nsga2 (mean)", \
