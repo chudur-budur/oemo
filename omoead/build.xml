@@ -56,6 +56,8 @@
 		<delete verbose="true" failonerror="true" includeemptydirs="true">
 			<fileset dir="." defaultexcludes="no">
 				<include name="*.jar"/>
+				<include name="*.tsv"/>
+				<include name="*.log"/>
 			</fileset>
 			<fileset dir="${src.dir}" defaultexcludes="no">
 				<include name="**/*.class, **/.*.*.swp, **/*.*~"/>
