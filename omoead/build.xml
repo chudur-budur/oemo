@@ -54,10 +54,12 @@
 	-->
 	<target name="clean" description="delete all the vestiges">
 		<delete verbose="true" failonerror="true" includeemptydirs="true">
-			<fileset dir="." includes="*.jar" defaultexcludes="no"/>
-			<fileset dir="${src.dir}"
-				includes="**/*.class, **/.*.*.swp, **/*.*~"
-				defaultexcludes="no"/>
+			<fileset dir="." defaultexcludes="no">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${src.dir}" defaultexcludes="no">
+				<include name="**/*.class, **/.*.*.swp, **/*.*~"/>
+			</fileset>
 			<fileset dir="${bin.dir}" defaultexcludes="no"> 
 				<include name="**/*"/>
 				<exclude name=".dummy"/>
