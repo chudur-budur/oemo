@@ -86,26 +86,8 @@
 		</javac>
 	</target>
 
-	<!-- ==================== Archive Model ================ -->
-	<!--
-	  The "jar" target archive the executables and resources to jar files.	  
-	-->
-	<!--<target name="jar" depends="compile" description="makes a jar file">
-		<jar jarfile="migration.jar" basedir="${bin.dir}">
-			<zipgroupfileset dir="${ext.lib.dir}">
-				<patternset refid="needed.libs"/>
-			</zipgroupfileset>
-			<manifest>
-				<attribute name="Main-Class" value="migration.MigrationWithUI"/>-->
-				<!--<attribute name="Main-Class" value="ec.Evolve"/>-->
-			<!--</manifest>
-		</jar>
-	</target>-->
-
 	<!-- ================= Runs the compiled code ================= -->
-	<!--
-	  This runs the compiled code
-	-->
+	<!-- This runs the compiled code -->
 	<target name="run" depends="make" description="runs the model">
 		<java	classpathref="ext.libs"
 			classname="MOEADRunner"
@@ -119,9 +101,7 @@
 	</target>
 
 	<!-- ================= Runs the EC process ================= -->
-	<!--
-	  This runs the ECJ process
-	-->
+	<!-- This runs the ECJ process -->
 	<target name="run-ec" depends="make" description="runs the ec module">
 		<java	classpathref="jar.external"
 			classname="ec.Evolve"
