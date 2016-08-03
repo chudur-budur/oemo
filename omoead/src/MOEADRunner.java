@@ -51,6 +51,7 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 
 		String problemName ;
 		String referenceParetoFront = "";
+		String jmroot = "/media/khaled/data/research/jMetal/" ;
 		if (args.length == 1) problemName = args[0];
 		else if (args.length == 2)
 		{
@@ -59,8 +60,9 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 		}
 		else
 		{
-			problemName = "org.uma.jmetal.problem.multiobjective.lz09.LZ09F2";
-			referenceParetoFront = "jmetal-problem/src/test/resources/pareto_fronts/LZ09_F2.pf";
+			problemName = "org.uma.jmetal.problem.multiobjective.dtlz.DTLZ7";
+			referenceParetoFront = jmroot + 
+				"jmetal-problem/src/test/resources/pareto_fronts/DTLZ7.3D.pf";
 		}
 
 		problem = (DoubleProblem)ProblemUtils.<DoubleSolution> loadProblem(problemName);
@@ -77,8 +79,8 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 			.setCrossover(crossover)
 			.setMutation(mutation)
 			.setMaxEvaluations(150000)
-			.setPopulationSize(300)
-			.setResultPopulationSize(300)
+			.setPopulationSize(500)
+			.setResultPopulationSize(500)
 			.setNeighborhoodSelectionProbability(0.9)
 			.setMaximumNumberOfReplacedSolutions(2)
 			.setNeighborSize(20)
