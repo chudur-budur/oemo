@@ -17,18 +17,6 @@
 	<property name="ext.jar.dir" value="libs"/>
 	<!-- adding the external libraries into the classpath -->
 	<patternset id="ext.jars">
-		<!--<include name="commons-math3-3.3.jar"/>
-		<include name="csv4j-0.4.0.jar"/>
-		<include name="iText-2.1.5.jar"/>
-		<include name="jcommon-1.0.17.jar"/>
-		<include name="jfreechart-1.0.14.jar"/>
-		<include name="jmf.jar"/>
-		<include name="mason.18.jar"/>
-		<include name="toolsUI-4.3.jar"/>
-		<include name="ecj.jar"/>
-		<include name="jzlib-1.0.7.jar"/>
-		<include name="pshecj.jar"/>
-		<include name="PowerLaws.jar"/>-->
 		<include name="commons-io-2.5.jar"/>
 	</patternset>
 	<property name="jmetal.root" value="/media/khaled/data/research/jMetal"/>
@@ -38,11 +26,6 @@
 		<include name="jmetal-problem/target/classes"/> 
 		<include name="jmetal-exec/target/classes"/>
 	</patternset>	
-	<!--<path id="jmetal.libs">
-		<dirset dir="${jmetal.root}">
-			<patternset refid="jmetal.classes"/>
-		</dirset>
-	</path>-->
 	<path id="ext.libs">
 		<fileset dir="${ext.jar.dir}">
 			<patternset refid="ext.jars"/>
@@ -109,9 +92,9 @@
 		</jar>
 	</target>-->
 
-	<!-- ================= Runs the model ================= -->
+	<!-- ================= Runs the compiled code ================= -->
 	<!--
-	  This runs the compiled code model
+	  This runs the compiled code
 	-->
 	<target name="run" depends="make" description="runs the model">
 		<java	classpathref="ext.libs"
@@ -120,7 +103,7 @@
 			<classpath>
 				<pathelement location="${bin.dir}/"/>
 				<!-- this is needed to get the resources -->
-				<pathelement location="${jmetal.root}"/>
+				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
 		</java>
 	</target>
