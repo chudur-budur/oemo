@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =============================================
+     Author:   Khaled
+     ============================================= -->
+
+
+<!--<project name="omoead" default="compile" basedir=".">-->
+<project name="omoead" basedir=".">
+
+	<!-- bootclasspath -->
+	<property name="java.boot.classpath" value="${env.CLASSPATH}"/>
+	<!-- Source path -->
+	<property name="src.dir" value="src"/>
+	<!-- Bin path -->
+	<property name="bin.dir" value="bin"/>
+	<!-- External libraries path -->
+	<property name="ext.jar.dir" value="libs"/>
+	<!-- adding the external libraries into the classpath -->
+	<patternset id="ext.jars">
+		<!--<include name="commons-math3-3.3.jar"/>
+		<include name="csv4j-0.4.0.jar"/>
+		<include name="iText-2.1.5.jar"/>
+		<include name="jcommon-1.0.17.jar"/>
+		<include name="jfreechart-1.0.14.jar"/>
+		<include name="jmf.jar"/>
+		<include name="mason.18.jar"/>
+		<include name="toolsUI-4.3.jar"/>
+		<include name="ecj.jar"/>
+		<include name="jzlib-1.0.7.jar"/>
+		<include name="pshecj.jar"/>
+		<include name="PowerLaws.jar"/>-->
+		<include name="commons-io-2.5.jar"/>
+	</patternset>
+	<property name="jmetal.root" value="/media/khaled/data/research/jMetal"/>
+	<patternset id="jmetal.classes">
+		<include name="jmetal-core/target/classes"/> 
+		<include name="jmetal-algorithm/target/classes"/> 
+		<include name="jmetal-problem/target/classes"/> 
+		<include name="jmetal-exec/target/classes"/>
+	</patternset>	
+	<!--<path id="jmetal.libs">
+		<dirset dir="${jmetal.root}">
+			<patternset refid="jmetal.classes"/>
+		</dirset>
+	</path>-->
+	<path id="ext.libs">
+		<fileset dir="${ext.jar.dir}">
+			<patternset refid="ext.jars"/>
+		</fileset>
+		<dirset dir="${jmetal.root}">
+			<patternset refid="jmetal.classes"/>
+		</dirset>
+	</path>
+
+	<!-- ================ The description line ============== -->	
+	<description>
+		OMOEAD: CHIM+ bounds injection based MOEAD algorithm. 
+	</description>
+
+	<!-- ==================== Clean Target ================== -->
+	<!--
+	  The "clean" target deletes any previous contents in the "bin" 
+	  directory, and/or the .class files, also deletes the vim 
+	  vestiges like .swp etc.
+	-->
+	<target name="clean" description="delete all the vestiges">
+		<delete verbose="true" failonerror="true" includeemptydirs="true">
+			<fileset dir="."
+				includes="*.jar"
+				defaultexcludes="no"/>
+			<fileset dir="${src.dir}"
+				includes="**/*.class, **/.*.*.swp, **/*.*~"
+				defaultexcludes="no"/>
+			<fileset dir="${bin.dir}" 
+				includes="**/*" defaultexcludes="no"/>
+		</delete>
+	</target>
+	
+	<!-- ==================== Compile Model ================ -->
+	<!--
+	  The "make" target compiles the java files.	  
+	-->
+	<target name="make" depends="clean" description="compile model sources">
+		<javac	classpathref="ext.libs"
+			srcdir="${src.dir}"
+			destdir="${bin.dir}"
+			includeantruntime="false"
+			debug="true"
+			optimize="true">
+			<!--<compilerarg line="-Xbootclasspath:/opt/jdk1.8.0_40/jre/lib/rt.jar -target 1.8 -source 1.6 -Xlint:deprecation" />-->
+			<!--bootclasspath="${java.boot.classpath}">-->
+			<!--deprecation="false"-->
+		</javac>
+	</target>
+
+	<!-- ==================== Archive Model ================ -->
+	<!--
+	  The "jar" target archive the executables and resources to jar files.	  
+	-->
+	<!--<target name="jar" depends="compile" description="makes a jar file">
+		<jar jarfile="migration.jar" basedir="${bin.dir}">
+			<zipgroupfileset dir="${ext.lib.dir}">
+				<patternset refid="needed.libs"/>
+			</zipgroupfileset>
+			<manifest>
+				<attribute name="Main-Class" value="migration.MigrationWithUI"/>-->
+				<!--<attribute name="Main-Class" value="ec.Evolve"/>-->
+			<!--</manifest>
+		</jar>
+	</target>-->
+
+	<!-- ================= Runs the model ================= -->
+	<!--
+	  This runs the compiled code model
+	-->
+	<target name="run" depends="make" description="runs the model">
+		<java	classpathref="ext.libs"
+			classname="MOEADRunner"
+			fork="true">
+			<classpath>
+				<pathelement location="${bin.dir}/"/>
+				<!-- this is needed to get the resources -->
+				<pathelement location="${jmetal.root}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<!-- ================= Runs the EC process ================= -->
+	<!--
+	  This runs the ECJ process
+	-->
+	<target name="run-ec" depends="make" description="runs the ec module">
+		<java	classpathref="jar.external"
+			classname="ec.Evolve"
+			fork="true">
+			<classpath>
+				<pathelement location="${bin.dir}"/>
+				<!-- this is needed to get the txt files -->
+				<pathelement location="${src.dir}"/>
+			</classpath>
+			<!--<arg value="-from"/> 
+			  <arg value="app/ant/ant.params"/>-->
+			<arg value="-p"/>
+			<arg value="print-params=false"/>
+			<arg value="-file"/>
+			<arg value="src/optimization/desirability/es.params"/>
+			<arg value="-p"/>
+			<arg value="stat.file=ant.out.stat"/>
+		</java>
+	</target>
+</project>
