@@ -64,7 +64,10 @@
 		<delete verbose="true" failonerror="true" includeemptydirs="true">
 			<fileset dir="." defaultexcludes="no">
 				<include name="*.jar"/>
+				<include name="VAR*"/>
+				<include name="FUN*"/>
 				<include name="*.tsv"/>
+				<include name="*.out"/>
 				<include name="*.log"/>
 			</fileset>
 			<fileset dir="${src.dir}" defaultexcludes="no">
@@ -105,6 +108,9 @@
 				<!-- this is needed to get the resources -->
 				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
+			<arg value="dtlz7"/>
+			<arg value="0.12345"/>
+			<arg value="12345"/>
 		</java>
 	</target>
 
