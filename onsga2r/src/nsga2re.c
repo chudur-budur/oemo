@@ -7,7 +7,7 @@
 
 # include "global.h"
 # include "rand.h"
-# include "opposition.h"
+# include "localsearch.h"
 # include "misc.h"
 
 char prob_name[16] ;

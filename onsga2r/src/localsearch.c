@@ -10,7 +10,7 @@
 #include "rand.h"
 #include "global.h"
 #include "problemdef.h"
-#include "opposition.h"
+#include "localsearch.h"
 #include "extremes.h"
 #include "poplist.h"
 #include "misc.h"

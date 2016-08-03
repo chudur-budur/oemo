@@ -2,8 +2,8 @@
 CC 		:= gcc
 INCLUDES 	:= $(wildcard src/*.h)
 COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
-			dominance.c eval.c fillnds.c initialize.c list.c merge.c misc.c\
-			mutation.c opposition.c poplist.c problemdef.c rand.c rank.c\
+			dominance.c eval.c fillnds.c initialize.c list.c localsearch.c\
+			merge.c misc.c mutation.c poplist.c problemdef.c rand.c rank.c\
 			report.c sort.c tourselect.c vecutils.c
 SRC		:= $(addprefix src/,$(COMMON_FILES))
 IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
