@@ -18,21 +18,27 @@
 	<!-- adding the external libraries into the classpath -->
 	<patternset id="ext.jars">
 		<include name="commons-io-2.5.jar"/>
+		<include name="jmetal-core-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
+		<include name="jmetal-algorithm-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
+		<include name="jmetal-problem-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
+		<include name="jmetal-exec-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
 	</patternset>
-	<property name="jmetal.root" value="/media/khaled/data/research/jMetal"/>
+	<!-- use this if you have to modify the original jmetal codes -->
+	<!-- <property name="jmetal.root" value="/media/khaled/data/research/jMetal"/>
 	<patternset id="jmetal.classes">
 		<include name="jmetal-core/target/classes"/> 
 		<include name="jmetal-algorithm/target/classes"/> 
 		<include name="jmetal-problem/target/classes"/> 
 		<include name="jmetal-exec/target/classes"/>
-	</patternset>	
+	</patternset>-->
 	<path id="ext.libs">
 		<fileset dir="${ext.jar.dir}">
 			<patternset refid="ext.jars"/>
 		</fileset>
-		<dirset dir="${jmetal.root}">
+		<!-- if you are modifying the original jmetal codes -->
+		<!--<dirset dir="${jmetal.root}">
 			<patternset refid="jmetal.classes"/>
-		</dirset>
+		</dirset>-->
 	</path>
 
 	<!-- ================ The description line ============== -->	
@@ -48,14 +54,14 @@
 	-->
 	<target name="clean" description="delete all the vestiges">
 		<delete verbose="true" failonerror="true" includeemptydirs="true">
-			<fileset dir="."
-				includes="*.jar"
-				defaultexcludes="no"/>
+			<fileset dir="." includes="*.jar" defaultexcludes="no"/>
 			<fileset dir="${src.dir}"
 				includes="**/*.class, **/.*.*.swp, **/*.*~"
 				defaultexcludes="no"/>
-			<fileset dir="${bin.dir}" 
-				includes="**/*" defaultexcludes="no"/>
+			<fileset dir="${bin.dir}" defaultexcludes="no"> 
+				<include name="**/*"/>
+				<exclude name=".dummy"/>
+			</fileset>
 		</delete>
 	</target>
 	

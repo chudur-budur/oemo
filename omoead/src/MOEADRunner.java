@@ -26,8 +26,13 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.ProblemUtils;
 
+import org.uma.jmetal.solution.Solution;
+
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.net.URL ;
+import java.io.File ;
+import java.io.InputStream ;
 
 /**
  * Class for configuring and running the MOEA/D algorithm
@@ -51,7 +56,6 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 
 		String problemName ;
 		String referenceParetoFront = "";
-		String jmroot = "/media/khaled/data/research/jMetal/" ;
 		if (args.length == 1) problemName = args[0];
 		else if (args.length == 2)
 		{
@@ -61,8 +65,8 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 		else
 		{
 			problemName = "org.uma.jmetal.problem.multiobjective.dtlz.DTLZ7";
-			referenceParetoFront = jmroot + 
-				"jmetal-problem/src/test/resources/pareto_fronts/DTLZ7.3D.pf";
+			// resource from jar needs to start with a slash "/" -- weird
+			referenceParetoFront = "/pareto_fronts/DTLZ7.3D.pf" ;
 		}
 
 		problem = (DoubleProblem)ProblemUtils.<DoubleSolution> loadProblem(problemName);
@@ -79,8 +83,8 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 			.setCrossover(crossover)
 			.setMutation(mutation)
 			.setMaxEvaluations(150000)
-			.setPopulationSize(500)
-			.setResultPopulationSize(500)
+			.setPopulationSize(300)
+			.setResultPopulationSize(300)
 			.setNeighborhoodSelectionProbability(0.9)
 			.setMaximumNumberOfReplacedSolutions(2)
 			.setNeighborSize(20)
