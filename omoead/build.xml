@@ -15,30 +15,38 @@
 	<property name="bin.dir" value="bin"/>
 	<!-- External libraries path -->
 	<property name="ext.jar.dir" value="libs"/>
-	<!-- adding the external libraries into the classpath -->
-	<patternset id="ext.jars">
-		<include name="commons-io-2.5.jar"/>
+	<!-- prebuilt jmetal jars, not required if using the original source -->
+	<patternset id="jmetal.jars">
 		<include name="jmetal-core-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
 		<include name="jmetal-algorithm-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
 		<include name="jmetal-problem-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
 		<include name="jmetal-exec-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
 	</patternset>
 	<!-- use this if you have to modify the original jmetal codes -->
-	<!-- <property name="jmetal.root" value="/media/khaled/data/research/jMetal"/>
+	<property name="jmetal.root" value="../../jMetal"/>
 	<patternset id="jmetal.classes">
 		<include name="jmetal-core/target/classes"/> 
 		<include name="jmetal-algorithm/target/classes"/> 
 		<include name="jmetal-problem/target/classes"/> 
 		<include name="jmetal-exec/target/classes"/>
-	</patternset>-->
+	</patternset>
+	<!-- adding the external libraries into the classpath, 
+	     this is needed if you are using the original source -->
+	<patternset id="ext.jars">
+		<include name="commons-io-2.5.jar"/>
+	</patternset>
 	<path id="ext.libs">
+		<!-- if you are using the precompiled jars -->
 		<fileset dir="${ext.jar.dir}">
-			<patternset refid="ext.jars"/>
+			<patternset refid="jmetal.jars"/>
 		</fileset>
 		<!-- if you are modifying the original jmetal codes -->
 		<!--<dirset dir="${jmetal.root}">
 			<patternset refid="jmetal.classes"/>
-		</dirset>-->
+		</dirset>
+		<fileset dir="${ext.jar.dir}">
+			<patternset refid="ext.jars"/>
+		</fileset>-->
 	</path>
 
 	<!-- ================ The description line ============== -->	
