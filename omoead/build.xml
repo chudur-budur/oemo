@@ -109,8 +109,8 @@
 				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
 			<arg value="dtlz7"/>
-			<arg value="0.12345"/>
-			<arg value="12345"/>
+			<arg value="1234567890123"/>
+			<arg value="1234567890"/>
 		</java>
 	</target>
 
