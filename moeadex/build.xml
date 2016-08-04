@@ -101,7 +101,7 @@
 	<!-- This runs the compiled code -->
 	<target name="run" depends="make" description="runs the model">
 		<java	classpathref="ext.libs"
-			classname="MOEADRunner"
+			classname="MoeadExr"
 			fork="true">
 			<classpath>
 				<pathelement location="${bin.dir}/"/>

@@ -12,7 +12,7 @@ This module assumes that you have [jMetal](https://github.com/jMetal/jMetal) lib
 
 ##### 1. building the main executables:
 ```shell
-	make
+	ant make
 ```
 Once you have built the source, you will find the following executables --
 
