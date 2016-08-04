@@ -1,4 +1,5 @@
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
@@ -33,7 +34,7 @@ public class Utils
 				+ " have been saved to file.");
 	}
 
-	public static String[] mapProblemName(String problemName)
+	public static String[] mapResources(String problemName)
 	{
 		String[] res = new String[2] ;
 		// resource from jar needs to start with a slash "/" -- weird
@@ -56,5 +57,21 @@ public class Utils
 			Class cls = Class.forName(res[0], false, Problem.class.getClassLoader());
 		} catch(Exception e) { e.printStackTrace(); System.exit(1); }
 		return res ;
+	}
+
+	public static int[] getParams(String problemName)
+	{
+		int[] params = new int[2] ;
+		if(problemName.toLowerCase().equals("dtlz7"))
+		{
+			params[0] = 100 ; // popsize
+			params[1] = 20000 ; // evals
+		}
+		else {
+			System.err.println("Utils.getParams(): " 
+					+ "nothing is specified for problem \'" + problemName + "\'.");
+			System.exit(1);
+		}
+		return params ;
 	}
 }

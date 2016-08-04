@@ -33,13 +33,13 @@ import java.util.*;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MOEADRunner extends AbstractAlgorithmRunner
+public class MoeadExr extends AbstractAlgorithmRunner
 {
 	/**
 	 * @param args Command line arguments.
 	 * @throws SecurityException
 	 * Invoking command:
-		java -cp [your classpath] MOEADRunner [problem name] [seed] [outfile-uid]
+		java -cp [your classpath] MoedExr [problem name] [seed] [outfile-uid]
 	 */
 	public static void main(String[] args) throws FileNotFoundException
 	{
@@ -50,7 +50,7 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 		String outfileUid ;
 		if(args.length < 3) {
 			System.err.println(
-				"Usage: java -cp [your classpath] MOEADRunner " 
+				"Usage: java -cp [your classpath] MoeadExr " 
 				+ "[problem name] [seed] [outfile-uid]");
 			System.exit(1);
 		}
@@ -58,11 +58,11 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 		problemName = args[0] ;
 		seed = Long.parseLong(args[1]) ;
 		outfileUid = args[2];
-		String[] res = Utils.mapProblemName(problemName);
+		String[] res = Utils.mapResources(problemName);
 		System.out.println("problem: " + problemName + " seed: " + seed + " uid: " + outfileUid);
 		System.out.println("res[0]: " + res[0] + " res[1]: " + res[1]);	
 		JMetalRandom.getInstance().setSeed(seed);
-		MOEAD.runUid = outfileUid ;
+		MoeadEx.runUid = outfileUid ;
 		
 		DoubleProblem problem;
 		Algorithm<List<DoubleSolution>> algorithm;
@@ -71,9 +71,10 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 
 		problem = (DoubleProblem)ProblemUtils.<DoubleSolution> loadProblem(res[0]);
 		
-		int popSize = 100 ;
-		int resultPopSize = 100 ;
-		int maxEval = 20000 ;
+		int[] params = Utils.getParams(problemName);
+		int popSize = params[0] ;
+		int resultPopSize = popSize ;
+		int maxEval = params[1] ;
 		double neighbourhoodSelectionProb = 0.9 ;
 		int maxNumReplace = 2 ;
 		int neighbourSize = 20 ;
@@ -87,7 +88,7 @@ public class MOEADRunner extends AbstractAlgorithmRunner
 		double mutationDistributionIndex = 20.0;
 		mutation = new PolynomialMutation(mutationProbability, mutationDistributionIndex);
 
-		algorithm = new MOEAD(problem, popSize, resultPopSize, maxEval, mutation, crossover,
+		algorithm = new MoeadEx(problem, popSize, resultPopSize, maxEval, mutation, crossover,
 				AbstractMOEAD.FunctionType.TCHE, dataDir, neighbourhoodSelectionProb,
 				maxNumReplace, neighbourSize);
 

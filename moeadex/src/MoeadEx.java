@@ -33,12 +33,13 @@ import java.io.* ;
  * @version 1.0
  */
 @SuppressWarnings("serial")
-public class MOEAD extends AbstractMOEAD<DoubleSolution>
+public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 {
 	private DifferentialEvolutionCrossover differentialEvolutionCrossover ;
 	public static String runUid = "1234567890" ;
+	private LocalSearch ls ;
 
-	public MOEAD(Problem<DoubleSolution> problem,
+	public MoeadEx(Problem<DoubleSolution> problem,
 	             int populationSize,
 	             int resultPopulationSize,
 	             int maxEvaluations,
@@ -55,6 +56,7 @@ public class MOEAD extends AbstractMOEAD<DoubleSolution>
 			neighborhoodSelectionProbability, maximumNumberOfReplacedSolutions,
 			neighborSize);
 		differentialEvolutionCrossover = (DifferentialEvolutionCrossover)crossoverOperator ;
+		this.ls = new LocalSearch(problem);
 	}
 
 	@Override public void run()
@@ -71,6 +73,12 @@ public class MOEAD extends AbstractMOEAD<DoubleSolution>
 		int nconst = 0 ;
 		if(problem instanceof ConstrainedProblem)
 			nconst = ((ConstrainedProblem)problem).getNumberOfConstraints();
+
+		/* inject the bounds in the initial pop */
+		this.ls.loadCHIMBoundsFromFile();
+		evaluations += this.ls.injectCHIMBounds(population);
+		// System.out.println(population.toString());
+		System.exit(1);
 
 		try {
 			File file = new File("all_pop-" + runUid + ".out");
@@ -123,7 +131,6 @@ public class MOEAD extends AbstractMOEAD<DoubleSolution>
 		for (int i = 0; i < populationSize; i++)
 		{
 			DoubleSolution newSolution = (DoubleSolution)problem.createSolution();
-
 			problem.evaluate(newSolution);
 			population.add(newSolution);
 		}
@@ -131,11 +138,12 @@ public class MOEAD extends AbstractMOEAD<DoubleSolution>
 
 	@Override public String getName()
 	{
-		return "MOEAD" ;
+		return "MoeadEx" ;
 	}
 
 	@Override public String getDescription()
 	{
-		return "Multi-Objective Evolutionary Algorithm based on Decomposition" ;
+		return "Multi-Objective Evolutionary Algorithm based on Decomposition (MOEA/D) " 
+			+ "with CHIM bound injection" ;
 	}
 }
