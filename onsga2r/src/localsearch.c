@@ -159,7 +159,7 @@ int init_extreme_pts_from_file(void)
 	}
 	free(line);
 	fclose(fp);
-	index = 2 * rnd(0, lines/nobj );
+	index = nobj * rnd(0, lines/nobj);
 	fprintf(stdout, "\nindex: %d\n", index);
 	ind = (individual*)malloc(sizeof(individual) * nobj);
 	feval = 0 ;
