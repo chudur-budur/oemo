@@ -61,8 +61,9 @@ public class Utils
 
 	public static int[] getParams(String problemName)
 	{
+		String set1 = "zdt4,zdt6,dtlz7" ;
 		int[] params = new int[2] ;
-		if(problemName.toLowerCase().equals("dtlz7"))
+		if(set1.contains(problemName.toLowerCase()))
 		{
 			params[0] = 100 ; // popsize
 			params[1] = 20000 ; // evals

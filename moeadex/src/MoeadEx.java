@@ -77,8 +77,9 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 		/* inject the bounds in the initial pop */
 		this.ls.loadCHIMBoundsFromFile();
 		evaluations += this.ls.injectCHIMBounds(population);
-		// System.out.println(population.toString());
-		System.exit(1);
+		/* System.out.println("---------- pop ----------");
+		System.out.println(population.toString());
+		System.exit(1);*/
 
 		try {
 			File file = new File("all_pop-" + runUid + ".out");

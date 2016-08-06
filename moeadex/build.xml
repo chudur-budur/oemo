@@ -108,6 +108,7 @@
 				<!-- this is needed to get the resources -->
 				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
+			<!--<arg value="zdt4"/>-->
 			<arg value="dtlz7"/>
 			<arg value="1234567890123"/>
 			<arg value="1234567890"/>

@@ -24,14 +24,28 @@ public class LocalSearch
 	{
 		int nreal = pop.get(0).getNumberOfVariables();
 		int nobj = pop.get(0).getNumberOfObjectives();
-		int index = 2 * this.rng.nextInt(0, this.chimps.size() / nobj);
-		for(int i = 0 ; i < this.chimps.size() ; i++)
+		int index = nobj * this.rng.nextInt(0, this.chimps.size() / nobj);
+		int fe = 0 ;
+		/*for(int i = 0 ; i < this.chimps.size() ; i++)
 		{
 			for(int j = 0 ; j < this.chimps.get(i).size() ; j++)
 				System.out.print(this.chimps.get(i).get(j) + "\t");
 			System.out.println();
+		}*/
+		String indices = "" ;
+		for(int i = index, k = 0  ; i < index + nobj ; i++, k++)
+		{
+			for(int j = 0 ; j < nreal ; j++)
+				((DoubleSolution)pop.get(k)).setVariableValue(j, 
+						((Double)this.chimps.get(i).get(j)).doubleValue());
+			for(int j = nreal ; j < nreal + nobj ; j++)
+				((DoubleSolution)pop.get(k)).setObjective(j - nreal, 
+						((Double)this.chimps.get(i).get(j)).doubleValue());
+			fe += ((Double)this.chimps.get(i).get(nreal + nobj)).doubleValue();
+			indices = indices + (i+1) + ", " ; 
 		}
-		return 0 ;
+		System.out.println("LocalSearch.injectCHIMBounds(): indices: " + indices + " sum FE: " + fe);
+		return fe ;
 	}
 
 	public void loadCHIMBoundsFromFile()
@@ -48,6 +62,8 @@ public class LocalSearch
 				this.chimps.add(vec);
 			}
 			reader.close();
+			System.out.println("LocalSearch.loadCHIMBoundsFromFile():" 
+					+ " CHIM+ loaded from: " + fileName);
 		} catch(Exception e) { e.printStackTrace(); System.exit(1); }
 	}	
 }
