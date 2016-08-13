@@ -142,7 +142,7 @@ int init_extreme_pts_from_file(void)
 	char nadir_path[LINECHARS];
 	int i, j, k, lines, token_count, feval ; char *line = NULL ;
 	size_t len = 0 ; ssize_t read ;
-	double **vals ; int index ;
+	double **vals ; int index ; int rindex ;
 	individual *ind ;
 	sprintf(nadir_path, "chimps/%s-chimps.out", prob_name);
 	fprintf(stdout, "\n*********** loading from file: %s\n", nadir_path);
@@ -159,8 +159,9 @@ int init_extreme_pts_from_file(void)
 	}
 	free(line);
 	fclose(fp);
-	index = nobj * rnd(0, lines/nobj);
-	fprintf(stdout, "\nindex: %d\n", index);
+	rindex = rnd(0, (((int)lines/nobj) - 1));
+	index = nobj * rindex;
+	fprintf(stdout, "\nrindex: %d, index: %d\n", rindex, index);
 	ind = (individual*)malloc(sizeof(individual) * nobj);
 	feval = 0 ;
 	for(i = index, k = 0 ; i < index + nobj ; i++, k++)
@@ -205,7 +206,7 @@ int init_extreme_pts_from_file_weighted(void)
 	}
 	free(line);
 	fclose(fp);
-	index = rnd(0, lines);
+	index = rnd(0, (lines-1));
 	fprintf(stdout, "\nindex: %d\n", index);
 	for(i = 0 ; i < lines ; i++) {
 		fprintf(stdout, "%d: ", i);
