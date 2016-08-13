@@ -69,6 +69,7 @@
 				<include name="*.tsv"/>
 				<include name="*.out"/>
 				<include name="*.log"/>
+				<include name="*.log.*"/>
 			</fileset>
 			<fileset dir="${src.dir}" defaultexcludes="no">
 				<include name="**/*.class, **/.*.*.swp, **/*.*~"/>
@@ -110,8 +111,10 @@
 			</classpath>
 			<!--<arg value="zdt4"/>-->
 			<arg value="dtlz7"/>
+			<!-- random seed -->
 			<arg value="1234567890123"/>
-			<arg value="1234567890"/>
+			<!-- outfile uid -->
+			<arg value="123-456-789-0"/>
 		</java>
 	</target>
 
