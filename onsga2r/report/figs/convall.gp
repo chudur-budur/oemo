@@ -6,7 +6,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 # title option: yes/no
 showtitle = "no"
 # color option: yes/no
-coloropt = "yes"
+coloropt = "no"
 
 # colorcheme and pallettes
 if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
@@ -47,7 +47,7 @@ do for [i = 1:words(probs)] {
 	if(prob eq "dtlz3") { set xrange[0:42000]  }
 	if(prob eq "dtlz5") { set xrange[0:17000]  }
 	if(prob eq "dtlz7") { set xrange[0:25000]  }
-	if(prob eq "crash") { set xrange[0:8000]  }
+	if(prob eq "crash") { set xrange[0:6000]  }
 	if(prob eq "osy")   { set xrange[0:30000] }
 	set yrange[0:]
 	plot \

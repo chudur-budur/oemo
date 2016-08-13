@@ -336,9 +336,9 @@ if __name__ == '__main__':
             'gear': [[150, 2], [10.0, 61.0]], 'antenna': [[150, 3], [0, 355, 2.0]]\
             }
     
-    algo_set = [['onsga2r', 'nsga2r']]
+    # algo_set = [['onsga2r', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re']]
-    # algo_set = [['onsga2rwdom', 'nsga2r']]
+    algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2rw', 'nsga2r']]
     argv = sys.argv[1:]
     if len(argv) >= 2:
