@@ -6,7 +6,6 @@
 
 <!--<project name="omoead" default="compile" basedir=".">-->
 <project name="omoead" basedir=".">
-
 	<!-- bootclasspath -->
 	<property name="java.boot.classpath" value="${env.CLASSPATH}"/>
 	<!-- Source path -->
@@ -92,15 +91,19 @@
 			includeantruntime="false"
 			debug="true"
 			optimize="true">
+			<compilerarg line="-Xlint:unchecked" />
 			<!--<compilerarg line="-Xbootclasspath:/opt/jdk1.8.0_40/jre/lib/rt.jar -target 1.8 -source 1.6 -Xlint:deprecation" />-->
 			<!--bootclasspath="${java.boot.classpath}">-->
 			<!--deprecation="false"-->
 		</javac>
+		<copy file="../onsga2r/wfg" todir="."/>
+		<chmod file="wfg" perm="+x"/>
 	</target>
 
 	<!-- ================= Runs the compiled code ================= -->
 	<!-- This runs the compiled code -->
 	<target name="run" depends="make" description="runs the model">
+		<record name="antlog.out"> </record>
 		<java	classpathref="ext.libs"
 			classname="MoeadExr"
 			fork="true">
@@ -109,12 +112,12 @@
 				<!-- this is needed to get the resources -->
 				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
-			<!--<arg value="zdt4"/>-->
-			<arg value="dtlz7"/>
+			<arg value="zdt4"/>
+			<!-- <arg value="dtlz7"/> -->
 			<!-- random seed -->
 			<arg value="1234567890123"/>
 			<!-- outfile uid -->
-			<arg value="123-456-789-0"/>
+			<arg value="abc-def-ghi-1"/>
 		</java>
 	</target>
 
