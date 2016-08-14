@@ -54,11 +54,11 @@ if [[ $setseed -eq 1 ]]; then
 	fi
 fi
 
-uid=`uuidgen` ;
+uid=$(uuidgen) ;
 # outfile="/dev/null" ;
 outfile="/tmp/log-run-$uid.out" ;
-
 echo "" > "$outfile" ;
+
 for (( i=1; i<=maxn; i++ ))
 do
 	j=$(( i - 1 )) ;

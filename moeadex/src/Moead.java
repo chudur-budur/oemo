@@ -33,14 +33,14 @@ import java.io.* ;
  * @version 1.0
  */
 @SuppressWarnings("serial")
-public class MoeadEx extends AbstractMOEAD<DoubleSolution>
+public class Moead extends AbstractMOEAD<DoubleSolution>
 {
 	private DifferentialEvolutionCrossover differentialEvolutionCrossover ;
 	public static String runUid = "abc-def-ghi-1" ;
-	private LocalSearch ls ;
+	// private LocalSearch ls ;
 	private Utils<DoubleSolution> utils ;
 
-	public MoeadEx(Problem<DoubleSolution> problem,
+	public Moead(Problem<DoubleSolution> problem,
 	             int populationSize,
 	             int resultPopulationSize,
 	             int maxEvaluations,
@@ -57,9 +57,9 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 			neighborhoodSelectionProbability, maximumNumberOfReplacedSolutions,
 			neighborSize);
 		differentialEvolutionCrossover = (DifferentialEvolutionCrossover)crossoverOperator ;
-		this.ls = new LocalSearch(problem);
-		this.ls.loadCHIMBoundsFromFile();
-		this.ls.selectRandomCHIMBounds();
+		// this.ls = new LocalSearch(problem);
+		// this.ls.loadCHIMBoundsFromFile();
+		// this.ls.selectRandomCHIMBounds();
 		this.utils = new Utils<DoubleSolution>();
 	}
 
@@ -70,7 +70,7 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 		initializeNeighborhood();
 		initializeIdealPoint() ;
 
-		evaluations = populationSize + this.ls.getCHIMEvals() ;
+		evaluations = populationSize ; // + this.ls.getCHIMEvals() ;
 		int gen = 1 ;
 		int maxgen = maxEvaluations/populationSize ;
 		int nobj = population.get(0).getNumberOfObjectives();
@@ -95,7 +95,7 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 			writer.flush();
 
 			// inject extreme points
-			this.ls.injectCHIMBounds(population);
+			// this.ls.injectCHIMBounds(population);
 			
 			// debug print
 			// System.out.println("---------- gen (post inject) " + gen + " ----------");
@@ -135,7 +135,7 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 				this.utils.dumpSolutionSet(population, writer, gen, evaluations);
 				writer.flush();
 
-				this.ls.injectCHIMBounds(population);
+				// this.ls.injectCHIMBounds(population);
 				
 				// debug print
 				// System.out.println("---------- gen (post process) " + gen + " ----------");
@@ -158,12 +158,11 @@ public class MoeadEx extends AbstractMOEAD<DoubleSolution>
 
 	@Override public String getName()
 	{
-		return "MoeadEx" ;
+		return "Moead" ;
 	}
 
 	@Override public String getDescription()
 	{
-		return "Multi-Objective Evolutionary Algorithm based on Decomposition (MOEA/D) " 
-			+ "with CHIM bound injection" ;
+		return "Multi-Objective Evolutionary Algorithm based on Decomposition (MOEA/D)" ;
 	}
 }

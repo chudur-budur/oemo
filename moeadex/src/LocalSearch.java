@@ -9,8 +9,10 @@ import java.io.* ;
 public class LocalSearch
 {
 	private String problemName = "" ;
-	private ArrayList<ArrayList<Double>> chimps ;
 	private Problem<DoubleSolution> problem ;
+	private ArrayList<ArrayList<Double>> chimps ;
+	private ArrayList<Integer> chimIndices ;
+	private int chimEvals = 0 ;
 	private JMetalRandom rng ;
 
 	LocalSearch(Problem<DoubleSolution> problem)
@@ -18,34 +20,48 @@ public class LocalSearch
 		this.chimps = new ArrayList<ArrayList<Double>>();
 		this.problem = problem ;
 		this.rng = JMetalRandom.getInstance();
+		this.chimIndices = new ArrayList<Integer>();
 	}
 
-	public int injectCHIMBounds(List<? extends Solution<?>> pop)
+	public void selectRandomCHIMBounds()
 	{
-		int nreal = pop.get(0).getNumberOfVariables();
-		int nobj = pop.get(0).getNumberOfObjectives();
-		int index = nobj * this.rng.nextInt(0, this.chimps.size() / nobj);
-		int fe = 0 ;
-		/*for(int i = 0 ; i < this.chimps.size() ; i++)
-		{
-			for(int j = 0 ; j < this.chimps.get(i).size() ; j++)
-				System.out.print(this.chimps.get(i).get(j) + "\t");
-			System.out.println();
-		}*/
+		int nreal = this.problem.getNumberOfVariables();
+		int nobj = this.problem.getNumberOfObjectives();
+		int rindex = this.rng.nextInt(0, ((int)this.chimps.size() / nobj) - 1);
+		int index = nobj * rindex ;
+		System.out.println("LocalSearch.selectCHIMBounds():" 
+				+ " rindex: " + rindex + " index: " + index);
+		this.chimEvals = 0 ;
 		String indices = "" ;
-		for(int i = index, k = 0  ; i < index + nobj ; i++, k++)
+		for(int i = index ; i < index + nobj ; i++)
 		{
-			for(int j = 0 ; j < nreal ; j++)
-				((DoubleSolution)pop.get(k)).setVariableValue(j, 
-						((Double)this.chimps.get(i).get(j)).doubleValue());
-			for(int j = nreal ; j < nreal + nobj ; j++)
-				((DoubleSolution)pop.get(k)).setObjective(j - nreal, 
-						((Double)this.chimps.get(i).get(j)).doubleValue());
-			fe += ((Double)this.chimps.get(i).get(nreal + nobj)).doubleValue();
+			this.chimEvals += ((Double)this.chimps.get(i).get(nreal + nobj)).doubleValue();
+			this.chimIndices.add(new Integer(i));
 			indices = indices + (i+1) + ", " ; 
 		}
-		System.out.println("LocalSearch.injectCHIMBounds(): indices: " + indices + " sum FE: " + fe);
-		return fe ;
+		System.out.println("LocalSearch.selectCHIMBounds():" 
+				+ " indices: " + indices + " sum FE: " + this.chimEvals);
+	}
+
+	public int getCHIMEvals() { return this.chimEvals ; }
+
+	public void injectCHIMBounds(List<? extends Solution<?>> pop)
+	{
+		int nreal = this.problem.getNumberOfVariables();
+		int nobj = this.problem.getNumberOfObjectives();
+		for(int i = 0 ; i < this.chimIndices.size() ; i++)
+		{
+			for(int j = 0 ; j < nreal ; j++)
+				((DoubleSolution)pop.get(i)).setVariableValue(j, 
+						((Double)this.chimps
+						 	.get(this.chimIndices.get(i).intValue())
+							.get(j)).doubleValue());
+			for(int j = nreal ; j < nreal + nobj ; j++)
+				((DoubleSolution)pop.get(i)).setObjective(j - nreal, 
+						((Double)this.chimps
+						 .get(this.chimIndices.get(i).intValue())
+						 .get(j)).doubleValue());
+		}
 	}
 
 	public void loadCHIMBoundsFromFile()

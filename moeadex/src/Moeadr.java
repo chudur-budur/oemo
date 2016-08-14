@@ -33,7 +33,7 @@ import java.util.*;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class MoeadExr extends AbstractAlgorithmRunner
+public class Moeadr extends AbstractAlgorithmRunner
 {
 	/**
 	 * @param args Command line arguments.
@@ -63,7 +63,7 @@ public class MoeadExr extends AbstractAlgorithmRunner
 		System.out.println("problem: " + problemName + " seed: " + seed + " uid: " + outfileUid);
 		System.out.println("res[0]: " + res[0] + " res[1]: " + res[1]);	
 		JMetalRandom.getInstance().setSeed(seed);
-		MoeadEx.runUid = outfileUid ;
+		Moead.runUid = outfileUid ;
 		
 		DoubleProblem problem;
 		Algorithm<List<DoubleSolution>> algorithm;
@@ -89,7 +89,7 @@ public class MoeadExr extends AbstractAlgorithmRunner
 		double mutationDistributionIndex = 20.0;
 		mutation = new PolynomialMutation(mutationProbability, mutationDistributionIndex);
 
-		algorithm = new MoeadEx(problem, popSize, resultPopSize, maxEval, mutation, crossover,
+		algorithm = new Moead(problem, popSize, resultPopSize, maxEval, mutation, crossover,
 				AbstractMOEAD.FunctionType.TCHE, dataDir, neighbourhoodSelectionProb,
 				maxNumReplace, neighbourSize);
 

@@ -48,7 +48,7 @@ if [[ ! -e "${outdir}${execdir}/${problemname}" ]]; then
 fi
 
 cpval=".:./libs/*:./bin/";
-uid=`uuidgen` ;
+uid=$(uuidgen) ;
 echo "********** START: run ${run} with seed: ${seed}, UUID: ${uid}." ;
 java -cp "${cpval}" "${executable}" "${problemname}" "${seed}" "${uid}" ;
 

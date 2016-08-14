@@ -80,7 +80,7 @@ Assuming `wfg` has already been compiled --
 
 ##### 8. Generate stats for the survival of opposite points:
 
-Assuming bursting has already been done from the previous step 5 --
+Assuming bursting has already been done from the previous step 4 --
 ```shell
 	./sh/survivalstat.py experiments/ zdt1
 ```
