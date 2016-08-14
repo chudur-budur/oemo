@@ -51,7 +51,7 @@ public class Moeadr extends AbstractAlgorithmRunner
 		Utils<DoubleSolution> utils = new Utils<DoubleSolution>();
 		if(args.length < 3) {
 			System.err.println(
-				"Usage: java -cp [your classpath] MoeadExr " 
+				"Usage: java -cp [your classpath] Moeadr " 
 				+ "[problem name] [seed] [outfile-uid]");
 			System.exit(1);
 		}
