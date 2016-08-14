@@ -76,14 +76,12 @@ public class Utils<S extends Solution<?>>
 		// resource from jar needs to start with a slash "/" -- weird
 		if(problemName.toLowerCase().matches("dtlz.*"))
 		{
-			res[0] = "org.uma.jmetal.problem.multiobjective.dtlz." 
-				+ problemName.toUpperCase();
+			res[0] = "problemdef." + problemName.toUpperCase();
 			res[1] = "/pareto_fronts/" + problemName.toUpperCase() + ".3D.pf" ;
 		}
 		else if(problemName.toLowerCase().matches("zdt.*"))
 		{
-			res[0] = "org.uma.jmetal.problem.multiobjective.zdt." 
-				+ problemName.toUpperCase();
+			res[0] = "problemdef." + problemName.toUpperCase();
 			res[1] = "/pareto_fronts/" + problemName.toUpperCase() + ".pf" ;
 		}
 		else {
@@ -99,7 +97,7 @@ public class Utils<S extends Solution<?>>
 
 	public int[] getParams(String problemName)
 	{
-		String set1 = "zdt4,zdt6" ;
+		String set1 = "zdt3,zdt4,zdt6" ;
 		String set2 = "dtlz7" ;
 		int[] params = new int[2] ;
 		if(set1.contains(problemName.toLowerCase()))
