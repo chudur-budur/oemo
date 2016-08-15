@@ -18,7 +18,7 @@ greyscheme = "~/gnuplot-utils/gnuplot-colorbrewer/sequential/Greys.plt"
 
 # onsga2r, moeadexr and moeadr the conv plot.
 print sprintf("re-coloring onsga2r vs. moeadexr vs. moeadr")
-probs = "zdt4 zdt6 dtlz6"
+probs = "zdt4 zdt6 dtlz6 dtlz7"
 do for [i = 1:words(probs)] {
 	# set up file names
 	prob = word(probs, i)
