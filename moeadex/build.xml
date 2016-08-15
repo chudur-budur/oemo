@@ -112,8 +112,8 @@
 				<!-- this is needed to get the resources -->
 				<!-- <pathelement location="${jmetal.root}"/> -->
 			</classpath>
-			<arg value="zdt4"/>
-			<!-- <arg value="dtlz7"/> -->
+			<!-- <arg value="zdt4"/> -->
+			<arg value="dtlz1"/>
 			<!-- random seed -->
 			<arg value="1234567890123"/>
 			<!-- outfile uid -->

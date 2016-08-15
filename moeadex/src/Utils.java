@@ -98,7 +98,8 @@ public class Utils<S extends Solution<?>>
 	public int[] getParams(String problemName)
 	{
 		String set1 = "zdt3,zdt4,zdt6" ;
-		String set2 = "dtlz7" ;
+		String set2 = "dtlz1,dtlz3,dtlz7" ;
+		String set3 = "dtlz6" ;
 		int[] params = new int[2] ;
 		if(set1.contains(problemName.toLowerCase()))
 		{
@@ -109,6 +110,11 @@ public class Utils<S extends Solution<?>>
 		{
 			params[0] = 200 ; // popsize
 			params[1] = 40000 ; // evals
+		}
+		else if(set3.contains(problemName.toLowerCase()))
+		{
+			params[0] = 200 ; // popsize
+			params[1] = 80000 ; // evals
 		}
 		else {
 			System.err.println("Utils.getParams(): " 
