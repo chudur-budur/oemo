@@ -16,8 +16,8 @@ This module assumes that you have [jMetal](https://github.com/jMetal/jMetal) lib
 ```
 Once you have built the source, you will find the following executables in the `bin/` folder --
 
-    * `MoeadExr.class`: the MOEA/D with extreme point injection
-    * `Moeadr.class`: the actual MOEA/D code implemented in the [jMetal](https://github.com/jMetal/jMetal) framework.
+  * `MoeadExr.class`: the MOEA/D with extreme point injection
+  * `Moeadr.class`: the actual MOEA/D code implemented in the [jMetal](https://github.com/jMetal/jMetal) framework.
 
 Also before building the above code, you need to build the `onsga2r` module to get the `wfg` executable. Details on how to build the `onsga2r` module is described [here](https://github.com/chudur-budur/oemo/blob/master/onsga2r/README.md).
 
