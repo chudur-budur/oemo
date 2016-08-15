@@ -29,7 +29,7 @@ Also before building the above code, you need to build the `onsga2r` module to g
 	ant run
 ```
 
-The above will run a single test without any data accumulation. Please see the ant script for details.
+The above will run a single test without any data accumulation. Please see the accompanied ant script (`build.xml`) for details.
 
 
 #### How to run the experiments and to do the statistical analysis:
