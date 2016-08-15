@@ -6,7 +6,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 # title option: yes/no
 showtitle = "no"
 # color option: yes/no
-coloropt = "no"
+coloropt = "yes"
 
 # colorcheme and pallettes
 if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
@@ -74,8 +74,9 @@ do for [i = 1:words(probs)] {
 	ax = 0.50
 	ay = 0.01
 	arrowlen = 0.30
-	if(prob eq "dtlz6") { arrowlen = 0.05 } 
 	if(prob eq "zdt4") { arrowlen = 0.05 } 
+	if(prob eq "dtlz6") { arrowlen = 0.05 } 
+	if(prob eq "dtlz7") { arrowlen = 0.42 } 
 	athreshx = (deltax * ax)
 	athreshy = (deltay * ay) 
 	# vertical arrow
