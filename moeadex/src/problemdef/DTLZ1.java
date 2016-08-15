@@ -39,7 +39,7 @@ public class DTLZ1 extends AbstractDoubleProblem
 	 */
 	public DTLZ1()
 	{
-		this(7, 3);
+		this(12, 3);
 	}
 
 	/**
