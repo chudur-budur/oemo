@@ -12,7 +12,7 @@ reset
 set size square
 set angles degrees
 set polar
-set grid polar 15.
+set grid polar 15.0 lw 8
 unset border
 unset param
 set xlabel "Azimuth (theta)"
