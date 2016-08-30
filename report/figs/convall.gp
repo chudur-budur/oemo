@@ -207,9 +207,9 @@ do for [i = 1:words(probs)] {
 	set yrange[0:]
 	plot \
 		algo1 using 1:2:6 with filledcu \
-			fs transparent solid 0.75 ls seq1 lw 3 ti "algorithm 3 (< m)", \
+			fs transparent solid 0.75 ls seq1 lw 3 ti "algorithm 3", \
 		algo2 using 1:2:6 with filledcu \
-			fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3", \
+			fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3 (< m)", \
 		algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
 		algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
 		algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
