@@ -326,7 +326,23 @@ void bnh (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	obj[0] = 4.0*(xreal[0]*xreal[0] + xreal[1]*xreal[1]);
 	obj[1] = pow((xreal[0]-5.0),2.0) + pow((xreal[1]-5.0),2.0);
+	/**
+	 * (x - 5)^2 + y^2 <= 25
+	 * 	-> ((x - 5)^2 + y^2)/25 <= 1
+	 * 	-> 0 <= 1 - (((x - 5)^2 + y^2)/25)
+	 * 	-> 1 - (((x - 5)^2 + y^2)/25) >= 0
+	 * therefore, 
+	 * c(x) <= K
+	 * 	-> c(x)/K <= 1
+	 * 	-> 1 - c(x)/K >= 0
+	 */
 	constr[0] = 1.0 - (pow((xreal[0]-5.0),2.0) + xreal[1]*xreal[1])/25.0;
+	/**
+	 * (x - 8)^2 + (y + 3)^2 >= 7.7
+	 * 	-> c(x,y) >= 7.7
+	 * 	-> c(x,y)/7.7 >= 1
+	 * 	-> c(x,y)/7.7 - 1 >= 0
+	 */
 	constr[1] = (pow((xreal[0]-8.0),2.0) + pow((xreal[1]+3.0),2.0))/7.7 - 1.0;
 	return;
 }
