@@ -9,7 +9,7 @@
 # include "global.h"
 # include "problemdef.h"
 # include "rand.h"
-#include "vecutils.h"
+# include "vecutils.h"
 
 char prob_name[16] ;
 
@@ -918,6 +918,48 @@ void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 	return ;
 }
 
+/**
+ * Test problem DTLZ8
+ * # of objectives = M = 3
+ * # of real variables = n = 10M = 3 * 10 = 30 
+ * # of bin variables = 0
+ * # of constraints = M = 3
+ * harder: same problem.
+ **/
+void dtlz8 (double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+	int i, j, ilb, iub;
+	double sum, minval ;
+	for(j = 0 ; j < nobj ; j++)
+	{
+		ilb = (int)floor((j * (nreal/nobj))) ;
+		iub = (int)floor(((j + 1) * (nreal/nobj)));
+		/* fprintf(stdout, "ilb: %d, iub: %d\n", ilb, iub); */
+		sum = 0.0 ;
+		for(i = ilb ; i < iub ; i++)
+			sum += xreal[i] ;
+		obj[j] = (1.0/floor(nreal/nobj)) * sum ;
+	}
+
+	/**
+	 *	c1(x) = x1 + x2 - 2 >= 0
+	 * -->	(x1+x2) >= 2
+	 * -->	(x1+x2)/2 >= 1
+	 * -->	(x1+x2)/2 - 1 >= 0
+	 *
+	 *  gj(x) = fM(x) + 4fj(x) - 1 >= 0	j = 1, 2, 3, ..., M-1
+	 *  gM(x) = 2fM(x) + min_{i,j = 1, i != j}^{M-1} [fi(x) + fj(x)] - 1 >= 0
+	 */
+	for(j = 0 ; j < nobj-1 ; j++)
+		constr[j] = obj[nobj-1] + (4.0 * obj[j]) - 1.0 ; 	
+	minval = INF ;
+	for(i = 0 ; i < nobj-1 ; i++)
+		for(j = 0 ; j < nobj-1 ; j++)
+			if((i !=j) && (obj[i] + obj[j] <= minval))
+				minval = obj[i] + obj[j] ;
+	constr[nobj-1] = (2.0 * obj[nobj-1]) + minval - 1.0 ;
+}
+
 /**  
  *  Test problem C1DTLZ1 (suggested k = 5)
  *  # of objectives = M = 3
@@ -1553,6 +1595,8 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		dtlz6(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "dtlz7") == 0)
 		dtlz7(xreal, xbin, gene, obj, constr);
+	else if(strcmp(prob_name, "dtlz8") == 0)
+		dtlz8(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "c1dtlz1") == 0)
 		c1dtlz1(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "c1dtlz3") == 0)

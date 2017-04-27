@@ -36,6 +36,7 @@
 /* # define dtlz5 */ /* same */
 /* # define dtlz6 */ /* good */
 /* # define dtlz7 */ /* good, one patch */
+/* # define dtlz8 */
 
 /* unconstrained 2-obj */
 void sch1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
@@ -75,6 +76,7 @@ void dtlz4 (double *xreal, double *xbin, int **gene, double *obj, double *constr
 void dtlz5 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 void dtlz6 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 void dtlz7 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void dtlz8 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 /* constrained dtlz problems */
 void c1dtlz1 (double *xreal, double *xbin, int **gene, double *obj, double *constr);
