@@ -1,9 +1,9 @@
 #!/usr/local/bin/gnuplot -persist
 
 # common settings
-set xlabel "f1"
-set ylabel "f2"
-set zlabel "f3"
+set xlabel "f_1"
+set ylabel "f_2"
+set zlabel "f_3"
 set xrange[0:1.15]
 set yrange[0:1.15]
 set zrange[0:1.15]
