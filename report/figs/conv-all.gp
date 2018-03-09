@@ -6,7 +6,7 @@ femin(fname) = system(sprintf("cat %s | head -n 1 | awk -F\" \" '{print $1}'", f
 # title option: yes/no
 showtitle = "no"
 # color option: yes/no
-coloropt = "yes"
+coloropt = "no"
 
 # colorcheme and pallettes
 if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
@@ -32,6 +32,8 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
+	set term push
+	set term unknown
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -95,6 +97,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -105,6 +109,7 @@ do for [i = 1:words(probs)] {
 
 # nsga2re vs. onsga2r
 print sprintf("re-coloring nsga2re vs. onsga2r")
+if(coloropt eq "no") { seq1 = "3"; seq2 = "5"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
 # probs = "zdt1 zdt4 dtlz3 dtlz6 dtlz7"
 probs = "zdt4 dtlz3 dtlz6"
 do for [i = 1:words(probs)] {
@@ -121,6 +126,8 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
+	set term push
+	set term unknown
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -168,6 +175,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -178,6 +187,7 @@ do for [i = 1:words(probs)] {
 
 # onsga2r vs. onsga2rw
 print sprintf("re-coloring onsga2r vs. onsga2rw")
+if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
 # probs = "dtlz3 dtlz6 zdt2 zdt3 zdt4"
 probs = "dtlz3 dtlz6"
 do for [i = 1:words(probs)] {
@@ -193,6 +203,8 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
+	set term push
+	set term unknown
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -238,6 +250,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -248,6 +262,7 @@ do for [i = 1:words(probs)] {
 
 # nsga2r vs. onsga2rwdom
 print sprintf("re-coloring nsga2r vs. onsga2rwdom")
+if(coloropt eq "no") { seq1 = "3"; seq2 = "5"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
 probs = "zdt4 zdt6 dtlz1"
 do for [i = 1:words(probs)] {
 	# set up file names
@@ -262,6 +277,8 @@ do for [i = 1:words(probs)] {
 	}
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
+	set term push
+	set term unknown
 	reset
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
@@ -312,6 +329,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -322,6 +341,7 @@ do for [i = 1:words(probs)] {
 
 # nsga2r vs. onsga2r on constrained problems
 print sprintf("re-coloring nsga2r vs. onsga2r for constrained problems")
+if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
 probs = "c1dtlz1 c1dtlz3"
 do for [i = 1:words(probs)] {
 	# set up file names
@@ -336,6 +356,8 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
+	set term push
+	set term unknown
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	set style fill border
@@ -377,6 +399,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile
@@ -398,6 +422,8 @@ if(coloropt eq "no") {
 titlestr = sprintf("%s: SE vs. HV", prob)
 # now do the plot
 reset
+set term push
+set term unknown
 if(showtitle eq "yes") { set title titlestr }
 set key bottom right
 set style fill border
@@ -438,6 +464,8 @@ set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
 # vertical text
 set label 1 "cost to find Z*_b" rotate left at \
 	0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+set term pop
+replot
 set term push
 set term pdf enhanced color
 set output outfile

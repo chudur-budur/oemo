@@ -9,7 +9,7 @@ showtitle = "no"
 coloropt = "yes"
 
 # colorcheme and pallettes
-if(coloropt eq "no") { seq1 = "5"; seq2 = "7"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
+if(coloropt eq "no") { seq1 = "3"; seq2 = "5"; seq3 = "8" } else { seq1 = "1"; seq2 = "2"; seq3 = "3" }
 # color pallettes
 # color sequence for Dark2 1,8,3,1-2,8,3,1
 rgbscheme = "~/gnuplot-utils/gnuplot-colorbrewer/qualitative/Dark2.plt" 
@@ -33,6 +33,8 @@ do for [i = 1:words(probs)] {
 	titlestr = sprintf("%s: SE vs. HV", prob)
 	# now do the plot
 	reset
+	set term push
+	set term unknown
 	if(showtitle eq "yes") { set title titlestr }
 	set key bottom right
 	if(prob eq "dtlz6") { set key top left }
@@ -85,6 +87,8 @@ do for [i = 1:words(probs)] {
 	# vertical text
 	set label 1 "cost to find Z*_b" rotate left at \
 		0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
+	set term pop
+	replot
 	set term push
 	set term pdf enhanced color
 	set output outfile

@@ -1,4 +1,4 @@
-#!/usr/local/bin/gnuplot
+#!/usr/local/bin/gnuplot -persist
 
 # You need to run this script after conv-all.gp is done.
 
@@ -33,9 +33,12 @@ if(coloropt eq "no") {
 titlestr = sprintf("%s: SE vs. HV", prob)
 # now do the plot
 reset
-# set multiplot
+set term pdf enhanced color
+set output outfile
+set multiplot
 if(showtitle eq "yes") { set title titlestr }
-set key bottom right
+# set key bottom right
+unset key
 set style fill border
 if(coloropt eq "yes") { load rgbscheme } else { load greyscheme }
 set xlabel "solution evaluations"
@@ -43,21 +46,8 @@ set ylabel "hypervolume"
 set format x "%.1s%c"
 set xrange[0:13000]
 set yrange[0:]
-plot \
-	algo1 using 1:2:6 with filledcu \
-		fs transparent solid 0.75 ls seq1 lw 3 ti "nsga2r", \
-	algo2 using 1:2:6 with filledcu \
-		fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3", \
-	algo3 using 1:2:6 with filledcu \
-		fs transparent solid 0.75 ls seq3 lw 3 ti "algorithm 3 (HV with extremes)", \
-	algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
-	algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
-	algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
-	algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
-	algo3 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
-	algo3 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
-ymin = GPVAL_Y_MIN
-ymax = GPVAL_Y_MAX
+ymin = 0.00
+ymax = 4.00
 deltay = (ymax - ymin)
 deltax = femin(algo2) + 0
 print sprintf("\t%s: ymin: %.2f, ymax: %.2f, deltay: %.2f, deltax: %.2f", \
@@ -74,15 +64,61 @@ ay = 0.01
 arrowlen = 0.10
 athreshx = (deltax * ax)
 athreshy = (deltay * ay) 
-# vertical arrow
+# vertical arrow and text
 set arrow from 0 + athreshx, tthreshy + (deltay * arrowlen) \
 	to 0 + athreshx, tthreshy + athreshy size screen 0.01,45 lw 3
-# vertical text
 set label 1 "cost to find Z*_b" rotate left at \
-	0 + athreshx, athreshy + tthreshy + (deltay * arrowlen) 
-set term push
-set term pdf enhanced color
-set output outfile
-replot
+	0 + athreshx, athreshy + tthreshy + (deltay * arrowlen)
+# arrows for algorithms
+set arrow from 4600,1.00 to 9000,1.00 lw 2
+set label 2 "Algorithm 3" at 9100,1.00
+set label 3 "HV without extreme points" at 8000,0.75
+set arrow from 4650,2.15 to 9000,2.00 lw 2
+set label 4 "Algorithm 3" at 9100,2.00
+set label 5 "HV with extreme points" at 8000,1.75
+set arrow from 6750,2.30 to 9000,2.30 lw 2
+set label 6 "NSGA-II HV" at 9100,2.30
+plot \
+	algo1 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq1 lw 3 ti "nsga2r", \
+	algo2 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3", \
+	algo3 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq3 lw 3 ti "algorithm 3", \
+	algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+	algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
+	algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+	algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
+	algo3 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 ti "median", \
+	algo3 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 ti "mean"
+# now do the inset
+set origin 0.3, 0.20
+set size 0.30, 0.60
+unset key
+unset arrow
+unset label
+unset xlabel
+unset ylabel
+set xrange [1400:2250]
+set yrange [1:3.75]
+set xtics 500
+# set bmargin 1
+# set tmargin 1
+# set lmargin 1
+# set rmargin 1
+plot \
+	algo1 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq1 lw 3 ti "nsga2r", \
+	algo2 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq2 lw 3 ti "algorithm 3", \
+	algo3 using 1:2:6 with filledcu \
+		fs transparent solid 0.75 ls seq3 lw 3 ti "algorithm 3", \
+	algo1 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+	algo1 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
+	algo2 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+	algo2 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti, \
+	algo3 using 1:4 with lp lc rgb "#000000" lw 1 ps 0.5 pt 1 pi 10 noti, \
+	algo3 using 1:7 with lp lc rgb "#000000" lw 1 ps 0.5 pt 2 pi 10 noti
+unset multiplot
 unset output
 set term pop
