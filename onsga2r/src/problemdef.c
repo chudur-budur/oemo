@@ -1193,6 +1193,13 @@ void gear (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 	constr[0] = (obj[0]/(6.931 * 0.5)) - 1.0;
 }
 
+/**
+ * These are different aux. function for the antenna problem
+ *      -- new_double_list()
+ *      -- append()
+ *      -- pop_max()
+ *      -- etc.
+ */
 double_list* new_double_list()
 {
 	double_list* lst = (double_list*)malloc(sizeof(double_list));
@@ -1408,6 +1415,7 @@ void linspace(double a, double b, int n, double *vals)
 		vals[i] = vals[i-1] + del ;
 	return ;
 }
+/** helper functions for antenna problem ends here */
 
 void antenna(double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
