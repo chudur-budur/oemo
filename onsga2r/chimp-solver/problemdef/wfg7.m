@@ -20,10 +20,10 @@
 %
 % Robin Purshouse, 27 April 2010
 %
-function f = wfg8(Z)
+function f = wfg7(Z)
 
 M = 2;
-testNo = 8;
+testNo = 7;
 k = 5;
 l = 5;
 
@@ -280,6 +280,7 @@ elseif testNo == 7;
     
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    f = F;
     
 elseif testNo == 8
     
