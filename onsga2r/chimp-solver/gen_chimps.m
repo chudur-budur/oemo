@@ -51,7 +51,7 @@ set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
 
 %% file paths
 % file_path is the problem parameters from input_data folder
-file_path = '../input_data/wfg7.in' ;
+file_path = '../input_data/wfg9.in' ;
 [path, prob_name, ext] = fileparts(file_path);
 % make file path to save all the nadir solutions
 out_dir = '../chimps' ;

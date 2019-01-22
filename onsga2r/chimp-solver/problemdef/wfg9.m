@@ -24,8 +24,8 @@ function f = wfg9(Z)
 
 M = 2;
 testNo = 9;
-k = 5;
-l = 5;
+k = 4;
+l = 20;
 
 % Check for correct number of inputs.
 % if nargin ~= 5
