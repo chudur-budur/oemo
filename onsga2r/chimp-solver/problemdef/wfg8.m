@@ -20,7 +20,7 @@
 %
 % Robin Purshouse, 27 April 2010
 %
-function F = wfg8(Z)
+function f = wfg8(Z)
 
 M = 2;
 testNo = 8;
@@ -34,6 +34,7 @@ l = 5;
 
 % Get total number of decision variables and no. of candidates.
 [noSols, n] = size(Z);
+disp(Z);
 
 % Data input checks.
 if n ~= (k + l)
@@ -319,6 +320,7 @@ elseif testNo == 8
     
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    f = F;
     
 elseif testNo == 9
     
