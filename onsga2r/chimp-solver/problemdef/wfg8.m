@@ -318,7 +318,7 @@ elseif testNo == 8
     end
     
     % Generate objective values.
-    F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop))
     
 elseif testNo == 9
     
