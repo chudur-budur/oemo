@@ -107,6 +107,7 @@ if testNo == 1
     F = h_convex(X(:,1:uLoop));
     F(:,M) = fM;
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* F;
+    f = F;
     
 elseif testNo == 2 || testNo == 3
     
@@ -148,8 +149,10 @@ elseif testNo == 2 || testNo == 3
         F = h_convex(X(:,1:uLoop));
         F(:,M) = fM;
         F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* F;
+        f = F;
     else
         F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_linear(X(:,1:uLoop));
+        f = F;
     end
     
 elseif testNo == 4 || testNo == 5
@@ -187,6 +190,8 @@ elseif testNo == 4 || testNo == 5
     
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    f = F;
+
 elseif testNo == 10
     
     % Apply first transformation.
@@ -214,6 +219,7 @@ elseif testNo == 10
     end
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_convex(X(:,1:uLoop));
+    f = F;
     
 elseif testNo == 6
     
@@ -241,6 +247,7 @@ elseif testNo == 6
     
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    f = F;
     
 elseif testNo == 7;
     
@@ -280,6 +287,7 @@ elseif testNo == 7;
     
     % Generate objective values.
     F = repmat(D*X(:,M), [1,M]) + repmat(S, [noSols 1]) .* h_concave(X(:,1:uLoop));
+    f = F;
     
 elseif testNo == 8
     

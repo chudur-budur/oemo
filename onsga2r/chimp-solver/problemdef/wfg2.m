@@ -20,10 +20,10 @@
 %
 % Robin Purshouse, 27 April 2010
 %
-function f = wfg8(Z)
+function f = wfg2(Z)
 
 M = 2;
-testNo = 8;
+testNo = 2;
 k = 4;
 l = 20;
 
