@@ -36,14 +36,14 @@ Once you have built the source, you will find the following executables --
 
 ##### 1. Run a single experiment:
 ```shell
-	./sh/run onsga2r input_data/zdt1.in experiments/ 1 0.12345
-	./sh/run nsga2r input_data/zdt1.in experiments/ 1 0.12345
+	./sh/run.sh onsga2r input_data/zdt1.in experiments/ 1 0.12345
+	./sh/run.sh nsga2r input_data/zdt1.in experiments/ 1 0.12345
 ```
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun -si -n 11 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
-	./sh/maprun -si -n 11 -c "./sh/run nsga2r input_data/zdt1.in experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run nsga2r input_data/zdt1.in experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
@@ -53,21 +53,21 @@ Once you have built the source, you will find the following executables --
 	
 ##### 4. Burst all 11 runs at once:
 ```shell
-	./sh/maprun -i -n 11 -c "./sh/burstgen.py experiments/ zdt1"
+	./sh/maprun.sh -i -n 11 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
 ##### 5. Clean up all generated results for one particular problem and algorithm (e.g. zdt1 solved with nsga2r):
 ```shell
-	./sh/flush nsga2r zdt1
+	./sh/flush.sh nsga2r zdt1
 ```
 
 ##### 6. Generate one snapshot report:
 
 Assuming bursting has already been done from the previous step 3 (or 4) --
 ```shell
-	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
+	./sh/reportsnap.sh experiments/ 1 100 1 8 0.4 zdt1 1
 ```
-can also be done for multiple runs with `maprun`. This code also assumes the [gnuplot](http://www.gnuplot.info/) is installed in the system, along with [gnuplot-palette](https://github.com/Gnuplotting/gnuplot-palettes) and [gnuplot-colorbrewer](https://github.com/aschn/gnuplot-colorbrewer) are installed in `~/gnuplot-utils/`.
+can also be done for multiple runs with `maprun.sh`. This code also assumes the [gnuplot](http://www.gnuplot.info/) is installed in the system, along with [gnuplot-palette](https://github.com/Gnuplotting/gnuplot-palettes) and [gnuplot-colorbrewer](https://github.com/aschn/gnuplot-colorbrewer) are installed in `~/gnuplot-utils/`.
 
 ##### 7. Generate hypervolume comparison stat for one problem:
 
