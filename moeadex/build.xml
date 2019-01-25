@@ -96,8 +96,8 @@
 			<!--bootclasspath="${java.boot.classpath}">-->
 			<!--deprecation="false"-->
 		</javac>
-		<copy file="../onsga2r/wfg" todir="."/>
-		<chmod file="wfg" perm="+x"/>
+		<copy file="../onsga2r/computehv" todir="."/>
+		<chmod file="computehv" perm="+x"/>
 	</target>
 
 	<!-- ================= Runs the compiled code ================= -->

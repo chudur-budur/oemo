@@ -36,14 +36,14 @@ The above will run a single test without any data accumulation. Please see the a
 
 ##### 1. Run a single experiment:
 ```shell
-	./sh/run MoeadExr zdt4 experiments/ 1 1234567890123
-	./sh/run Moeadr zdt4 experiments/ 1 1234567890123
+	./sh/run.sh MoeadExr zdt4 experiments/ 1 1234567890123
+	./sh/run.sh Moeadr zdt4 experiments/ 1 1234567890123
 ```
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun -si -n 11 -c "./sh/run MoeadExr zdt4 experiments/"
-	./sh/maprun -si -n 11 -c "./sh/run Moeadr zdt4 experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run MoeadExr zdt4 experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run Moeadr zdt4 experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
@@ -53,12 +53,12 @@ The above will run a single test without any data accumulation. Please see the a
 	
 ##### 4. Burst all 11 runs at once:
 ```shell
-	./sh/maprun -i -n 11 -c "./sh/burstgen.py experiments/ zdt4"
+	./sh/maprun.sh -i -n 11 -c "./sh/burstgen.py experiments/ zdt4"
 ```
 
 ##### 5. Generate hypervolume comparison stat for one problem:
 
-Assuming `wfg` has already been compiled and located in the current `moeadex` folder --
+Assuming `computehv` has already been compiled and located in the current `moeadex` folder --
 ```shell
 	./sh/plothv.py experiments/ zdt4
 ```
