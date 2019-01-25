@@ -8,7 +8,7 @@
  * defined in opposition.c
  */
 
-/* used to read a line from a file, assuming there are 80 chars to be handles at a time */
+/* used to read a line from a file, assuming there are 80 chars to be handled at a time */
 #define LINECHARS 80
 
 extern float op_ratio ;

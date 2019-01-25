@@ -38,8 +38,10 @@ def calc_hv(fronts, ref):
     tmp_file = "/tmp/{:s}.out".format(str(uuid.uuid4()))
     try:
         if fronts:
-            wfg = os.path.join(os.path.join('/', *os.path.abspath(__file__).split('/')[:-2]), 'wfg')
-            if os.path.exists(wfg):
+            computehv = os.path.join(\
+                    os.path.join('/', \
+                        *os.path.abspath(__file__).split('/')[:-2]), 'computehv')
+            if os.path.exists(computehv):
                 fd = open(tmp_file, 'w')
                 fd.write('#\n')
                 for key in sorted(fronts):
@@ -47,12 +49,13 @@ def calc_hv(fronts, ref):
                         fd.write("{:s}\n".format(' '.join(lst)))
                     fd.write('#\n')
                 fd.close()
-                args = [wfg, tmp_file] + [str(v) for v in ref]
+                args = [computehv, tmp_file] + [str(v) for v in ref]
                 hv_str = subprocess.check_output(args)
                 hv = float(hv_str.decode("utf-8").rstrip('\n'))
                 os.remove(tmp_file)
             else:
-                sys.exit("error: file {:s} does not exist, build it with 'make wfg'.".format(wfg))
+                sys.exit("error: file {:s} does not exist," \
+                        + " build it with 'make computehv'.".format(computehv))
         else:
             hv = 0.0
     except Exception as e:
@@ -333,12 +336,13 @@ if __name__ == '__main__':
             'c1dtlz1': [[150, 3], [10.0, 10.0, 10.0]], 'c1dtlz3': [[150, 3], [15.0, 15.0, 15.0]], \
             'c2dtlz2': [[150, 3], [2.0, 2.0, 2.0]], 'c3dtlz1': [[150, 3], [15.0, 15.0, 15.0]], \
             'crash': [[150, 3], [1700, 11, 0.3]], 'beam': [[20, 2], [40, 1.0]], \
-            'gear': [[150, 2], [10.0, 61.0]], 'antenna': [[150, 3], [0, 355, 2.0]]\
+            'gear': [[150, 2], [10.0, 61.0]], 'antenna': [[150, 3], [0, 355, 2.0]],
+            'wfg8':[[200, 2], [5.0, 5.0]]\
             }
     
-    # algo_set = [['onsga2r', 'nsga2r']]
+    algo_set = [['onsga2r', 'nsga2r']]
     # algo_set = [['onsga2r', 'nsga2re']]
-    algo_set = [['onsga2rwdom', 'nsga2r']]
+    # algo_set = [['onsga2rwdom', 'nsga2r']]
     # algo_set = [['onsga2rw', 'nsga2r']]
     argv = sys.argv[1:]
     if len(argv) >= 2:

@@ -4,7 +4,8 @@
 shopt -s extglob
 cpath=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-problem=$1
+algorithm=$1
+problem=$2
 
 _usage()
 {
@@ -18,13 +19,5 @@ if [[ -z $algorithm || -z $problem ]]; then
 	_usage ;
 fi
 
-echo "rm -rf experiments/$algorithm/$problem/*" ;
-rm -rf experiments/$algorithm/$problem/* ;
-echo "rm -rf experiments/$algorithm/$problem/*" ;
-rm -rf experiments/$algorithm/$problem/* ;
-echo "rm -rf experiments/$algorithm/$problem/*" ;
-rm -rf experiments/$algorithm/$problem/* ;
-echo "rm -rf experiments/$algorithm/$problem/*" ;
-rm -rf experiments/$algorithm/$problem/* ;
 echo "rm -rf experiments/$algorithm/$problem/*" ;
 rm -rf experiments/$algorithm/$problem/* ;

@@ -5,11 +5,13 @@
 # include <math.h>
 # include <string.h>
 # include <float.h>
+# include <assert.h>
 
 # include "global.h"
 # include "problemdef.h"
 # include "rand.h"
 # include "vecutils.h"
+# include "ExampleProblems.h"
 
 char prob_name[16] ;
 
@@ -1417,6 +1419,9 @@ void linspace(double a, double b, int n, double *vals)
 }
 /** helper functions for antenna problem ends here */
 
+/**
+ * The antenna function.
+ */
 void antenna(double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
 	int i ;
@@ -1538,6 +1543,12 @@ void antenna(double *xreal, double *xbin, int **gene, double *obj, double *const
 	return ;
 }
 
+void wfg8(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg8(xreal, nreal, obj, nobj);
+    return ;
+}
+
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
@@ -1621,6 +1632,8 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		gear(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "antenna") == 0)
 		antenna(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg8") == 0)
+        wfg8(xreal, xbin, gene, obj, constr);
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined.\n");
