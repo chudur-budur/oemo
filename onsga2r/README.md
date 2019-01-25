@@ -56,9 +56,9 @@ Once you have built the source, you will find the following executables --
 	./sh/maprun -i -n 11 -c "./sh/burstgen.py experiments/ zdt1"
 ```
 
-##### 5. Clean up all generated results for one particular problem (e.g. zdt1):
+##### 5. Clean up all generated results for one particular problem and algorithm (e.g. zdt1 solved with nsga2r):
 ```shell
-	./sh/flush zdt1
+	./sh/flush nsga2r zdt1
 ```
 
 ##### 6. Generate one snapshot report:
