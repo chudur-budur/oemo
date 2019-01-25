@@ -114,6 +114,16 @@ double trapezoid(double *xval, double upper, double lower, int N1,
 void linspace(double a, double b, int n, double *vals);
 void antenna(double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
+/** All the WFG problems */
+void wfg1(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg2(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg3(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg4(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg5(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg6(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg7(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg8(double *xreal, double *xbin, int **gene, double *obj, double *constr);
+void wfg9(double *xreal, double *xbin, int **gene, double *obj, double *constr);
 
 /* wrapper */
 void test_problem (double *xreal, double *xbin, int **gene, double *obj, double *constr);

@@ -1543,9 +1543,60 @@ void antenna(double *xreal, double *xbin, int **gene, double *obj, double *const
 	return ;
 }
 
+/**
+ * All the WFG problems, from 1 to 9
+ */
+void wfg1(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg1(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg2(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg2(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg3(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg3(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg4(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg4(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg5(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg5(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg6(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg6(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg7(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg7(xreal, nreal, obj, nobj);
+    return ;
+}
+
 void wfg8(double *xreal, double *xbin, int **gene, double *obj, double *constr)
 {
     evaluate_wfg8(xreal, nreal, obj, nobj);
+    return ;
+}
+
+void wfg9(double *xreal, double *xbin, int **gene, double *obj, double *constr)
+{
+    evaluate_wfg9(xreal, nreal, obj, nobj);
     return ;
 }
 
@@ -1632,8 +1683,24 @@ void test_problem (double *xreal, double *xbin, int **gene, double *obj, double 
 		gear(xreal, xbin, gene, obj, constr);
 	else if(strcmp(prob_name, "antenna") == 0)
 		antenna(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg1") == 0)
+        wfg1(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg2") == 0)
+        wfg2(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg3") == 0)
+        wfg3(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg4") == 0)
+        wfg4(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg5") == 0)
+        wfg5(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg6") == 0)
+        wfg6(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg7") == 0)
+        wfg7(xreal, xbin, gene, obj, constr);
     else if(strcmp(prob_name, "wfg8") == 0)
         wfg8(xreal, xbin, gene, obj, constr);
+    else if(strcmp(prob_name, "wfg9") == 0)
+        wfg9(xreal, xbin, gene, obj, constr);
 	else
 	{
 		fprintf(stdout, " Error: wrong problem string or problem not defined.\n");

@@ -178,7 +178,15 @@ std::vector< double > I5
 extern "C"
 {
 #endif
+void evaluate_wfg1(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg2(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg3(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg4(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg5(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg6(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg7(double *xreal, int nreal, double *obj, int nobj);
 void evaluate_wfg8(double *xreal, int nreal, double *obj, int nobj);
+void evaluate_wfg9(double *xreal, int nreal, double *obj, int nobj);
 #ifdef __cplusplus
 }
 #endif

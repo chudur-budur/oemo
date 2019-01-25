@@ -329,6 +329,90 @@ vector< double > Problems::I5
 }
 
 // The impmentation of the interfaces
+void evaluate_wfg1(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG1(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg2(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG2(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg3(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG3(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg4(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG4(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg5(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG5(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg6(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG6(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg7(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG7(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
 void evaluate_wfg8(double *xreal, int nreal, double *obj, int nobj)
 {
     vector<double> z;
@@ -336,6 +420,18 @@ void evaluate_wfg8(double *xreal, int nreal, double *obj, int nobj)
         z.push_back(xreal[i]);
     int k = 4, M = nobj ;
     vector<double> f = Problems::WFG8(z, k, M);
+    for(unsigned int i = 0 ; i < f.size() ; i++)
+        obj[i] = f[i];
+    return ;
+}
+
+void evaluate_wfg9(double *xreal, int nreal, double *obj, int nobj)
+{
+    vector<double> z;
+    for(int i = 0 ; i < nreal ; i++) 
+        z.push_back(xreal[i]);
+    int k = 4, M = nobj ;
+    vector<double> f = Problems::WFG9(z, k, M);
     for(unsigned int i = 0 ; i < f.size() ; i++)
         obj[i] = f[i];
     return ;
