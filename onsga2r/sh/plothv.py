@@ -54,8 +54,8 @@ def calc_hv(fronts, ref):
                 hv = float(hv_str.decode("utf-8").rstrip('\n'))
                 os.remove(tmp_file)
             else:
-                sys.exit("error: file {:s} does not exist," \
-                        + " build it with 'make computehv'.".format(computehv))
+                sys.exit("error: file {0:s} does not exist,".format(computehv)\
+                        + " build it with 'make computehv'.")
         else:
             hv = 0.0
     except Exception as e:
@@ -337,7 +337,11 @@ if __name__ == '__main__':
             'c2dtlz2': [[150, 3], [2.0, 2.0, 2.0]], 'c3dtlz1': [[150, 3], [15.0, 15.0, 15.0]], \
             'crash': [[150, 3], [1700, 11, 0.3]], 'beam': [[20, 2], [40, 1.0]], \
             'gear': [[150, 2], [10.0, 61.0]], 'antenna': [[150, 3], [0, 355, 2.0]],
-            'wfg8':[[200, 2], [5.0, 5.0]]\
+            'wfg1': [[250, 2], [5.0, 5.0]], 'wfg2': [[250, 2], [5.0, 5.0]], \
+            'wfg3': [[250, 2], [5.0, 5.0]], 'wfg4': [[250, 2], [5.0, 5.0]], \
+            'wfg5': [[250, 2], [5.0, 5.0]], 'wfg6': [[250, 2], [5.0, 5.0]], \
+            'wfg7': [[250, 2], [5.0, 5.0]], 'wfg8': [[250, 2], [5.0, 5.0]], \
+            'wfg9': [[250, 2], [5.0, 5.0]]\
             }
     
     algo_set = [['onsga2r', 'nsga2r']]
