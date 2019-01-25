@@ -42,8 +42,8 @@ Once you have built the source, you will find the following executables --
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun.sh -si -n 11 -c "./sh/run onsga2r input_data/zdt1.in experiments/"
-	./sh/maprun.sh -si -n 11 -c "./sh/run nsga2r input_data/zdt1.in experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run.sh onsga2r input_data/zdt1.in experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run.sh nsga2r input_data/zdt1.in experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:

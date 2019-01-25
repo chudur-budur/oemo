@@ -42,8 +42,8 @@ The above will run a single test without any data accumulation. Please see the a
 
 ##### 2. Run multiple experiments at once:
 ```shell
-	./sh/maprun.sh -si -n 11 -c "./sh/run MoeadExr zdt4 experiments/"
-	./sh/maprun.sh -si -n 11 -c "./sh/run Moeadr zdt4 experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run.sh MoeadExr zdt4 experiments/"
+	./sh/maprun.sh -si -n 11 -c "./sh/run.sh Moeadr zdt4 experiments/"
 ```
 
 ##### 3. Burst snapshots from a single file:
