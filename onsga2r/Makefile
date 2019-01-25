@@ -1,70 +1,97 @@
 # onsga2r stuffs
-CC 		:= gcc
-INCLUDES 	:= $(wildcard src/*.h)
-COMMON_FILES 	:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
-			dominance.c eval.c fillnds.c initialize.c list.c localsearch.c\
-			merge.c misc.c mutation.c poplist.c problemdef.c rand.c rank.c\
-			report.c sort.c tourselect.c vecutils.c
-SRC		:= $(addprefix src/,$(COMMON_FILES))
-IFLAGS 		:= $(addprefix -I/,$(INCLUDES))
-CFLAGS 		:= -g -Wall -pedantic -std=gnu99 $(IFLAGS)
-LDFLAGS 	:= -lm
-OBJ 		:= $(patsubst %c,%o,$(SRC))
-DEPS		:= $(OBJ:.o=.d)
+cc			:= gcc
+cxx			:= g++
+common 		:= allocate.c auxiliary.c crossover.c crowddist.c decode.c display.c\
+				dominance.c eval.c fillnds.c initialize.c list.c localsearch.c\
+				merge.c misc.c mutation.c poplist.c problemdef.c rand.c rank.c\
+				report.c sort.c tourselect.c vecutils.c
+commonsrc	:= $(addprefix src/,$(common))
+cflag 		:= -g -Wall -pedantic -std=gnu99
+cxxflag 	:= -g -Wall -pedantic -std=c++11
+ldflag		:= -lm
+commonobj 	:= $(patsubst %c,%o,$(commonsrc))
+deps		:= $(commonobj:.o=.d)
+# wfg hv code stuffs
+wfghvsrc	:= $(wildcard wfg-1.10/*.c)
+wfghvobj	:= $(patsubst %c,%o,$(wfghvsrc))
+wfghvdeps	:= $(wfghvobj:.o=.d)
+# wfg problem suite stuffs
+wfgsrc		:= $(wildcard src/wfg-suite/Toolkit/*.cpp)
+wfgobj 		:= $(patsubst %cpp,%o,$(wfgsrc))
+wfgdeps		:= $(wfgobj:.o=.d)
 
-.PHONY: clean all wfg
+.PHONY: all test debug
 
-all: nsga2r onsga2r nsga2re onsga2rw onsga2rwdom
-wfg: wfg-1.10/wfg
+all: nsga2r onsga2r nsga2re onsga2rw onsga2rwdom computehv
 
-onsga2r: $(OBJ) src/onsga2r.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+test: nsga2r wfg
+
+debug:
+	$(info $$wfgsrc: ${wfgsrc})
+	$(info $$wfgobj: ${wfgobj})
+	$(info $$wfgdeps: ${wfgdeps})
+	$(info $$commonsrc: ${commonsrc})
+	$(info $$commonobj: ${commonobj})
+	$(info $$deps: ${deps})
+
+onsga2r: $(commonobj) $(wfgobj) src/onsga2r.o
+	$(cxx) $(cxxflag) $^ -o $@ $(ldflag)
 	strip onsga2r
 
-onsga2rw: $(OBJ) src/onsga2rw.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+onsga2rw: $(commonobj) $(wfgobj) src/onsga2rw.o
+	$(cxx) $(cxxflag) $^ -o $@ $(ldflag)
 	strip onsga2rw
 
-onsga2rwdom: $(OBJ) src/onsga2rwdom.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+onsga2rwdom: $(commonobj) $(wfgobj) src/onsga2rwdom.o
+	$(cxx) $(cxxflag) $^ -o $@ $(ldflag)
 	strip onsga2rwdom
 
-nsga2r: $(OBJ) src/nsga2r.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+nsga2r: $(commonobj) $(wfgobj) src/nsga2r.o
+	$(cxx) $(cxxflag) $^ -o $@ $(ldflag)
 	strip nsga2r
 
-nsga2re: $(OBJ) src/nsga2re.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+nsga2re: $(commonobj) $(wfgobj) src/nsga2re.o
+	$(cxx) $(cxxflag) $^ -o $@ $(ldflag)
 	strip nsga2re
 
 src/onsga2r.o: src/onsga2r.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -c $< -o $@
 
 src/onsga2rw.o: src/onsga2rw.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -c $< -o $@
 
 src/onsga2rwdom.o: src/onsga2rwdom.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -c $< -o $@
 
 src/nsga2r.o: src/nsga2r.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -c $< -o $@
 
 src/nsga2re.o: src/nsga2re.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(cc) $(cflag) -I./src/wfg-suite/Toolkit -c $< -o $@
 
-wfg-1.10/wfg: wfg-1.10/wfg.c wfg-1.10/read.c
-	$(CC) -g -Wall -pedantic -std=gnu99 -I/wfg-1.10/wfg.h $^ -o $@ $(LDFLAGS)
-	cp wfg-1.10/wfg .
+# wfg hv executable recipe
+computehv: $(wfghvobj)
+	$(cc) $(cflag) $^ -o $@ $(ldflag)
+	strip $@
 
--include $(DEPS)
+wfg-1.10/%.o: wfg-1.10/%.c
+	$(cc) $(cflag) -c $< -o $@ $(ldflag)
 
-clean:
-	rm -f src/*.d
+# wfg test-suite recipe
+src/wfg-suite/Toolkit/%.o: src/wfg-suite/Toolkit/%.cpp
+	$(cxx) $(cxxflag) -c $< -o $@
+
+-include $(deps)
+-include $(wfgdeps)
+
+clean: clean-exp clean-wfg-hv clean-wfg-suite
+
+clean-exp:
 	rm -f src/*.gc*
-	rm -f $(OBJ) src/*.o
+	rm -f $(commonobj) src/*.o
 	rm -f onsga2r onsga2rw onsga2rwdom nsga2re nsga2r
 	rm -f *.out
 	rm -f *~
@@ -72,5 +99,9 @@ clean:
 	rm -f input_data/*~
 	rm -f input_data/\#*\#
 
-clean-all: clean
-	rm -f wfg-1.10/*.o wfg-1.10/wfg wfg
+clean-wfg-hv:
+	rm -f wfg-1.10/*.o wfg
+
+clean-wfg-suite:
+	rm -f $(wfgobj)
+
