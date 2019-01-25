@@ -70,17 +70,27 @@ int main (int argc, char **argv)
 		exit(1);
 	}
 
-	fpt_init_pop = fopen("initial_pop.out","w");
-	fpt_final_pop = fopen("final_pop.out","w");
-	fpt_best_pop = fopen("best_pop.out","w");
 	if(argc < 4)
+    {
+	    fpt_init_pop = fopen("initial_pop.out","w");
+	    fpt_final_pop = fopen("final_pop.out","w");
+	    fpt_best_pop = fopen("best_pop.out","w");
 		fpt_all_pop = fopen("all_pop.out","w");
+	    fpt_params = fopen("params.out","w");
+    }
 	else
 	{
+		sprintf(uid_filename, "initial_pop-%s.out", argv[3]);
+	    fpt_init_pop = fopen(uid_filename,"w");
+		sprintf(uid_filename, "final_pop-%s.out", argv[3]);
+	    fpt_final_pop = fopen(uid_filename,"w");
+		sprintf(uid_filename, "best_pop-%s.out", argv[3]);
+	    fpt_best_pop = fopen(uid_filename, "w");
 		sprintf(uid_filename, "all_pop-%s.out", argv[3]);
 		fpt_all_pop = fopen(uid_filename,"w");
+		sprintf(uid_filename, "params-%s.out", argv[3]);
+	    fpt_params = fopen(uid_filename,"w");
 	}
-	fpt_params = fopen("params.out","w");
 
 	fprintf(fpt_init_pop,"# This file contains the data of initial population\n");
 	fprintf(fpt_final_pop,"# This file contains the data of final population\n");
