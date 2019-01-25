@@ -100,7 +100,7 @@ clean-exp:
 	rm -f input_data/\#*\#
 
 clean-wfg-hv:
-	rm -f wfg-1.10/*.o wfg
+	rm -f wfg-1.10/*.o computehv
 
 clean-wfg-suite:
 	rm -f $(wfgobj)
