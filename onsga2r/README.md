@@ -67,7 +67,7 @@ Assuming bursting has already been done from the previous step 3 (or 4) --
 ```shell
 	./sh/reportsnap experiments/ 1 100 1 8 0.4 zdt1 1
 ```
-can also be done for multiple runs with `maprun`. This code also assumes the [gnuplot](http://www.gnuplot.info/) and [gnuplot-palette](https://github.com/Gnuplotting/gnuplot-palettes) is installed in `~/gnuplot-utils/`.
+can also be done for multiple runs with `maprun`. This code also assumes the [gnuplot](http://www.gnuplot.info/) is installed in the system, along with [gnuplot-palette](https://github.com/Gnuplotting/gnuplot-palettes) and [gnuplot-colorbrewer](https://github.com/aschn/gnuplot-colorbrewer) are installed in `~/gnuplot-utils/`.
 
 ##### 7. Generate hypervolume comparison stat for one problem:
 
