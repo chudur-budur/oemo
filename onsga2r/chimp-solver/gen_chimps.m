@@ -27,7 +27,7 @@ probs = {...
     'osy', 'ctp8', 'ctp4', ...
     'c1dtlz1', 'c1dtlz3', 'c2dtlz2', 'c3dtlz1', ...
     'crash', 'antenna', 'beam', 'gear', ...
-    'wfg7', 'wfg8', 'wfg9'};
+    'wfg1', 'wfg2', 'wfg3', 'wfg4', 'wfg5', 'wfg6', 'wfg7', 'wfg8', 'wfg9'};
 % ratios to fix FE bounds
 ratios = {...
     30.0, 30.0, 25.0, 8.0, 8.0, ...
@@ -35,7 +35,7 @@ ratios = {...
     6.0, 8.0, 8.0, ...
     15.0, 6.0, 6.0, 15.0, ...
     15.0, 6.0, 500, 500, ...
-    30.0, 30.0, 30.0};
+    30.0, 30.0, 30.0, 30.0, 30.0, 30.0, 30.0, 30.0, 30.0};
 % hashmap: problem name -> (FE bound, problem type)
 ratio_map = containers.Map(probs, ratios);
 
@@ -47,7 +47,7 @@ set_one = {'zdt1'; 'zdt2'; 'zdt3'; 'zdt6'; 'dtlz4'; 'dtlz5'; ...
 % move the problem to set_two if the number of variable is many
 set_two = {'zdt4'; 'dtlz1'; 'dtlz2'; 'dtlz3'; 'dtlz6'; 'ctp4'; ...
     'ctp8'; 'c1dtlz1'; 'c1dtlz3'; 'c2dtlz2'; 'c3dtlz1'; 'beam'; 'gear'; ...
-    'wfg7'; 'wfg8'; 'wfg9'};
+    'wfg1'; 'wfg2'; 'wfg3'; 'wfg4'; 'wfg5'; 'wfg6'; 'wfg7'; 'wfg8'; 'wfg9'};
 
 %% file paths
 % file_path is the problem parameters from input_data folder
@@ -76,32 +76,34 @@ fprintf(1, '*** Using func: "%s" and constfun: "%s"\n', ...
             strcat(prob_name, '()'), strcat(prob_name, '_constfunc()'));
         
 %% fixed budget
-% febound = 1667 ; % for zdt6 to get a better view
 fetotal = ngen * popsize ;
 febound = round((fetotal / ratio_map(prob_name)) / nobj) ;
+if (contains(prob_name, 'zdt6'))
+    febound = 1667 ; % for zdt6 to get a better view
+end
 fprintf('*** FE bound fixed to: %d\n', febound);
   
 %% algorithm options
 % set options for fmincon
 fmcopt = optimoptions('fmincon');
-fmcopt.MaxFunEvals = febound;
+fmcopt.MaxFunctionEvaluations = febound;
 fmcopt.Display = 'off' ;
+% fmcopt
+
 % set options for patternsearch
-psopt = psoptimset(@patternsearch);
-psopt = psoptimset(psopt, 'MaxFunEvals', febound);
+psopt = optimoptions('patternsearch') ;
+psopt.MaxFunctionEvaluations = febound ;
+psopt.Display = 'off' ;
 % this can be removed, may be ?
-if (nobj > 2)
-    psopt = psoptimset(psopt, 'InitialMeshSize', (1.0 / popsize));
-    % psopt = psoptimset(psopt, 'InitialMeshSize', 1.0);
-    psopt = psoptimset(psopt, 'TolX', 1e-7, 'TolBind', 1e-6);
-    psopt = psoptimset(psopt, 'SearchMethod', @MADSPositiveBasis2N);
-    % psopt = psoptimset(psopt, 'SearchMethod', @GPSPositiveBasis2N);
-    % psopt = psoptimset(psopt, 'SearchMethod', @GSSPositiveBasis2N);
-    % psopt = psoptimset(psopt, 'SearchMethod', {@searchneldermead,10});
-    % psopt = psoptimset(psopt, 'SearchMethod', {@searchga,100});
-    psopt = psoptimset(psopt, 'CompletePoll', 'on');
-    psopt = psoptimset(psopt, 'CompleteSearch', 'on');   
+if (nobj > 2 || contains(prob_name, 'wfg'))
+    psopt.InitialMeshSize = (1.0 / popsize) ;
+    psopt.TolX = 1e-7 ; 
+    psopt.TolBind = 1e-6 ;
+    psopt.SearchMethod = 'MADSPositiveBasis2N' ;
+    psopt.CompletePoll = 'on' ;
+    psopt.CompleteSearch = 'on' ;   
 end        
+% psopt
         
 %% open the nadir file and solve the problem for nruns times
 fid = fopen(out_file, 'w');
