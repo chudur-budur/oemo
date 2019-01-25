@@ -27,7 +27,7 @@ Once you have built the source, you will find the following executables --
 
 ##### 3. building the wfg Hypervolume computation code:
 ```shell
-	make wfg
+	make computehv
 ``` 
 
 
@@ -71,7 +71,7 @@ can also be done for multiple runs with `maprun`. This code also assumes the [gn
 
 ##### 7. Generate hypervolume comparison stat for one problem:
 
-Assuming `wfg` has already been compiled --
+Assuming `computehv` has already been compiled --
 ```shell
 	./sh/plothv.py experiments/ zdt1
 ```
