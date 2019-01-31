@@ -22,7 +22,7 @@
 %
 function f = wfg8(Z)
 
-M = 2;
+M = 3;
 testNo = 8;
 k = 4;
 l = 20;

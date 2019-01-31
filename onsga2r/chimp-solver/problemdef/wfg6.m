@@ -22,7 +22,7 @@
 %
 function f = wfg6(Z)
 
-M = 2;
+M = 3;
 testNo = 6;
 k = 4;
 l = 20;

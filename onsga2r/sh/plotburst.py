@@ -85,8 +85,8 @@ def save_pdf_plot(algo_files, out_file, problem):
             'dtlz1': 3, 'dtlz2': 3, 'dtlz3': 3, 'dtlz4': 3, 'dtlz5': 3, 'dtlz6': 3, 'dtlz7': 3, \
             'c1dtlz1': 3, 'c1dtlz3': 3, 'c2dtlz2': 3, 'c3dtlz1': 3, \
             'osy': 2, 'ctp4': 2, 'crash': 3, 'beam': 2, 'gear': 2, 'antenna': 3, \
-            'wfg1': 2, 'wfg2': 2, 'wfg3': 2, 'wfg4': 2, 'wfg5': 2, 'wfg6': 2, \
-            'wfg7': 2, 'wfg8': 2, 'wfg9': 2}
+            'wfg1': 3, 'wfg2': 3, 'wfg3': 3, 'wfg4': 3, 'wfg5': 3, 'wfg6': 3, \
+            'wfg7': 3, 'wfg8': 3, 'wfg9': 3}
     if prob_set[problem] == 2:
         cmd = pf2dcmd.format(out_file) + get_gpstr_2d(algo_files)
     else:
